@@ -1,14 +1,19 @@
 {
   "path": "dss/out/Vat.abi",
   "storage": {
-    "0": "Root",
-    "5": "Tab",
-    "6": "Vice"
+    "0": "ROOT",
+    "5": "TAB",
+    "6": "VICE",
+    "#hashedLocation(\"Solidity\", 4, ILK GUY) +Int 0": "(#unsigned(GEM_U) => #unsigned(GEM_U +Int WAD))"
   },
-  "vars": {
-    "Root": "address",
-    "Tab":  "int256",
-    "Vice": "int256"
+  "vars"   : {
+    "ROOT" : "address",
+    "TAB"  : "int256",
+    "VICE" : "int256",
+    "ILK"  : "bytes32",
+    "GUY"  : "address",
+    "GEM_U": "int256",
+    "WAD"  : "int256"
   },
   "success_conditions": {
     "grab": [
@@ -28,6 +33,7 @@
     "Ink": [
     ],
     "slip": [
+      "#rangeSInt(256, GEM_U +Int WAD)"
     ],
     "file": [
     ],
