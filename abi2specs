@@ -1,0 +1,76 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const config = require("./abi_config.json");
+const abifile_name = config.path;
+const typed = config.vars;
+const store = config.storage;
+
+const template = fs.readFileSync("./template.ini")
+  .toString();
+const render = o => Object.keys(o)
+  .reduce((tmp, name) =>
+    tmp.replace(new RegExp("{{" + name + "}}", "g"), o[name]), template)
+
+
+const bound = {
+  "uint256": name => `#rangeUInt(256, ${ name })`,
+  "int256" : name => `#rangeSInt(256, ${ name })`,
+  "bytes32": name => `#rangeBytes(32, ${ name })`,
+  "address": name => `#rangeAddress(${ name })`
+}
+
+const vars_in_range = Object.keys(store)
+  .map(key => store[key])
+  .map(s => `andBool ${bound[typed[s]](s)}`)
+const storage = "  " + Object.keys(store)
+  .map(key => key + " |-> " + (typed[store[key]] == "int256" ? "#unsigned(" : "") + store[key] + (typed[store[key]] == "int256" ? ")" : ""))
+  .join("\n  ")
+
+
+const abi = JSON.parse(fs.readFileSync(abifile_name));
+
+const make_abi_dsl = ({type, name}, i) =>
+  "#" + type + "(" + name.toUpperCase() + ")"
+const make_args = inputs => inputs.length == 0
+    && ".TypedArgs"
+    || inputs.map(make_abi_dsl).join(", ")
+
+let abit = abi
+  .filter(({type}) => type == "function")
+  .map(({name, inputs}) => {
+
+    let callData = `#abiCallData("${name}", ${make_args(inputs)})`
+    let abi_var_in_range = inputs
+      .map(({type, name}, i) => `andBool ${ bound[type](name.toUpperCase()) }` )
+    let cond = ["\n  // call data"]
+      .concat(abi_var_in_range)
+      .concat(["\n  // storage data"])
+      .concat(vars_in_range)
+      .concat(["\n  // success conditions"])
+      .join("\n  ")
+
+    return {
+      name,
+      spec: render({
+        name,
+        callData,
+        cond,
+        storage
+      })
+    };
+
+  })
+
+try {
+  fs.accessSync(path, fs.constants.F_OK);
+} catch (e) {
+  fs.mkdirSync("out");
+}
+
+abit
+  .forEach(({spec, name}) => {
+    fs.writeFileSync("out/spec_" + name + "_success.ini", spec)
+  })
+
+
+// console.log(abit[0]);
