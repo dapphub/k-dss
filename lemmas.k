@@ -36,4 +36,17 @@ rule #unsigned(#signed(W)) => W
 
 rule W0 s<Word W1 => #signed(W0) <Word #signed(W1)
 
+// converse:
+rule (#signed (chop (#unsigned(A) +Int #unsigned(B)))) => A +Int B -Int pow256
+  requires notBool (#rangeSInt(256, A +Int B))
+  andBool B >=Int 0
+  andBool #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+
+rule (#signed (chop (#unsigned(A) +Int #unsigned(B)))) => A +Int B +Int pow256
+  requires notBool (#rangeSInt(256, A +Int B))
+  andBool B <=Int 0
+  andBool #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+
 
