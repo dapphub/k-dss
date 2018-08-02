@@ -18,7 +18,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Root",
+      "returns" : "Root"
     },
     "era": {
     },
@@ -31,7 +31,7 @@
       },
       "requires" : [
       ],
-      "returns" : "#unsigned(_rad)",
+      "returns" : "#unsigned(_rad)"
     },
     "sin":  {
       "vars" : {
@@ -42,7 +42,7 @@
       },
       "requires" : [
       ],
-      "returns" : "#unsigned(_rad)",
+      "returns" : "#unsigned(_rad)"
     },    
     "ilks": [
     ],    
@@ -55,7 +55,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Tab",
+      "returns" : "Tab"
     },
     "vice": {
       "vars" : {
@@ -64,7 +64,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Vice",
+      "returns" : "Vice"
     },
     "Gem":  {
       "vars": {
@@ -73,7 +73,7 @@
 	"_wad" : "int256"
       },
       "stores": {
-	"#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(_wad)",
+	"#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(_wad)"
       },
       "requires" : [
       ],
@@ -86,7 +86,7 @@
 	"_wad" : "int256"
       },
       "stores": {
-	"#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(_wad)",
+	"#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(_wad)"
       },
       "requires" : [
       ],
@@ -97,9 +97,9 @@
 	"ABI_ilk" : "bytes32",
 	"ABI_lad" : "address",
 	"_wad" : "int256"
-      ],
+      },
       "stores": {
-	"#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(_wad)",
+	"#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(_wad)"
       },
       "requires" : [
       ],
@@ -117,7 +117,7 @@
       "requires" : [
 	"ABI_what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208"
       ],
-      "returns" : "",
+      "returns" : ""
     },
     "move": {
       "vars" : {
@@ -129,7 +129,7 @@
       },
       "stores" : {
 	"#dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int ABI_rad)",
-	"#dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int ABI_rad)",
+	"#dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int ABI_rad)"
       },
       "requires" : [
 	"Dai_src >=Int ABI_rad",
@@ -139,32 +139,32 @@
       "returns" : ""
     },
     "slip": {
-      "vars" : [
+      "vars" : {
 	"ABI_ilk" : "bytes32",
 	"ABI_guy" : "address",
 	"ABI_wad" : "int256",
 	"_wad" : "int256"
-      ],
+      },
       "stores" : {
 	"#urns(ABI_ilk, ABI_guy, ABI_wad)" : "#unsigned(_wad) => #unsigned(_wad +Int ABI_wad)"
       },
       "requires" : [
 	"#rangeSInt(256, _wad +Int ABI_wad)"
       ],
-      "returns" : "",
+      "returns" : ""
     },
     "tune": {
     },
     "grab": {
     },
     "heal": {
-      "vars" : [
-	"ABI_u",
-	"ABI_v",
-	"ABI_rad"
-	"_dai_v",
-	"_sin_u",
-      ],
+      "vars" : {
+	"ABI_u" : "address",
+	"ABI_v" : "address",
+	"ABI_rad" : "int256",
+	"_dai_v" : "int256",
+	"_sin_u" : "int256"
+      },
       "stores" : {
 	"#dai(ABI_v)" : "#unsigned(_dai_v) => #unsigned(_dai_v -Int ABI_rad)",
 	"#sin(ABI_u)" : "#unsigned(_sin_u) => #unsigned(_sin_u -Int ABI_rad)",
