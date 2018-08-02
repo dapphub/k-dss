@@ -19,9 +19,8 @@ const bound = {
   "address": name => `#rangeAddress(${ name })`
 }
 
-const vars_in_range = Object.keys(store)
-  .map(key => store[key])
-  .map(s => `andBool ${bound[typed[s]](s)}`)
+const vars_in_range = Object.keys(config.vars)
+  .map(name => `andBool ${bound[config.vars[name]](name)}`)
 const storage = "  " + Object.keys(store)
   .map(key => key + " |-> " + (typed[store[key]] == "int256" ? "#unsigned(" : "") + store[key] + (typed[store[key]] == "int256" ? ")" : ""))
   .join("\n  ")
@@ -41,12 +40,16 @@ let abit = abi
 
     let callData = `#abiCallData("${name}", ${make_args(inputs)})`
     let abi_var_in_range = inputs
+      .filter(({name}) => !config.vars[name.toUpperCase()])
       .map(({type, name}, i) => `andBool ${ bound[type](name.toUpperCase()) }` )
-    let cond = ["\n  // call data"]
+    let fabi_success = config.success_conditions[name]
+      .map(c => `andBool ` + c)
+    let cond = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
       .concat(abi_var_in_range)
       .concat(["\n  // storage data"])
       .concat(vars_in_range)
       .concat(["\n  // success conditions"])
+      .concat(fabi_success)
       .join("\n  ")
 
     return {
@@ -62,8 +65,9 @@ let abit = abi
   })
 
 try {
-  fs.accessSync(path, fs.constants.F_OK);
+  fs.accessSync("out", fs.constants.F_OK);
 } catch (e) {
+  console.log(e);
   fs.mkdirSync("out");
 }
 
