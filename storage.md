@@ -1,30 +1,47 @@
 # dss storage model
 
+### tune.sol
+
 TODO: check K string literal comparison!
 
 ```
-rule #root => 0
+   syntax Int ::= #root
+// --------------------
+   rule #root => 0
 
-rule #dai(A) => #hashedLocation(\"Solidity\", 1, A)
+   syntax Int ::= #dai( Int )
+// --------------------------
+   rule #dai(A) => #hashedLocation("Solidity", 1, A)
 
-rule #sin(A) => #hashedLocation(\"Solidity\", 2, A)
+   syntax Int ::= #sin( Int )
+// --------------------------
+   rule #sin(A) => #hashedLocation("Solidity", 2, A)
 
-rule #ilks(Ilk, S) => #hashedLocation(\"Solidity\", 3, Ilk) +Int 0
-  requires S == "rate"
+   syntax Int ::= #ilks( Int , Int )
+// ---------------------------------
+   rule #ilks(Ilk, S) => #hashedLocation("Solidity", 3, Ilk) +Int 0
+	 requires S ==K "rate"
 
-rule #ilks(Ilk, S) => #hashedLocation(\"Solidity\", 3, Ilk) +Int 1
-  requires S == "Art"
+   rule #ilks(Ilk, S) => #hashedLocation("Solidity", 3, Ilk) +Int 1
+	 requires S ==K "Art"
 
-rule #urns(Ilk, Guy, S) => #hashedLocation(\"Solidity\", 4, Ilk Guy) +Int 0
-  requires S == "gem"
-  
-rule #urns(Ilk, Guy, S) => #hashedLocation(\"Solidity\", 4, Ilk Guy) +Int 1
-  requires S == "ink"
-  
-rule #urns(Ilk, Guy, S) => #hashedLocation(\"Solidity\", 4, Ilk Guy) +Int 2
-  requires S == "art"
+   syntax Int ::= #urns( Int , Int )
+// ---------------------------------
+   rule #urns(Ilk, Guy, S) => #hashedLocation("Solidity", 4, Ilk Guy) +Int 0
+	 requires S ==K "gem"
 
-rule #Tab => 5
+   rule #urns(Ilk, Guy, S) => #hashedLocation("Solidity", 4, Ilk Guy) +Int 1
+	 requires S ==K "ink"
 
-rule #vice => 6
+   rule #urns(Ilk, Guy, S) => #hashedLocation("Solidity", 4, Ilk Guy) +Int 2
+	 requires S ==K "art"
+
+   syntax Int ::= #Tab
+// -------------------
+   rule #Tab => 5
+
+   syntax Int ::= #vice
+// --------------------
+   rule #vice => 6
+	
 ```
