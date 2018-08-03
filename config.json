@@ -1,15 +1,12 @@
 {
-    "spec"     : "./out/spec_slip_success.ini",
-  "prelude"  : "./exp.smt2",
-  "lemmas"   : "./lemmas.k",
-  "source"   : "./dss/src/tune.sol",
-  "abi"      : "./dss/out/Vat.abi",
-  "bin_runtime" : "./dss/out/src_tune_sol_Vat.bin-runtime",
-  "sourcemap" : "tune.srcmap-runtime",
-  "solJson"  : "./dss/out/tune.sol.json",
-  "name"     : "Vat",
-  "host"     : "127.0.0.1:8080",
-  "control"  : {
+  "spec": "./specs/spec_slip_success.ini",
+  "prelude": "./exp.smt2",
+  "lemmas": "./lemmas.k",
+  "bin_runtime": "./dss/out/src_tune_sol_Vat.bin-runtime",
+  "source": "./dss/src/tune.sol",
+  "sourcemap": "./dss/out/tune.sol.json",
+  "host": "127.0.0.1:8080",
+  "control": {
     "0"      : "branch 0",
     "1"      : "branch 1",
     "2"      : "branch 2",
