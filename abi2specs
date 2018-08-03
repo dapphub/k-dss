@@ -42,7 +42,7 @@ let abit = abi
 
 
     const storage_success = "  " + Object.keys(local_stores)
-      .map(key => key + " |-> " + local_stores[key] )
+      .map(key => key + " |-> (" + local_stores[key] + ")" )
       .join("\n  ")
 
     const vars_in_range = Object.keys(local_vars)
