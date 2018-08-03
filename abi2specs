@@ -1,16 +1,15 @@
 #!/usr/bin/env node
-const fs = require("fs");
-const config = require("./abi_config.json");
-const abifile_name = config.path;
-const typed = config.vars;
-const store = config.storage;
+const fs            = require("fs");
+const config        = require("./abi_config.json");
+const abifile_name  = config.path;
+const global_vars   = config.vars;
+const global_stores = config.stores;
 
-const template = fs.readFileSync("./template.ini")
+const template      = fs.readFileSync("./template.ini")
   .toString();
-const render = o => Object.keys(o)
+const render        = o => Object.keys(o)
   .reduce((tmp, name) =>
     tmp.replace(new RegExp("{{" + name + "}}", "g"), o[name]), template)
-
 
 const bound = {
   "uint256": name => `#rangeUInt(256, ${ name })`,
@@ -19,18 +18,11 @@ const bound = {
   "address": name => `#rangeAddress(${ name })`
 }
 
-const vars_in_range = Object.keys(store)
-  .map(key => store[key])
-  .map(s => `andBool ${bound[typed[s]](s)}`)
-const storage = "  " + Object.keys(store)
-  .map(key => key + " |-> " + (typed[store[key]] == "int256" ? "#unsigned(" : "") + store[key] + (typed[store[key]] == "int256" ? ")" : ""))
-  .join("\n  ")
-
 
 const abi = JSON.parse(fs.readFileSync(abifile_name));
 
 const make_abi_dsl = ({type, name}, i) =>
-  "#" + type + "(" + name.toUpperCase() + ")"
+  "#" + type + "(ABI_" + name + ")"
 const make_args = inputs => inputs.length == 0
     && ".TypedArgs"
     || inputs.map(make_abi_dsl).join(", ")
@@ -39,37 +31,94 @@ let abit = abi
   .filter(({type}) => type == "function")
   .map(({name, inputs}) => {
 
+    const local_vars = {
+      ...global_vars,
+      ...config.methods[name].vars
+    }
+    const local_stores = {
+      ...global_stores,
+      ...config.methods[name].stores
+    }
+
+
+    const storage_success = "  " + Object.keys(local_stores)
+      .map(key => key + " |-> " + local_stores[key] )
+      .join("\n  ")
+
+    const vars_in_range = Object.keys(local_vars)
+      .map(name => `andBool ${bound[local_vars[name]](name)}`)
+
+
     let callData = `#abiCallData("${name}", ${make_args(inputs)})`
     let abi_var_in_range = inputs
-      .map(({type, name}, i) => `andBool ${ bound[type](name.toUpperCase()) }` )
-    let cond = ["\n  // call data"]
+      .filter(({name}) => !local_vars["ABI_" + name])
+      .map(({type, name}, i) => `andBool ${ bound[type]("ABI_" + name) }` )
+
+    let fabi_success = (config.methods[name].requires || [])
+      .map(c => `andBool ` + c)
+    let cond_success = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
       .concat(abi_var_in_range)
       .concat(["\n  // storage data"])
       .concat(vars_in_range)
       .concat(["\n  // success conditions"])
+      .concat(fabi_success)
       .join("\n  ")
 
-    return {
-      name,
+    const storage_fail = "  " + Object.keys(local_stores)
+      .map(key => key + " |-> " + (local_stores[key].indexOf("=>") > -1 ? local_stores[key].split("=>")[0] + "=> _" : local_stores[key]) )
+      .join("\n  ")
+    let fabi_fail = ["notBool (\n            " + (config.methods[name].requires || []).join("\n    andBool ") + "\n  )"]
+      .map(c => `andBool ` + c)
+    let cond_fail = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
+      .concat(abi_var_in_range)
+      .concat(["\n  // storage data"])
+      .concat(vars_in_range)
+      .concat(["\n  // success conditions"])
+      .concat(fabi_fail)
+      .join("\n  ")
+
+    let returns = config.methods[name].returns || "_";
+
+    let cases = [{
+      name: name + "_success",
       spec: render({
         name,
         callData,
-        cond,
-        storage
+        cond: cond_success,
+        storage: storage_success,
+        returns,
+        status: "EVMC_SUCCESS"
       })
-    };
+    }];
+
+    if((config.methods[name].requires || []).length > 0) {
+      cases.push({
+        name: name + "_fail",
+        spec: render({
+          name,
+          callData,
+          cond: cond_fail,
+          storage: storage_fail,
+          returns: "_",
+          status: "EVMC_REVERT"
+        })
+      })
+    }
+    return cases;
 
   })
+  .reduce((a, cs) => a.concat(cs), [])
 
 try {
-  fs.accessSync(path, fs.constants.F_OK);
+  fs.accessSync("out", fs.constants.F_OK);
 } catch (e) {
+  console.log(e);
   fs.mkdirSync("out");
 }
 
 abit
   .forEach(({spec, name}) => {
-    fs.writeFileSync("out/spec_" + name + "_success.ini", spec)
+    fs.writeFileSync("out/spec_" + name + ".ini", spec)
   })
 
 
