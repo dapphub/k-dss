@@ -1,5 +1,5 @@
 {
-  "path": "dss/out/VatI.abi",
+  "path": "dss/out/Vat.abi",
   "vars": {
     "Root"        : "address",
     "Tab"         : "int256",
@@ -141,7 +141,7 @@
         "Wad" : "int256"
       },
       "stores" : {
-        "#urns(ABI_ilk, ABI_guy, ABI_wad)" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
+        "#urns(ABI_ilk, ABI_guy, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
       },
       "requires" : [
         "#rangeSInt(256, Wad +Int ABI_wad)"
