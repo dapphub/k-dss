@@ -41,8 +41,8 @@ let abit = abi
     }
 
 
-    const storage = "  " + Object.keys(local_stores)
-      .map(key => key + " |-> " + (global_vars[local_stores[key]] == "int256" ? "#unsigned(" : "") + local_stores[key] + (global_vars[local_stores[key]] == "int256" ? ")" : ""))
+    const storage_success = "  " + Object.keys(local_stores)
+      .map(key => key + " |-> " + local_stores[key] )
       .join("\n  ")
 
     const vars_in_range = Object.keys(local_vars)
@@ -53,29 +53,61 @@ let abit = abi
     let abi_var_in_range = inputs
       .filter(({name}) => !local_vars["ABI_" + name])
       .map(({type, name}, i) => `andBool ${ bound[type]("ABI_" + name) }` )
+
     let fabi_success = (config.methods[name].requires || [])
       .map(c => `andBool ` + c)
-    let cond = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
+    let cond_success = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
       .concat(abi_var_in_range)
       .concat(["\n  // storage data"])
       .concat(vars_in_range)
       .concat(["\n  // success conditions"])
       .concat(fabi_success)
       .join("\n  ")
+
+    const storage_fail = "  " + Object.keys(local_stores)
+      .map(key => key + " |-> " + (local_stores[key].indexOf("=>") > -1 ? local_stores[key].split("=>")[0] + "=> _" : local_stores[key]) )
+      .join("\n  ")
+    let fabi_fail = ["notBool (\n            " + (config.methods[name].requires || []).join("\n    andBool ") + "\n  )"]
+      .map(c => `andBool ` + c)
+    let cond_fail = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
+      .concat(abi_var_in_range)
+      .concat(["\n  // storage data"])
+      .concat(vars_in_range)
+      .concat(["\n  // success conditions"])
+      .concat(fabi_fail)
+      .join("\n  ")
+
     let returns = config.methods[name].returns || "_";
 
-    return {
-      name,
+    let cases = [{
+      name: name + "_success",
       spec: render({
         name,
         callData,
-        cond,
-        storage,
-        returns
+        cond: cond_success,
+        storage: storage_success,
+        returns,
+        status: "EVMC_SUCCESS"
       })
-    };
+    }];
+
+    if((config.methods[name].requires || []).length > 0) {
+      cases.push({
+        name: name + "_fail",
+        spec: render({
+          name,
+          callData,
+          cond: cond_fail,
+          storage: storage_fail,
+          returns: "_",
+          status: "EVMC_REVERT"
+        })
+      })
+    }
+    return cases;
 
   })
+  .reduce((a, cs) => a.concat(cs), [])
 
 try {
   fs.accessSync("out", fs.constants.F_OK);
@@ -86,7 +118,7 @@ try {
 
 abit
   .forEach(({spec, name}) => {
-    fs.writeFileSync("out/spec_" + name + "_success.ini", spec)
+    fs.writeFileSync("out/spec_" + name + ".ini", spec)
   })
 
 
