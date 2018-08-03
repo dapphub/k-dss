@@ -1,5 +1,5 @@
 {
-  "path": "dss/out/Vat.abi",
+  "path": "dss/out/VatI.abi",
   "vars": {
     "Root"        : "address",
     "Tab"         : "int256",
@@ -24,10 +24,10 @@
     },
     "dai":  {
       "vars" : {
-	"_rad" : "int256"
+        "_rad" : "int256"
       },
       "stores" : {
-	"#dai(ABI_DAI_ARG)" : "#unsigned(_rad)"
+        "#dai(ABI_lad)" : "#unsigned(_rad)"
       },
       "requires" : [
       ],
@@ -35,17 +35,17 @@
     },
     "sin":  {
       "vars" : {
-	"_rad" : "int256"
+        "_rad" : "int256"
       },
       "stores" : {
-	"#sai(ABI_SIN_ARG)" : "#unsigned(_rad)"
+        "#sai(ABI_lad)" : "#unsigned(_rad)"
       },
       "requires" : [
       ],
       "returns" : "#unsigned(_rad)"
-    },    
+    },
     "ilks": [
-    ],    
+    ],
     "urns": [
     ],
     "Tab": {
@@ -68,12 +68,12 @@
     },
     "Gem":  {
       "vars": {
-	"ABI_ilk" : "bytes32",
-	"ABI_lad" : "address",
-	"_wad" : "int256"
+        "ABI_ilk" : "bytes32",
+        "ABI_lad" : "address",
+        "_wad" : "int256"
       },
       "stores": {
-	"#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(_wad)"
+        "#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(_wad)"
       },
       "requires" : [
       ],
@@ -81,12 +81,12 @@
     },
     "Ink":  {
       "vars": {
-	"ABI_ilk" : "bytes32",
-	"ABI_lad" : "address",
-	"_wad" : "int256"
+        "ABI_ilk" : "bytes32",
+        "ABI_lad" : "address",
+        "_wad" : "int256"
       },
       "stores": {
-	"#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(_wad)"
+        "#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(_wad)"
       },
       "requires" : [
       ],
@@ -94,12 +94,12 @@
     },
     "Art":  {
       "vars": {
-	"ABI_ilk" : "bytes32",
-	"ABI_lad" : "address",
-	"_wad" : "int256"
+        "ABI_ilk" : "bytes32",
+        "ABI_lad" : "address",
+        "_wad" : "int256"
       },
       "stores": {
-	"#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(_wad)"
+        "#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(_wad)"
       },
       "requires" : [
       ],
@@ -107,49 +107,49 @@
     },
     "file": {
       "vars" : {
-	"ABI_ilk" : "bytes32",
-	"ABI_what" : "bytes32",
-	"ABI_risk" : "int256"
+        "ABI_ilk" : "bytes32",
+        "ABI_what" : "bytes32",
+        "ABI_risk" : "int256"
       },
       "stores" : {
-	"#ilks(ABI_ilk, \"rate\")" : "_ => #unsigned(ABI_risk)"
+        "#ilks(ABI_ilk, \"rate\")" : "_ => #unsigned(ABI_risk)"
       },
       "requires" : [
-	"ABI_what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208"
+        "ABI_what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208"
       ],
       "returns" : ""
     },
     "move": {
       "vars" : {
-	"ABI_src" : "address",
-	"ABI_dst" : "address",
-	"ABI_rad" : "uint256",
-	"Dai_src" : "int256",
-	"Dai_dst" : "int256"
+        "ABI_src" : "address",
+        "ABI_dst" : "address",
+        "ABI_rad" : "uint256",
+        "Dai_src" : "int256",
+        "Dai_dst" : "int256"
       },
       "stores" : {
-	"#dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int ABI_rad)",
-	"#dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int ABI_rad)"
+        "#dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int ABI_rad)",
+        "#dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int ABI_rad)"
       },
       "requires" : [
-	"Dai_src >=Int ABI_rad",
-	"#rangeSInt(Dai_src -Int ABI_rad)",
-	"#rangeSInt(Dai_dst +Int ABI_rad)"
+        "Dai_src >=Int ABI_rad",
+        "#rangeSInt(Dai_src -Int ABI_rad)",
+        "#rangeSInt(Dai_dst +Int ABI_rad)"
       ],
       "returns" : ""
     },
     "slip": {
       "vars" : {
-	"ABI_ilk" : "bytes32",
-	"ABI_guy" : "address",
-	"ABI_wad" : "int256",
-	"_wad" : "int256"
+        "ABI_ilk" : "bytes32",
+        "ABI_guy" : "address",
+        "ABI_wad" : "int256",
+        "_wad" : "int256"
       },
       "stores" : {
-	"#urns(ABI_ilk, ABI_guy, ABI_wad)" : "#unsigned(_wad) => #unsigned(_wad +Int ABI_wad)"
+        "#urns(ABI_ilk, ABI_guy, ABI_wad)" : "#unsigned(_wad) => #unsigned(_wad +Int ABI_wad)"
       },
       "requires" : [
-	"#rangeSInt(256, _wad +Int ABI_wad)"
+        "#rangeSInt(256, _wad +Int ABI_wad)"
       ],
       "returns" : ""
     },
@@ -159,27 +159,27 @@
     },
     "heal": {
       "vars" : {
-	"ABI_u" : "address",
-	"ABI_v" : "address",
-	"ABI_rad" : "int256",
-	"_dai_v" : "int256",
-	"_sin_u" : "int256"
+        "ABI_u" : "address",
+        "ABI_v" : "address",
+        "ABI_rad" : "int256",
+        "_dai_v" : "int256",
+        "_sin_u" : "int256"
       },
       "stores" : {
-	"#dai(ABI_v)" : "#unsigned(_dai_v) => #unsigned(_dai_v -Int ABI_rad)",
-	"#sin(ABI_u)" : "#unsigned(_sin_u) => #unsigned(_sin_u -Int ABI_rad)",
-	"#vice" : "#unsigned(Vice) => #unsigned(Vice -Int ABI_rad)",
-	"#Tab" : "#unsigned(Tab) => #unsigned(Tab -Int ABI_rad)"
+        "#dai(ABI_v)" : "#unsigned(_dai_v) => #unsigned(_dai_v -Int ABI_rad)",
+        "#sin(ABI_u)" : "#unsigned(_sin_u) => #unsigned(_sin_u -Int ABI_rad)",
+        "#vice" : "#unsigned(Vice) => #unsigned(Vice -Int ABI_rad)",
+        "#Tab" : "#unsigned(Tab) => #unsigned(Tab -Int ABI_rad)"
       },
       "requires" : [
-	"_dai_v >=Int ABI_rad",
-	"_sin_u >=Int ABI_rad",
-	"Vice >= Int ABI_rad",
-	"Tab >=Int ABI_rad",
-	"#rangeSInt(_dai_v -Int ABI_rad)",
-	"#rangeSInt(_sin_u -Int ABI_rad)",
-	"#rangeSInt(Vice -Int ABI_rad)",
-	"#rangeSInt(Tab -Int ABI_rad)"
+        "_dai_v >=Int ABI_rad",
+        "_sin_u >=Int ABI_rad",
+        "Vice >= Int ABI_rad",
+        "Tab >=Int ABI_rad",
+        "#rangeSInt(_dai_v -Int ABI_rad)",
+        "#rangeSInt(_sin_u -Int ABI_rad)",
+        "#rangeSInt(Vice -Int ABI_rad)",
+        "#rangeSInt(Tab -Int ABI_rad)"
       ],
       "returns" : ""
     },
