@@ -52,8 +52,35 @@
       "returns" : "#unsigned(Rad)"
     },
     "ilks": {
+      "vars" : {
+	"ABI_ilk" : "bytes32",
+	"Rate" : "int256",
+	"Art" : "int256"
+      },
+      "stores" : {
+	"#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
+	"#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)"
+      },
+      "requires" : [
+      ],
+      "returns" : "#unsigned(Rate) : #unsigned(Art) : .Wordstack"
     },
     "urns": {
+      "vars" : {
+	"ABI_ilk" : "bytes32",
+	"ABI_lad" : "address",
+	"Gem" : "int256",
+	"Ink" : "int256",
+	"Art" : "int256"
+      },
+      "stores" : {
+	"#urns(ABI_ilk, ABI_lad, \"gem\"" : "#unsigned(Gem)",
+	"#urns(ABI_ilk, ABI_lad, \"ink\"" : "#unsigned(Ink)",
+	"#urns(ABI_ilk, ABI_lad, \"art\"" : "#unsigned(Art)"
+      },
+      "requires" : [
+      ],
+      "returns" : "#unsigned(Gem) : #unsigned(Ink) : #unsigned(Art) : .Wordstack"
     },
     "Tab": {
       "vars" : {
