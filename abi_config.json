@@ -1,5 +1,5 @@
 {
-  "path": "dss/out/Vat.abi",
+  "path": "dss/out/VatI.abi",
   "vars": {
     "Root"        : "address",
     "Tab"         : "int256",
