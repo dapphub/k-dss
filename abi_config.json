@@ -18,7 +18,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Root"
+      "returns" : "Root : .WordStack"
     },
     "era": {
       "vars" : {
@@ -27,7 +27,7 @@
       },
       "requires" : [
       ],
-      "returns" : "TIMESTAMP"
+      "returns" : "TIMESTAMP : .WordStack"
     },
     "dai":  {
       "vars" : {
@@ -38,18 +38,18 @@
       },
       "requires" : [
       ],
-      "returns" : "#unsigned(Rad)"
+      "returns" : "#unsigned(Rad) : .WordStack"
     },
     "sin":  {
       "vars" : {
         "Rad" : "int256"
       },
       "stores" : {
-        "#sai(ABI_lad)" : "#unsigned(Rad)"
+        "#sai(ABI_lad)" : "#unsigned(Rad) : .WordStack"
       },
       "requires" : [
       ],
-      "returns" : "#unsigned(Rad)"
+      "returns" : "#unsigned(Rad) : .WordStack"
     },
     "ilks": {
       "vars" : {
@@ -63,7 +63,7 @@
       },
       "requires" : [
       ],
-      "returns" : "#unsigned(Rate) : #unsigned(Art) : .Wordstack"
+      "returns" : "#unsigned(Rate) : #unsigned(Art) : .WordStack"
     },
     "urns": {
       "vars" : {
@@ -74,13 +74,13 @@
 	"Art" : "int256"
       },
       "stores" : {
-	"#urns(ABI_ilk, ABI_lad, \"gem\"" : "#unsigned(Gem)",
-	"#urns(ABI_ilk, ABI_lad, \"ink\"" : "#unsigned(Ink)",
-	"#urns(ABI_ilk, ABI_lad, \"art\"" : "#unsigned(Art)"
+	"#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem)",
+	"#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink)",
+	"#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art)"
       },
       "requires" : [
       ],
-      "returns" : "#unsigned(Gem) : #unsigned(Ink) : #unsigned(Art) : .Wordstack"
+      "returns" : "#unsigned(Gem) : #unsigned(Ink) : #unsigned(Art) : .WordStack"
     },
     "Tab": {
       "vars" : {
@@ -89,7 +89,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Tab"
+      "returns" : "Tab : .WordStack"
     },
     "vice": {
       "vars" : {
@@ -98,7 +98,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Vice"
+      "returns" : "Vice : .WordStack"
     },
     "file": {
       "vars" : {
