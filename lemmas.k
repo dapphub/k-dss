@@ -63,6 +63,9 @@ rule #vice => 6
 
    rule #ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
 
+syntax Int ::= #wad2rad ( Int ) [function]
+// ---------------------------------------
+rule #wad2rad(X) => X *Int 1000000000000000000000000000
 
 // Lemmas:
 
