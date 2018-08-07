@@ -92,7 +92,7 @@
           "#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
           "#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
           "#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
-          "#dai(CALLER)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
+          "#dai(CALLER_ID)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
           "#Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart)"
         }
       },
