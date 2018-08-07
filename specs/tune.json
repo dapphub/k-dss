@@ -208,12 +208,12 @@
         "Sin" : "int256"
       },
       "stores" : {
-        "#Vat.urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned((Ink +Int ABI_dink)",
-        "#Vat.urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned((Art +Int ABI_dart)",
+        "#Vat.urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+        "#Vat.urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
         "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
         "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
-        "#Vat.sin(ABI_vow)" : "#unsigned(Sin => #unsigned(Sin +Int (Rate *Int ABI_dart))",
-        "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice +Int (Rate *Int ABI_dart)"
+        "#Vat.sin(ABI_vow)" : "#unsigned(Sin) => #unsigned(Sin +Int (Rate *Int ABI_dart))",
+        "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice +Int (Rate *Int ABI_dart))"
       },
       "requires" : [
         "#rangeSInt(256, Gem -Int ABI_dink)",
@@ -262,7 +262,7 @@
         "Art" : "int256"        
       },
       "stores" : {
-        "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate => #unsigned(Rate +Int ABI_rate)",
+        "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate) => #unsigned(Rate +Int ABI_rate)",
         "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)",
         "#Vat.dai(ABI_vow)" : "#unsigned(Dai) => #unsigned(Dai +Int (Art *Int ABI_rate))",
         "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Art *Int ABI_rate))"
