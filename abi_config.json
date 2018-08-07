@@ -187,7 +187,7 @@
         "#rangeSInt(256, Gem -Int ABI_dink)",
         "#rangeSInt(256, Ink +Int ABI_dink)",
         "#rangeSInt(256, Art +Int ABI_dart)",
-        "#rangeSInt(256, Art_i +Int ABI_daty)",
+        "#rangeSInt(256, Art_i +Int ABI_dart)",
         "#rangeSInt(256, Rate *Int ABI_dart)",
         "#rangeSInt(256, Dai +Int (Rate *Int ABI_dart))",
         "#rangeSInt(256, Tab +Int (Rate *Int ABI_dart))"
