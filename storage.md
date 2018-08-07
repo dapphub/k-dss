@@ -81,5 +81,17 @@
 ### Adapter
 
 ```
-   syntax Int ::=
+   syntax Int ::= #Adapter_vat [function]
+// -------------------------------------
+   rule #Adapter_vat => 0
+
+
+   syntax Int ::= #Adapter_ilk [function]
+// -------------------------------------
+   rule #Adapter_ilk => 1
+
+
+   syntax Int ::= #Adapter_gem [function]
+// -------------------------------------
+   rule #Adapter_gem => 2
 ```

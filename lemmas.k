@@ -62,6 +62,22 @@ rule #Lad_ilks(Ilk, "spot") => #hashedLocation("Solidity", 3, Ilk) +Int 0
 
 rule #Lad_ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
 
+
+syntax Int ::= #Adapter_vat [function]
+// -------------------------------------
+rule #Adapter_vat => 0
+
+
+syntax Int ::= #Adapter_ilk [function]
+// -------------------------------------
+rule #Adapter_ilk => 1
+
+
+syntax Int ::= #Adapter_gem [function]
+// -------------------------------------
+rule #Adapter_gem => 2
+
+
 // misc:
 syntax Int ::= #wad2rad ( Int ) [function]
 // ---------------------------------------

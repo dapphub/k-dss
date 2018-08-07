@@ -1,0 +1,84 @@
+{
+  "path" : "dss/out/Adapter.abi",
+  "vars" : {
+    "Vat" : "address",
+    "Ilk" : "int256",
+    "Gem" : "int256"    
+  },
+  "stores" : {
+    "#Adapter_vat" : "Vat",
+    "#Adapter_ilk" : "Ilk",
+    "#Adapter_gem" : "Gem"
+  },
+  "methods" : {
+    "vat" : {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Vat"
+    },
+    "ilk" : {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Ilk"
+    },
+    "gem" : {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Gem"
+    },
+    "join" : {
+      "vars" : {
+        "ABI_wad" : "uint256",
+        "Wad" : "int256"
+      },
+      "stores" : {
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "#Vat_urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
+        },
+        "Gem" : {
+        }
+      },
+      "requires" : [
+        "#rangeSInt(256, ABI_wad)",
+        "ABI_wad >=Int 0",
+        "#rangeSInt(256, Wad +Int ABI_wad)"
+      ],
+      "returns" : ""
+    },
+    "exit" : {
+      "vars" : {
+        "ABI_wad" : "uint256",
+        "Wad" : "int256"
+      },
+      "stores" : {
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "#Vat_urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad -Int ABI_wad)"
+        },
+        "Gem" : {
+        }
+      },
+      "requires" : [
+        "#rangeSInt(256, ABI_wad)",
+        "ABI_wad >=Int 0",
+        "#rangeSInt(256, Wad -Int ABI_wad)"
+      ],
+      "returns" : ""
+    }
+  }
+}
