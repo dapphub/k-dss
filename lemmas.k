@@ -79,6 +79,7 @@ rule #Adapter_gem => 2
 
 
 // misc:
+
 syntax Int ::= #wad2rad ( Int ) [function]
 // ---------------------------------------
 rule #wad2rad(X) => X *Int 1000000000000000000000000000
@@ -102,7 +103,7 @@ rule #asWord(#padToWidth(32, #asByteStack(#unsigned(X)))) => #unsigned(X)
 
 rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 
-// n.b. how + cases use +Int because of earlier application of +Word 
+// n.b. how + cases use +Int because of earlier application of +Word
 rule (#unsigned(A) +Int #unsigned(B)) => #unsigned(A +Int B)
   requires #rangeSInt(256, A)
   andBool #rangeSInt(256, B)

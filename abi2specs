@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const fs            = require("fs");
-const config        = require("./abi_config.json");
+const config_path   = process.argv[2];
+const config        = JSON.parse(fs.readFileSync(config_path));
 const abifile_name  = config.path;
 const global_vars   = config.vars;
 const global_stores = config.stores;
@@ -35,7 +36,7 @@ let abit = Object.keys(config.methods)
            : abi.find(fabi => fabi.name + "(" + fabi.inputs.map(i => i.type).join(",") + ")" == name )
   }))
   .filter(({abi}) => abi.type == "function")
-  .map(({abi, vars, stores, requires, returns}) => {
+  .map(({abi, vars, stores, requires, returns, foreign_stores}) => {
 
     const local_vars = {
       ...global_vars,
@@ -83,6 +84,30 @@ let abit = Object.keys(config.methods)
       .concat(fabi_fail)
       .join("\n  ")
 
+    let accounts = Object.keys(foreign_stores || {})
+      .map(name => {
+        let code = fs.readFileSync("dss/out/" + name + ".bin-runtime")
+        let stores_ = Object.keys(foreign_stores[name])
+          .map(key => key + " |-> (" + foreign_stores[name][key] + ")" )
+          .join("\n  ")
+
+        return `<account>
+          <acctID> ${name} </acctID>
+          <balance> _ </balance>
+          <code> #parseByteStack("0x${code}") </code>
+          <storage>
+            ${stores_}
+          </storage>
+          <nonce> _ </nonce>
+        </account>
+        `
+      })
+      .join("\n")
+
+    let activeaccounts = Object.keys(foreign_stores || {})
+      .map(name => `SetItem(${name})`)
+      .join(" ")
+
 
     const filename = abi.name + "_" + abi.inputs.map(i => i.type).join("_")
 
@@ -94,7 +119,9 @@ let abit = Object.keys(config.methods)
         cond: cond_success,
         storage: storage_success,
         returns: returns || "_",
-        status: "EVMC_SUCCESS"
+        status: "EVMC_SUCCESS",
+        activeaccounts,
+        accounts
       })
     }];
 
@@ -107,7 +134,9 @@ let abit = Object.keys(config.methods)
           cond: cond_fail,
           storage: storage_fail,
           returns: "_",
-          status: "EVMC_REVERT"
+          status: "EVMC_REVERT",
+          activeaccounts,
+          accounts
         })
       })
     }
