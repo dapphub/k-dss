@@ -6,9 +6,9 @@
     "Gem" : "int256"    
   },
   "stores" : {
-    "#Adapter_vat" : "Vat",
-    "#Adapter_ilk" : "Ilk",
-    "#Adapter_gem" : "Gem"
+    "#Adapter.vat" : "Vat",
+    "#Adapter.ilk" : "Ilk",
+    "#Adapter.gem" : "Gem"
   },
   "methods" : {
     "vat" : {
@@ -47,7 +47,7 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat_urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
+          "#Vat.urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
         },
         "Gem" : {
         }
@@ -68,7 +68,7 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat_urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad -Int ABI_wad)"
+          "#Vat.urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad -Int ABI_wad)"
         },
         "Gem" : {
         }
