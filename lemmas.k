@@ -133,4 +133,5 @@ rule (#signed (chop (#unsigned(A) +Int #unsigned(B)))) => A +Int B +Int pow256
   andBool #rangeSInt(256, A)
   andBool #rangeSInt(256, B)
 
-
+rule A modInt pow160 => A
+  requires #rangeAddress(A)
