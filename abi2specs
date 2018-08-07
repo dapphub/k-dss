@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 const fs            = require("fs");
+const path          = require("path");
 const config_path   = process.argv[2];
+const filename      = path.basename(config_path, ".json");
 const config        = JSON.parse(fs.readFileSync(config_path));
 const abifile_name  = config.path;
 const global_vars   = config.vars;
@@ -154,7 +156,7 @@ try {
 
 abit
   .forEach(({spec, name}) => {
-    fs.writeFileSync("out/" + name + ".ini", spec)
+    fs.writeFileSync("out/" + filename + "_" + name + ".ini", spec)
   })
 
 
