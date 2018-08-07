@@ -1,0 +1,110 @@
+{
+  "path": "dss/out/Lad.abi",
+  "vars": {
+    "Vat" : "address",
+    "Line" : "int256",
+    "Live" : "int256"
+  },
+  "stores": {
+    "#vat" : "Vat",
+    "#Line" : "Line",
+    "#live" : "Live"    
+  },
+  "methods": {
+    "live": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Live"
+    },
+    "Line": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Line"
+    },
+    "vat": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Vat"
+    },
+    "file(bytes32,bytes32,int256)": {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "ABI_what" : "bytes32",
+        "ABI_risk" : "int256"
+      },
+      "stores" : {
+        "#ilks(ABI_ilk, \"spot\")" : "_ => #if (ABI_what ==Int ?) #then #unsigned(ABI_risk) #else _ #fi",
+        "#ilks(ABI_ilk, \"line\")" : "_ => #if (ABI_what ==Int ?) #then #unsigned(ABI_risk) #else _ #fi"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "file(bytes32,int256)": {
+      "vars" : {
+        "ABI_what" : "bytes32",
+        "ABI_risk" : "int256",
+        
+      },
+      "stores" : {
+        "#Line" : "_ => #if (ABI_what ==Int ?) #then #unsigned(ABI_risk) #else _ #fi"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "frob": {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "ABI_dink" : "int256",
+        "ABI_dart" : "int256",
+        "Gem" : "int256",
+        "Ink" : "int256",
+        "Art" : "int256",
+        "Art_i" : "int256",
+        "Rate" : "int256",
+        "Dai" : "int256",
+        "Tab" : "int256",
+      },
+      "stores" : {
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
+          "#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+          "#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
+          "#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
+          "#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
+          "#dai(CALLER)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
+          "#Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart)"
+        }
+      },
+      "requires" : {
+        "#rangeSInt(256, Gem -Int ABI_dink)",
+        "#rangeSInt(256, Ink +Int ABI_dink)",
+        "#rangeSInt(256, Art +Int ABI_dart)",
+        "#rangeSInt(256, Art_i +Int ABI_dart)",
+        "#rangeSInt(256, Rate *Int ABI_dart)",
+        "#rangeSInt(256, Dai +Int (Rate *Int ABI_dart))",
+        "#rangeSInt(256, Tab +Int (Rate *Int ABI_dart))",
+        "notBool (Rate ==Int 0)",
+        "andBool (((((Art +Int ABI_dart) *Int Rate) <=Int #wad2rad(#ilks(ABI_ilk, \"line\"))) andBool (((Tab +Int (Rate *Int ABI_dart))) <Int #wad2rad(Line))) orBool (ABI_dart <=Int 0))",
+        "andBool (((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink +Int ABI_dink) *Int #ilks(ABI_ilk, \"spot\")) >=Int ((Art +Int ABI_dart) *Int Rate)))",
+        "andBool Live ==Int 1"
+      },
+      "returns" : ""
+    }
+    
+}

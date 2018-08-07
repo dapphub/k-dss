@@ -49,7 +49,27 @@
 ### Lad
 
 ```
+   syntax Int ::= #vat [function]
+// ------------------------------
+   rule #vat => 0
 
+
+   syntax Int ::= #Line [function]
+// -------------------------------
+   rule #Line => 1
+
+
+   syntax Int ::= #live [function]
+// -------------------------------
+   rule #live => 2
+   
+   
+   syntax Int ::= #ilks ( Int , String ) [function]
+// ------------------------------------------------
+   rule #ilks(Ilk, "spot") => #hashedLocation("Solidity", 3, Ilk) +Int 0
+
+   rule #ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
+   
 ```
 
 ### Vow
