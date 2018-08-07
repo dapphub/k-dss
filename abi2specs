@@ -150,7 +150,6 @@ let abit = Object.keys(config.methods)
 try {
   fs.accessSync("out", fs.constants.F_OK);
 } catch (e) {
-  console.log(e);
   fs.mkdirSync("out");
 }
 
