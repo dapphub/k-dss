@@ -6,9 +6,9 @@
     "Vice"        : "int256"
   },
   "stores": {
-    "#root" : "Root",
-    "#Tab" : "#unsigned(Tab)",
-    "#vice" : "#unsigned(Vice)"
+    "#Vat_root" : "Root",
+    "#Vat_Tab" : "#unsigned(Tab)",
+    "#Vat_vice" : "#unsigned(Vice)"
   },
   "methods": {
     "root": {
@@ -25,7 +25,7 @@
         "Rad" : "int256"
       },
       "stores" : {
-        "#dai(ABI_lad)" : "#unsigned(Rad)"
+        "#Vat_dai(ABI_lad)" : "#unsigned(Rad)"
       },
       "requires" : [
       ],
@@ -49,8 +49,8 @@
         "Art" : "int256"
       },
       "stores" : {
-        "#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-        "#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)"
+        "#Vat_ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
+        "#Vat_ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)"
       },
       "requires" : [
       ],
@@ -65,9 +65,9 @@
         "Art" : "int256"
       },
       "stores" : {
-        "#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem)",
-        "#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink)",
-        "#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art)"
+        "#Vat_urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem)",
+        "#Vat_urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink)",
+        "#Vat_urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art)"
       },
       "requires" : [
       ],
@@ -98,7 +98,7 @@
         "ABI_risk" : "int256"
       },
       "stores" : {
-        "#ilks(ABI_ilk, \"rate\")" : "_ => #unsigned(ABI_risk)"
+        "#Vat_ilks(ABI_ilk, \"rate\")" : "_ => #unsigned(ABI_risk)"
       },
       "requires" : [
         "ABI_what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208"
@@ -114,8 +114,8 @@
         "Dai_dst" : "int256"
       },
       "stores" : {
-        "#dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int #wad2rad(ABI_wad))",
-        "#dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int #wad2rad(ABI_wad))"
+        "#Vat_dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int #wad2rad(ABI_wad))",
+        "#Vat_dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int #wad2rad(ABI_wad))"
       },
       "requires" : [
         "#rangeSInt(256, ABI_wad)",
@@ -135,8 +135,8 @@
         "Dai_dst" : "int256"
       },
       "stores" : {
-        "#dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int #wad2rad(ABI_wad))",
-        "#dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int #wad2rad(ABI_wad))"
+        "#Vat_dai(ABI_src)" : "#unsigned(Dai_src) => #unsigned(Dai_src -Int #wad2rad(ABI_wad))",
+        "#Vat_dai(ABI_dst)" : "#unsigned(Dai_dst) => #unsigned(Dai_dst +Int #wad2rad(ABI_wad))"
       },
       "requires" : [
         "#rangeSInt(Dai_src -Int #wad2rad(ABI_wad))",
@@ -154,7 +154,7 @@
         "Wad" : "int256"
       },
       "stores" : {
-        "#urns(ABI_ilk, ABI_guy, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
+        "#Vat_urns(ABI_ilk, ABI_guy, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
       },
       "requires" : [
         "#rangeSInt(256, Wad +Int ABI_wad)"
@@ -175,13 +175,13 @@
         "Dai" : "int256"
       },
       "stores" : {
-        "#urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
-        "#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
-        "#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
-        "#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-        "#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
-        "#dai(ABI_lad)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
-        "#Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart)"
+        "#Vat_urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
+        "#Vat_urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+        "#Vat_urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
+        "#Vat_ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
+        "#Vat_ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
+        "#Vat_dai(ABI_lad)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
+        "#Vat_Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart)"
       },
       "requires" : [
         "#rangeSInt(256, Gem -Int ABI_dink)",
@@ -208,12 +208,12 @@
         "Sin" : "int256"
       },
       "stores" : {
-        "#urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned((Ink +Int ABI_dink)",
-        "#urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned((Art +Int ABI_dart)",
-        "#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-        "#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
-        "#sin(ABI_vow)" : "#unsigned(Sin => #unsigned(Sin +Int (Rate *Int ABI_dart))",
-        "#vice" : "#unsigned(Vice) => #unsigned(Vice +Int (Rate *Int ABI_dart)"
+        "#Vat_urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned((Ink +Int ABI_dink)",
+        "#Vat_urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned((Art +Int ABI_dart)",
+        "#Vat_ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
+        "#Vat_ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
+        "#Vat_sin(ABI_vow)" : "#unsigned(Sin => #unsigned(Sin +Int (Rate *Int ABI_dart))",
+        "#Vat_vice" : "#unsigned(Vice) => #unsigned(Vice +Int (Rate *Int ABI_dart)"
       },
       "requires" : [
         "#rangeSInt(256, Gem -Int ABI_dink)",
@@ -235,10 +235,10 @@
         "Sin_u" : "int256"
       },
       "stores" : {
-        "#dai(ABI_v)" : "#unsigned(Dai_v) => #unsigned(Dai_v -Int #wad2rad(ABI_wad))",
-        "#sin(ABI_u)" : "#unsigned(Sin_u) => #unsigned(Sin_u -Int #wad2rad(ABI_wad))",
-        "#vice" : "#unsigned(Vice) => #unsigned(Vice -Int #wad2rad(ABI_wad))",
-        "#Tab" : "#unsigned(Tab) => #unsigned(Tab -Int #wad2rad(ABI_wad))"
+        "#Vat_dai(ABI_v)" : "#unsigned(Dai_v) => #unsigned(Dai_v -Int #wad2rad(ABI_wad))",
+        "#Vat_sin(ABI_u)" : "#unsigned(Sin_u) => #unsigned(Sin_u -Int #wad2rad(ABI_wad))",
+        "#Vat_vice" : "#unsigned(Vice) => #unsigned(Vice -Int #wad2rad(ABI_wad))",
+        "#Vat_Tab" : "#unsigned(Tab) => #unsigned(Tab -Int #wad2rad(ABI_wad))"
       },
       "requires" : [
         "Dai_v >=Int #wad2rad(ABI_wad)",
@@ -262,10 +262,10 @@
         "Art" : "int256"        
       },
       "stores" : {
-        "#ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate => #unsigned(Rate +Int ABI_rate)",
-        "#ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)",
-        "#dai(ABI_vow)" : "#unsigned(Dai) => #unsigned(Dai +Int (Art *Int ABI_rate))",
-        "#Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Art *Int ABI_rate))"
+        "#Vat_ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate => #unsigned(Rate +Int ABI_rate)",
+        "#Vat_ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)",
+        "#Vat_dai(ABI_vow)" : "#unsigned(Dai) => #unsigned(Dai +Int (Art *Int ABI_rate))",
+        "#Vat_Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Art *Int ABI_rate))"
       },
       "requires" : [
         "#rangeSInt(256, Rate +Int ABI_rate)",
