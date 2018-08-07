@@ -42,11 +42,13 @@
       "vars" : {
         "ABI_ilk" : "bytes32",
         "ABI_what" : "bytes32",
-        "ABI_risk" : "int256"
+        "ABI_risk" : "int256",
+        "Spot_i" : "int256",
+        "Line_i" : "int256"
       },
       "stores" : {
-        "#ilks(ABI_ilk, \"spot\")" : "_ => #if (ABI_what ==Int ?) #then #unsigned(ABI_risk) #else _ #fi",
-        "#ilks(ABI_ilk, \"line\")" : "_ => #if (ABI_what ==Int ?) #then #unsigned(ABI_risk) #else _ #fi"
+        "#ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i) => #if (ABI_what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then #unsigned(ABI_risk) #else #unsigned(Spot_i) #fi",
+        "#ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i) => #if (ABI_what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
       },
       "requires" : [
       ],
@@ -56,10 +58,9 @@
       "vars" : {
         "ABI_what" : "bytes32",
         "ABI_risk" : "int256",
-        
       },
       "stores" : {
-        "#Line" : "_ => #if (ABI_what ==Int ?) #then #unsigned(ABI_risk) #else _ #fi"
+        "#Line" : "#unsigned(Line_i) => #if (ABI_what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
       },
       "requires" : [
       ],
@@ -70,6 +71,8 @@
         "ABI_ilk" : "bytes32",
         "ABI_dink" : "int256",
         "ABI_dart" : "int256",
+        "Spot_i" : "int256",
+        "Line_i" : "int256",
         "Gem" : "int256",
         "Ink" : "int256",
         "Art" : "int256",
@@ -79,6 +82,8 @@
         "Tab" : "int256",
       },
       "stores" : {
+        "#ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)",
+        "#ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
       },
       "foreign_stores" : {
         "Vat" : {
@@ -91,7 +96,7 @@
           "#Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart)"
         }
       },
-      "requires" : {
+      "requires" : [
         "#rangeSInt(256, Gem -Int ABI_dink)",
         "#rangeSInt(256, Ink +Int ABI_dink)",
         "#rangeSInt(256, Art +Int ABI_dart)",
@@ -100,10 +105,10 @@
         "#rangeSInt(256, Dai +Int (Rate *Int ABI_dart))",
         "#rangeSInt(256, Tab +Int (Rate *Int ABI_dart))",
         "notBool (Rate ==Int 0)",
-        "andBool (((((Art +Int ABI_dart) *Int Rate) <=Int #wad2rad(#ilks(ABI_ilk, \"line\"))) andBool (((Tab +Int (Rate *Int ABI_dart))) <Int #wad2rad(Line))) orBool (ABI_dart <=Int 0))",
-        "andBool (((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink +Int ABI_dink) *Int #ilks(ABI_ilk, \"spot\")) >=Int ((Art +Int ABI_dart) *Int Rate)))",
+        "andBool (((((Art +Int ABI_dart) *Int Rate) <=Int #wad2rad(Spot_i)) andBool (((Tab +Int (Rate *Int ABI_dart))) <Int #wad2rad(Line))) orBool (ABI_dart <=Int 0))",
+        "andBool (((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink +Int ABI_dink) *Int Spot_i) >=Int ((Art +Int ABI_dart) *Int Rate)))",
         "andBool Live ==Int 1"
-      },
+      ],
       "returns" : ""
     }
     
