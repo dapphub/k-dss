@@ -4,5 +4,5 @@
 git submodule update --init --recursive
 cd dss && dapp build && cd ../
 ./abi2specs specs/frob.json
-klab run --spec out/success_frob_bytes32_int256_int256.ini
+klab run --spec out/frob_success_file_bytes32_bytes32_int256.ini
 ```
