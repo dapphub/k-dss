@@ -41,6 +41,29 @@ syntax Int ::= "#vice" [function]
 rule #vice => 6
 
 
+
+   syntax Int ::= "#vat" [function]
+// ------------------------------
+   rule #vat => 0
+
+
+   syntax Int ::= "#Line" [function]
+// -------------------------------
+   rule #Line => 1
+
+
+   syntax Int ::= "#live" [function]
+// -------------------------------
+   rule #live => 2
+
+
+   syntax Int ::= #ilks ( Int , String ) [function]
+// ------------------------------------------------
+   rule #ilks(Ilk, "spot") => #hashedLocation("Solidity", 3, Ilk) +Int 0
+
+   rule #ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
+
+
 // Lemmas:
 
 rule WS ++ .WordStack => WS
@@ -60,7 +83,7 @@ rule #asWord(#padToWidth(32, #asByteStack(#unsigned(X)))) => #unsigned(X)
 
 rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 
-// n.b. how + cases use +Int because of earlier application of +Word 
+// n.b. how + cases use +Int because of earlier application of +Word
 rule (#unsigned(A) +Int #unsigned(B)) => #unsigned(A +Int B)
   requires #rangeSInt(256, A)
   andBool #rangeSInt(256, B)

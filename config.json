@@ -1,5 +1,5 @@
 {
-  "spec": "./specs/spec_slip_success.ini",
+  "spec": "./out/spec_slip_success.ini",
   "prelude": "./exp.smt2",
   "lemmas": "./lemmas.k",
   "source": "./dss/src/tune.sol",
