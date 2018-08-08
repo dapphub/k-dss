@@ -1,0 +1,275 @@
+{
+  "path": "dss/out/Vow.abi",
+  "vars": {
+    "Vat" : "address",
+    "Cow" : "address",
+    "Row" : "address",
+    "Sin" : "uint256",
+    "Woe" : "uint256",
+    "Ash" : "uint256",
+    "Wait" : "uint256",
+    "Lump" : "uint256",
+    "Pad" : "uint256"
+  },
+  "stores": {
+    "#Vow.vat" : "Vat",
+    "#Vow.cow" : "Cow",
+    "#Vow.row" : "Row",
+    "#Vow.Sin" : "Sin",
+    "#Vow.Woe" : "Woe",
+    "#Vow.Ash" : "Ash",
+    "#Vow.wait" : "Wait",
+    "#Vow.lump" : "Lump",
+    "#Vow.pad" : "Pad"
+  },
+  "methods": {
+    "sin": {
+      "vars" : {
+        "ABI_era_" : "uint48",
+        "Sin_era" : "uint256"
+      },
+      "stores" : {
+        "Vow.sin(ABI_era_)" : "Sin_era"
+      },
+      "requires" : [
+      ],
+      "returns" : "Sin_era"
+    },
+    "Sin": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Sin"
+    },
+    "Woe": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Woe"
+    },
+    "Ash": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Ash"
+    },
+    "wait": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Wait"
+    },
+    "lump": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Lump"
+    },
+    "pad": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Pad"
+    },
+    "era": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "TIMESTAMP"
+    },
+    "Awe": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+        "#rangeUInt(256, Sin +Int Woe +Int Ash)"
+      ],
+      "returns" : "Sin +Int Woe +Int Ash"
+        },
+    "Joy": {
+      "vars" : {
+        "Dai" : "int256"
+      },
+      "stores" : {
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "Vat.dai(ACCT_ID)" : "#unsigned(Dai)"
+        }
+      },
+      "requires" : [
+        "Dai >=Int 0"
+      ],
+      "returns" : "Dai /Int 1000000000000000000000000000"
+    },
+    "file(bytes32,uint256)": {
+      "vars" : {
+        "ABI_what" : "bytes32",
+        "ABI_risk" : "uint256"
+      },
+      "stores" : {
+        "Vow.lump" : "Lump => #if (ABI_what ==Int ??) #then ABI_risk #else Lump #fi",
+        "Vow.pad" : "Pad => #if (ABI_what ==Int ??) #then ABI_risk #else Pad #fi"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "file(bytes32,address)": {
+      "vars" : {
+        "ABI_what" : "bytes32",
+        "ABI_fuss" : "address"
+      },
+      "stores" : {
+        "Vow.cow" : "Cow => #if (ABI_what ==Int ??) #then ABI_fuss #else Cow #fi",
+        "Vow.row" : "Row => #if (ABI_what ==Int ??) #then ABI_fuss #else Row #fi"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "fess": {
+      "vars" : {
+        "ABI_tab" : "uint256"
+      },
+      "stores" : {
+        "Vow.sin(TIME)" : "Sin_era => Sin_era +Int ABI_tab",
+        "Vow.Sin" : "Sin => Sin +Int ABI_tab"
+      },
+      "requires" : [
+        "#rangeUInt(256, Sin_era +Int ABI_tab)",
+        "#rangeUInt(256, Sin +Int ABI_tab)"
+      ],
+      "returns" : ""
+    },
+    "flog": {
+      "vars" : {
+        "ABI_era_" : "uint48",
+        "Sin_era_" : "uint256"
+      },
+      "stores" : {
+        "Vow.sin(ABI_era_)" : "Sin_era_ => 0",
+        "Vow.Sin" : "Sin => Sin -Int Sin_era_",
+        "Vow.Woe" : "Woe => Woe +Int Sin_era_"
+      },
+      "requires" : [
+        "#rangeUInt(256, Sin -Int Sin_era_)",
+        "#rangeUInt(256, Woe +Int Sin_era_)"
+      ],
+      "returns" : ""
+    },
+    "heal": {
+      "vars" : {
+        "ABI_wad" : "uint256",
+        "Dai" : "int256",
+        "Sin" : "int256",
+        "Vice" : "int256",
+        "Tab" : "int256"
+      },
+      "stores" : {
+        "#Vow.Woe" : "Woe => Woe -Int ABI_wad"
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "#Vat.dai(ACCT_ID)" : "#unsigned(Dai)",
+          "#Vat.dai(ACCT_ID)" : "#unsigned(Dai) => #unsigned(Dai -Int #wad2rad(ABI_wad))",
+          "#Vat.sin(ACCT_ID)" : "#unsigned(Sin) => #unsigned(Sin -Int #wad2rad(ABI_wad))",
+          "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int #wad2rad(ABI_wad))",
+          "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab -Int #wad2rad(ABI_wad))"
+        }
+      },
+      "requires" : [
+        "ABI_wad <=Int Dai /Int 1000000000000000000000000000",
+        "ABI_wad <=Int Woe",
+        "ABI_wad >=Int 0",
+        "#rangeUInt(256, Woe -Int ABI_wad)"
+      ],
+      "returns" : ""
+    },
+    "kiss": {
+      "vars" : {
+        "ABI_wad" : "uint256",
+        "Dai" : "int256",
+        "Sin" : "int256",
+        "Vice" : "int256",
+        "Tab" : "int256"
+      },
+      "stores" : {
+        "#Vow.Ash" : "Ash => Ash -Int ABI_wad"
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "#Vat.dai(ACCT_ID)" : "#unsigned(Dai)",
+          "#Vat.dai(ACCT_ID)" : "#unsigned(Dai) => #unsigned(Dai -Int #wad2rad(ABI_wad))",
+          "#Vat.sin(ACCT_ID)" : "#unsigned(Sin) => #unsigned(Sin -Int #wad2rad(ABI_wad))",
+          "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int #wad2rad(ABI_wad))",
+          "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab -Int #wad2rad(ABI_wad))"
+        }
+      },
+      "requires" : [
+        "ABI_wad <=Int Ash",
+        "ABI_wad <=Int Dai /Int 1000000000000000000000000000",
+        "ABI_wad >=Int 0",
+        "#rangeUInt(256, Ash -Int ABI_wad)"
+      ],
+      "returns" : ""
+    },    
+    "flop": {
+      "vars" : {
+      },
+      "stores" : {
+        "#Vow.Woe" : "Woe => Woe -Int Lump",
+        "#Vow.Ash" : "Ash => Ash +Int Lump"
+      },
+      "foreign_stores" : {
+        "Row" : {
+        }
+      },
+      "requires" : [
+        "Woe >=Int Lump",
+        "Joy() ==Int 0",
+        "#rangeUInt(256, Ash +Int Lump)"
+      ],
+      "returns" : "_"
+    },
+    "flap": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "foreign_stores" : {
+        "Cow" : {
+        }
+      },
+      "requires" : [
+        "Joy() >=Int Awe() +Int Lump +Int Pad",
+        "Woe ==Int 0",
+        "#rangeUInt(256, Awe() +Int Lump)",
+        "#rangeUInt(256, Awe() +Int Lump +Int Pad)"
+      ],
+      "returns" : "_"
+    }
+  }
+}

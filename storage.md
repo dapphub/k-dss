@@ -75,7 +75,54 @@ rule #Lad.ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
 ### Vow
 
 ```
+syntax Int ::= "#Vow.vat" [function]
+// ---------------------------------
+rule #Vow.vat => 0
 
+
+syntax Int ::= "#Vow.cow" [function]
+// ---------------------------------
+rule #Vow.cow => 1
+
+
+syntax Int ::= "#Vow.row" [function]
+// ---------------------------------
+rule #Vow.row => 2
+
+
+syntax Int ::= "#Vow.sin" "(" Int ")" [function]
+// ---------------------------------------------
+rule #Vow.sin(A) => #hashedLocation("Solidity", 3, A)
+
+
+syntax Int ::= "#Vow.Sin" [function]
+// ---------------------------------
+rule #Vow.Sin => 4
+
+
+syntax Int ::= "#Vow.Woe" [function]
+// ---------------------------------
+rule #Vow.Woe => 5
+
+
+syntax Int ::= "#Vow.Ash" [function]
+// ---------------------------------
+rule #Vow.Ash => 6
+
+
+syntax Int ::= "#Vow.wait" [function]
+// ---------------------------------
+rule #Vow.wait => 7
+
+
+syntax Int ::= "#Vow.lump" [function]
+// ---------------------------------
+rule #Vow.lump => 8
+
+
+syntax Int ::= "#Vow.pad" [function]
+// ---------------------------------
+rule #Vow.pad => 9
 ```
 
 ### Adapter
