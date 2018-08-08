@@ -74,7 +74,7 @@ let abit = Object.keys(config.methods)
       .join("\n  ")
 
     const storage_fail = "  " + Object.keys(local_stores)
-      .map(key => key + " |-> " + (local_stores[key].indexOf("=>") > -1 ? local_stores[key].split("=>")[0] + "=> _" : local_stores[key]) )
+      .map(key => key + " |-> " + (local_stores[key].indexOf("=>") > -1 ? "(" + local_stores[key].split("=>")[0] + "=> _)" : local_stores[key]) )
       .join("\n  ")
     let fabi_fail = ["notBool (\n            " + (requires || []).join("\n    andBool ") + "\n  )"]
       .map(c => `andBool ` + c)
