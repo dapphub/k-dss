@@ -3,11 +3,11 @@
   "vars": {
     "Vat" : "address",
     "Line" : "int256",
-    "Live" : "int256"
+    "Live" : "bool"
   },
   "stores": {
     "#Lad.vat" : "Vat",
-    "#Lad.Line" : "Line",
+    "#Lad.Line" : "#unsigned(Line)",
     "#Lad.live" : "Live"    
   },
   "methods": {
@@ -18,7 +18,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Live"
+      "returns" : "Live : .WordStack"
     },
     "Line": {
       "vars" : {
@@ -27,7 +27,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Line"
+      "returns" : "#unsigned(Line) : .WordStack"
     },
     "vat": {
       "vars" : {
@@ -36,7 +36,21 @@
       },
       "requires" : [
       ],
-      "returns" : "Vat"
+      "returns" : "Vat : .WordStack"
+    },
+    "ilks": {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "Spot_i" : "int256",
+        "Line_i" : "int256"
+      },
+      "stores" : {
+        "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)",
+        "#Lad.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)"
+      },
+      "requires" : [
+      ],
+      "returns" : "#unsigned(Spot_i) : #unsigned(Line_i) : .WordStack"
     },
     "file(bytes32,bytes32,int256)": {
       "vars" : {

@@ -33,7 +33,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Sin_era"
+      "returns" : "Sin_era : .WordStack"
     },
     "Sin": {
       "vars" : {
@@ -42,7 +42,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Sin"
+      "returns" : "Sin : .WordStack"
     },
     "Woe": {
       "vars" : {
@@ -51,7 +51,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Woe"
+      "returns" : "Woe : .WordStack"
     },
     "Ash": {
       "vars" : {
@@ -60,7 +60,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Ash"
+      "returns" : "Ash : .WordStack"
     },
     "wait": {
       "vars" : {
@@ -69,7 +69,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Wait"
+      "returns" : "Wait : .WordStack"
     },
     "lump": {
       "vars" : {
@@ -78,7 +78,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Lump"
+      "returns" : "Lump : .WordStack"
     },
     "pad": {
       "vars" : {
@@ -87,7 +87,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Pad"
+      "returns" : "Pad : .WordStack"
     },
     "era": {
       "vars" : {
@@ -96,7 +96,7 @@
       },
       "requires" : [
       ],
-      "returns" : "TIMESTAMP"
+      "returns" : "TIMESTAMP : .WordStack"
     },
     "Awe": {
       "vars" : {
@@ -106,7 +106,7 @@
       "requires" : [
         "#rangeUInt(256, Sin +Int Woe +Int Ash)"
       ],
-      "returns" : "Sin +Int Woe +Int Ash"
+      "returns" : "(Sin +Int Woe +Int Ash) : .WordStack"
         },
     "Joy": {
       "vars" : {
@@ -122,7 +122,7 @@
       "requires" : [
         "Dai >=Int 0"
       ],
-      "returns" : "Dai /Int 1000000000000000000000000000"
+      "returns" : "Dai /Int 1000000000000000000000000000 : .WordStack"
     },
     "file(bytes32,uint256)": {
       "vars" : {

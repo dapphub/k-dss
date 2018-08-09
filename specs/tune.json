@@ -182,7 +182,7 @@
         "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
         "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
         "#Vat.dai(ABI_lad)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
-        "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart)"
+        "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart))"
       },
       "requires" : [
         "#rangeSInt(256, Gem -Int ABI_dink)",
@@ -217,7 +217,6 @@
         "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice +Int (Rate *Int ABI_dart))"
       },
       "requires" : [
-        "#rangeSInt(256, Gem -Int ABI_dink)",
         "#rangeSInt(256, Ink +Int ABI_dink)",
         "#rangeSInt(256, Art +Int ABI_dart)",
         "#rangeSInt(256, Art_i +Int ABI_dart)",
