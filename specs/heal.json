@@ -140,11 +140,12 @@
     "file(bytes32,address)": {
       "vars" : {
         "ABI_what" : "bytes32",
-        "ABI_fuss" : "address"
+        "ABI_addr" : "address"
       },
       "stores" : {
-        "Vow.cow" : "Cow => #if (ABI_what ==Int ??) #then ABI_fuss #else Cow #fi",
-        "Vow.row" : "Row => #if (ABI_what ==Int ??) #then ABI_fuss #else Row #fi"
+        "Vow.cow" : "Cow => #if (ABI_what ==Int ??) #then ABI_addr #else Cow #fi",
+        "Vow.row" : "Row => #if (ABI_what ==Int ??) #then ABI_addr #else Row #fi",
+        "Vow.vat" : "Vat => #if (ABI_what ==Int ??) #then ABI_addr #else Vat #fi"
       },
       "requires" : [
       ],

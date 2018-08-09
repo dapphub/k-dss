@@ -157,7 +157,8 @@
         "#Vat.urns(ABI_ilk, ABI_guy, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
       },
       "requires" : [
-        "#rangeSInt(256, Wad +Int ABI_wad)"
+        "#rangeSInt(256, Wad +Int ABI_wad)",
+        "Wad +Int ABI_wad >=Int 0"
       ],
       "returns" : ""
     },
