@@ -1,0 +1,214 @@
+{
+  "path": "dss/out/Cat.abi",
+  "vars": {
+    "Vat" : "address",
+    "Lad" : "address",
+    "Vow" : "address",
+    "Lump" : "uint256",
+    "NFlip" : "uint256"
+  },
+  "stores": {
+    "#Cat.vat" : "Vat",
+    "#Cat.lad" : "Lad",
+    "#Cat.vow" : "Vow",
+    "#Cat.lump" : "Lump",
+    "#Cat.nflip" : "NFlip"
+  },
+  "methods": {
+    "vat": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Vat : .WordStack"
+    },
+    "lad": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Lad : .WordStack"
+    },
+    "vow": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Vow : .WordStack"
+    },
+    "lump": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "Lump : .WordStack"
+    },
+    "ilks": {
+      "vars" : {
+        "ABI_ilk" : "bytes32"
+      },
+      "stores" : {
+        "#Cat.ilks(ABI_ILK, \"chop\")" : "Chop_i",
+        "#Cat.ilks(ABI_ILK, \"flip\")" : "Flip_i"
+      },
+      "requires" : [
+      ],
+      "returns" : "Chop_i : Flip_i : .WordStack"
+    },
+    "nflip": {
+      "vars" : {
+      },
+      "stores" : {
+      },
+      "requires" : [
+      ],
+      "returns" : "NFlip : .WordStack"
+    },
+    "flips": {
+      "vars" : {
+        "ABI_n" : "uint256",
+        "Ilk_n" : "bytes32",
+        "Lad_n" : "address",
+        "Ink_n" : "uint256",
+        "Tab_n" : "uint256"
+      },
+      "stores" : {
+        "#Cat.flips(ABI_n, \"ilk\")" : "Ilk_n",
+        "#Cat.flips(ABI_n, \"lad\")" : "Lad_n",
+        "#Cat.flips(ABI_n, \"ink\")" : "Ink_n",
+        "#Cat.flips(ABI_n, \"tab\")" : "Tab_n"
+      },
+      "requires" : [
+      ],
+      "returns" : "Ilk_n : Lad_n : Ink_n : Tab_n : .WordStack"
+    },
+    "file(bytes32,uint256)": {
+      "vars" : {
+        "ABI_what" : "bytes32",
+        "ABI_risk" : "uint256"
+      },
+      "stores" : {
+        "#Cat.lump" : "Lump => #if (ABI_what ==Int ??) #then ABI_risk #else Lump #fi"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "file(bytes32,bytes32,uint256)": {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "ABI_what" : "bytes32",
+        "ABI_risk" : "uint256"
+      },
+      "stores" : {
+        "#Cat.ilks(ABI_ilk, \"chop\")" : "Chop_i => #if (ABI_what ==Int ??) #then ABI_risk #else Chop_i #fi"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "fuss" : {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "ABI_flip" : "address"
+      },
+      "stores" : {
+        "#Cat.ilks(ABI_Ilk, \"flip\")" : "_ => ABI_flip"
+      },
+      "requires" : [
+      ],
+      "returns" : ""
+    },
+    "bite" : {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "ABI_guy": "address",
+        "Flip_i" : "address",
+        "Rate" : "int256",
+        "Art_i" : "int256",
+        "Spot_i" : "int256",
+        "Ink" : "int256",
+        "Art_u" : "int256",
+        "Sin" : "int256",
+        "Vice" : "int256",
+        "Sin_v" : "uint256"
+      },
+      "stores" : {
+        "#Cat.ilks(ABI_ilk, \"flip\")" : "Flip_i",
+        "#Cat.nflip" : "NFlip => NFlip +Int 1",
+        "#Cat.flips(NFlip, \"ilk\")" : "ABI_ilk",
+        "#Cat.flips(NFlip, \"guy\")" : "ABI_guy",
+        "#Cat.flips(NFlip, \"ink\")" : "Ink",
+        "#Cat.flips(NFlip, \"tab\")" : "Rate *Int Art_u"
+      },
+      "foreign_stores" : {
+        "Vat" : {
+          "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
+          "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i -Int Art_u)",
+          "#Vat.urns(ABI_ilk, ABI_guy, \"ink\")" : "#unsigned(Ink) => 0",
+          "#Vat.urns(ABI_ilk, ABI_guy, \"art\")" : "#unsigned(Art_u) => 0",
+          "#Vat.sin(Vow)" : "#unsigned(Sin) => #unsigned(Sin -Int (Rate *Int Art_u))",
+          "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int (Rate *Int Art_u))"
+        },
+        "Lad" : {
+          "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
+        },
+        "Vow" : {
+          "Vow.sin(TIME)" : "Sin_era => Sin_era +Int (Art_u *Int Rate)",
+          "Vow.Sin" : "Sin_v => Sin_v +Int (Art_u *Int Rate)"
+        },
+        "Flip_i" : {
+        }
+      },
+      "requires" : [
+        "#rangeSInt(256, Art_u *Int Rate)",
+        "Ink *Int Spot_i <Int Art_u *Int Rate",
+        "#rangeSInt(256, Art_i -Int Art_u)",
+        "#rangeSInt(256, Rate *Int (0 -Int Art_u))",
+        "#rangeSInt(256, Dai -Int (Rate *Int Art_u))",
+        "#rangeSInt(256, Tab -Int (Rate *Int Art_u))",
+        "#rangeUInt(256, Sin_era +Int (Art_u *Int Rate))",
+        "#rangeUInt(256, Sin_v +Int (Art_u *Int Rate))"
+      ],
+      "returns" : "(NFlip +Int 1) : .WordStack"
+    },
+    "flip" : {
+      "vars" : {
+        "ABI_n" : "uint256",
+        "ABI_wad" : "uint256",
+        "Ilk" : "bytes32",
+        "Guy" : "address",
+        "Ink" : "uint256",
+        "Tab" : "uint256",
+        "Flip" : "address"
+
+      },
+      "stores" : {
+        "#Cat.flips(ABI_n, \"ilk\")" : "Ilk",
+        "#Cat.flips(ABI_n, \"guy\")" : "Guy",
+        "#Cat.flips(ABI_n, \"ink\")" : "Ink => (Ink -Int ((Ink *Int ABI_wad) /Int Tab))",
+        "#Cat.flips(ABI_n, \"tab\")" : "Tab => (Tab -Int ABI_wad)",
+        "#Cat.ilks(Ilk, \"flip\")" : "Flip"
+      },
+      "foreign_stores" : {
+        "Flip" : {
+        }
+      },
+      "requires" : [
+        "ABI_wad <= Tab",
+        "(ABI_wad ==Int Lump) orBool ((ABI_wad <Int Lump) andBool (ABI_wad ==Int Tab)",
+        "#rangeUInt(256, Ink *Int ABI_wad)",
+        "#rangeUInt(256, (Ink *Int ABI_wad) /Int Tab)"
+      ],
+      "returns" : "_"
+    }
+  }
+}

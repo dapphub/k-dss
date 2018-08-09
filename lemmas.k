@@ -120,6 +120,51 @@ syntax Int ::= "#Vow.pad" [function]
 rule #Vow.pad => 9
 
 
+// Cat
+
+syntax Int ::= "#Cat.vat" [function]
+// ---------------------------------
+rule #Cat.vat => 0
+
+
+syntax Int ::= "#Cat.lad" [function]
+// ---------------------------------
+rule #Cat.lad => 1
+
+
+syntax Int ::= "#Cat.vow" [function]
+// ---------------------------------
+rule #Cat.vow => 2
+
+
+syntax Int ::= "#Cat.lump" [function]
+// ----------------------------------
+rule #Cat.lump => 3
+
+
+syntax Int ::= "#Cat.ilks" "(" Int "," String ")" [function]
+// ---------------------------------------------------------
+rule #Cat.ilks(Ilk, "chop") => #hashedLocation("Solidity", 4, Ilk) +Int 0
+
+rule #Cat.ilks(Ilk, "flip") => #hashedLocation("Solidity", 4, Ilk) +Int 1
+
+
+syntax Int ::= "#Cat.nflip" [function]
+// -----------------------------------
+rule #Cat.nflip => 5
+
+
+syntax Int ::= "#Cat.Flips" "(" Int "," String ")" [function]
+// ----------------------------------------------------------
+rule #Cat.Flips(N, \"ilk\") => #hashedLocation("Solidity", 6, N) +Int 0
+
+rule #Cat.Flips(N, \"guy\") => #hashedLocation("Solidity", 6, N) +Int 1
+
+rule #Cat.Flips(N, \"ink\") => #hashedLocation("Solidity", 6, N) +Int 2
+
+rule #Cat.Flips(N, \"tab\") => #hashedLocation("Solidity", 6, N) +Int 3
+
+
 // Adapter:
 
 syntax Int ::= "#Adapter.vat" [function]
