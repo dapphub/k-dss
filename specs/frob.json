@@ -119,7 +119,7 @@
         "#rangeSInt(256, Dai +Int (Rate *Int ABI_dart))",
         "#rangeSInt(256, Tab +Int (Rate *Int ABI_dart))",
         "notBool (Rate ==Int 0)",
-        "((((Art +Int ABI_dart) *Int Rate) <=Int #wad2rad(Spot_i)) andBool (((Tab +Int (Rate *Int ABI_dart))) <Int #wad2rad(Line))) orBool (ABI_dart <=Int 0)",
+        "(((((Art +Int ABI_dart) *Int Rate) <=Int #wad2rad(Spot_i)) andBool (((Tab +Int (Rate *Int ABI_dart))) <Int #wad2rad(Line))) orBool (ABI_dart <=Int 0))",
         "(((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink +Int ABI_dink) *Int Spot_i) >=Int ((Art +Int ABI_dart) *Int Rate)))",
         "Live ==Int 1"
       ],
