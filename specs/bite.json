@@ -56,8 +56,8 @@
         "ABI_ilk" : "bytes32"
       },
       "stores" : {
-        "#Cat.ilks(ABI_ILK, \"chop\")" : "Chop_i",
-        "#Cat.ilks(ABI_ILK, \"flip\")" : "Flip_i"
+        "#Cat.ilks(ABI_ILK).chop" : "Chop_i",
+        "#Cat.ilks(ABI_ILK).flip" : "Flip_i"
       },
       "requires" : [
       ],
@@ -81,10 +81,10 @@
         "Tab_n" : "uint256"
       },
       "stores" : {
-        "#Cat.flips(ABI_n, \"ilk\")" : "Ilk_n",
-        "#Cat.flips(ABI_n, \"lad\")" : "Lad_n",
-        "#Cat.flips(ABI_n, \"ink\")" : "Ink_n",
-        "#Cat.flips(ABI_n, \"tab\")" : "Tab_n"
+        "#Cat.flips(ABI_n).ilk" : "Ilk_n",
+        "#Cat.flips(ABI_n).lad" : "Lad_n",
+        "#Cat.flips(ABI_n).ink" : "Ink_n",
+        "#Cat.flips(ABI_n).tab" : "Tab_n"
       },
       "requires" : [
       ],
@@ -109,7 +109,7 @@
         "ABI_risk" : "uint256"
       },
       "stores" : {
-        "#Cat.ilks(ABI_ilk, \"chop\")" : "Chop_i => #if (ABI_what ==Int ??) #then ABI_risk #else Chop_i #fi"
+        "#Cat.ilks(ABI_ilk).chop" : "Chop_i => #if (ABI_what ==Int ??) #then ABI_risk #else Chop_i #fi"
       },
       "requires" : [
       ],
@@ -121,7 +121,7 @@
         "ABI_flip" : "address"
       },
       "stores" : {
-        "#Cat.ilks(ABI_Ilk, \"flip\")" : "_ => ABI_flip"
+        "#Cat.ilks(ABI_Ilk).flip" : "_ => ABI_flip"
       },
       "requires" : [
       ],
@@ -142,24 +142,24 @@
         "Sin_v" : "uint256"
       },
       "stores" : {
-        "#Cat.ilks(ABI_ilk, \"flip\")" : "Flip_i",
+        "#Cat.ilks(ABI_ilk).flip" : "Flip_i",
         "#Cat.nflip" : "NFlip => NFlip +Int 1",
-        "#Cat.flips(NFlip, \"ilk\")" : "ABI_ilk",
-        "#Cat.flips(NFlip, \"lad\")" : "ABI_guy",
-        "#Cat.flips(NFlip, \"ink\")" : "Ink",
-        "#Cat.flips(NFlip, \"tab\")" : "Rate *Int Art_u"
+        "#Cat.flips(NFlip).ilk" : "ABI_ilk",
+        "#Cat.flips(NFlip).lad" : "ABI_guy",
+        "#Cat.flips(NFlip).ink" : "Ink",
+        "#Cat.flips(NFlip).tab" : "Rate *Int Art_u"
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-          "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i -Int Art_u)",
-          "#Vat.urns(ABI_ilk, ABI_guy, \"ink\")" : "#unsigned(Ink) => 0",
-          "#Vat.urns(ABI_ilk, ABI_guy, \"art\")" : "#unsigned(Art_u) => 0",
+          "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate)",
+          "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art_i) => #unsigned(Art_i -Int Art_u)",
+          "#Vat.urns(ABI_ilk, ABI_guy).ink" : "#unsigned(Ink) => 0",
+          "#Vat.urns(ABI_ilk, ABI_guy).art" : "#unsigned(Art_u) => 0",
           "#Vat.sin(Vow)" : "#unsigned(Sin) => #unsigned(Sin -Int (Rate *Int Art_u))",
           "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int (Rate *Int Art_u))"
         },
         "Pit" : {
-          "#Pit.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
+          "#Pit.ilks(ABI_ilk).spot" : "#unsigned(Spot_i)"
         },
         "Vow" : {
           "Vow.sin(TIME)" : "Sin_era => Sin_era +Int (Art_u *Int Rate)",
@@ -192,21 +192,21 @@
 
       },
       "stores" : {
-        "#Cat.flips(ABI_n, \"ilk\")" : "Ilk",
-        "#Cat.flips(ABI_n, \"guy\")" : "Guy",
-        "#Cat.flips(ABI_n, \"ink\")" : "Ink => (Ink -Int ((Ink *Int ABI_wad) /Int Tab))",
-        "#Cat.flips(ABI_n, \"tab\")" : "Tab => (Tab -Int ABI_wad)",
-        "#Cat.ilks(Ilk, \"flip\")" : "Flip"
+        "#Cat.flips(ABI_n).ilk" : "Ilk",
+        "#Cat.flips(ABI_n).guy" : "Guy",
+        "#Cat.flips(ABI_n).ink" : "Ink => (Ink -Int ((Ink *Int ABI_wad) /Int Tab))",
+        "#Cat.flips(ABI_n).tab" : "Tab => (Tab -Int ABI_wad)",
+        "#Cat.ilks(Ilk).flip" : "Flip"
       },
       "foreign_stores" : {
         "Flip" : {
         }
       },
       "requires" : [
+        "#rangeSInt(256, ABI_wad)"
         "ABI_wad <= Tab",
         "(ABI_wad ==Int Lump) orBool ((ABI_wad <Int Lump) andBool (ABI_wad ==Int Tab)",
-        "#rangeUInt(256, Ink *Int ABI_wad)",
-        "#rangeUInt(256, (Ink *Int ABI_wad) /Int Tab)"
+        "#rangeUInt(256, Ink *Int ABI_wad)"
       ],
       "returns" : "_"
     }

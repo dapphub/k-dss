@@ -49,8 +49,8 @@
         "Art" : "int256"
       },
       "stores" : {
-        "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-        "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)"
+        "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate)",
+        "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art)"
       },
       "requires" : [
       ],
@@ -65,9 +65,9 @@
         "Art" : "int256"
       },
       "stores" : {
-        "#Vat.urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem)",
-        "#Vat.urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink)",
-        "#Vat.urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art)"
+        "#Vat.urns(ABI_ilk, ABI_lad).gem" : "#unsigned(Gem)",
+        "#Vat.urns(ABI_ilk, ABI_lad).ink" : "#unsigned(Ink)",
+        "#Vat.urns(ABI_ilk, ABI_lad).art" : "#unsigned(Art)"
       },
       "requires" : [
       ],
@@ -98,7 +98,7 @@
         "ABI_risk" : "int256"
       },
       "stores" : {
-        "#Vat.ilks(ABI_ilk, \"rate\")" : "_ => #unsigned(ABI_risk)"
+        "#Vat.ilks(ABI_ilk).rate" : "_ => #unsigned(ABI_risk)"
       },
       "requires" : [
         "ABI_what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208"
@@ -154,7 +154,7 @@
         "Wad" : "int256"
       },
       "stores" : {
-        "#Vat.urns(ABI_ilk, ABI_guy, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
+        "#Vat.urns(ABI_ilk, ABI_guy).gem" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
       },
       "requires" : [
         "#rangeSInt(256, Wad +Int ABI_wad)",
@@ -176,11 +176,11 @@
         "Dai" : "int256"
       },
       "stores" : {
-        "#Vat.urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
-        "#Vat.urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
-        "#Vat.urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
-        "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-        "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
+        "#Vat.urns(ABI_ilk, ABI_lad).gem" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
+        "#Vat.urns(ABI_ilk, ABI_lad).ink" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+        "#Vat.urns(ABI_ilk, ABI_lad).art" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
+        "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate)",
+        "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
         "#Vat.dai(ABI_lad)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
         "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart))"
       },
@@ -209,10 +209,10 @@
         "Sin" : "int256"
       },
       "stores" : {
-        "#Vat.urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
-        "#Vat.urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
-        "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-        "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
+        "#Vat.urns(ABI_ilk, ABI_lad).ink" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+        "#Vat.urns(ABI_ilk, ABI_lad).art" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
+        "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate)",
+        "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
         "#Vat.sin(ABI_vow)" : "#unsigned(Sin) => #unsigned(Sin +Int (Rate *Int ABI_dart))",
         "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice +Int (Rate *Int ABI_dart))"
       },
@@ -262,8 +262,8 @@
         "Art" : "int256"        
       },
       "stores" : {
-        "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate) => #unsigned(Rate +Int ABI_rate)",
-        "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art)",
+        "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate) => #unsigned(Rate +Int ABI_rate)",
+        "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art)",
         "#Vat.dai(ABI_vow)" : "#unsigned(Dai) => #unsigned(Dai +Int (Art *Int ABI_rate))",
         "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Art *Int ABI_rate))"
       },
