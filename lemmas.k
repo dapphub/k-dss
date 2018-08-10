@@ -44,28 +44,28 @@ syntax Int ::= "#Vat.vice" [function]
 rule #Vat.vice => 6
 
 
-// Lad:
+// Pit:
 
-syntax Int ::= "#Lad.vat" [function]
+syntax Int ::= "#Pit.vat" [function]
 // ------------------------------
-rule #Lad.vat => 0
+rule #Pit.vat => 0
 
 
-syntax Int ::= "#Lad.Line" [function]
+syntax Int ::= "#Pit.Line" [function]
 // -------------------------------
-rule #Lad.Line => 1
+rule #Pit.Line => 1
 
 
-syntax Int ::= "#Lad.live" [function]
+syntax Int ::= "#Pit.live" [function]
 // -------------------------------
-rule #Lad.live => 2
+rule #Pit.live => 2
 
 
-syntax Int ::= "#Lad.ilks" "(" Int "," String ")" [function]
+syntax Int ::= "#Pit.ilks" "(" Int "," String ")" [function]
 // ------------------------------------------------
-rule #Lad.ilks(Ilk, "spot") => #hashedLocation("Solidity", 3, Ilk) +Int 0
+rule #Pit.ilks(Ilk, "spot") => #hashedLocation("Solidity", 3, Ilk) +Int 0
 
-rule #Lad.ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
+rule #Pit.ilks(Ilk, "line") => #hashedLocation("Solidity", 3, Ilk) +Int 1
 
 
 // Vow:
@@ -127,9 +127,9 @@ syntax Int ::= "#Cat.vat" [function]
 rule #Cat.vat => 0
 
 
-syntax Int ::= "#Cat.lad" [function]
+syntax Int ::= "#Cat.pit" [function]
 // ---------------------------------
-rule #Cat.lad => 1
+rule #Cat.pit => 1
 
 
 syntax Int ::= "#Cat.vow" [function]

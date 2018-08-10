@@ -2,14 +2,14 @@
   "path": "dss/out/Cat.abi",
   "vars": {
     "Vat" : "address",
-    "Lad" : "address",
+    "Pit" : "address",
     "Vow" : "address",
     "Lump" : "uint256",
     "NFlip" : "uint256"
   },
   "stores": {
     "#Cat.vat" : "Vat",
-    "#Cat.lad" : "Lad",
+    "#Cat.pit" : "Pit",
     "#Cat.vow" : "Vow",
     "#Cat.lump" : "Lump",
     "#Cat.nflip" : "NFlip"
@@ -24,14 +24,14 @@
       ],
       "returns" : "Vat : .WordStack"
     },
-    "lad": {
+    "pit": {
       "vars" : {
       },
       "stores" : {
       },
       "requires" : [
       ],
-      "returns" : "Lad : .WordStack"
+      "returns" : "Pit : .WordStack"
     },
     "vow": {
       "vars" : {
@@ -145,7 +145,7 @@
         "#Cat.ilks(ABI_ilk, \"flip\")" : "Flip_i",
         "#Cat.nflip" : "NFlip => NFlip +Int 1",
         "#Cat.flips(NFlip, \"ilk\")" : "ABI_ilk",
-        "#Cat.flips(NFlip, \"guy\")" : "ABI_guy",
+        "#Cat.flips(NFlip, \"lad\")" : "ABI_guy",
         "#Cat.flips(NFlip, \"ink\")" : "Ink",
         "#Cat.flips(NFlip, \"tab\")" : "Rate *Int Art_u"
       },
@@ -158,8 +158,8 @@
           "#Vat.sin(Vow)" : "#unsigned(Sin) => #unsigned(Sin -Int (Rate *Int Art_u))",
           "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int (Rate *Int Art_u))"
         },
-        "Lad" : {
-          "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
+        "Pit" : {
+          "#Pit.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
         },
         "Vow" : {
           "Vow.sin(TIME)" : "Sin_era => Sin_era +Int (Art_u *Int Rate)",

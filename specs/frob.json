@@ -1,14 +1,14 @@
 {
-  "path": "dss/out/Lad.abi",
+  "path": "dss/out/Pit.abi",
   "vars": {
     "Vat" : "address",
     "Line" : "int256",
     "Live" : "bool"
   },
   "stores": {
-    "#Lad.vat" : "Vat",
-    "#Lad.Line" : "#unsigned(Line)",
-    "#Lad.live" : "Live"    
+    "#Pit.vat" : "Vat",
+    "#Pit.Line" : "#unsigned(Line)",
+    "#Pit.live" : "Live"
   },
   "methods": {
     "live": {
@@ -45,8 +45,8 @@
         "Line_i" : "int256"
       },
       "stores" : {
-        "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)",
-        "#Lad.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)"
+        "#Pit.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)",
+        "#Pit.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)"
       },
       "requires" : [
       ],
@@ -61,8 +61,8 @@
         "Line_i" : "int256"
       },
       "stores" : {
-        "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i) => #if (ABI_what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then #unsigned(ABI_risk) #else #unsigned(Spot_i) #fi",
-        "#Lad.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i) => #if (ABI_what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
+        "#Pit.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i) => #if (ABI_what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then #unsigned(ABI_risk) #else #unsigned(Spot_i) #fi",
+        "#Pit.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i) => #if (ABI_what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
       },
       "requires" : [
       ],
@@ -74,7 +74,7 @@
         "ABI_risk" : "int256"
       },
       "stores" : {
-        "#Lad.Line" : "#unsigned(Line_i) => #if (ABI_what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
+        "#Pit.Line" : "#unsigned(Line_i) => #if (ABI_what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
       },
       "requires" : [
       ],
@@ -96,8 +96,8 @@
         "Tab" : "int256"
       },
       "stores" : {
-        "#Lad.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)",
-        "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
+        "#Pit.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)",
+        "#Pit.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
       },
       "foreign_stores" : {
         "Vat" : {
