@@ -4,7 +4,7 @@
   "lemmas": "./lemmas.k",
   "source": "./dss/src/frob.2.sol",
   "solJson": "./dss/out/frob.2.sol.json",
-  "name": "Lad",
+  "name": "Pit",
   "host": "127.0.0.1:8080",
   "control": {
     "0"      : "branch 0",

@@ -156,13 +156,13 @@ rule #Cat.nflip => 5
 
 syntax Int ::= "#Cat.Flips" "(" Int "," String ")" [function]
 // ----------------------------------------------------------
-rule #Cat.Flips(N, \"ilk\") => #hashedLocation("Solidity", 6, N) +Int 0
+rule #Cat.Flips(N, "ilk") => #hashedLocation("Solidity", 6, N) +Int 0
 
-rule #Cat.Flips(N, \"guy\") => #hashedLocation("Solidity", 6, N) +Int 1
+rule #Cat.Flips(N, "guy") => #hashedLocation("Solidity", 6, N) +Int 1
 
-rule #Cat.Flips(N, \"ink\") => #hashedLocation("Solidity", 6, N) +Int 2
+rule #Cat.Flips(N, "ink") => #hashedLocation("Solidity", 6, N) +Int 2
 
-rule #Cat.Flips(N, \"tab\") => #hashedLocation("Solidity", 6, N) +Int 3
+rule #Cat.Flips(N, "tab") => #hashedLocation("Solidity", 6, N) +Int 3
 
 
 // Adapter:

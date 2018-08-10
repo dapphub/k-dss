@@ -55,7 +55,14 @@ let abit = Object.keys(config.methods)
       .join("\n  ")
 
     const vars_in_range = Object.keys(local_vars)
-      .map(name => `andBool ${bound[local_vars[name]](name)}`)
+          .map(name => {
+              if (local_vars[name]=="bool") {
+                  return
+              }
+              else {
+                  return `andBool ` + bound[local_vars[name]](name);
+              }
+          });
 
 
     let callData = `#abiCallData("${abi.name}", ${make_args(abi.inputs)})`
