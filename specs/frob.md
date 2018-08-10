@@ -2,7 +2,7 @@
 
 ## prelude
 ```
-abipath = dss/out/Pit.abi
+abipaths = dss/out/Vat.abi dss/out/Pit.abi 
 
 vars
 
@@ -12,9 +12,9 @@ vars
 
 storage
 
-    #Pit.vat  |-> Vat
-    #Pit.Line |-> #unsigned(Line)
-    #Pit.live |-> Live
+    Pit.vat  |-> Vat
+    Pit.Line |-> Line
+    Pit.live |-> Live
 ```
 ## Specification of Behaviours
 
@@ -23,135 +23,132 @@ storage
 #### system liveness
 ```
 behaviour live
+interface live()
 
-returns Live : .WordStack
+returns Live
 ```
 
 #### global debt ceiling
 ```
 behaviour Line
+interface Line()
 
-returns Line : .WordStack
+returns Line
 ```
 
 #### `vat` address
 ```
 behaviour vat
+interface vat()
 
-returns vat : .WordStack
+returns Vat
 ```
 
 #### `ilk` data
 ```
 behaviour ilks
+interface ilks(bytes32 ilk)
 
 vars
 
-    ABI_ilk : bytes32
     Spot_i : int256
     Line_i : int256
     
 storage
 
-    #Pit.ilks(ABI_ilk, "spot") |-> "#unsigned(Spot_i)",
-    #Pit.ilks(ABI_ilk, "line") |-> "#unsigned(Line_i)"
+    Pit.ilks(ilk, "spot") |-> Spot_i
+    Pit.ilks(ilk, "line") |-> Line_i
 
 returns
 
-    #unsigned(Spot_i) : #unsigned(Line_i) : .WordStack
+    Spot_i : Line_i
 ```
 
 ### Mutators
 
 #### setting `ilk` data
 ```
-behaviour file(bytes32,bytes32,int256)
+behaviour file-ilk
+interface file(bytes32 ilk, bytes32 what, int256 risk)
 
 vars
 
-    ABI_ilk  : bytes32
-    ABI_what : bytes32
-    ABI_risk : int256
     Spot_i   : int256
     Line_i   : int256
 
 storage
 
-    #Pit.ilks(ABI_ilk, "spot") |-> #unsigned(Spot_i) => #if (ABI_what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then #unsigned(ABI_risk) #else #unsigned(Spot_i) #fi
-    #Pit.ilks(ABI_ilk, "line") |-> #unsigned(Line_i) => #if (ABI_what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi
-
-iff
-
-returns .WordStack
+    Pit.ilks(ilk, "spot") |-> Spot_i => #if (what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
+    Pit.ilks(ilk, "line") |-> Line_i => #if (what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
 ```
 
 #### setting the global debt ceiling
 ```
-behaviour file(bytes32,int256)
+behaviour file-line
+interface file(bytes32 what, int256 risk)
 
 vars
 
-    ABI_what : bytes32
-    ABI_risk : int256
+    Line : int256
     
 storage
 
-    #Pit.Line |-> #unsigned(Line_i) => #if (ABI_what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi
-
-iff
-
-returns .WordStack
+    Pit.Line |-> Line => #if (what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
 ```
 
 #### manipulating a position
 
 ```
 behaviour frob
+interface frob(bytes32 ilk, int256 dink, int256 dart)
 
 vars
 
-    ABI_ilk                       : bytes32
-    ABI_dink                      : int256
-    ABI_dart                      : int256
     Spot_i                        : int256
     Line_i                        : int256
-    Gem                           : int256
-    Ink                           : int256
-    Art                           : int256
+    Gem_u                         : int256
+    Ink_u                         : int256
+    Art_u                         : int256
     Art_i                         : int256
-    Rate                          : int256
+    Rate_i                        : int256
     Dai                           : int256
     Tab                           : int256
-    Gem -Int ABI_dink             : int256
-    Ink +Int ABI_dink             : int256
-    Art +Int ABI_dart             : int256
-    Art_i +Int ABI_dart           : int256
-    Rate *Int ABI_dart            : int256
-    Dai +Int (Rate *Int ABI_dart) : int256
-    Tab +Int (Rate *Int ABI_dart) : int256
 
 storage
 
-    #Pit.ilks(ABI_ilk, "line") |-> #unsigned(Line_i)
-    #Pit.ilks(ABI_ilk, "spot") |-> #unsigned(Spot_i)
+    Pit.ilks(ilk, "line") |-> Line_i
+    Pit.ilks(ilk, "spot") |-> Spot_i
 
 storage Vat
 
-    #Vat.urns(ABI_ilk, ABI_lad, "gem") |-> #unsigned(Gem) => #unsigned(Gem -Int ABI_dink)
-    #Vat.urns(ABI_ilk, ABI_lad, "ink") |-> #unsigned(Ink) => #unsigned(Ink +Int ABI_dink)
-    #Vat.urns(ABI_ilk, ABI_lad, "art") |-> #unsigned(Art) => #unsigned(Art +Int ABI_dart)
-    #Vat.ilks(ABI_ilk, "rate")         |-> #unsigned(Rate)
-    #Vat.ilks(ABI_ilk, "Art")          |-> #unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)
-    #Vat.dai(CALLER_ID)                |-> #unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))
-    #Vat.Tab                           |-> #unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart))
+    Vat.urns(ilk, lad, "gem") |-> Gem_u => Gem_u - dink
+    Vat.urns(ilk, lad, "ink") |-> Ink_u => Ink_u + dink
+    Vat.urns(ilk, lad, "art") |-> Art_u => Art_u + dart
+    Vat.ilks(ilk, "rate")     |-> Rate_i
+    Vat.ilks(ilk, "Art")      |-> Art_i => Art_i + dart
+    Vat.dai(CALLER_ID)        |-> Dai => Dai + (Rate_i * dart)
+    Vat.Tab                   |-> Tab => Tab + (Rate_i * dart)
 
 iff
 
-    Rate =/=Int 0
-    ((((Art +Int ABI_dart) *Int Rate) <=Int #wad2rad(Spot_i)) andBool (((Tab +Int (Rate *Int ABI_dart))) <Int #wad2rad(Line))) orBool (ABI_dart <=Int 0)
-    (((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink +Int ABI_dink) *Int Spot_i) >=Int ((Art +Int ABI_dart) *Int Rate)))
-    Live ==Int 1
+    Rate =/= 0
+    ((((Art_u + dart) * Rate_i) <= #wad2rad(Spot_i)) and (((Tab + (Rate_i * dart))) <Int #wad2rad(Line))) or (dart <= 0)
+    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot_i) >= ((Art_u + dart) * Rate_i)))
+    Live == 1
 
-returns .WordStack
+iff in range int256
+
+    Gem_u - dink
+    Ink_u + dink
+    Art_u + dart
+    Art_i + dart
+    Rate_i * dart
+    Dai + (Rate_i * dart) 
+    Tab + (Rate_i * dart) 
+    Art_u + dart
+    (Art_u + dart) * Rate_i
+    #wad2rad(Spot_i)
+    #wad2rad(Line)
+    (Ink_u + dink) * Spot_i
 ```
 
