@@ -145,7 +145,6 @@ iff in range int256
     Rate_i * dart
     Dai + (Rate_i * dart) 
     Tab + (Rate_i * dart) 
-    Art_u + dart
     (Art_u + dart) * Rate_i
     (Ink_u + dink) * Spot_i
     #wad2rad(Spot_i)
