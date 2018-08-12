@@ -1,3 +1,12 @@
+// uint48 support:
+
+syntax Int ::= "minUInt48"      [function]
+             | "maxUInt48"      [function]
+
+rule minUInt48      =>  0               [macro]
+rule maxUInt48      =>  281474976710655 [macro]  /*   2^48 - 1  */
+
+rule #rangeUInt ( 48 , X ) => #range ( minUInt48 <= X <= maxUInt48) [macro]
 // DSL for abstracted storage:
 
 syntax Int ::= "#Vat.root" [function]

@@ -15,6 +15,7 @@ const render        = o => Object.keys(o)
     tmp.replace(new RegExp("{{" + name + "}}", "g"), o[name]), template)
 
 const bound = {
+  "uint48" : name => `#rangeUInt(48, ${ name})`,
   "uint256": name => `#rangeUInt(256, ${ name })`,
   "int256" : name => `#rangeSInt(256, ${ name })`,
   "bytes32": name => `#rangeBytes(32, ${ name })`,
