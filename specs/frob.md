@@ -2,12 +2,9 @@
 
 ## prelude
 ```
-implementation dss/out/Vat of VatLike
-implementation dss/out/Cat of Catlike
-
 vars
 
-    Vat  : VatLike
+    Vat  : address VatLike
     Line : int256
     Live : bool
 
