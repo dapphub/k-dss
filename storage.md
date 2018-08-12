@@ -1,5 +1,24 @@
 # dss storage model
 
+### Solidity Word Packing
+We will have to use some of these tricks when reasoning about solidity implementations of `Flip`, `Flap`, and `Flop`:
+
+**TODO** : unpacking these might require some easy lemmas about division
+```
+syntax "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
+// ----------------------------------------------------------
+rule #WordPackUInt48UInt48(X, Y) => Y *Int (2 ^Int 48) +Int X
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+syntax "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
+// ----------------------------------------------------------------------
+rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^Int 160) +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+```
+
 ### Vat
 
 
@@ -178,4 +197,110 @@ rule #Adapter.ilk => 1
 syntax Int ::= "#Adapter.gem" [function]
 // -------------------------------------
 rule #Adapter.gem => 2
+```
+
+### Flipper
+
+```
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flipper.ttl_tau" [function]
+// -----------------------------------------
+rule #Flipper.tau => 3
+
+syntax Int ::= "#Flipper.kicks" [function]
+// ---------------------------------------
+rule #Flipper.kicks => 4
+
+syntax Int ::= "#Flipper.bids" "(" Int ").bid" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+
+syntax Int ::= "#Flipper.bids" "(" Int ").lot" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flipper.bids" "(" Int ").guy_tic_end" [function]
+// --------------------------------------------------------------
+rule #Flipper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+
+syntax Int ::= "#Flipper.bids" "(" Int ").lad" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).lad => #hashedLocation("Solidity", 5, N) +Int 3
+
+syntax Int ::= "#Flipper.bids" "(" Int ").gal" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 4
+
+syntax Int ::= "#Flipper.bids" "(" Int ").tab" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).tab => #hashedLocation("Solidity", 5, N) +Int 5
+```
+
+### Flapper
+
+```
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.ttl_tau" [function]
+// -----------------------------------------
+rule #Flapper.tau => 3
+
+syntax Int ::= "#Flapper.kicks" [function]
+// ---------------------------------------
+rule #Flapper.kicks => 4
+
+syntax Int ::= "#Flapper.bids" "(" Int ").bid" [function]
+// ------------------------------------------------------
+rule #Flapper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+
+syntax Int ::= "#Flapper.bids" "(" Int ").lot" [function]
+// ------------------------------------------------------
+rule #Flapper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.bids" "(" Int ").guy_tic_end" [function]
+// --------------------------------------------------------------
+rule #Flapper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+
+syntax Int ::= "#Flapper.bids" "(" Int ").gal" [function]
+// ------------------------------------------------------
+rule #Flapper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 3
+```
+
+### Flopper
+
+```
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flopper.ttl_tau" [function]
+// -----------------------------------------
+rule #Flopper.tau => 3
+
+syntax Int ::= "#Flopper.kicks" [function]
+// ---------------------------------------
+rule #Flopper.kicks => 4
+
+syntax Int ::= "#Flopper.bids" "(" Int ").bid" [function]
+// ------------------------------------------------------
+rule #Flopper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+
+syntax Int ::= "#Flopper.bids" "(" Int ").lot" [function]
+// ------------------------------------------------------
+rule #Flopper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flopper.bids" "(" Int ").guy_tic_end" [function]
+// --------------------------------------------------------------
+rule #Flopper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+
+syntax Int ::= "#Flopper.bids" "(" Int ").vow" [function]
+// ------------------------------------------------------
+rule #Flopper.bids(N).vow => #hashedLocation("Solidity", 5, N) +Int 3
+```
+
+### Gemlike
+
+```
+syntax Int ::= "#Gem.balances" "(" Int ")" [function]
+// --------------------------------------------------
+rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
 ```

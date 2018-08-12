@@ -7,6 +7,23 @@ rule minUInt48      =>  0               [macro]
 rule maxUInt48      =>  281474976710655 [macro]  /*   2^48 - 1  */
 
 rule #rangeUInt ( 48 , X ) => #range ( minUInt48 <= X <= maxUInt48) [macro]
+
+// solidity word packing support
+// unpacking these might require some easy lemmas about division
+
+syntax "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
+// ----------------------------------------------------------
+rule #WordPackUInt48UInt48(X, Y) => Y *Int (2 ^Int 48) +Int X
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+syntax "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
+// ----------------------------------------------------------------------
+rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^Int 160) +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
 // DSL for abstracted storage:
 
 syntax Int ::= "#Vat.root" [function]
@@ -49,7 +66,6 @@ syntax Int ::= "#Vat.vice" [function]
 // ----------------------------------
 rule #Vat.vice => 6
 
-
 syntax Int ::= "#Pit.vat" [function]
 // ---------------------------------
 rule #Pit.vat => 0
@@ -69,7 +85,6 @@ rule #Pit.ilks(Ilk).spot => #hashedLocation("Solidity", 3, Ilk) +Int 0
 syntax Int ::= "#Pit.ilks" "(" Int ").line" [function]
 // ---------------------------------------------------
 rule #Pit.ilks(Ilk).line => #hashedLocation("Solidity", 3, Ilk) +Int 1
-   
 
 syntax Int ::= "#Vow.vat" [function]
 // ---------------------------------
@@ -110,6 +125,9 @@ rule #Vow.lump => 8
 syntax Int ::= "#Vow.pad" [function]
 // ---------------------------------
 rule #Vow.pad => 9
+
+
+### Cat
 
 
 syntax Int ::= "#Cat.vat" [function]
@@ -156,7 +174,6 @@ syntax Int ::= "#Cat.Flips" "(" Int ").tab" [function]
 // ---------------------------------------------------
 rule #Cat.Flips(N).tab => #hashedLocation("Solidity", 6, N) +Int 3
 
-
 syntax Int ::= "#Adapter.vat" [function]
 // -------------------------------------
 rule #Adapter.vat => 0
@@ -168,6 +185,98 @@ rule #Adapter.ilk => 1
 syntax Int ::= "#Adapter.gem" [function]
 // -------------------------------------
 rule #Adapter.gem => 2
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flipper.ttl_tau" [function]
+// -----------------------------------------
+rule #Flipper.tau => 3
+
+syntax Int ::= "#Flipper.kicks" [function]
+// ---------------------------------------
+rule #Flipper.kicks => 4
+
+syntax Int ::= "#Flipper.bids" "(" Int ").bid" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+
+syntax Int ::= "#Flipper.bids" "(" Int ").lot" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flipper.bids" "(" Int ").guy_tic_end" [function]
+// --------------------------------------------------------------
+rule #Flipper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+
+syntax Int ::= "#Flipper.bids" "(" Int ").lad" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).lad => #hashedLocation("Solidity", 5, N) +Int 3
+
+syntax Int ::= "#Flipper.bids" "(" Int ").gal" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 4
+
+syntax Int ::= "#Flipper.bids" "(" Int ").tab" [function]
+// ------------------------------------------------------
+rule #Flipper.bids(N).tab => #hashedLocation("Solidity", 5, N) +Int 5
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.ttl_tau" [function]
+// -----------------------------------------
+rule #Flapper.tau => 3
+
+syntax Int ::= "#Flapper.kicks" [function]
+// ---------------------------------------
+rule #Flapper.kicks => 4
+
+syntax Int ::= "#Flapper.bids" "(" Int ").bid" [function]
+// ------------------------------------------------------
+rule #Flapper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+
+syntax Int ::= "#Flapper.bids" "(" Int ").lot" [function]
+// ------------------------------------------------------
+rule #Flapper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.bids" "(" Int ").guy_tic_end" [function]
+// --------------------------------------------------------------
+rule #Flapper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+
+syntax Int ::= "#Flapper.bids" "(" Int ").gal" [function]
+// ------------------------------------------------------
+rule #Flapper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 3
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flopper.ttl_tau" [function]
+// -----------------------------------------
+rule #Flopper.tau => 3
+
+syntax Int ::= "#Flopper.kicks" [function]
+// ---------------------------------------
+rule #Flopper.kicks => 4
+
+syntax Int ::= "#Flopper.bids" "(" Int ").bid" [function]
+// ------------------------------------------------------
+rule #Flopper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+
+syntax Int ::= "#Flopper.bids" "(" Int ").lot" [function]
+// ------------------------------------------------------
+rule #Flopper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flopper.bids" "(" Int ").guy_tic_end" [function]
+// --------------------------------------------------------------
+rule #Flopper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+
+syntax Int ::= "#Flopper.bids" "(" Int ").vow" [function]
+// ------------------------------------------------------
+rule #Flopper.bids(N).vow => #hashedLocation("Solidity", 5, N) +Int 3
+
+syntax Int ::= "#Gem.balances" "(" Int ")" [function]
+// --------------------------------------------------
+rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
+
+
 
 
 // misc:

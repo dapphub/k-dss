@@ -239,6 +239,9 @@
     },    
     "flop": {
       "vars" : {
+        "Ttl" : "uint48",
+        "Tau" : "uint48",
+        "Kicks" : "uint256"
       },
       "stores" : {
         "#Vow.Woe" : "Woe => Woe -Int Lump",
@@ -246,6 +249,12 @@
       },
       "foreign_stores" : {
         "Row" : {
+          "#Flopper.ttl_tau" : "#WordPackUInt48UInt48(Ttl, Tau)",
+          "#Flopper.kicks" : "Kicks => Kicks +Int 1",
+          "#Flopper.bids(Kicks +Int 1).bid" : "_ => Lump",
+          "#Flopper.bids(Kicks +Int 1).lot" : "_ => pow256 -Int 1",
+          "#Flopper.bids(Kicks +Int 1).guy_tic_end" : "_ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME +Int Tau)",
+          "#Flopper.bids(Kicks +Int 1).vow" : "_ => ACCT_ID"
         }
       },
       "requires" : [
@@ -253,15 +262,24 @@
         "Joy() ==Int 0",
         "#rangeUInt(256, Ash +Int Lump)"
       ],
-      "returns" : "_"
+      "returns" : "Kicks +Int 1 : .WordStack"
     },
     "flap": {
       "vars" : {
+        "Ttl" : "uint48",
+        "Tau" : "uint48",
+        "Kicks" : "uint256"
       },
       "stores" : {
       },
       "foreign_stores" : {
         "Cow" : {
+          "#Flapper.ttl_tau" : "#WordPackUInt48UInt48(Ttl, Tau)",
+          "#Flapper.kicks" : "Kicks => Kicks +Int 1",
+          "#Flapper.bids(Kicks +Int 1).bid" : "_ => 0",
+          "#Flapper.bids(Kicks +Int 1).lot" : "_ => Lump",
+          "#Flapper.bids(Kicks +Int 1).guy_tic_end" : "_ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME +Int Tau)",
+          "#Flapper.bids(Kicks +Int 1).gal" : "_ => ACCT_ID"
         }
       },
       "requires" : [
@@ -270,7 +288,7 @@
         "#rangeUInt(256, Awe() +Int Lump)",
         "#rangeUInt(256, Awe() +Int Lump +Int Pad)"
       ],
-      "returns" : "_"
+      "returns" : "Kicks +Int 1 : .WordStack"
     }
   }
 }

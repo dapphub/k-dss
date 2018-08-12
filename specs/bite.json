@@ -131,7 +131,6 @@
       "vars" : {
         "ABI_ilk" : "bytes32",
         "ABI_guy": "address",
-        "Flip_i" : "address",
         "Rate" : "int256",
         "Art_i" : "int256",
         "Spot_i" : "int256",
@@ -142,7 +141,6 @@
         "Sin_v" : "uint256"
       },
       "stores" : {
-        "#Cat.ilks(ABI_ilk).flip" : "Flip_i",
         "#Cat.nflip" : "NFlip => NFlip +Int 1",
         "#Cat.flips(NFlip).ilk" : "ABI_ilk",
         "#Cat.flips(NFlip).lad" : "ABI_guy",
@@ -164,8 +162,6 @@
         "Vow" : {
           "Vow.sin(TIME)" : "Sin_era => Sin_era +Int (Art_u *Int Rate)",
           "Vow.Sin" : "Sin_v => Sin_v +Int (Art_u *Int Rate)"
-        },
-        "Flip_i" : {
         }
       },
       "requires" : [
@@ -195,19 +191,28 @@
         "#Cat.flips(ABI_n).lad" : "Lad",
         "#Cat.flips(ABI_n).ink" : "Ink => (Ink -Int ((Ink *Int ABI_wad) /Int Tab))",
         "#Cat.flips(ABI_n).tab" : "Tab => (Tab -Int ABI_wad)",
-        "#Cat.ilks(Ilk).flip" : "Flip"
+        "#Cat.ilks(Ilk).flip" : "Flip",
+        "#Cat.ilks(Ilk).chop" : "Chop"
       },
       "foreign_stores" : {
         "Flip" : {
+          "#Flipper.ttl_tau" : "#WordPackUInt48UInt48(Ttl, Tau)",
+          "#Flipper.kicks" : "Kicks => Kicks +Int 1",
+          "#Flipper.bids(Kicks +Int 1).bid" : "_ => 0",
+          "#Flipper.bids(Kicks +Int 1).lot" : "_ => (Ink *Int ABI_wad) /Int Tab",
+          "#Flipper.bids(Kicks +Int 1).guy_tic_end" : "_ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME +Int Tau)",
+          "#Flipper.bids(Kicks +Int 1).lad" : "_ => Lad",
+          "#Flipper.bids(Kicks +Int 1).gal" : "_ => Vow",
+          "#Flipper.bids(Kicks +Int 1).tab" : "_ => (ABI_wad *Int Chop) /Int (10 ^Int 27)"
         }
       },
       "requires" : [
-        "#rangeSInt(256, ABI_wad)"
+        "#rangeSInt(256, ABI_wad)",
         "ABI_wad <= Tab",
-        "(ABI_wad ==Int Lump) orBool ((ABI_wad <Int Lump) andBool (ABI_wad ==Int Tab)",
+        "(ABI_wad ==Int Lump) orBool ((ABI_wad <Int Lump) andBool (ABI_wad ==Int Tab))",
         "#rangeUInt(256, Ink *Int ABI_wad)"
       ],
-      "returns" : "_"
+      "returns" : "Kicks +Int 1 : .WordStack"
     }
   }
 }
