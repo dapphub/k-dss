@@ -185,15 +185,14 @@
         "ABI_n" : "uint256",
         "ABI_wad" : "uint256",
         "Ilk" : "bytes32",
-        "Guy" : "address",
+        "Lad" : "address",
         "Ink" : "uint256",
         "Tab" : "uint256",
         "Flip" : "address"
-
       },
       "stores" : {
         "#Cat.flips(ABI_n).ilk" : "Ilk",
-        "#Cat.flips(ABI_n).guy" : "Guy",
+        "#Cat.flips(ABI_n).lad" : "Lad",
         "#Cat.flips(ABI_n).ink" : "Ink => (Ink -Int ((Ink *Int ABI_wad) /Int Tab))",
         "#Cat.flips(ABI_n).tab" : "Tab => (Tab -Int ABI_wad)",
         "#Cat.ilks(Ilk).flip" : "Flip"
