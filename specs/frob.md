@@ -2,11 +2,12 @@
 
 ## prelude
 ```
-abipaths = dss/out/Vat.abi dss/out/Pit.abi 
+implementation dss/out/Vat of VatLike
+implementation dss/out/Cat of Catlike
 
 vars
 
-    Vat  : address
+    Vat  : VatLike
     Line : int256
     Live : bool
 
