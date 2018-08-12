@@ -57,7 +57,7 @@
         "ABI_wad >=Int 0",
         "#rangeSInt(256, Wad +Int ABI_wad)"
       ],
-      "returns" : ""
+      "returns" : ".WordStack"
     },
     "exit" : {
       "vars" : {
@@ -78,7 +78,7 @@
         "ABI_wad >=Int 0",
         "#rangeSInt(256, Wad -Int ABI_wad)"
       ],
-      "returns" : ""
+      "returns" : ".WordStack"
     }
   }
 }
