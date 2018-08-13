@@ -36,7 +36,7 @@ const bound = {
   "uint256": name => `#rangeUInt(256, ${ name })`,
   "int256" : name => `#rangeSInt(256, ${ name })`,
   "bytes32": name => `#rangeBytes(32, ${ name })`,
-  "address": name => `#rangeAddress(${ name })`
+  "address": name => `#rangeNotPrecompileAddress(${ name })`
 }
 const toK = str => str
   .replace(/ \+ /g, " +Int ")
