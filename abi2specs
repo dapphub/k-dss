@@ -34,6 +34,7 @@ const make_args = inputs => inputs.length == 0
 const bound = {
   "uint48" : name => `#rangeUInt(48, ${ name })`,
   "uint256": name => `#rangeUInt(256, ${ name })`,
+  "uint8"  : name => `#rangeUInt(8,   ${ name })`,
   "int256" : name => `#rangeSInt(256, ${ name })`,
   "bytes32": name => `#rangeBytes(32, ${ name })`,
   "address": name => `#rangeAddress(${ name })`

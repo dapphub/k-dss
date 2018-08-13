@@ -304,3 +304,16 @@ syntax Int ::= "#Gem.balances" "(" Int ")" [function]
 // --------------------------------------------------
 rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
 ```
+
+### Dach
+
+```
+syntax Int ::= "#Dach.VatLike" [function]
+// -------------------------------------
+rule #Dach.VatLike => 0
+
+syntax Int ::= "#Dach.nonces" "(" Int ")" [function]
+// ---------------------------------------------
+rule #Vat.nonces(A) => #hashedLocation("Solidity", 1, A)
+
+```

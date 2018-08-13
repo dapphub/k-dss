@@ -275,6 +275,15 @@ rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
 
 
 
+syntax Int ::= "#Dach.VatLike" [function]
+// -------------------------------------
+rule #Dach.VatLike => 0
+
+syntax Int ::= "#Dach.nonces" "(" Int ")" [function]
+// ---------------------------------------------
+rule #Dach.nonces(A) => #hashedLocation("Solidity", 1, A)
+
+
 // misc:
 
 syntax Int ::= "#wad2rad" "(" Int ")" [function]
