@@ -1,3 +1,13 @@
+# tune
+
+## prelude
+
+## Specification of behaviours
+
+### Accessors
+
+### Mutators
+
 # frob
 
 ## prelude
@@ -14,13 +24,13 @@ storage
     Pit.Line |-> Line
     Pit.live |-> Live
 ```
-## Specification of Behaviours
+## Specification of behaviours
 
 ### Accessors
 
 #### system liveness
 ```
-behaviour live
+behaviour live of Vat
 interface live()
 
 returns Live
@@ -28,7 +38,7 @@ returns Live
 
 #### global debt ceiling
 ```
-behaviour Line
+behaviour Line of Vat
 interface Line()
 
 returns Line
@@ -36,7 +46,7 @@ returns Line
 
 #### `vat` address
 ```
-behaviour vat
+behaviour vat of Vat
 interface vat()
 
 returns Vat
@@ -44,7 +54,7 @@ returns Vat
 
 #### `ilk` data
 ```
-behaviour ilks
+behaviour ilks of Vat
 interface ilks(bytes32 ilk)
 
 vars
@@ -66,7 +76,7 @@ returns
 
 #### setting `ilk` data
 ```
-behaviour file-ilk
+behaviour file-ilk of Vat
 interface file(bytes32 ilk, bytes32 what, int256 risk)
 
 vars
@@ -82,7 +92,7 @@ storage
 
 #### setting the global debt ceiling
 ```
-behaviour file-line
+behaviour file-line of Vat
 interface file(bytes32 what, int256 risk)
 
 vars
@@ -97,7 +107,7 @@ storage
 #### manipulating a position
 
 ```
-behaviour frob
+behaviour frob of Vat
 interface frob(bytes32 ilk, int256 dink, int256 dart)
 
 vars
@@ -149,3 +159,32 @@ iff in range int256
     #wad2rad(Line)
 ```
 
+# heal
+
+## prelude
+
+## Specification of behaviours
+
+### Accessors
+
+### Mutators
+
+# bite
+
+## prelude
+
+## Specification of behaviours
+
+### Accessors
+
+### Mutators
+
+# join
+
+## prelude
+
+## Specification of behaviours
+
+### Accessors
+
+### Mutators
