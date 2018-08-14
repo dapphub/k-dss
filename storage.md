@@ -35,11 +35,11 @@ syntax Int ::= "#Vat.sin" "(" Int ")" [function]
 // ---------------------------------------------
 rule #Vat.sin(A) => #hashedLocation("Solidity", 2, A)
 
-syntax Int ::= "#Vat.ilks" "(" Int  ").rate" [function]
+syntax Int ::= "#Vat.ilks" "(" Int ").rate" [function]
 // ----------------------------------------------------
 rule #Vat.ilks(Ilk).rate => #hashedLocation("Solidity", 3, Ilk) +Int 0
 
-syntax Int ::= "#Vat.ilks" "(" Int  ").Art" [function]
+syntax Int ::= "#Vat.ilks" "(" Int ").Art" [function]
 // -----------------------------------------------
 rule #Vat.ilks(Ilk).Art => #hashedLocation("Solidity", 3, Ilk) +Int 1
 
