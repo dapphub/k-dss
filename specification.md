@@ -154,7 +154,7 @@ storage Vat
 iff
 
     Rate =/= 0
-    ((((Art_u + dart) * Rate_i) <= #wad2rad(Spot_i)) and (((Tab + (Rate_i * dart))) < #wad2rad(Line))) or (dart <= 0)
+    (((((Art_u + dart) * Rate_i) <= #wad2rad(Spot_i)) and (((Tab + (Rate_i * dart))) < #wad2rad(Line))) or (dart <= 0))
     (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot_i) >= ((Art_u + dart) * Rate_i)))
     Live == 1
 
