@@ -11,13 +11,13 @@ rule #rangeUInt ( 48 , X ) => #range ( minUInt48 <= X <= maxUInt48) [macro]
 // solidity word packing support
 // unpacking these might require some easy lemmas about division
 
-syntax "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
+syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
 // ----------------------------------------------------------
 rule #WordPackUInt48UInt48(X, Y) => Y *Int (2 ^Int 48) +Int X
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-syntax "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
+syntax Int ::= "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
 // ----------------------------------------------------------------------
 rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^Int 160) +Int A
   requires #rangeAddress(A)
@@ -126,10 +126,6 @@ syntax Int ::= "#Vow.pad" [function]
 // ---------------------------------
 rule #Vow.pad => 9
 
-
-### Cat
-
-
 syntax Int ::= "#Cat.vat" [function]
 // ---------------------------------
 rule #Cat.vat => 0
@@ -189,7 +185,7 @@ rule #Adapter.gem => 2
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flipper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flipper.tau => 3
+rule #Flipper.ttl_tau => 3
 
 syntax Int ::= "#Flipper.kicks" [function]
 // ---------------------------------------
@@ -223,7 +219,7 @@ rule #Flipper.bids(N).tab => #hashedLocation("Solidity", 5, N) +Int 5
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flapper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flapper.tau => 3
+rule #Flapper.ttl_tau => 3
 
 syntax Int ::= "#Flapper.kicks" [function]
 // ---------------------------------------
@@ -249,7 +245,7 @@ rule #Flapper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 3
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flopper.tau => 3
+rule #Flopper.ttl_tau => 3
 
 syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------

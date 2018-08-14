@@ -205,7 +205,7 @@ rule #Adapter.gem => 2
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flipper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flipper.tau => 3
+rule #Flipper.ttl_tau => 3
 
 syntax Int ::= "#Flipper.kicks" [function]
 // ---------------------------------------
@@ -243,7 +243,7 @@ rule #Flipper.bids(N).tab => #hashedLocation("Solidity", 5, N) +Int 5
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flapper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flapper.tau => 3
+rule #Flapper.ttl_tau => 3
 
 syntax Int ::= "#Flapper.kicks" [function]
 // ---------------------------------------
@@ -273,7 +273,7 @@ rule #Flapper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 3
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flopper.tau => 3
+rule #Flopper.ttl_tau => 3
 
 syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------
