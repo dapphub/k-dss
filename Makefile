@@ -4,16 +4,20 @@ SPEC_DIR = specs/
 OUT_DIR = out/
 SPECS = tune frob
 
-all: $(SPECS)
+all: dapp deps-npm spec
 
-$(SPECS): dapp
-	./abi2specs $(SPEC_DIR)$@$(SPEC_EXT)
+spec:
+	./abi2specs specification.md
+
 dapp:
 	git submodule update --init --recursive
 	cd $(SRC_DIR) && dapp build && cd ../
 
 dapp-clean:
 	cd $(SRC_DIR) && dapp clean && cd ../
+
+deps-npm:
+	npm install
 
 clean: dapp-clean
 	rm $(OUT_DIR)*
