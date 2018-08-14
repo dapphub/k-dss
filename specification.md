@@ -1,7 +1,5 @@
 # tune
 
-## prelude
-
 ## Specification of behaviours
 
 ### Accessors
@@ -10,20 +8,6 @@
 
 # frob
 
-## prelude
-```
-vars
-
-    Vat  : address VatLike
-    Line : int256
-    Live : bool
-
-storage
-
-    Pit.vat  |-> Vat
-    Pit.Line |-> Line
-    Pit.live |-> Live
-```
 ## Specification of behaviours
 
 ### Accessors
@@ -33,6 +17,14 @@ storage
 behaviour live of Vat
 interface live()
 
+vars
+
+    Live : bool
+    
+storage
+
+    Pit.live |-> Live
+
 returns Live
 ```
 
@@ -41,6 +33,14 @@ returns Live
 behaviour Line of Vat
 interface Line()
 
+vars
+
+    Line : int256
+
+storage
+
+    Pit.Line |-> Line
+
 returns Line
 ```
 
@@ -48,6 +48,14 @@ returns Line
 ```
 behaviour vat of Vat
 interface vat()
+
+vars
+
+    Vat : address {Vat}
+
+storage
+
+    Pit.vat |-> Vat
 
 returns Vat
 ```
@@ -112,6 +120,9 @@ interface frob(bytes32 ilk, int256 dink, int256 dart)
 
 vars
 
+    Live   : bool
+    Line   : int256
+    Vat    : address VatLike
     Spot_i : int256
     Line_i : int256
     Gem_u  : int256
@@ -124,6 +135,9 @@ vars
 
 storage
 
+    Pit.live           |-> Live
+    Pit.Line           |-> Line
+    Pit.vat            |-> Vat
     Pit.ilks(ilk).line |-> Line_i
     Pit.ilks(ilk).spot |-> Spot_i
 
@@ -161,8 +175,6 @@ iff in range int256
 
 # heal
 
-## prelude
-
 ## Specification of behaviours
 
 ### Accessors
@@ -171,8 +183,6 @@ iff in range int256
 
 # bite
 
-## prelude
-
 ## Specification of behaviours
 
 ### Accessors
@@ -180,8 +190,6 @@ iff in range int256
 ### Mutators
 
 # join
-
-## prelude
 
 ## Specification of behaviours
 
