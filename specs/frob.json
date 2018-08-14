@@ -101,9 +101,9 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.urns(ABI_ilk, ABI_lad).gem" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
-          "#Vat.urns(ABI_ilk, ABI_lad).ink" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
-          "#Vat.urns(ABI_ilk, ABI_lad).art" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
+          "#Vat.urns(ABI_ilk, CALLER_ID).gem" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
+          "#Vat.urns(ABI_ilk, CALLER_ID).ink" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+          "#Vat.urns(ABI_ilk, CALLER_ID).art" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
           "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate)",
           "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
           "#Vat.dai(CALLER_ID)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
