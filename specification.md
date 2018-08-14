@@ -23,7 +23,7 @@ vars
     
 storage
 
-    Pit.live |-> Live
+    #Pit.live |-> Live
 
 returns Live
 ```
@@ -39,7 +39,7 @@ vars
 
 storage
 
-    Pit.Line |-> Line
+    #Pit.Line |-> Line
 
 returns Line
 ```
@@ -55,7 +55,7 @@ vars
 
 storage
 
-    Pit.vat |-> Vat
+    #Pit.vat |-> Vat
 
 returns Vat
 ```
@@ -72,8 +72,8 @@ vars
     
 storage
 
-    Pit.ilks(ilk).spot |-> Spot_i
-    Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks(ilk).line |-> Line_i
 
 returns
 
@@ -94,8 +94,8 @@ vars
 
 storage
 
-    Pit.ilks(ilk).spot |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
-    Pit.ilks(ilk).line |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
+    #Pit.ilks(ilk).spot |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
+    #Pit.ilks(ilk).line |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
 ```
 
 #### setting the global debt ceiling
@@ -109,7 +109,7 @@ vars
     
 storage
 
-    Pit.Line |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
+    #Pit.Line |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
 ```
 
 #### manipulating a position
@@ -135,21 +135,21 @@ vars
 
 storage
 
-    Pit.live           |-> Live
-    Pit.Line           |-> Line
-    Pit.vat            |-> Vat
-    Pit.ilks(ilk).line |-> Line_i
-    Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.live           |-> Live
+    #Pit.Line           |-> Line
+    #Pit.vat            |-> Vat
+    #Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks(ilk).spot |-> Spot_i
 
 storage Vat
 
-    Vat.urns(ilk, lad).gem |-> Gem_u => Gem_u - dink
-    Vat.urns(ilk, lad).ink |-> Ink_u => Ink_u + dink
-    Vat.urns(ilk, lad).art |-> Art_u => Art_u + dart
-    Vat.ilks(ilk).rate     |-> Rate_i
-    Vat.ilks(ilk).Art      |-> Art_i => Art_i + dart
-    Vat.dai(CALLER_ID)     |-> Dai => Dai + (Rate_i * dart)
-    Vat.Tab                |-> Tab => Tab + (Rate_i * dart)
+    #Vat.urns(ilk, CALLER_ID).gem |-> Gem_u => Gem_u - dink
+    #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u => Ink_u + dink
+    #Vat.urns(ilk, CALLER_ID).art |-> Art_u => Art_u + dart
+    #Vat.ilks(ilk).rate           |-> Rate_i
+    #Vat.ilks(ilk).Art            |-> Art_i => Art_i + dart
+    #Vat.dai(CALLER_ID)           |-> Dai => Dai + (Rate_i * dart)
+    #Vat.Tab                      |-> Tab => Tab + (Rate_i * dart)
 
 iff
 
