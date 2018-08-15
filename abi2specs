@@ -175,7 +175,6 @@ let behaviours = acts
         let range = bound[act.types[name]]
         return range(name)
       })
-      .map(c => "  andBool" + c)
 
     const storage_success = "  " + Object.keys(act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
