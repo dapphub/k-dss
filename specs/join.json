@@ -2,8 +2,8 @@
   "path" : "dss/out/Adapter.abi",
   "vars" : {
     "Vat" : "address",
-    "Ilk" : "int256",
-    "Gem" : "int256"    
+    "Ilk" : "bytes32",
+    "Gem" : "address"    
   },
   "stores" : {
     "#Adapter.vat" : "Vat",

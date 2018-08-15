@@ -544,4 +544,56 @@ iff in range int256
 
 ### Accessors
 
+#### `vat` address
+```
+behaviour vat of Adapter
+interface vat()
+
+types
+
+    Vat : address {Vat}
+
+storage
+
+    #Pit.vat |-> Vat
+
+returns Vat
+```
+
+#### the associated `ilk`
+```
+behaviour ilk of Adapter
+interface ilk()
+
+types
+
+    Ilk : bytes 32
+    
+storage
+
+    #Adapter.ilk |-> Ilk
+    
+returns Ilk
+```
+
+#### the associated gem contract address
+```
+behaviour gem of Adapter
+interface gem()
+
+types
+
+    Gem : address
+    
+storage
+
+    #Adapter.gem |-> Gem
+    
+returns Gem
+```
+
 ### Mutators
+
+#### depositing into the system
+
+#### withdrawing from the system
