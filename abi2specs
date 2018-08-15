@@ -112,13 +112,13 @@ let acts = acts_str
             ...a.types,
             ..._types
           }
-          let _iff = Object.keys(_types)
+          let _if = Object.keys(_types)
             .filter(name => _types[name] in bound)
             .map(name => {
               let range = bound[_types[name]]
               return range(name)
             })
-          a.iff = (a.iff || []).concat(_iff);
+          a.if = (a.if || []).concat(_if);
         } else if(/^storage/.test(head)) {
           let name = head.split(" ")[1] || "ACCT_ID";
           let _storage = tail
@@ -179,16 +179,20 @@ let behaviours = acts
     const storage_success = "  " + Object.keys(act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
       .join("\n  " + " ".repeat(14))
-    const cond_success = (act.iff || [])
+    const cond_success = (act.if || []).concat(act.iff || [])
       .map(c => "  andBool " + c)
       .join("\n")
 
     const storage_fail = "  " + Object.keys(act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key][0] + (act.storage.ACCT_ID[key].length > 1 ? " => _ " : "") + ")" )
       .join("\n  " + " ".repeat(14))
-    const cond_fail = "notBool (\n" + (act.iff || [])
+    const cond_fail = (act.if || [])
       .map(c => "  andBool " + c)
-      .join("\n") + ")"
+      .join("\n")
+      + "\n  andBool notBool (\n"
+      + (act.iff || [])
+      .map(c => "    andBool " + c)
+      .join("\n") + "\n  )"
 
     const accounts = Object.keys(act.storage || {})
       .filter(name => name != "ACCT_ID")
