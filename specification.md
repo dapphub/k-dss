@@ -1,3 +1,5 @@
+What follows is an executable K specification of the smart contracts of multicollateral dai.
+
 # tune
 
 ## Specification of behaviours
@@ -259,8 +261,7 @@ iff in range int256
     #wad2rad(Line)
 ```
 
-####
-
+#### confiscating a position
 ```
 behaviour grab of Vat
 interface grab(bytes32 ilk, address lad, address vow, int256 dink, int256 dart)
@@ -293,6 +294,7 @@ iff in range int256
     Vice + Rate * dart
 ```
 
+#### cancelling bad debt and surplus
 ```
 behaviour heal of Vat
 interface heal(address u, address v, int256 wad)
@@ -326,6 +328,7 @@ iff in range int256
     Vice - #wad2rad(wad)
 ```
 
+#### applying interest to `ilk`
 ```
 behaviour fold of Vat
 interface fold(bytes32 ilk, address vow, int256 rate)
