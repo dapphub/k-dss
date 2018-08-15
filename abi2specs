@@ -146,7 +146,7 @@ let acts = acts_str
           }
           a.iff = (a.iff || []).concat( _iff )
         } else if(/^returns/.test(head)) {
-          a.returns = head.split(" ").slice(1).join(" ") + " : .WordStack"
+          a.returns = varWrap(head.split(" ").slice(1).join(" ")) + " : .WordStack"
         }
 
         return a;
