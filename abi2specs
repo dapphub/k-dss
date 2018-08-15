@@ -87,7 +87,7 @@ let acts = acts_str
             .map(l => l.split(" "))
           const _interface_types = interface
             .reduce((a, [v, k]) => {
-              a[k] = v;
+              a["ABI_" + k] = v;
               return a;
             }, {})
           const fname = interface_str.slice(0, interface_str.indexOf("("))
@@ -112,13 +112,6 @@ let acts = acts_str
             ...a.types,
             ..._types
           }
-          let _if = Object.keys(_types)
-            .filter(name => _types[name] in bound)
-            .map(name => {
-              let range = bound[_types[name]]
-              return range(name)
-            })
-          a.if = (a.if || []).concat(_if);
         } else if(/^storage/.test(head)) {
           let name = head.split(" ")[1] || "ACCT_ID";
           let _storage = tail
@@ -176,17 +169,25 @@ let acts = acts_str
 let behaviours = acts
   .map(act => {
 
+    const act_if = Object.keys(act.types)
+      .filter(name => act.types[name] in bound)
+      .map(name => {
+        let range = bound[act.types[name]]
+        return range(name)
+      })
+      .map(c => "  andBool" + c)
+
     const storage_success = "  " + Object.keys(act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
       .join("\n  " + " ".repeat(14))
-    const cond_success = (act.if || []).concat(act.iff || [])
+    const cond_success = (act_if || []).concat(act.iff || [])
       .map(c => "  andBool " + c)
       .join("\n")
 
     const storage_fail = "  " + Object.keys(act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key][0] + (act.storage.ACCT_ID[key].length > 1 ? " => _ " : "") + ")" )
       .join("\n  " + " ".repeat(14))
-    const cond_fail = (act.if || [])
+    const cond_fail = (act_if || [])
       .map(c => "  andBool " + c)
       .join("\n")
       + "\n  andBool notBool (\n"
