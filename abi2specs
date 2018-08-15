@@ -130,6 +130,7 @@ let acts = acts_str
               a[k] = v;
               return a;
             }, {})
+          if( name !== "ACCT_ID" ) a.types[name + "_balance"] = "uint256";
           a.storage = {
             ...a.storage,
             [name]: _storage
@@ -204,7 +205,7 @@ let behaviours = acts
 
         return `<account>
           <acctID> ${name} </acctID>
-          <balance> _ </balance>
+          <balance> ${name}_balance </balance>
           <code> #parseByteStack("0x${code}") </code>
           <storage>
             ${fstore}
