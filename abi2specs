@@ -42,9 +42,9 @@ const toK = str => str
   .replace(/ and /g, " andBool ")
   .replace(/ or /g, " orBool ")
   .replace(/ not /g, " notBool ")
-const unsignedWrap = (types, str) => str in types
-  && types[str] == "int256"
-  && "#unsigned(" + str + ")"
+const varWrap = (types, str) => str in types
+  && (types[str] == "int256" && "#unsigned(" + str + ")")
+  || (types[str] == "bool"   && "bool2Word(" + str + ")")
   || str
 const mapInterface = (is, str) => {
   is.forEach(([t, n]) => {
@@ -112,6 +112,13 @@ let acts = acts_str
             ...a.types,
             ..._types
           }
+          let _iff = Object.keys(_types)
+            .filter(name => _types[name] in bound)
+            .map(name => {
+              let range = bound[_types[name]]
+              return range(name)
+            })
+          a.iff = (a.iff || []).concat(_iff);
         } else if(/^storage/.test(head)) {
           let name = head.split(" ")[1] || "ACCT_ID";
           let _storage = tail
@@ -120,9 +127,9 @@ let acts = acts_str
             .map(l => l.split("|->").map(i => toK(i).trim()))
             .map(([k, v]) => {
               if(v.indexOf("=>") > -1) {
-                v = v.split("=>").map(i => unsignedWrap(a.types, i.trim()))
+                v = v.split("=>").map(i => varWrap(a.types, i.trim()))
               } else {
-                v = [unsignedWrap(a.types, v)]
+                v = [varWrap(a.types, v)]
               }
               return [k, v];
             })
@@ -230,10 +237,10 @@ let behaviours = acts
       .map(name => `SetItem(${name})`)
       .join(" ")
 
-    const filename = act.subject + "_" + act.signature.replace(/\(|\)|\,/g, "_")
+    const filename = act.subject + "_" + act.name
 
     const cases = [{
-      name: "success_" + filename,
+      name: filename + "_succ",
       spec: render({
         name: act.name,
         callData: act.callData,
@@ -248,7 +255,7 @@ let behaviours = acts
 
     if((act.iff || []).length > 0) {
       cases.push({
-        name: "fail_" + filename,
+        name: filename + "_fail",
         spec: render({
           name: act.name,
           callData: act.callData,
