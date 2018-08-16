@@ -166,7 +166,7 @@ let acts = acts_str
             .split(":")
             .map(e => e.trim())
           let buildReturns = rs => rs.length > 0
-            ? `#asByteStackInWidthaux(${rs[0]}, 31, 32, ${ buildReturns(rs.slice(1)) })`
+            ? `#asByteStackInWidthaux(${varWrap(a.types, rs[0])}, 31, 32, ${ buildReturns(rs.slice(1)) })`
             : ".WordStack"
           a.returns = buildReturns(returns)
         }
@@ -198,7 +198,7 @@ let behaviours = acts
         let range = bound[act.types[name]]
         return range(name)
       })
-      .concat(a.if || [])
+      .concat(act.if || [])
 
     const storage_success = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
