@@ -29,8 +29,8 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 |-------------|------|------|
 | **Vat**     |      |      |
 | `root`      | o    | -    |
-| `dai`       | o    | -    |
-| `sin`       | o    | -    |
+| `dai`       | x    | -    |
+| `sin`       | x    | -    |
 | `ilks`      | o    | -    |
 | `urns`      | o    | -    |
 | `Tab`       | o    | -    |
