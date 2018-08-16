@@ -528,7 +528,189 @@ iff in range int256
 
 ### Accessors
 
+#### getting a `sin` packet
+```
+behaviour sin of Vow
+interface sin(uint48 era_)
+
+vars
+
+    Sin_era : uint256
+    
+storage
+
+    #Vow.sin(era_) |-> Sin_era
+    
+returns Sin_era
+```
+
+#### getting the `Sin`
+```
+behaviour Sin of Vow
+interface Sin()
+
+vars
+
+    Sin : uint256
+    
+storage
+
+    #Vow.Sin |-> Sin
+    
+returns Sin
+```
+
+#### getting the `Woe`
+```
+behaviour Woe of Vow
+interface Woe()
+
+vars
+
+    Woe : uint256
+    
+storage
+
+    #Vow.Woe |-> Woe
+    
+returns Woe
+```
+
+#### getting the `Ash`
+```
+behaviour Ash of Vow
+interface Ash()
+
+vars
+
+    Ash : uint256
+    
+storage
+
+    #Vow.Ash |-> Ash
+    
+returns Ash
+```
+
+#### getting the `wait`
+```
+behaviour wait of Vow
+interface wait()
+
+vars
+
+    Wait : uint256
+    
+storage
+
+    #Vow.wait |-> Wait
+    
+returns Wait
+```
+
+#### getting the `lump`
+```
+behaviour lump of Vow
+interface lump()
+
+vars
+
+    Lump : uint256
+    
+storage
+
+    #Vow.lump |-> Lump
+    
+returns Lump
+```
+
+#### getting the `pad`
+```
+behaviour pad of Vow
+interface pad()
+
+vars
+
+    Pad : uint256
+    
+storage
+
+    #Vow.pad |-> Pad
+    
+returns Pad
+```
+
+#### getting the time
+```
+behaviour era of Vow
+interface era()
+    
+storage
+    
+returns TIME
+```
+
+#### getting the `Awe`
+```
+behaviour Awe of Vow
+interface Awe()
+
+vars
+
+    Sin : uint256
+    Woe : uint256
+    Ash : uint256
+    
+storage
+
+    #Vow.Sin |-> Sin
+    #Vow.Woe |-> Woe
+    #Vow.Ash |-> Ash
+    
+iff in range uint256
+
+    Sin + Woe
+    Sin + Woe + Ash
+    
+returns Sin + Woe + Ash
+```
+
+#### getting the `Joy`
+```
+behaviour Joy of Vow
+interface Joy()
+
+vars
+
+    Dai : int256
+    
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai
+    
+iff in range uint256
+
+    Dai
+    
+returns Dai / 1000000000000000000000000000
+```
+
 ### Mutators
+
+#### setting `Vow` parameters
+
+
+#### setting liquidators
+
+#### adding to the `sin` queue
+
+#### processing `sin` queue
+
+#### cancelling bad debt and surplus
+
+#### start a debt auction
+
+#### start a surplus auction
 
 # bite
 
@@ -567,7 +749,7 @@ interface ilk()
 
 types
 
-    Ilk : bytes 32
+    Ilk : bytes32
     
 storage
 
@@ -595,5 +777,77 @@ returns Gem
 ### Mutators
 
 #### depositing into the system
+```
+behaviour join of Adapter
+interface join(uint256 wad)
+
+types
+
+    Ilk         : bytes32
+    Wad         : int256
+    Bal_guy     : uint256
+    Bal_adapter : uint256
+    
+storage
+
+    #Adapter.ilk |-> Ilk
+
+storage Vat
+
+    #Vat.urns(Ilk, CALLER_ID).gem |-> Wad => Wad + wad
+    
+storage Gem
+
+    #Gem.balances(CALLER_ID) |-> Bal_guy - wad
+    #Gem.balances(ACCT_ID)   |-> Bal_adapter + wad
+    
+iff in range int256
+
+    wad
+    Wad + wad
+
+iff in range uint256
+
+    Bal_guy - wad
+    Bal_adapter + wad
+```
 
 #### withdrawing from the system
+```
+behaviour exit of Adapter
+interface exit(uint256 wad)
+
+types
+
+    Ilk         : bytes32
+    Wad         : int256
+    Bal_guy     : uint256
+    Bal_adapter : uint256
+    
+storage
+
+    #Adapter.ilk |-> Ilk
+
+storage Vat
+
+    #Vat.urns(Ilk, CALLER_ID).gem |-> Wad => Wad - wad
+    
+storage Gem
+
+    #Gem.balances(CALLER_ID) |-> Bal_guy + wad
+    #Gem.balances(ACCT_ID)   |-> Bal_adapter - wad
+    
+iff
+
+    Wad - wad >= 0
+    
+iff in range int256
+
+    wad
+    Wad - wad
+
+iff in range uint256
+
+    Bal_guy + wad
+    Bal_adapter - wad
+```

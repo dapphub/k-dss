@@ -29,7 +29,7 @@
         "Sin_era" : "uint256"
       },
       "stores" : {
-        "Vow.sin(ABI_era_)" : "Sin_era"
+        "#Vow.sin(ABI_era_)" : "Sin_era"
       },
       "requires" : [
       ],
@@ -96,7 +96,7 @@
       },
       "requires" : [
       ],
-      "returns" : "TIMESTAMP : .WordStack"
+      "returns" : "TIME : .WordStack"
     },
     "Awe": {
       "vars" : {
@@ -222,7 +222,6 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.dai(ACCT_ID)" : "#unsigned(Dai)",
           "#Vat.dai(ACCT_ID)" : "#unsigned(Dai) => #unsigned(Dai -Int #wad2rad(ABI_wad))",
           "#Vat.sin(ACCT_ID)" : "#unsigned(Sin) => #unsigned(Sin -Int #wad2rad(ABI_wad))",
           "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int #wad2rad(ABI_wad))",
