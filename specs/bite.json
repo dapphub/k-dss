@@ -169,8 +169,6 @@
         "Ink *Int Spot_i <Int Art_u *Int Rate",
         "#rangeSInt(256, Art_i -Int Art_u)",
         "#rangeSInt(256, Rate *Int (0 -Int Art_u))",
-        "#rangeSInt(256, Dai -Int (Rate *Int Art_u))",
-        "#rangeSInt(256, Tab -Int (Rate *Int Art_u))",
         "#rangeUInt(256, Sin_era +Int (Art_u *Int Rate))",
         "#rangeUInt(256, Sin_v +Int (Art_u *Int Rate))"
       ],

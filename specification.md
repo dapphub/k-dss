@@ -533,7 +533,7 @@ iff in range int256
 behaviour sin of Vow
 interface sin(uint48 era_)
 
-vars
+types
 
     Sin_era : uint256
     
@@ -549,7 +549,7 @@ returns Sin_era
 behaviour Sin of Vow
 interface Sin()
 
-vars
+types
 
     Sin : uint256
     
@@ -565,7 +565,7 @@ returns Sin
 behaviour Woe of Vow
 interface Woe()
 
-vars
+types
 
     Woe : uint256
     
@@ -581,7 +581,7 @@ returns Woe
 behaviour Ash of Vow
 interface Ash()
 
-vars
+types
 
     Ash : uint256
     
@@ -597,7 +597,7 @@ returns Ash
 behaviour wait of Vow
 interface wait()
 
-vars
+types
 
     Wait : uint256
     
@@ -613,7 +613,7 @@ returns Wait
 behaviour lump of Vow
 interface lump()
 
-vars
+types
 
     Lump : uint256
     
@@ -629,7 +629,7 @@ returns Lump
 behaviour pad of Vow
 interface pad()
 
-vars
+types
 
     Pad : uint256
     
@@ -645,8 +645,6 @@ returns Pad
 behaviour era of Vow
 interface era()
     
-storage
-    
 returns TIME
 ```
 
@@ -655,7 +653,7 @@ returns TIME
 behaviour Awe of Vow
 interface Awe()
 
-vars
+types
 
     Sin : uint256
     Woe : uint256
@@ -680,10 +678,15 @@ returns Sin + Woe + Ash
 behaviour Joy of Vow
 interface Joy()
 
-vars
+types
 
+    Vat : address VatLike
     Dai : int256
-    
+
+storage
+
+    #Vow.vat |-> Vat
+
 storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
@@ -698,19 +701,274 @@ returns Dai / 1000000000000000000000000000
 ### Mutators
 
 #### setting `Vow` parameters
+```
+behaviour file-risk of Vow
+interface file(bytes32 what, uint256 risk)
 
+types
 
-#### setting liquidators
+    Lump : uint256
+    Pad  : uint256
+
+storage
+
+    #Vow.lump |-> Lump => (#if what == 12345 #then risk #else Lump #fi)
+    #Vow.pad  |-> Pad => (#if what == 67890 #then risk #else Pad #fi)
+```
+
+#### setting vat and liquidators
+```
+behaviour file-addr of Vow
+interface file(bytes32 what, address addr)
+
+types
+
+    Cow : address
+    Row : address
+    Vat : address
+
+storage
+
+    #Vow.cow |-> Cow => (#if what == 12345 #then addr #else Cow #fi)
+    #Vow.row |-> Row => (#if what == 67890 #then addr #else Row #fi)
+    #Vow.vat |-> Vat => (#if what == 54321 #then addr #else Vat #fi)
+```
 
 #### adding to the `sin` queue
+```
+behaviour fess of Vow
+interface fess(uint256 tab)
+
+types
+
+    Sin_era : uint256
+    Sin     : uint256
+    
+storage
+
+    #Vow.sin(TIME) |-> Sin_era => Sin_era + tab
+    #Vow.Sin       |-> Sin => Sin + tab
+    
+iff in range uint256
+
+    Sin_era + tab
+    Sin + tab
+```
 
 #### processing `sin` queue
+```
+behaviour flog of Vow
+interface flog(uint48 era_)
+
+types
+
+    Sin_era_ : uint256
+    
+storage
+
+    #Vow.sin(era_) |-> Sin_era_ => 0
+    #Vow.Sin       |-> Sin => Sin - Sin_era_
+    #Vow.Woe       |-> Woe => Woe + Sin_era_
+
+iff in range uint256
+
+    Sin - Sin_era_
+    Woe + Sin_era_
+```
 
 #### cancelling bad debt and surplus
+```
+behaviour heal of Vow
+interface heal(uint256 wad)
 
-#### start a debt auction
+types
 
-#### start a surplus auction
+    Vat  : address VatLike
+    Woe  : uint256
+    Dai  : int256
+    Sin  : int256
+    Vice : int256
+    Tab  : int256
+
+storage
+
+    #Vow.vat |-> Vat
+    #Vow.Woe |-> Woe - wad
+
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
+    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
+    #Vat.vice         |-> Vice => Vice - #wad2rad(wad)
+    #Vat.Tab          |-> Tab  => Tab - #wad2rad(wad)
+
+iff
+
+    wad <= Dai / 1000000000000000000000000000
+    wad <= Woe
+
+iff in range uint256
+
+    Woe - wad
+    
+iff in range int256
+
+    wad
+    Dai - #wad2rad(wad)
+    Sin - #wad2rad(wad)
+    Vice - #wad2rad(wad)
+    Tab - #wad2rad(wad)
+```
+
+```
+behaviour kiss of Vow
+interface kiss(uint256 wad)
+
+types
+
+    Vat  : address VatLike
+    Woe  : uint256
+    Dai  : int256
+    Sin  : int256
+    Vice : int256
+    Tab  : int256
+
+storage
+
+    #Vow.vat |-> Vat
+    #Vow.Ash |-> Ash - wad
+
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
+    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
+    #Vat.vice         |-> Vice => Vice - #wad2rad(wad)
+    #Vat.Tab          |-> Tab  => Tab - #wad2rad(wad)
+
+iff
+
+    wad <= Dai / 1000000000000000000000000000
+    wad <= Ash
+
+iff in range uint256
+
+    Ash - wad
+    
+iff in range int256
+
+    wad
+    Dai - #wad2rad(wad)
+    Sin - #wad2rad(wad)
+    Vice - #wad2rad(wad)
+    Tab - #wad2rad(wad)
+```
+
+
+#### starting a debt auction
+```
+behaviour flop of Vow
+interface flop()
+
+types
+
+    Row   : address Flopper
+    Vat   : address VatLike
+    Lump  : uint256
+    Woe   : uint256
+    Ash   : uint256
+    Ttl   : uint48
+    Tau   : uint48
+    Kicks : uint256
+    Dai   : int256
+    
+storage
+
+    #Vow.row  |-> Row
+    #Vow.lump |-> Lump
+    #Vow.Woe  |-> Woe => Woe - Lump
+    #Vow.Ash  |-> Ash => Ash + Lump
+    
+storage Row
+
+    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flopper.kicks                       |-> Kicks => Kicks + 1
+    #Flopper.bids(Kicks + 1).bid         |-> 0 => Lump
+    #Flopper.bids(Kicks + 1).lot         |-> 0 => pow256 - 1
+    #Flopper.bids(Kicks + 1).guy_tic_end |-> #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flopper.bids(Kicks + 1).vow         |-> 0 => ACCT_ID
+    
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai
+    
+iff
+
+    Dai == 0
+    
+iff in range uint256
+
+    Dai
+    Woe - Lump
+    Ash + Lump
+    
+returns Kicks + 1
+```
+
+#### starting a surplus auction
+```
+behaviour flap of Vow
+interface flap()
+
+types
+
+    Cow   : address Flapper
+    Vat   : address VatLike
+    Lump  : uint256
+    Pad   : uint256
+    Woe   : uint256
+    Ash   : uint256
+    Ttl   : uint48
+    Tau   : uint48
+    Kicks : uint256
+    Dai   : int256
+    
+storage
+
+    #Vow.cow  |-> Cow
+    #Vow.lump |-> Lump
+    #Vow.pad  |-> Pad
+    #Vow.Sin  |-> Sin
+    #Vow.Woe  |-> Woe
+    #Vow.Ash  |-> Ash
+    
+storage Cow
+
+    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flapper.kicks                       |-> Kicks => Kicks + 1
+    #Flapper.bids(Kicks + 1).bid         |-> 0
+    #Flapper.bids(Kicks + 1).lot         |-> 0 => Lump
+    #Flapper.bids(Kicks + 1).guy_tic_end |-> #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids(Kicks + 1).gal         |-> 0 => ACCT_ID
+    
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai
+
+iff
+
+    Dai / 1000000000000000000000000000 >= Sin + Woe + Ash + Lump + Pad
+    Woe == 0
+    
+iff in range uint256
+
+    Dai
+    Sin + Woe
+    Sin + Woe + Ash
+    Sin + Woe + Ash + Lump
+    Sin + Woe + Ash + Lump + Pad
+    
+returns Kicks + 1
+```
 
 # bite
 
@@ -718,7 +976,293 @@ returns Dai / 1000000000000000000000000000
 
 ### Accessors
 
+#### `vat` address
+```
+behaviour vat of Cat
+interface vat()
+
+types
+
+    Vat : address
+    
+storage
+
+    #Cat.vat |-> Vat
+    
+returns Vat
+```
+
+#### `pit` address
+```
+behaviour pit of Cat
+interface pit()
+
+types
+
+    Pit : address
+    
+storage
+
+    #Cat.pit |-> Pit
+    
+returns Pit
+```
+
+#### `vow` address
+```
+behaviour vow of Cat
+interface vow()
+
+types
+
+    Vow : address
+    
+storage
+
+    #Cat.vow |-> Vow
+    
+returns Vow
+```
+
+#### liquidation lot size
+```
+behaviour lump of Cat
+interface lump()
+
+types
+
+    Lump : uint256
+    
+storage
+
+    #Cat.lump |-> Lump
+    
+returns Lump
+```
+
+#### `ilk` data
+```
+behaviour ilks of Cat
+interface ilks(bytes32 ilk)
+
+types
+
+    Chop : uint256
+    Flip : address
+    
+storage
+
+    #Cat.ilks(ilk).chop |-> Chop
+    #Cat.ilks(ilk).flip |-> Flip
+    
+returns Chop : Flip
+```
+
+#### liquidation counter
+```
+behaviour nflip of Cat
+interface nflip()
+
+types
+
+    Nflip : uint256
+    
+storage
+
+    #Cat.nflip |-> Nflip
+    
+returns Nflip
+```
+
+#### liquidation data
+```
+behaviour flips of Cat
+interface flips(uint256 n)
+
+types
+
+    Ilk : bytes32
+    Lad : bytes32
+    Ink : uint256
+    Tab : uint256
+    
+storage
+
+    #Cat.flips(n).ilk |-> Ilk
+    #Cat.flips(n).lad |-> Lad
+    #Cat.flips(n).ink |-> Ink
+    #Cat.flips(n).tab |-> Tab
+    
+returns Ilk : Lad : Ink : Tab
+```
+
 ### Mutators
+
+#### setting liquidation lot size
+```
+behaviour file-lump of Cat
+interface file(bytes32 what, uint256 risk)
+
+types
+
+    Lump : uint256
+
+storage
+
+    #Cat.lump |-> Lump => (#if what == 12345 #then risk #else Lump #fi)
+```
+
+#### setting liquidation penalty
+```
+behaviour file-chop of Cat
+interface file(bytes32 ilk, bytes32 what, uint256 risk)
+
+types
+
+    Chop : uint256
+
+storage
+
+    #Cat.ilks(ilk).chop |-> Chop => (#if what == 12345 #then risk #else Chop #fi)
+```
+
+#### setting liquidator address
+```
+behaviour fuss of Cat
+interface fuss(bytes32 ilk, address flip)
+
+storage
+
+    #Cat.ilks(ilk).flip |-> _ => flip
+```
+
+#### marking a position for liquidation
+```
+behaviour bite of Cat
+interface bite(bytes32 ilk, address guy)
+
+types
+
+    Vat : address VatLike
+    Pit : address PitLike
+    Vow : address VowLike
+    Nflip : uint256
+    Rate_i : int256
+    Art_i : int256
+    Ink_u : int256
+    Art_u : int256
+    Sin_v : int256
+    Vice : int256
+    Sin : uint256
+    Sin_era : uint256
+    
+storage
+
+    #Cat.vat              |-> Vat
+    #Cat.pit              |-> Pit
+    #Cat.vow              |-> Vow
+    #Cat.nflip            |-> Nflip => Nflip + 1
+    #Cat.flips(Nflip).ilk |-> 0 => ilk
+    #Cat.flips(Nflip).lad |-> 0 => guy
+    #Cat.flips(Nflip).ink |-> 0 => Ink_u
+    #Cat.flips(Nflip).tab |-> 0 => Rate_i * Art_u
+    
+storage Vat
+
+    #Vat.ilks(ilk).rate |-> Rate_i
+    #Vat.ilks(ilk).Art  |-> Art_i => Art_i - Art_u
+    #Vat.urns(ilk, guy).ink |-> Ink_u => 0
+    #Vat.urns(ilk, guy).art |-> Art_u => 0
+    #Vat.sin(Vow) |-> Sin_v => Sin_v - Rate_i * Art_u
+    #Vat.vice |-> Vice - Rate_i * Art_u
+
+storage Pit
+
+    #Pit.ilks(ilk).spot |-> Spot_i
+    
+Storage Vow
+
+    #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate_i
+    #Vow.Sin       |-> Sin => Sin + Art_u * Rate_i
+    
+iff
+
+    Ink_u * Spot_i < Art_u * Rate_i
+
+iff in range int256
+
+    Art_u - Art_u
+    Rate_i * Art_u
+    Rate_i * (0 - Art_u)
+    Sin_v - Rate_i * Art_u
+    Vice - Rate_i * Art_u
+
+iff in range uint256
+
+    Rate_i * Art_u
+    Sin_era + Art_u * Rate_i
+    Sin + Art_u * Rate_i
+
+returns Nflip + 1
+```
+
+#### starting a collateral auction
+```
+behaviour flip
+interface flip(uint256 n, uint256 wad)
+
+types
+
+    Ilk   : bytes32
+    Lad   : address
+    Ink   : uint256
+    Tab   : uint256
+    Flip  : address Flipper
+    Chop  : uint256
+    Lump  : uint256
+    Vow   : address
+    Ttl   : uint48
+    Tau   : uint48
+    Kicks : uint256
+
+storage
+
+    #Cat.flips(Nflip).ilk |-> Ilk
+    #Cat.flips(Nflip).lad |-> Lad
+    #Cat.flips(Nflip).ink |-> Ink => Ink - (Ink * wad) / Tab
+    #Cat.flips(Nflip).tab |-> Tab => Tab - wad
+    #Cat.ilks(ilk).flip   |-> Flip
+    #Cat.ilks(ilk).chop   |-> Chop
+    #Cat.lump             |-> Lump
+    #Cat.vow              |-> Vow
+    
+storage Flip
+
+    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flipper.kicks                       |-> Kicks => Kicks + 1
+    #Flipper.bids(Kicks + 1).bid         |-> 0 => 0
+    #Flipper.bids(Kicks + 1).lot         |-> 0 => (Ink * wad) / Tab
+    #Flipper.bids(Kicks + 1).guy_tic_end |-> 0 => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids(Kicks + 1).lad         |-> 0 => Lad
+    #Flipper.bids(Kicks + 1).gal         |-> 0 => Vow
+    #Flipper.bids(Kicks + 1).tab         |-> 0 => (wad * Chop) /Int 1000000000000000000000000000)
+
+iff
+
+    wad <= Tab
+    (wad == Lump) or ((wad < Lump) and (wad == Tab))
+
+iff in range int256
+
+    wad
+
+iff in range uint256
+
+    Ink * wad
+    wad * Chop
+
+returns Kicks + 1
+```
 
 # join
 
@@ -733,7 +1277,7 @@ interface vat()
 
 types
 
-    Vat : address {Vat}
+    Vat : address Vat
 
 storage
 
@@ -758,7 +1302,7 @@ storage
 returns Ilk
 ```
 
-#### the associated gem contract address
+#### gem address
 ```
 behaviour gem of Adapter
 interface gem()
@@ -783,14 +1327,18 @@ interface join(uint256 wad)
 
 types
 
+    Vat         : address VatLike
     Ilk         : bytes32
+    Gem         : address GemLike
     Wad         : int256
     Bal_guy     : uint256
     Bal_adapter : uint256
     
 storage
 
+    #Adapter.vat |-> Vat
     #Adapter.ilk |-> Ilk
+    #Adapter.gem |-> Gem
 
 storage Vat
 
@@ -819,14 +1367,18 @@ interface exit(uint256 wad)
 
 types
 
+    Vat         : address VatLike
     Ilk         : bytes32
+    Gem         : address GemLike
     Wad         : int256
     Bal_guy     : uint256
     Bal_adapter : uint256
     
 storage
 
+    #Adapter.vat |-> Vat
     #Adapter.ilk |-> Ilk
+    #Adapter.gem |-> Gem
 
 storage Vat
 

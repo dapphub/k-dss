@@ -1,5 +1,5 @@
 {
-  "path": "dss/out/Vow.abi",
+  "path": "dss/out/#Vow.abi",
   "vars": {
     "Vat" : "address",
     "Cow" : "address",
@@ -130,8 +130,8 @@
         "ABI_risk" : "uint256"
       },
       "stores" : {
-        "Vow.lump" : "Lump => #if (ABI_what ==Int ??) #then ABI_risk #else Lump #fi",
-        "Vow.pad" : "Pad => #if (ABI_what ==Int ??) #then ABI_risk #else Pad #fi"
+        "#Vow.lump" : "Lump => #if (ABI_what ==Int ??) #then ABI_risk #else Lump #fi",
+        "#Vow.pad" : "Pad => #if (ABI_what ==Int ??) #then ABI_risk #else Pad #fi"
       },
       "requires" : [
       ],
@@ -143,9 +143,9 @@
         "ABI_addr" : "address"
       },
       "stores" : {
-        "Vow.cow" : "Cow => #if (ABI_what ==Int ??) #then ABI_addr #else Cow #fi",
-        "Vow.row" : "Row => #if (ABI_what ==Int ??) #then ABI_addr #else Row #fi",
-        "Vow.vat" : "Vat => #if (ABI_what ==Int ??) #then ABI_addr #else Vat #fi"
+        "#Vow.cow" : "Cow => #if (ABI_what ==Int ??) #then ABI_addr #else Cow #fi",
+        "#Vow.row" : "Row => #if (ABI_what ==Int ??) #then ABI_addr #else Row #fi",
+        "#Vow.vat" : "Vat => #if (ABI_what ==Int ??) #then ABI_addr #else Vat #fi"
       },
       "requires" : [
       ],
@@ -156,8 +156,8 @@
         "ABI_tab" : "uint256"
       },
       "stores" : {
-        "Vow.sin(TIME)" : "Sin_era => Sin_era +Int ABI_tab",
-        "Vow.Sin" : "Sin => Sin +Int ABI_tab"
+        "#Vow.sin(TIME)" : "Sin_era => Sin_era +Int ABI_tab",
+        "#Vow.Sin" : "Sin => Sin +Int ABI_tab"
       },
       "requires" : [
         "#rangeUInt(256, Sin_era +Int ABI_tab)",
@@ -171,9 +171,9 @@
         "Sin_era_" : "uint256"
       },
       "stores" : {
-        "Vow.sin(ABI_era_)" : "Sin_era_ => 0",
-        "Vow.Sin" : "Sin => Sin -Int Sin_era_",
-        "Vow.Woe" : "Woe => Woe +Int Sin_era_"
+        "#Vow.sin(ABI_era_)" : "Sin_era_ => 0",
+        "#Vow.Sin" : "Sin => Sin -Int Sin_era_",
+        "#Vow.Woe" : "Woe => Woe +Int Sin_era_"
       },
       "requires" : [
         "#rangeUInt(256, Sin -Int Sin_era_)",
@@ -194,7 +194,6 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.dai(ACCT_ID)" : "#unsigned(Dai)",
           "#Vat.dai(ACCT_ID)" : "#unsigned(Dai) => #unsigned(Dai -Int #wad2rad(ABI_wad))",
           "#Vat.sin(ACCT_ID)" : "#unsigned(Sin) => #unsigned(Sin -Int #wad2rad(ABI_wad))",
           "#Vat.vice" : "#unsigned(Vice) => #unsigned(Vice -Int #wad2rad(ABI_wad))",
