@@ -157,7 +157,13 @@ let acts = acts_str
           }
           a.iff = (a.iff || []).concat( _iff )
         } else if(/^returns/.test(head)) {
-          a.returns = varWrap(a.types, head.split(" ").slice(1).join(" ")) + " : .WordStack"
+          let returns = varWrap(a.types, head.split(" ").slice(1).join(" "))
+            .split(":")
+            .map(e => e.trim())
+          let buildReturns = rs => rs.length > 0
+            ? `#asByteStackInWidthaux(${rs[0]}, 31, 32, ${ buildReturns(rs.slice(1)) })`
+            : ".WordStack"
+          a.returns = buildReturns(returns)
         }
 
         return a;
