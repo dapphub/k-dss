@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/dapphub/k-dss#readme",
   "dependencies": {
+    "cli-color": "^1.2.0",
     "marked": "^0.4.0"
   }
 }
