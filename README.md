@@ -6,58 +6,63 @@
 ### build
 ```sh
 git clone git@github.com:dapphub/k-dss.git
-make all
+make
 ```
 
 ### usage
 to run a proof with [klab](https://github.com/dapphub/klab):
 ```sh
-klab run --spec out/frob_success_file_bytes32_bytes32_int256.ini
+klab run --spec out/Vat_dai_succ.ini
 ```
 
-or any other spec in the `out` dir
+or any other spec in the `out` dir. You will need a bleeding edge `klab` and `evm-semantics`.
 
 # Progress
 
+`-` means not applicable
+
+`x` means the proof is succeeding
+
+`o` means in development (ask before attacking)
 
 |             | succ | fail |
 |-------------|------|------|
 | **Vat**     |      |      |
-| `root`      |      |      |
-| `dai`       |      |      |
-| `sin`       |      |      |
-| `ilks`      |      |      |
-| `urns`      |      |      |
-| `Tab`       |      |      |
-| `vice`      |      |      |
-| `file`      |      |      |
-| `move`      |      |      |
-| `slip`      | x    |      |
+| `root`      | o    | -    |
+| `dai`       | o    | -    |
+| `sin`       | o    | -    |
+| `ilks`      | o    | -    |
+| `urns`      | o    | -    |
+| `Tab`       | o    | -    |
+| `vice`      | o    | -    |
+| `file`      | o    | -    |
+| `move`      | o    | o    |
+| `slip`      | o    | o    |
 | `tune`      |      |      |
 | `grab`      |      |      |
 | `fold`      |      |      |
 |             |      |      |
 | **Pit**     |      |      |
-| `live`      |      |      |
-| `Line`      |      |      |
-| `vat`       |      |      |
-| `ilks`      |      |      |
-| `file`      |      |      |
-| `file`      |      |      |
+| `live`      |      | -    |
+| `Line`      |      | -    |
+| `vat`       |      | -    |
+| `ilks`      |      | -    |
+| `file`      |      | -    |
+| `file`      |      | -    |
 | `frob`      |      |      |
 |             |      |      |
 | **Vow**     |      |      |
-| `sin`       |      |      |
-| `Sin`       |      |      |
-| `Woe`       |      |      |
-| `Ash`       |      |      |
-| `wait`      |      |      |
-| `lump`      |      |      |
-| `pad`       |      |      |
-| `era`       |      |      |
-| `Awe`       |      |      |
+| `sin`       |      | -    |
+| `Sin`       |      | -    |
+| `Woe`       |      | -    |
+| `Ash`       |      | -    |
+| `wait`      |      | -    |
+| `lump`      |      | -    |
+| `pad`       |      | -    |
+| `era`       |      | -    |
+| `Awe`       |      | -    |
 | `Joy`       |      |      |
-| `file`      |      |      |
+| `file`      |      | -    |
 | `fess`      |      |      |
 | `flog`      |      |      |
 | `heal`      |      |      |
@@ -66,22 +71,22 @@ or any other spec in the `out` dir
 | `flap`      |      |      |
 |             |      |      |
 | **Cat**     |      |      |
-| `vat`       |      |      |
-| `pit`       |      |      |
-| `vow`       |      |      |
-| `lump`      |      |      |
-| `ilks`      |      |      |
-| `nflip`     |      |      |
-| `flips`     |      |      |
-| `file`      |      |      |
-| `file`      |      |      |
+| `vat`       |      | -    |
+| `pit`       |      | -    |
+| `vow`       |      | -    |
+| `lump`      |      | -    |
+| `ilks`      |      | -    |
+| `nflip`     |      | -    |
+| `flips`     |      | -    |
+| `file`      |      | -    |
+| `file`      |      | -    |
 | `bite`      |      |      |
 | `flip`      |      |      |
 |             |      |      |
 | **Adapter** |      |      |
-| `vat`       |      |      |
-| `ilk`       |      |      |
-| `gem`       |      |      |
+| `vat`       |      | -    |
+| `ilk`       |      | -    |
+| `gem`       |      | -    |
 | `join`      |      |      |
 | `exit`      |      |      |
 
