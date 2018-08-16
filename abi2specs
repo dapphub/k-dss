@@ -177,14 +177,14 @@ let behaviours = acts
         return range(name)
       })
 
-    const storage_success = "  " + Object.keys(act.storage.ACCT_ID || [])
+    const storage_success = "  " + Object.keys(atc.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
       .join("\n  " + " ".repeat(14))
     const cond_success = (act_if || []).concat(act.iff || [])
       .map(c => "  andBool " + c)
       .join("\n")
 
-    const storage_fail = "  " + Object.keys(act.storage.ACCT_ID || [])
+    const storage_fail = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key][0] + (act.storage.ACCT_ID[key].length > 1 ? " => _ " : "") + ")" )
       .join("\n  " + " ".repeat(14))
     const cond_fail = (act_if || [])
