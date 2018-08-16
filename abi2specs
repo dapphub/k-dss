@@ -86,7 +86,7 @@ let acts = acts_str
         if(/^behaviour/.test(head)) {
           a.name    = head.split(" ")[1]
           a.subject = head.split(" ")[3]
-          console.log("Building behaviour " + a.subject + "." + a.name)  
+          console.log("Building behaviour " + a.subject + "." + a.name)
         } else if(/^interface/.test(head)) {
           const interface_str = head
             .split(" ")
@@ -156,6 +156,11 @@ let acts = acts_str
               .map(l => range(l))
           }
           a.iff = (a.iff || []).concat( _iff )
+        } else if(/^if/.test(head)) {
+          let _if = tail
+            .map(l => mapInterface(a.interface, toK(l).trim()))
+            .filter(l => l != "")
+          a.if = (a.if || []).concat(_if)
         } else if(/^returns/.test(head)) {
           let returns = varWrap(a.types, head.split(" ").slice(1).join(" "))
             .split(":")
@@ -193,6 +198,7 @@ let behaviours = acts
         let range = bound[act.types[name]]
         return range(name)
       })
+      .concat(a.if || [])
 
     const storage_success = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
