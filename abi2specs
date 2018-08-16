@@ -9,6 +9,14 @@ const acts_str      = raw_config
                       .filter(e => e.type === "code")
                       .map(e => e.text)
 const config        = {}
+const testPath = path => {
+  try {
+    fs.accessSync(path, fs.constants.F_OK);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 const template      = fs.readFileSync("./template.ini")
   .toString();
@@ -177,7 +185,7 @@ let behaviours = acts
         return range(name)
       })
 
-    const storage_success = "  " + Object.keys(atc.storage && act.storage.ACCT_ID || [])
+    const storage_success = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
       .join("\n  " + " ".repeat(14))
     const cond_success = (act_if || []).concat(act.iff || [])
@@ -198,7 +206,12 @@ let behaviours = acts
     const accounts = Object.keys(act.storage || {})
       .filter(name => name != "ACCT_ID")
       .map(name => {
-        let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        let code = "";
+        if(testPath("dss/out/" + name + ".bin-runtime")) {
+          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        } else {
+          console.log("WARN: no implementation provided for " + name);
+        }
         let fstore = Object.keys(act.storage[name])
           .map(key => key + " |-> (" + act.storage[name][key].join(" => ") + ")")
           .join("\n" + " ".repeat(12))
@@ -219,7 +232,12 @@ let behaviours = acts
     const accounts_fail = Object.keys(act.storage || {})
       .filter(name => name != "ACCT_ID")
       .map(name => {
-        let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        let code = "";
+        if(testPath("dss/out/" + name + ".bin-runtime")) {
+          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        } else {
+          console.log("WARN: no implementation provided for " + name);
+        }
         let fstore = Object.keys(act.storage[name])
           .map(key => key + " |-> (" + act.storage[name][key][0] + (act.storage[name][key].length > 1 ? " => _ " : "") + ")" )
           .join("\n"+" ".repeat(12))
