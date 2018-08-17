@@ -277,6 +277,10 @@ rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
 
 // misc:
 
+// hashed storage offsets never overflow (probabilistic assumption):
+rule chop(keccakIntList(L) +Int N) => keccakIntList(L) +Int N
+  requires N <=Int 100
+
 syntax Int ::= "#wad2rad" "(" Int ")" [function]
 // ---------------------------------------
 rule #wad2rad(X) => X *Int 1000000000000000000000000000
