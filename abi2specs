@@ -59,8 +59,8 @@ const varWrap = (types, str) => str in types
   || str
 const mapInterface = (is, str) => {
   is.forEach(([t, n]) => {
-    str = str.replace(new RegExp(n + "([^\\w]|$)", "g"), (a, b, c) => {
-      return "ABI_" + n + b;
+    str = str.replace(new RegExp("([^\\w]|^)" + n + "([^\\w]|$)", "g"), (a, b, c, d) => {
+      return b + "ABI_" + n + c;
     })
   })
   return str;
