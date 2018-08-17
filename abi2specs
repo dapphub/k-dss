@@ -260,7 +260,7 @@ let behaviours = acts
 
         return `<account>
           <acctID> ${name} </acctID>
-          <balance> _ </balance>
+          <balance> ${name}_balance </balance>
           <code> #parseByteStack("0x${code}") </code>
           <storage>
             ${fstore}
