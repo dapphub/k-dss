@@ -3,6 +3,15 @@ SRC_DIR = dss/
 SPEC_DIR = specs/
 OUT_DIR = out/
 SPECS = tune frob
+KLAB_EVMS_PATH:=$(CURDIR)/evm-semantics
+TMPDIR=$(CURDIR)/tmp
+
+export PATH
+export KLAB_EVMS_PATH
+export TMPDIR
+
+test_dir=out
+tests=$(wildcard $(test_dir)/*)
 
 all: dapp deps-npm spec
 
@@ -18,6 +27,16 @@ dapp-clean:
 
 deps-npm:
 	npm install
+
+test:  $(tests:=.test)
+	pkill klab
+
+pre-test:
+	klab server & mkdir -p $(TMPDIR) 
+
+%.test: pre-test
+	klab run --headless --force --spec $*
+
 
 clean: dapp-clean
 	rm $(OUT_DIR)*
