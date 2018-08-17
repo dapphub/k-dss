@@ -192,9 +192,9 @@ let behaviours = acts
   .map(act => {
 
     const act_if = Object.keys(act.types)
-      .filter(name => act.types[name] in bound)
+      .filter(name => act.types[name].split(' ')[0] in bound)
       .map(name => {
-        let range = bound[act.types[name]]
+        let range = bound[act.types[name].split(' ')[0]]
         return range(name)
       })
       .concat(act.if || [])

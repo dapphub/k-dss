@@ -403,3 +403,10 @@ rule (notBool (B <Int 0))
 // idk?
 rule A modInt pow160 => A
   requires #rangeAddress(A)
+
+syntax Bool ::= #rangeNotPrecompileAddress ( Int ) [function]
+// ---------------------------------------
+rule #rangeNotPrecompileAddress ( X ) =>
+     #rangeAddress ( X )
+     andBool 9 <=Int X
+     andBool X =/= ACCT_ID
