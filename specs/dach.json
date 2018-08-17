@@ -47,7 +47,8 @@
                 "#rangeUInt(256, #unsigned(Src_dai) -Int ABI_fee -Int ABI_amount)",
                 "#rangeUInt(256, #unsigned(Dst_dai) +Int ABI_amount)",
                 "#rangeUInt(256, #unsigned(Caller_dai) +Int ABI_fee)",
-                "(#sender(#unparseByteStack(#asByteStack(keccak(#encodeArgs( #string(\"\\x19\\x01\"), #bytes32(DOMAIN_SEPARATOR), #bytes32(keccak(#encodeArgs( bytes32(CHEQUE_TYPEHASH), #address(ABI_src), #address(ABI_dst), #uint256(ABI_wad),  #uint256(ABI_fee), #uint256(ABI_nonce)))))))), ABI_v, #unparseByteStack(#asByteStack(ABI_r)), #unparseByteStack(#asByteStack(ABI_s))) ==Int ABI_src)"
+                "(#sender(#unparseByteStack(#asByteStack(keccak(#encodeArgs( #string(\"\\x19\\x01\"), #bytes32(DOMAIN_SEPARATOR), #bytes32(keccak(#encodeArgs( bytes32(CHEQUE_TYPEHASH), #address(ABI_src), #address(ABI_dst), #uint256(ABI_wad),  #uint256(ABI_fee), #uint256(ABI_nonce)))))))), ABI_v, #unparseByteStack(#asByteStack(ABI_r)), #unparseByteStack(#asByteStack(ABI_s))) ==Int ABI_src)",
+                "ABI_nonce ==Int Nonce"
             ],
             "returns" : ""
         }
