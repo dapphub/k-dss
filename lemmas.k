@@ -292,4 +292,7 @@ rule #wad2rad(X) => X *Int 1000000000000000000000000000
 
 syntax Bool ::= #rangeNotPrecompileAddress ( Int ) [function]
 // ---------------------------------------
-rule #rangeNotPrecompileAddress ( X ) => #rangeAddress ( X ) andBool 9 <=Int X
+rule #rangeNotPrecompileAddress ( X ) =>
+     #rangeAddress ( X )
+     andBool 9 <=Int X
+     andBool X =/= ACCT_ID

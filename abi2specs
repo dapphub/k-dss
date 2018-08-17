@@ -194,9 +194,9 @@ let behaviours = acts
   .map(act => {
 
     const act_if = Object.keys(act.types)
-      .filter(name => act.types[name] in bound)
+      .filter(name => act.types[name].split(' ')[0] in bound)
       .map(name => {
-        let range = bound[act.types[name]]
+        let range = bound[act.types[name].split(' ')[0]]
         return range(name)
       })
       .concat(act.if || [])
@@ -209,7 +209,7 @@ let behaviours = acts
       .join("\n")
 
     const storage_fail = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
-      .map(key => key + " |-> (" + act.storage.ACCT_ID[key][0] + (act.storage.ACCT_ID[key].length > 1 ? " => _ " : "") + ")" )
+      .map(key => key + " |-> (" + act.storage.ACCT_ID[key][0] + (act.storage.ACCT_ID[key].length > 1 ? " => " + act.storage.ACCT_ID[key][0] : "") + ")" )
       .join("\n  " + " ".repeat(14))
     const cond_fail = (act_if || [])
       .map(c => "  andBool " + c)
