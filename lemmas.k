@@ -409,4 +409,4 @@ syntax Bool ::= #rangeNotPrecompileAddress ( Int ) [function]
 rule #rangeNotPrecompileAddress ( X ) =>
      #rangeAddress ( X )
      andBool 9 <=Int X
-     andBool X =/= ACCT_ID
+     andBool X =/=Int ACCT_ID
