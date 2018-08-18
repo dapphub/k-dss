@@ -2,8 +2,8 @@
   "path" : "dss/out/Adapter.abi",
   "vars" : {
     "Vat" : "address",
-    "Ilk" : "int256",
-    "Gem" : "int256"    
+    "Ilk" : "bytes32",
+    "Gem" : "address"    
   },
   "stores" : {
     "#Adapter.vat" : "Vat",
@@ -18,7 +18,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Vat"
+      "returns" : "Vat : .WordStack"
     },
     "ilk" : {
       "vars" : {
@@ -27,7 +27,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Ilk"
+      "returns" : "Ilk : .WordStack"
     },
     "gem" : {
       "vars" : {
@@ -36,7 +36,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Gem"
+      "returns" : "Gem : .WordStack"
     },
     "join" : {
       "vars" : {
@@ -47,17 +47,20 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
+          "#Vat.urns(Ilk, CALLER_ID).gem" : "#unsigned(Wad) => #unsigned(Wad +Int ABI_wad)"
         },
         "Gem" : {
+          "#Gem.balances(CALLER_ID)" : "Bal_guy => Bal_guy -Int ABI_wad",
+          "#Gem.balances(ACCT_ID)" : "Bal_adapter => Bal_adapter +Int ABI_wad"
         }
       },
       "requires" : [
         "#rangeSInt(256, ABI_wad)",
-        "ABI_wad >=Int 0",
-        "#rangeSInt(256, Wad +Int ABI_wad)"
+        "#rangeSInt(256, Wad +Int ABI_wad)",
+        "#rangeUInt(256, Bal_guy -Int ABI_wad)",
+        "#rangeUInt(256, Bal_adapter +Int ABI_wad)"
       ],
-      "returns" : ""
+      "returns" : ".WordStack"
     },
     "exit" : {
       "vars" : {
@@ -68,17 +71,21 @@
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.urns(Ilk, CALLER_ID, \"gem\")" : "#unsigned(Wad) => #unsigned(Wad -Int ABI_wad)"
+          "#Vat.urns(Ilk, CALLER_ID).gem" : "#unsigned(Wad) => #unsigned(Wad -Int ABI_wad)"
         },
         "Gem" : {
+          "#Gem.balances(CALLER_ID)" : "Bal_guy => Bal_guy +Int ABI_wad",
+          "#Gem.balances(ACCT_ID)" : "Bal_adapter => Bal_adapter -Int ABI_wad" 
         }
       },
       "requires" : [
         "#rangeSInt(256, ABI_wad)",
-        "ABI_wad >=Int 0",
-        "#rangeSInt(256, Wad -Int ABI_wad)"
+        "#rangeSInt(256, Wad -Int ABI_wad)",
+        "Wad -Int ABI_wad >= 0",
+        "#rangeUInt(256, Bal_guy +Int ABI_wad)",
+        "#rangeUInt(256, Bal_adapter -Int ABI_wad)"
       ],
-      "returns" : ""
+      "returns" : ".WordStack"
     }
   }
 }

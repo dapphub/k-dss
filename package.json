@@ -1,0 +1,23 @@
+{
+  "name": "k-dss",
+  "version": "1.0.0",
+  "description": "```sh git submodule update --init --recursive cd dss && dapp build && cd ../ ./abi2specs specs/frob.json klab run --spec out/frob_success_file_bytes32_bytes32_int256.ini ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dapphub/k-dss.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dapphub/k-dss/issues"
+  },
+  "homepage": "https://github.com/dapphub/k-dss#readme",
+  "dependencies": {
+    "cli-color": "^1.2.0",
+    "marked": "^0.4.0"
+  }
+}

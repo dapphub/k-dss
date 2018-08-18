@@ -1,12 +1,23 @@
 #!/usr/bin/env node
 const fs            = require("fs");
 const path          = require("path");
+const marked        = require("marked");
+const clc           = require("cli-color");
 const config_path   = process.argv[2];
-const filename      = path.basename(config_path, ".json");
-const config        = JSON.parse(fs.readFileSync(config_path));
-const abifile_name  = config.path;
-const global_vars   = config.vars;
-const global_stores = config.stores;
+const raw_md_config = fs.readFileSync(config_path).toString()
+const raw_config    = marked.lexer(raw_md_config)
+const acts_str      = raw_config
+                      .filter(e => e.type === "code")
+                      .map(e => e.text)
+const config        = {}
+const testPath = path => {
+  try {
+    fs.accessSync(path, fs.constants.F_OK);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 const template      = fs.readFileSync("./template.ini")
   .toString();
@@ -14,91 +25,216 @@ const render        = o => Object.keys(o)
   .reduce((tmp, name) =>
     tmp.replace(new RegExp("{{" + name + "}}", "g"), o[name]), template)
 
-const bound = {
-  "uint256": name => `#rangeUInt(256, ${ name })`,
-  "int256" : name => `#rangeSInt(256, ${ name })`,
-  "bytes32": name => `#rangeBytes(32, ${ name })`,
-  "address": name => `#rangeAddress(${ name })`
-}
-
-
-const abi = JSON.parse(fs.readFileSync(abifile_name));
-
 const make_abi_dsl = ({type, name}, i) =>
   "#" + type + "(ABI_" + name + ")"
 const make_args = inputs => inputs.length == 0
     && ".TypedArgs"
     || inputs.map(make_abi_dsl).join(", ")
 
-let abit = Object.keys(config.methods)
-  .map(name => ({
-    ...config.methods[name],
-    abi: name.indexOf("(") == -1
-           ? abi.find(fabi => fabi.name == name)
-           : abi.find(fabi => fabi.name + "(" + fabi.inputs.map(i => i.type).join(",") + ")" == name )
-  }))
-  .filter(({abi}) => abi.type == "function")
-  .map(({abi, vars, stores, requires, returns, foreign_stores}) => {
+const bound = {
+  "uint48" : name => `#rangeUInt(48, ${ name })`,
+  "uint256": name => `#rangeUInt(256, ${ name })`,
+  "uint8"  : name => `#rangeUInt(8,   ${ name })`,
+  "int256" : name => `#rangeSInt(256, ${ name })`,
+  "bytes32": name => `#rangeBytes(32, ${ name })`,
+  "address": name => `#rangeNotPrecompileAddress(${ name })`
+}
+const toK = str => str
+  .replace(/ \+ /g, " +Int ")
+  .replace(/ \- /g, " -Int ")
+  .replace(/ \* /g, " *Int ")
+  .replace(/ \/ /g, " /Int ")
+  .replace(/ \> /g, " >Int ")
+  .replace(/ \< /g, " <Int ")
+  .replace(/ \<\= /g, " <=Int ")
+  .replace(/ \>\= /g, " >=Int ")
+  .replace(/ \=\= /g, " ==Int ")
+  .replace(/ \=\/\= /g, " =/=Int ")
+  .replace(/ and /g, " andBool ")
+  .replace(/ or /g, " orBool ")
+  .replace(/ not /g, " notBool ")
+  .replace(/uint\(/g, "#unsigned(")
+  .replace(/bool\(/g, "bool2Word(")
+const mapInterface = (is, str) => {
+  is.forEach(([t, n]) => {
+    str = str.replace(new RegExp("([^\\w]|^)" + n + "([^\\w]|$)", "g"), (a, b, c, d) => {
+      return b + "ABI_" + n + c;
+    })
+  })
+  return str;
+}
 
-    const local_vars = {
-      ...global_vars,
-      ...vars
-    }
-    const local_stores = {
-      ...global_stores,
-      ...stores
-    }
+let acts = acts_str
+  .map(e => {
+    let _act = e
+      .split("\n")
+      .reduce(([c, a], l) => {
+          if(/^[^\s]/.test(l)) {
+            if(c.length > 0) a = a.concat([c])
+            c = [l]
+          } else {
+            c = c.concat([l])
+          }
+        return [c, a];
+      }, [[], []])
+    let act_arr = _act[1].concat([_act[0]])
+    let act = act_arr
+      .reduce((a, e) => {
+        let head = e[0];
+        let tail = e.slice(1)
+        if(/^behaviour/.test(head)) {
+          a.name    = head.split(" ")[1]
+          a.subject = head.split(" ")[3]
+          console.log("Building behaviour " + a.subject + "." + a.name)
+        } else if(/^interface/.test(head)) {
+          const interface_str = head
+            .split(" ")
+            .slice(1)
+            .join(" ");
+          const interface  = interface_str
+            .match(/\(([^\)]*)\)/)[1]
+            .split(", ")
+            .map(l => l.split(" "))
+          const _interface_types = interface
+            .reduce((a, [v, k]) => {
+              a["ABI_" + k] = v;
+              return a;
+            }, {})
+          const fname = interface_str.slice(0, interface_str.indexOf("("))
+          a.callData = `#abiCallData("${fname}", ${make_args(interface.map(([type, name]) => ({type, name})))})`
+          a.signature = fname + "(" + interface
+            .map(([t, v]) => t).join(",") + ")"
+          a.types = {
+            ...a.types,
+            ..._interface_types
+          }
+          a.interface = interface;
+        } else if(/^types/.test(head)) {
+          let _types = tail
+            .map(l => l.trim())
+            .filter(l => l != "")
+            .map(l => l.split(":").map(i => i.trim()))
+            .reduce((a, [k, v]) => {
+              a[k] = v;
+              return a;
+            }, {})
+          a.types = {
+            ...a.types,
+            ..._types
+          }
+        } else if(/^storage/.test(head)) {
+          let name = head.split(" ")[1] || "ACCT_ID";
+          let _storage = tail
+            .map(l => mapInterface(a.interface, l.trim()))
+            .filter(l => l != "")
+            .map(l => l.split("|->").map(i => toK(i).trim()))
+            .map(([k, v]) => {
+              if(v.indexOf("=>") > -1) {
+                v = v.split("=>").map(i => i.trim())
+              } else {
+                v = [v]
+              }
+              return [k, v];
+            })
+            .reduce((a, [k, v]) => {
+              a[k] = v;
+              return a;
+            }, {})
+          if( name !== "ACCT_ID" ) a.types[name + "_balance"] = "uint256";
+          a.storage = {
+            ...a.storage,
+            [name]: _storage
+          }
+        } else if(/^iff/.test(head)) {
+          let _iff = tail
+            .map(l => mapInterface(a.interface, toK(l).trim()))
+            .filter(l => l != "")
+          if(head.indexOf("in range") > -1) {
+            let range = bound[head.split(" in range ")[1]]
+            _iff = _iff
+              .map(l => range(l))
+          }
+          a.iff = (a.iff || []).concat( _iff )
+        } else if(/^if/.test(head)) {
+          let _if = tail
+            .map(l => mapInterface(a.interface, toK(l).trim()))
+            .filter(l => l != "")
+          a.if = (a.if || []).concat(_if)
+        } else if(/^returns/.test(head)) {
+          let returns = head.split(" ").slice(1).join(" ")
+            .split(":")
+            .map(e => e.trim())
+          let buildReturns = rs => rs.length > 0
+            ? `#asByteStackInWidthaux(${toK(rs[0])}, 31, 32, ${ buildReturns(rs.slice(1)) })`
+            : ".WordStack"
+          a.returns = buildReturns(returns)
+        }
+
+        return a;
+      }, {})
+    return act;
+  })
 
 
-    const storage_success = "  " + Object.keys(local_stores)
-      .map(key => key + " |-> (" + local_stores[key] + ")" )
-      .join("\n  ")
+// let toObject = (str, d = ":") => str
+//   .split("\n")
+//   .map(e => e.split(d))
+//   .reduce((a, [k, v]) => { a[k.trim()] = v.trim(); return a; }, {})
+//
+// let toStorage = str => str.split("\n")
 
-    const vars_in_range = Object.keys(local_vars)
-      .map(name => `andBool ${bound[local_vars[name]](name)}`)
+// let lvl1_config = tmp.o[Object.keys(tmp.o)[0]]
+// const global_vars   = toObject(lvl1_config.defaults.vars.data[0]);
+// const global_stores = toObject(lvl1_config.defaults.storage.data[0], "|->");
+//
 
+let behaviours = acts
+  .map(act => {
 
-    let callData = `#abiCallData("${abi.name}", ${make_args(abi.inputs)})`
-    let abi_var_in_range = abi.inputs
-      .filter(({name}) => !local_vars["ABI_" + name])
-      .map(({type, name}, i) => `andBool ${ bound[type]("ABI_" + name) }` )
-
-    let fabi_success = (requires || [])
-      .map(c => `andBool ` + c)
-    let cond_success = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
-      .concat(abi_var_in_range)
-      .concat(["\n  // storage data"])
-      .concat(vars_in_range)
-      .concat(["\n  // success conditions"])
-      .concat(fabi_success)
-      .join("\n  ")
-
-    const storage_fail = "  " + Object.keys(local_stores)
-      .map(key => key + " |-> " + (local_stores[key].indexOf("=>") > -1 ? "(" + local_stores[key].split("=>")[0] + "=> _)" : local_stores[key]) )
-      .join("\n  ")
-    let fabi_fail = ["notBool (\n            " + (requires || []).join("\n    andBool ") + "\n  )"]
-      .map(c => `andBool ` + c)
-    let cond_fail = (abi_var_in_range.length > 0 ? ["\n  // call data"] : [])
-      .concat(abi_var_in_range)
-      .concat(["\n  // storage data"])
-      .concat(vars_in_range)
-      .concat(["\n  // success conditions"])
-      .concat(fabi_fail)
-      .join("\n  ")
-
-    let accounts = Object.keys(foreign_stores || {})
+    const act_if = Object.keys(act.types)
+      .filter(name => act.types[name].split(' ')[0] in bound)
       .map(name => {
-        let code = fs.readFileSync("dss/out/" + name + ".bin-runtime")
-        let stores_ = Object.keys(foreign_stores[name])
-          .map(key => key + " |-> (" + foreign_stores[name][key] + ")" )
-          .join("\n  ")
+        let range = bound[act.types[name].split(' ')[0]]
+        return range(name)
+      })
+      .concat(act.if || [])
+
+    const storage_success = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
+      .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
+      .join("\n  " + " ".repeat(14))
+    const cond_success = (act_if || []).concat(act.iff || [])
+      .map(c => "  andBool " + c)
+      .join("\n")
+
+    const storage_fail = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
+      .map(key => key + " |-> (" + act.storage.ACCT_ID[key][0] + (act.storage.ACCT_ID[key].length > 1 ? " => _ " : "") + ")" )
+      .join("\n  " + " ".repeat(14))
+    const cond_fail = (act_if || [])
+      .map(c => "  andBool " + c)
+      .join("\n")
+      + "\n  andBool notBool (\n            "
+      + (act.iff || [])
+      .join("\n    andBool ") + "\n  )"
+
+    const accounts = Object.keys(act.storage || {})
+      .filter(name => name != "ACCT_ID")
+      .map(name => {
+        let code = "";
+        if(testPath("dss/out/" + name + ".bin-runtime")) {
+          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        } else {
+          console.log(clc.xterm(208)("WARN: no implementation provided for " + name));
+        }
+        let fstore = Object.keys(act.storage[name])
+          .map(key => key + " |-> (" + act.storage[name][key].join(" => ") + ")")
+          .join("\n" + " ".repeat(12))
 
         return `<account>
           <acctID> ${name} </acctID>
-          <balance> _ </balance>
+          <balance> ${name}_balance </balance>
           <code> #parseByteStack("0x${code}") </code>
           <storage>
-            ${stores_}
+            ${fstore}
           </storage>
           <nonce> _ </nonce>
         </account>
@@ -106,44 +242,69 @@ let abit = Object.keys(config.methods)
       })
       .join("\n")
 
-    let activeaccounts = Object.keys(foreign_stores || {})
+    const accounts_fail = Object.keys(act.storage || {})
+      .filter(name => name != "ACCT_ID")
+      .map(name => {
+        let code = "";
+        if(testPath("dss/out/" + name + ".bin-runtime")) {
+          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        } else {
+          console.log(clc.xterm(208)("WARN: no implementation provided for " + name));
+        }
+        let fstore = Object.keys(act.storage[name])
+          .map(key => key + " |-> (" + act.storage[name][key][0] + (act.storage[name][key].length > 1 ? " => _ " : "") + ")" )
+          .join("\n"+" ".repeat(12))
+
+        return `<account>
+          <acctID> ${name} </acctID>
+          <balance> ${name}_balance </balance>
+          <code> #parseByteStack("0x${code}") </code>
+          <storage>
+            ${fstore}
+          </storage>
+          <nonce> _ </nonce>
+        </account>
+        `
+      })
+      .join("\n")
+
+    const activeaccounts = Object.keys(act.storage || {})
+      .filter(name => name !== "ACCT_ID")
       .map(name => `SetItem(${name})`)
       .join(" ")
 
+    const filename = act.subject + "_" + act.name
 
-    const filename = abi.name + "_" + abi.inputs.map(i => i.type).join("_")
-
-    let cases = [{
-      name: "success_" + filename,
+    const cases = [{
+      name: filename + "_succ",
       spec: render({
-        name: abi.name,
-        callData,
+        name: act.name,
+        callData: act.callData,
         cond: cond_success,
         storage: storage_success,
-        returns: returns || "_",
+        returns: act.returns || "_",
         status: "EVMC_SUCCESS",
         activeaccounts,
         accounts
       })
     }];
 
-    if((requires || []).length > 0) {
+    if((act.iff || []).length > 0) {
       cases.push({
-        name: "fail_" + filename,
+        name: filename + "_fail",
         spec: render({
-          name: abi.name,
-          callData,
+          name: act.name,
+          callData: act.callData,
           cond: cond_fail,
           storage: storage_fail,
           returns: "_",
           status: "EVMC_REVERT",
           activeaccounts,
-          accounts
+          accounts: accounts_fail
         })
       })
     }
     return cases;
-
   })
   .reduce((a, cs) => a.concat(cs), [])
 
@@ -153,10 +314,7 @@ try {
   fs.mkdirSync("out");
 }
 
-abit
+behaviours
   .forEach(({spec, name}) => {
-    fs.writeFileSync("out/" + filename + "_" + name + ".ini", spec)
+    fs.writeFileSync("out/" + name + ".ini", spec)
   })
-
-
-// console.log(abit[0]);
