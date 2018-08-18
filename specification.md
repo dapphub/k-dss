@@ -33,9 +33,9 @@ types
 
 storage
 
-    #Vat.dai(lad) |-> Rad
+    #Vat.dai(lad) |-> uint(Rad)
 
-returns Rad
+returns uint(Rad)
 ```
 
 #### internal sin balances
@@ -49,9 +49,9 @@ types
 
 storage
 
-    #Vat.sin(lad) |-> Rad
+    #Vat.sin(lad) |-> uint(Rad)
 
-returns Rad
+returns uint(Rad)
 ```
 
 #### `ilk` data
@@ -66,10 +66,10 @@ types
 
 storage
 
-    #Vat.ilks(ilk).rate |-> Rate
-    #Vat.ilks(ilk).Art |-> Art_i
+    #Vat.ilks(ilk).rate |-> uint(Rate)
+    #Vat.ilks(ilk).Art |-> uint(Art_i)
 
-returns Rate : Art_i
+returns uint(Rate) : uint(Art_i)
 ```
 
 #### `urn` data
@@ -85,11 +85,11 @@ types
 
 storage
 
-    #Vat.urns(ilk, lad).gem |-> Gem
-    #Vat.urns(ilk, lad).ink |-> Ink
-    #Vat.urns(ilk, lad).art |-> Art_u
+    #Vat.urns(ilk, lad).gem |-> uint(Gem)
+    #Vat.urns(ilk, lad).ink |-> uint(Ink)
+    #Vat.urns(ilk, lad).art |-> uint(Art_u)
 
-returns Gem : Ink : Art_u
+returns uint(Gem) : uint(Ink) : uint(Art_u)
 ```
 
 #### total debt
@@ -103,9 +103,9 @@ types
 
 storage
 
-    #Vat.Tab |-> Tab
+    #Vat.Tab |-> uint(Tab)
 
-returns Tab
+returns uint(Tab)
 ```
 
 #### total bad debt
@@ -119,9 +119,9 @@ types
 
 storage
 
-    #Vat.vice |-> Vice
+    #Vat.vice |-> uint(Vice)
 
-returns Vice
+returns uint(Vice)
 ```
 ### Mutators
 
@@ -136,7 +136,7 @@ types
 
 storage
 
-    #Vat.ilks(ilk).rate |-> Rate => (#if what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208 #then risk #else Rate #fi)
+    #Vat.ilks(ilk).rate |-> Rate => uint(#if what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208 #then risk #else Rate #fi)
 ```
 
 #### transferring dai balances
@@ -151,8 +151,8 @@ types
 
 storage
 
-    #Vat.dai(src) |-> Dai_src => (Dai_src - #wad2rad(wad))
-    #Vat.dai(dst) |-> Dai_dst => (Dai_dst + #wad2rad(wad))
+    #Vat.dai(src) |-> uint(Dai_src) => uint(Dai_src - #wad2rad(wad))
+    #Vat.dai(dst) |-> uint(Dai_dst) => uint(Dai_dst + #wad2rad(wad))
 
 iff
 
@@ -178,8 +178,8 @@ types
 
 storage
 
-    #Vat.dai(src) |-> Dai_src => (Dai_src - #wad2rad(wad))
-    #Vat.dai(dst) |-> Dai_dst => (Dai_dst + #wad2rad(wad))
+    #Vat.dai(src) |-> uint(Dai_src) => uint(Dai_src - #wad2rad(wad))
+    #Vat.dai(dst) |-> uint(Dai_dst) => uint(Dai_dst + #wad2rad(wad))
 
 iff
 
@@ -204,7 +204,7 @@ types
 
 storage
 
-    #Vat.urns(ilk, guy).gem |-> Wad => Wad + wad
+    #Vat.urns(ilk, guy).gem |-> uint(Wad) => uint(Wad + wad)
 
 iff
 
@@ -233,13 +233,13 @@ types
 
 storage
 
-    #Vat.urns(ilk, lad).gem |-> Gem_u  => Gem_u - dink
-    #Vat.urns(ilk, lad).ink |-> Ink_u  => Ink_u + dink
-    #Vat.urns(ilk, lad).art |-> Art_u  => Art_u + dart
-    #Vat.ilks(ilk).rate     |-> Rate_i
-    #Vat.ilks(ilk).Art      |-> Art_i  => Art_i + dart
-    #Vat.dai(lad)           |-> Dai    => Dai + (Rate_i * dart)
-    #Vat.Tab                |-> Tab    => Tab + (Rate_i * dart)
+    #Vat.urns(ilk, lad).gem |-> uint(Gem_u)  => uint(Gem_u - dink)
+    #Vat.urns(ilk, lad).ink |-> uint(Ink_u)  => uint(Ink_u + dink)
+    #Vat.urns(ilk, lad).art |-> uint(Art_u)  => uint(Art_u + dart)
+    #Vat.ilks(ilk).rate     |-> uint(Rate_i)
+    #Vat.ilks(ilk).Art      |-> uint(Art_i)  => uint(Art_i + dart)
+    #Vat.dai(lad)           |-> uint(Dai)    => uint(Dai + (Rate_i * dart))
+    #Vat.Tab                |-> uint(Tab)    => uint(Tab + (Rate_i * dart))
 
 iff
 
@@ -278,12 +278,12 @@ types
 
 storage
 
-    #Vat.urns(ABI_ilk, ABI_lad).ink |-> Ink   => Ink + dink
-    #Vat.urns(ABI_ilk, ABI_lad).art |-> Art_u => Art_u + dart
-    #Vat.ilks(ABI_ilk).rate         |-> Rate
-    #Vat.ilks(ABI_ilk).Art          |-> Art_i => Art_i + dart
-    #Vat.sin(ABI_vow)               |-> Sin   => Sin + Rate * dart
-    #Vat.vice                       |-> Vice  => Vice + Rate * dart
+    #Vat.urns(ABI_ilk, ABI_lad).ink |-> uint(Ink)   => uint(Ink + dink)
+    #Vat.urns(ABI_ilk, ABI_lad).art |-> uint(Art_u) => uint(Art_u + dart)
+    #Vat.ilks(ABI_ilk).rate         |-> uint(Rate)
+    #Vat.ilks(ABI_ilk).Art          |-> uint(Art_i) => uint(Art_i + dart)
+    #Vat.sin(ABI_vow)               |-> uint(Sin)   => uint(Sin + Rate * dart)
+    #Vat.vice                       |-> uint(Vice)  => uint(Vice + Rate * dart)
 
 
 iff in range int256
@@ -310,10 +310,10 @@ types
 
 storage
 
-    #Vat.dai(v) |-> Dai_v => Dai_v - #wad2rad(wad)
-    #Vat.sin(u) |-> Sin_u => Sin_u - #wad2rad(wad)
-    #Vat.Tab    |-> Tab   => Tab - #wad2rad(wad)
-    #Vat.vice   |-> Vice  => Vice - #wad2rad(wad)
+    #Vat.dai(v) |-> uint(Dai_v) => uint(Dai_v - #wad2rad(wad))
+    #Vat.sin(u) |-> uint(Sin_u) => uint(Sin_u - #wad2rad(wad))
+    #Vat.Tab    |-> uint(Tab)   => uint(Tab - #wad2rad(wad))
+    #Vat.vice   |-> uint(Vice)  => uint(Vice - #wad2rad(wad))
 
 iff
 
@@ -344,10 +344,10 @@ types
 
 storage
 
-    #Vat.ilks(ilk).rate |-> Rate => Rate + rate
-    #Vat.ilks(ilk).Art  |-> Art
-    #Vat.dai(vow)       |-> Dai => Dai + Art_i * rate
-    #Vat.Tab            |-> Tab => Tab + Art_i * rate
+    #Vat.ilks(ilk).rate |-> uint(Rate => uint(Rate + rate)
+    #Vat.ilks(ilk).Art  |-> uint(Art)
+    #Vat.dai(vow)       |-> uint(Dai) => uint(Dai + Art_i * rate)
+    #Vat.Tab            |-> uint(Tab) => uint(Tab + Art_i * rate)
 
 iff in range int256
 
@@ -390,9 +390,9 @@ types
 
 storage
 
-    #Pit.Line |-> Line
+    #Pit.Line |-> uint(Line)
 
-returns Line
+returns uint(Line)
 ```
 
 #### `vat` address
@@ -423,12 +423,12 @@ types
 
 storage
 
-    #Pit.ilks(ilk).spot |-> Spot_i
-    #Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks(ilk).spot |-> uint(Spot_i)
+    #Pit.ilks(ilk).line |-> uint(Line_i)
 
 returns
 
-    Spot_i : Line_i
+    uint(Spot_i) : uint(Line_i)
 ```
 
 ### Mutators
@@ -445,8 +445,8 @@ types
 
 storage
 
-    #Pit.ilks(ilk).spot |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
-    #Pit.ilks(ilk).line |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
+    #Pit.ilks(ilk).spot |-> Spot_i => uint(#if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi)
+    #Pit.ilks(ilk).line |-> Line_i => uint(#if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi)
 ```
 
 #### setting the global debt ceiling
@@ -460,7 +460,7 @@ types
 
 storage
 
-    #Pit.Line |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
+    #Pit.Line |-> Line => uint(#if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi)
 ```
 
 #### manipulating a position
@@ -487,20 +487,20 @@ types
 storage
 
     #Pit.live           |-> Live
-    #Pit.Line           |-> Line
+    #Pit.Line           |-> uint(Line)
     #Pit.vat            |-> Vat
-    #Pit.ilks(ilk).line |-> Line_i
-    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks(ilk).line |-> uint(Line_i)
+    #Pit.ilks(ilk).spot |-> uint(Spot_i)
 
 storage Vat
 
-    #Vat.urns(ilk, CALLER_ID).gem |-> Gem_u => Gem_u - dink
-    #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u => Ink_u + dink
-    #Vat.urns(ilk, CALLER_ID).art |-> Art_u => Art_u + dart
-    #Vat.ilks(ilk).rate           |-> Rate_i
-    #Vat.ilks(ilk).Art            |-> Art_i => Art_i + dart
-    #Vat.dai(CALLER_ID)           |-> Dai => Dai + (Rate_i * dart)
-    #Vat.Tab                      |-> Tab => Tab + (Rate_i * dart)
+    #Vat.urns(ilk, CALLER_ID).gem |-> uint(Gem_u) => uint(Gem_u - dink)
+    #Vat.urns(ilk, CALLER_ID).ink |-> uint(Ink_u) => uint(Ink_u + dink)
+    #Vat.urns(ilk, CALLER_ID).art |-> uint(Art_u) => uint(Art_u + dart)
+    #Vat.ilks(ilk).rate           |-> uint(Rate_i)
+    #Vat.ilks(ilk).Art            |-> uint(Art_i) => uint(Art_i + dart)
+    #Vat.dai(CALLER_ID)           |-> uint(Dai) => uint(Dai + (Rate_i * dart))
+    #Vat.Tab                      |-> uint(Tab) => uint(Tab + (Rate_i * dart))
 
 iff
 
@@ -691,7 +691,7 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai
+    #Vat.dai(ACCT_ID) |-> uint(Dai)
     
 iff in range uint256
 
@@ -799,10 +799,10 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
-    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
-    #Vat.vice         |-> Vice => Vice - #wad2rad(wad)
-    #Vat.Tab          |-> Tab  => Tab - #wad2rad(wad)
+    #Vat.dai(ACCT_ID) |-> uint(Dai)  => uint(Dai - #wad2rad(wad))
+    #Vat.sin(ACCT_ID) |-> uint(Sin)  => uint(Sin - #wad2rad(wad))
+    #Vat.vice         |-> uint(Vice) => uint(Vice - #wad2rad(wad))
+    #Vat.Tab          |-> uint(Tab)  => uint(Tab - #wad2rad(wad))
 
 iff
 
@@ -842,10 +842,10 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
-    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
-    #Vat.vice         |-> Vice => Vice - #wad2rad(wad)
-    #Vat.Tab          |-> Tab  => Tab - #wad2rad(wad)
+    #Vat.dai(ACCT_ID) |-> uint(Dai)  => uint(Dai - #wad2rad(wad))
+    #Vat.sin(ACCT_ID) |-> uint(Sin)  => uint(Sin - #wad2rad(wad))
+    #Vat.vice         |-> uint(Vice) => uint(Vice - #wad2rad(wad))
+    #Vat.Tab          |-> uint(Tab)  => uint(Tab - #wad2rad(wad))
 
 iff
 
@@ -901,7 +901,7 @@ storage Row
     
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai
+    #Vat.dai(ACCT_ID) |-> uint(Dai)
     
 iff
 
@@ -954,7 +954,7 @@ storage Cow
     
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai
+    #Vat.dai(ACCT_ID) |-> uint(Dai)
 
 iff
 
@@ -1171,16 +1171,16 @@ storage
     
 storage Vat
 
-    #Vat.ilks(ilk).rate |-> Rate_i
-    #Vat.ilks(ilk).Art  |-> Art_i => Art_i - Art_u
-    #Vat.urns(ilk, guy).ink |-> Ink_u => 0
-    #Vat.urns(ilk, guy).art |-> Art_u => 0
-    #Vat.sin(Vow) |-> Sin_v => Sin_v - Rate_i * Art_u
-    #Vat.vice |-> Vice - Rate_i * Art_u
+    #Vat.ilks(ilk).rate |-> uint(Rate_i)
+    #Vat.ilks(ilk).Art  |-> uint(Art_i) => uint(Art_i - Art_u)
+    #Vat.urns(ilk, guy).ink |-> uint(Ink_u) => 0
+    #Vat.urns(ilk, guy).art |-> uint(Art_u) => 0
+    #Vat.sin(Vow) |-> uint(Sin_v) => uint(Sin_v - Rate_i * Art_u)
+    #Vat.vice |-> uint(Vice) => uint(Vice - Rate_i * Art_u)
 
 storage Pit
 
-    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks(ilk).spot |-> uint(Spot_i)
     
 Storage Vow
 
@@ -1344,7 +1344,7 @@ storage
 
 storage Vat
 
-    #Vat.urns(Ilk, CALLER_ID).gem |-> Wad => Wad + wad
+    #Vat.urns(Ilk, CALLER_ID).gem |-> uint(Wad) => uint(Wad + wad)
     
 storage Gem
 
@@ -1384,7 +1384,7 @@ storage
 
 storage Vat
 
-    #Vat.urns(Ilk, CALLER_ID).gem |-> Wad => Wad - wad
+    #Vat.urns(Ilk, CALLER_ID).gem |-> uint(Wad) => uint(Wad - wad)
     
 storage Gem
 
