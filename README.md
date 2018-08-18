@@ -37,7 +37,7 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | `vice`      | o    | -    |
 | `file`      | o    | -    |
 | `move`      | o    | o    |
-| `slip`      | o    | o    |
+| `slip`      | x    | o    |
 | `tune`      |      |      |
 | `grab`      |      |      |
 | `fold`      |      |      |

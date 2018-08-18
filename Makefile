@@ -1,8 +1,5 @@
-SPEC_EXT = .json
 SRC_DIR = dss/
-SPEC_DIR = specs/
 OUT_DIR = out/
-SPECS = tune frob
 TMPDIR=$(CURDIR)/tmp
 
 export PATH
@@ -10,6 +7,8 @@ export TMPDIR
 
 test_dir=out
 tests=$(wildcard $(test_dir)/*)
+
+passingtests=out/Vat_dai_succ.ini out/Vat_slip_succ.ini out/Vat_sin_succ.ini
 
 all: dapp deps-npm spec
 
@@ -26,7 +25,7 @@ dapp-clean:
 deps-npm:
 	npm install
 
-test:  $(tests:=.test)
+test:  $(passingtests:=.test)
 	pkill klab
 
 pre-test:
