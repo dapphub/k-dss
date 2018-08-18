@@ -212,10 +212,9 @@ let behaviours = acts
     const cond_fail = (act_if || [])
       .map(c => "  andBool " + c)
       .join("\n")
-      + "\n  andBool notBool (\n"
+      + "\n  andBool notBool (\n            "
       + (act.iff || [])
-      .map(c => "    andBool " + c)
-      .join("\n") + "\n  )"
+      .join("\n    andBool ") + "\n  )"
 
     const accounts = Object.keys(act.storage || {})
       .filter(name => name != "ACCT_ID")
