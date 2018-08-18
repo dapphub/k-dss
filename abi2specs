@@ -53,10 +53,8 @@ const toK = str => str
   .replace(/ and /g, " andBool ")
   .replace(/ or /g, " orBool ")
   .replace(/ not /g, " notBool ")
-const varWrap = (types, str) => str in types
-  && (types[str] == "int256" && "#unsigned(" + str + ")")
-  || (types[str] == "bool"   && "bool2Word(" + str + ")")
-  || str
+  .replace(/uint\(/g, "#unsigned(")
+  .replace(/bool\(/g, "bool2Word(")
 const mapInterface = (is, str) => {
   is.forEach(([t, n]) => {
     str = str.replace(new RegExp("([^\\w]|^)" + n + "([^\\w]|$)", "g"), (a, b, c, d) => {
@@ -132,9 +130,9 @@ let acts = acts_str
             .map(l => l.split("|->").map(i => toK(i).trim()))
             .map(([k, v]) => {
               if(v.indexOf("=>") > -1) {
-                v = v.split("=>").map(i => varWrap(a.types, i.trim()))
+                v = v.split("=>").map(i => i.trim())
               } else {
-                v = [varWrap(a.types, v)]
+                v = [v]
               }
               return [k, v];
             })
@@ -163,11 +161,11 @@ let acts = acts_str
             .filter(l => l != "")
           a.if = (a.if || []).concat(_if)
         } else if(/^returns/.test(head)) {
-          let returns = varWrap(a.types, head.split(" ").slice(1).join(" "))
+          let returns = head.split(" ").slice(1).join(" ")
             .split(":")
             .map(e => e.trim())
           let buildReturns = rs => rs.length > 0
-            ? `#asByteStackInWidthaux(${varWrap(a.types, rs[0])}, 31, 32, ${ buildReturns(rs.slice(1)) })`
+            ? `#asByteStackInWidthaux(${toK(rs[0])}, 31, 32, ${ buildReturns(rs.slice(1)) })`
             : ".WordStack"
           a.returns = buildReturns(returns)
         }
