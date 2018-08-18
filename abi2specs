@@ -27,7 +27,7 @@ const render        = o => Object.keys(o)
 
 const make_abi_dsl = ({type, name}, i) =>
   "#" + type + "(ABI_" + name + ")"
-const make_args = inputs => inputs.length == 0
+const make_args = inputs => inputs && inputs.length == 0
     && ".TypedArgs"
     || inputs.map(make_abi_dsl).join(", ")
 
@@ -94,6 +94,7 @@ let acts = acts_str
             .match(/\(([^\)]*)\)/)[1]
             .split(", ")
             .map(l => l.split(" "))
+            .filter(l => l.length > 1)
           const _interface_types = interface
             .reduce((a, [v, k]) => {
               a["ABI_" + k] = v;
