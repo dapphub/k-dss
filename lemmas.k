@@ -300,7 +300,7 @@ rule #asWord(#padToWidth(32, #asByteStack(#unsigned(X)))) => #unsigned(X)
 
 // potentially useful
 // rule #padToWidth(N, WS) ++ WS' => #padToWidth(N + #sizeWordStack(WS'), WS ++ WS')
-// and the N, M versions of below
+// and the N, M versions
 
 rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 
@@ -310,6 +310,46 @@ rule (#unsigned(A) +Int #unsigned(B)) => #unsigned(A +Int B)
   andBool #rangeSInt(256, B)
   andBool #rangeSInt(256, A +Int B)
 
+rule (#unsigned(A) +Int C) => #unsigned(A +Int C)
+  requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, C)
+  andBool C >=Int 0
+  andBool #rangeSInt(256, A +Int C)
+
+rule (#unsigned(A) -Word #unsigned(B)) => #unsigned(A -Int B)
+  requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A -Int B)
+
+rule (#unsigned(A) -Word C) => #unsigned(A -Int C)
+  requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, C)
+  andBool C >=Int 0
+  andBool #rangeSInt(256, A -Int C)
+
+rule chop(#unsigned(A) *Int B) => #unsigned(A *Int B)
+  requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+  andBool B >=Int 0
+
+rule #sgnInterp(sgn(#unsigned(A)), abs(#unsigned(A))) => #unsigned(A)
+  requires #rangeSInt(256, A)
+
+rule chop(abs(#unsigned(A))) => abs(#unsigned(A))
+  requires #rangeSInt(256, A)
+
+rule sgn(#unsigned(A *Int B)) => sgn(#unsigned(A)) *Int sgn(#unsigned(B))
+  requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+
+rule abs(#unsigned(A *Int B)) /Int B => abs(#unsigned(A))
+  requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+  andBool notBool (B ==Int 0)
+  
 rule chop(#unsigned(W)) => #unsigned(W)
   requires #rangeSInt(256, W)
 
@@ -321,18 +361,45 @@ rule #unsigned(#signed(W)) => W
 
 rule W0 s<Word W1 => #signed(W0) <Word #signed(W1)
 
-// converse:
-rule (#signed (chop (#unsigned(A) +Int #unsigned(B)))) => A +Int B -Int pow256
-  requires notBool (#rangeSInt(256, A +Int B))
-  andBool B >=Int 0
-  andBool #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
+// lemmas to tell us that our non-overflow conditions are necessary for
+// the overflow checks in iadd and isub
+rule notBool (P orBool Q) => (notBool P) andBool (notBool Q)
+rule notBool (P andBool Q) => (notBool P) orBool (notBool Q)
+rule notBool (notBool P) => P
 
-rule (#signed (chop (#unsigned(A) +Int #unsigned(B)))) => A +Int B +Int pow256
-  requires notBool (#rangeSInt(256, A +Int B))
-  andBool B <=Int 0
-  andBool #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
+// these just encode implications
+// (¬A or B) is (A -> B) 
+rule (notBool (0 <Int B))
+    orBool
+     (#signed (#unsigned(A) -Word #unsigned(B)) <Int A)
+    => (A -Int B >=Int minSInt256)	      
+  requires #rangeSInt(256, A)
+  andBool  #rangeSInt(256, B)
 
+rule (notBool (B <Int 0))
+    orBool
+     (A <Int #signed (#unsigned(A) -Word #unsigned(B)))
+    => (A -Int B <=Int maxSInt256)	      
+  requires #rangeSInt(256, A)
+  andBool  #rangeSInt(256, B)
+
+// n.b. how + cases use chop and +Int because of earlier application of +Word 
+rule (notBool (0 <Int B))
+    orBool
+     (A <Int #signed (chop (#unsigned (A) +Int #unsigned (B))))
+    => (A +Int B <=Int maxSInt256)
+  requires #rangeSInt(256, A)
+  andBool  #rangeSInt(256, B)
+
+rule (notBool (B <Int 0))
+    orBool
+     (#signed (chop (#unsigned (A) +Int #unsigned (B))) <Int A)
+    => (A +Int B >=Int minSInt256)
+  requires #rangeSInt(256, A)
+  andBool  #rangeSInt(256, B)
+
+// TODO: converses for imul
+
+// idk?
 rule A modInt pow160 => A
   requires #rangeAddress(A)
