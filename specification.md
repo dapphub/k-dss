@@ -162,6 +162,7 @@ iff
 iff in range int256
 
     wad
+    #wad2rad(wad)
     Dai_src - #wad2rad(wad)
     Dai_dst + #wad2rad(wad)
 ```
@@ -187,6 +188,7 @@ iff
 
 iff in range int256
 
+    #wad2rad(wad)
     Dai_src - #wad2rad(wad)
     Dai_dst + #wad2rad(wad)
 ```
