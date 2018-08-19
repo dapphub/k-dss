@@ -1,18 +1,29 @@
 SRC_DIR = dss/
 OUT_DIR = out/
-TMPDIR=$(CURDIR)/tmp
+TMPDIR = $(CURDIR)/tmp
 
 export PATH
 export TMPDIR
 
-test_dir=out
-tests=$(wildcard $(test_dir)/*)
+test_dir = out
+tests = $(wildcard $(test_dir)/*)
 
-passingtests=out/Vat_dai_succ.ini out/Vat_slip_succ.ini out/Vat_sin_succ.ini
+passing_tests = out/Vat_root_succ.ini \
+		out/Vat_dai_succ.ini \
+		out/Vat_sin_succ.ini \
+		out/Vat_ilks_succ.ini \
+		out/Vat_urns_succ.ini \
+		out/Vat_Tab_succ.ini \
+		out/Vat_vice_succ.ini \
+		out/Vat_file_succ.ini \
+		out/Vat_move-uint_succ.ini \
+		out/Vat_move-int_succ.ini \
+		out/Vat_slip_succ.ini \
+		out/Vat_slip_fail.ini
 
-all: dapp deps-npm spec
+all: dapp spec
 
-spec:
+spec: deps-npm
 	./abi2specs specification.md
 
 dapp:
@@ -25,7 +36,7 @@ dapp-clean:
 deps-npm:
 	npm install
 
-test:  $(passingtests:=.test)
+test:  $(passing_tests:=.test)
 	pkill klab
 
 pre-test:
@@ -33,7 +44,6 @@ pre-test:
 
 %.test: pre-test
 	klab run --headless --force --spec $*
-
 
 clean: dapp-clean
 	rm $(OUT_DIR)*
