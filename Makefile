@@ -46,4 +46,4 @@ pre-test:
 	klab run --headless --force --spec $*
 
 clean: dapp-clean
-	rm $(OUT_DIR)*
+	rm -rf $(OUT_DIR)*
