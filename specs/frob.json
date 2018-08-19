@@ -1,14 +1,14 @@
 {
-  "path": "dss/out/Lad.abi",
+  "path": "dss/out/Pit.abi",
   "vars": {
     "Vat" : "address",
     "Line" : "int256",
-    "Live" : "int256"
+    "Live" : "bool"
   },
   "stores": {
-    "#Lad.vat" : "Vat",
-    "#Lad.Line" : "Line",
-    "#Lad.live" : "Live"    
+    "#Pit.vat" : "Vat",
+    "#Pit.Line" : "#unsigned(Line)",
+    "#Pit.live" : "Live"
   },
   "methods": {
     "live": {
@@ -18,7 +18,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Live"
+      "returns" : "Live : .WordStack"
     },
     "Line": {
       "vars" : {
@@ -27,7 +27,7 @@
       },
       "requires" : [
       ],
-      "returns" : "Line"
+      "returns" : "#unsigned(Line) : .WordStack"
     },
     "vat": {
       "vars" : {
@@ -36,7 +36,21 @@
       },
       "requires" : [
       ],
-      "returns" : "Vat"
+      "returns" : "Vat : .WordStack"
+    },
+    "ilks": {
+      "vars" : {
+        "ABI_ilk" : "bytes32",
+        "Spot_i" : "int256",
+        "Line_i" : "int256"
+      },
+      "stores" : {
+        "#Pit.ilks(ABI_ilk).spot" : "#unsigned(Spot_i)",
+        "#Pit.ilks(ABI_ilk).line" : "#unsigned(Line_i)"
+      },
+      "requires" : [
+      ],
+      "returns" : "#unsigned(Spot_i) : #unsigned(Line_i) : .WordStack"
     },
     "file(bytes32,bytes32,int256)": {
       "vars" : {
@@ -47,8 +61,8 @@
         "Line_i" : "int256"
       },
       "stores" : {
-        "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i) => #if (ABI_what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then #unsigned(ABI_risk) #else #unsigned(Spot_i) #fi",
-        "#Lad.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i) => #if (ABI_what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
+        "#Pit.ilks(ABI_ilk).spot" : "#unsigned(Spot_i) => #if (ABI_what ==Int 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then #unsigned(ABI_risk) #else #unsigned(Spot_i) #fi",
+        "#Pit.ilks(ABI_ilk).line" : "#unsigned(Line_i) => #if (ABI_what ==Int 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
       },
       "requires" : [
       ],
@@ -60,7 +74,7 @@
         "ABI_risk" : "int256"
       },
       "stores" : {
-        "#Lad.Line" : "#unsigned(Line_i) => #if (ABI_what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
+        "#Pit.Line" : "#unsigned(Line_i) => #if (ABI_what ==Int 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then #unsigned(ABI_risk) #else #unsigned(Line_i) #fi"
       },
       "requires" : [
       ],
@@ -82,16 +96,16 @@
         "Tab" : "int256"
       },
       "stores" : {
-        "#Lad.ilks(ABI_ilk, \"line\")" : "#unsigned(Line_i)",
-        "#Lad.ilks(ABI_ilk, \"spot\")" : "#unsigned(Spot_i)"
+        "#Pit.ilks(ABI_ilk).line" : "#unsigned(Line_i)",
+        "#Pit.ilks(ABI_ilk).spot" : "#unsigned(Spot_i)"
       },
       "foreign_stores" : {
         "Vat" : {
-          "#Vat.urns(ABI_ilk, ABI_lad, \"gem\")" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
-          "#Vat.urns(ABI_ilk, ABI_lad, \"ink\")" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
-          "#Vat.urns(ABI_ilk, ABI_lad, \"art\")" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
-          "#Vat.ilks(ABI_ilk, \"rate\")" : "#unsigned(Rate)",
-          "#Vat.ilks(ABI_ilk, \"Art\")" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
+          "#Vat.urns(ABI_ilk, CALLER_ID).gem" : "#unsigned(Gem) => #unsigned(Gem -Int ABI_dink)",
+          "#Vat.urns(ABI_ilk, CALLER_ID).ink" : "#unsigned(Ink) => #unsigned(Ink +Int ABI_dink)",
+          "#Vat.urns(ABI_ilk, CALLER_ID).art" : "#unsigned(Art) => #unsigned(Art +Int ABI_dart)",
+          "#Vat.ilks(ABI_ilk).rate" : "#unsigned(Rate)",
+          "#Vat.ilks(ABI_ilk).Art" : "#unsigned(Art_i) => #unsigned(Art_i +Int ABI_dart)",
           "#Vat.dai(CALLER_ID)" : "#unsigned(Dai) => #unsigned(Dai +Int (Rate *Int ABI_dart))",
           "#Vat.Tab" : "#unsigned(Tab) => #unsigned(Tab +Int (Rate *Int ABI_dart))"
         }
