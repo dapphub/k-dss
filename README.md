@@ -33,11 +33,12 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | `sin`       | x    | -    |
 | `ilks`      | x    | -    |
 | `urns`      | x    | -    |
-| `Tab`       | o    | -    |
-| `vice`      | o    | -    |
+| `Tab`       | x    | -    |
+| `vice`      | x    | -    |
 | `file`      | x    | -    |
-| `move`      | o    | o    |
-| `slip`      | o    | o    |
+| `move-uint` | x    | o    |
+| `move-int`  | x    | o    |
+| `slip`      | x    | x    |
 | `tune`      |      |      |
 | `grab`      |      |      |
 | `fold`      |      |      |
