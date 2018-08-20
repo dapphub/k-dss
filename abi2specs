@@ -198,6 +198,11 @@ let behaviours = acts
         return range(name)
       })
       .concat(act.if || [])
+      .concat(
+          Object.keys(act.storage || [])
+              .filter(name => !(name == 'ACCT_ID'))
+              .map(name => `${ name } =/=Int ACCT_ID`)
+      )
 
     const storage_success = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
@@ -221,7 +226,7 @@ let behaviours = acts
       .map(name => {
         let code = "";
         if(testPath("dss/out/" + name + ".bin-runtime")) {
-          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+            code = fs.readFileSync("dss/out/" + name + ".bin-runtime").toString()
         } else {
           console.log(clc.xterm(208)("WARN: no implementation provided for " + name));
         }
