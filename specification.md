@@ -894,10 +894,10 @@ storage Row
 
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flopper.kicks                       |-> Kicks => Kicks + 1
-    #Flopper.bids(Kicks + 1).bid         |-> 0 => Lump
-    #Flopper.bids(Kicks + 1).lot         |-> 0 => pow256 - 1
-    #Flopper.bids(Kicks + 1).guy_tic_end |-> #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flopper.bids(Kicks + 1).vow         |-> 0 => ACCT_ID
+    #Flopper.bids(Kicks + 1).bid         |-> _ => Lump
+    #Flopper.bids(Kicks + 1).lot         |-> _ => pow256 - 1
+    #Flopper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flopper.bids(Kicks + 1).vow         |-> _ => ACCT_ID
     
 storage Vat
 
@@ -947,10 +947,10 @@ storage Cow
 
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks => Kicks + 1
-    #Flapper.bids(Kicks + 1).bid         |-> 0
-    #Flapper.bids(Kicks + 1).lot         |-> 0 => Lump
-    #Flapper.bids(Kicks + 1).guy_tic_end |-> #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids(Kicks + 1).gal         |-> 0 => ACCT_ID
+    #Flapper.bids(Kicks + 1).bid         |-> _ => 0
+    #Flapper.bids(Kicks + 1).lot         |-> _ => Lump
+    #Flapper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids(Kicks + 1).gal         |-> _ => ACCT_ID
     
 storage Vat
 
@@ -1242,12 +1242,12 @@ storage Flip
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flipper.kicks                       |-> Kicks => Kicks + 1
-    #Flipper.bids(Kicks + 1).bid         |-> 0 => 0
-    #Flipper.bids(Kicks + 1).lot         |-> 0 => (Ink * wad) / Tab
-    #Flipper.bids(Kicks + 1).guy_tic_end |-> 0 => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flipper.bids(Kicks + 1).lad         |-> 0 => Lad
-    #Flipper.bids(Kicks + 1).gal         |-> 0 => Vow
-    #Flipper.bids(Kicks + 1).tab         |-> 0 => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.bids(Kicks + 1).bid         |-> _ => 0
+    #Flipper.bids(Kicks + 1).lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids(Kicks + 1).lad         |-> _ => Lad
+    #Flipper.bids(Kicks + 1).gal         |-> _ => Vow
+    #Flipper.bids(Kicks + 1).tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
