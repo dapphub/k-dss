@@ -136,7 +136,7 @@ types
 
 storage
 
-    #Vat.ilks(ilk).rate |-> Rate => uint(#if what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208 #then risk #else Rate #fi)
+    #Vat.ilks(ilk).rate |-> uint(Rate) => uint(#if what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208 #then risk #else Rate #fi)
 ```
 
 #### transferring dai balances
