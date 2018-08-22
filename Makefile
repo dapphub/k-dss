@@ -42,10 +42,10 @@ test:  $(passing_tests:=.test)
 	pkill klab
 
 pre-test:
-	klab server & mkdir -p $(TMPDIR) 
+	klab server & mkdir -p $(TMPDIR)
 
 %.test: pre-test
 	klab run --headless --force --spec $*
 
 clean: dapp-clean
-	rm $(OUT_DIR)*
+	rm -f $(OUT_DIR)*
