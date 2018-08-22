@@ -28,17 +28,17 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 |             | succ | fail |
 |-------------|------|------|
 | **Vat**     |      |      |
-| `root`      | x    | -    |
-| `dai`       | x    | -    |
-| `sin`       | x    | -    |
 | `ilks`      | x    | -    |
 | `urns`      | x    | -    |
-| `Tab`       | x    | -    |
+| `gem`       |      | -    |
+| `dai`       | x    | -    |
+| `sin`       | x    | -    |
+| `debt`      | x    | -    |
 | `vice`      | x    | -    |
-| `file`      | x    | -    |
-| `move-uint` | x    | o    |
-| `move-int`  | x    | o    |
+| `init`      |      |      |
+| `move`      | x    | o    |
 | `slip`      | x    | x    |
+| `flux`      |      |      |
 | `tune`      |      |      |
 | `grab`      |      |      |
 | `fold`      |      |      |

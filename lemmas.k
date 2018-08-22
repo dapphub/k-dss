@@ -25,11 +25,6 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^I
   andBool #rangeUInt(48, Y)
 
 // DSL for abstracted storage:
-
-syntax Int ::= "#Vat.root" [function]
-// ----------------------------------
-rule #Vat.root => 0
-
 syntax Int ::= "#Vat.dai" "(" Int ")" [function]
 // ---------------------------------------------
 rule #Vat.dai(A) => #hashedLocation("Solidity", 1, A)
@@ -46,10 +41,6 @@ syntax Int ::= "#Vat.ilks" "(" Int ").Art" [function]
 // -----------------------------------------------
 rule #Vat.ilks(Ilk).Art => #hashedLocation("Solidity", 3, Ilk) +Int 1
 
-syntax Int ::= "#Vat.urns" "(" Int "," Int ").gem" [function]
-// ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).gem => #hashedLocation("Solidity", 4, Ilk Guy) +Int 0
-
 syntax Int ::= "#Vat.urns" "(" Int "," Int ").ink" [function]
 // ----------------------------------------------------------
 rule #Vat.urns(Ilk, Guy).ink => #hashedLocation("Solidity", 4, Ilk Guy) +Int 1
@@ -58,13 +49,17 @@ syntax Int ::= "#Vat.urns" "(" Int "," Int ").art" [function]
 // ----------------------------------------------------------
 rule #Vat.urns(Ilk, Guy).art => #hashedLocation("Solidity", 4, Ilk Guy) +Int 2
 
-syntax Int ::= "#Vat.Tab" [function]
+syntax Int ::= "#Vat.debt" [function]
 // ---------------------------------
-rule #Vat.Tab => 5
+rule #Vat.debt => 5
 
 syntax Int ::= "#Vat.vice" [function]
 // ----------------------------------
 rule #Vat.vice => 6
+
+syntax Int ::= "#Vat.gem" "(" Int "," Int ")" [function]
+// ---------------------------------------------
+rule #Vat.gem(Ilk, Guy) => #hashedLocation("Solidity", 7, Ilk Guy)
 
 syntax Int ::= "#Pit.vat" [function]
 // ---------------------------------
@@ -271,6 +266,7 @@ rule #Flopper.bids(N).vow => #hashedLocation("Solidity", 5, N) +Int 3
 syntax Int ::= "#Gem.balances" "(" Int ")" [function]
 // --------------------------------------------------
 rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
+
 
 
 

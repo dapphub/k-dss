@@ -6,54 +6,6 @@ What follows is an executable K specification of the smart contracts of multicol
 
 ### Accessors
 
-#### admin address
-```
-behaviour root of Vat
-interface root()
-
-types
-
-    Root : address
-
-storage
-
-    #Vat.root |-> Root
-
-returns Root
-```
-
-#### internal dai balances
-```
-behaviour dai of Vat
-interface dai(address lad)
-
-types
-
-    Rad : int256
-
-storage
-
-    #Vat.dai(lad) |-> uint(Rad)
-
-returns uint(Rad)
-```
-
-#### internal sin balances
-```
-behaviour sin of Vat
-interface sin(address lad)
-
-types
-
-    Rad : int256
-
-storage
-
-    #Vat.sin(lad) |-> uint(Rad)
-
-returns uint(Rad)
-```
-
 #### `ilk` data
 ```
 behaviour ilks of Vat
@@ -61,51 +13,97 @@ interface ilks(bytes32 ilk)
 
 types
 
-    Rate : int256
-    Art_i  : int256
+    Rate : uint256
+    Art_i  : uint256
 
 storage
 
-    #Vat.ilks(ilk).rate |-> uint(Rate)
-    #Vat.ilks(ilk).Art |-> uint(Art_i)
+    #Vat.ilks(ilk).rate |-> Rate
+    #Vat.ilks(ilk).Art  |-> Art_i
 
-returns uint(Rate) : uint(Art_i)
+returns Rate : Art_i
 ```
 
 #### `urn` data
 ```
 behaviour urns of Vat
-interface urns(bytes32 ilk, address lad)
+interface urns(bytes32 ilk, bytes32 lad)
 
 types
 
-    Gem : int256
-    Ink : int256
-    Art_u : int256
+    Ink   : uint256
+    Art_u : uint256
 
 storage
 
-    #Vat.urns(ilk, lad).gem |-> uint(Gem)
-    #Vat.urns(ilk, lad).ink |-> uint(Ink)
-    #Vat.urns(ilk, lad).art |-> uint(Art_u)
+    #Vat.urns(ilk, lad).ink |-> Ink
+    #Vat.urns(ilk, lad).art |-> Art_u
 
-returns uint(Gem) : uint(Ink) : uint(Art_u)
+returns Ink : Art_u
+```
+
+#### internal gem balances
+```
+behaviour gem of Vat
+interface gem(bytes32 ilk, bytes32 lad)
+
+types
+
+    Gem : uint256
+
+storage
+
+    #Vat.gem(ilk, lad) |-> Gem
+
+returns Gem
+```
+
+#### internal dai balances
+```
+behaviour dai of Vat
+interface dai(bytes32 lad)
+
+types
+
+    Rad : uint256
+
+storage
+
+    #Vat.dai(lad) |-> Rad
+
+returns Rad
+```
+
+#### internal sin balances
+```
+behaviour sin of Vat
+interface sin(bytes32 lad)
+
+types
+
+    Rad : uint256
+
+storage
+
+    #Vat.sin(lad) |-> Rad
+
+returns Rad
 ```
 
 #### total debt
 ```
-behaviour Tab of Vat
-interface Tab()
+behaviour debt of Vat
+interface debt()
 
 types
 
-    Tab : int256
+    Debt : uint256
 
 storage
 
-    #Vat.Tab |-> uint(Tab)
+    #Vat.debt |-> Debt
 
-returns uint(Tab)
+returns Debt
 ```
 
 #### total bad debt
@@ -115,246 +113,229 @@ interface vice()
 
 types
 
-    Vice : int256
+    Vice : uint256
 
 storage
 
-    #Vat.vice |-> uint(Vice)
+    #Vat.vice |-> Vice
 
-returns uint(Vice)
+returns Vice
 ```
 ### Mutators
 
-#### setting `ilk` data
+#### initialising an `ilk`
 ```
-behaviour file of Vat
-interface file(bytes32 ilk, bytes32 what, int256 risk)
-
-types
-
-    Rate : int256
+behaviour init of Vat
+interface init(bytes32 ilk)
 
 storage
 
-    #Vat.ilks(ilk).rate |-> uint(Rate) => uint(#if what ==Int 51735852229306712642142495812301944985879738350407357154196970624323795550208 #then risk #else Rate #fi)
+    #Vat.ilks(ilk).rate |-> Rate => 1000000000000000000000000000
+    
+iff
+
+    Rate == 0
 ```
 
 #### transferring dai balances
 ```
-behaviour move-uint of Vat
-interface move(address src, address dst, uint256 wad)
+behaviour move of Vat
+interface move(bytes32 src, bytes32 dst, uint256 rad)
 
 types
 
-    Dai_src : int256
-    Dai_dst : int256
+    Dai_src : uint256
+    Dai_dst : uint256
 
 storage
 
-    #Vat.dai(src) |-> uint(Dai_src) => uint(Dai_src - #wad2rad(wad))
-    #Vat.dai(dst) |-> uint(Dai_dst) => uint(Dai_dst + #wad2rad(wad))
-
-iff
-
-    Dai_src - #wad2rad(wad) >= 0
-    Dai_dst + #wad2rad(wad) >= 0
+    #Vat.dai(src) |-> Dai_src => Dai_src - rad
+    #Vat.dai(dst) |-> Dai_dst => Dai_dst + rad
 
 iff in range int256
 
-    wad
-    #wad2rad(wad)
-    Dai_src - #wad2rad(wad)
-    Dai_dst + #wad2rad(wad)
-```
+    rad
+    
+iff in range uint256
 
-```
-behaviour move-int of Vat
-interface move(address src, address dst, int256 wad)
-
-types
-
-    Dai_src : int256
-    Dai_dst : int256
-
-storage
-
-    #Vat.dai(src) |-> uint(Dai_src) => uint(Dai_src - #wad2rad(wad))
-    #Vat.dai(dst) |-> uint(Dai_dst) => uint(Dai_dst + #wad2rad(wad))
-
-iff
-
-    Dai_src - #wad2rad(wad) >= 0
-    Dai_dst + #wad2rad(wad) >= 0
-
-iff in range int256
-
-    #wad2rad(wad)
-    Dai_src - #wad2rad(wad)
-    Dai_dst + #wad2rad(wad)
+    Dai_src - rad
+    Dai_dst + rad
 ```
 
 #### assigning unencumbered collateral
 ```
 behaviour slip of Vat
-interface slip(bytes32 ilk, address guy, int256 wad)
+interface slip(bytes32 ilk, bytes32 guy, int256 wad)
 
 types
 
-    Wad : int256
+    Gem : uint256
 
 storage
 
-    #Vat.urns(ilk, guy).gem |-> uint(Wad) => uint(Wad + wad)
+    #Vat.gem(ilk, guy) |-> Gem => Gem + wad
 
-iff
+iff in range uint256
 
-    Wad + wad >= 0
+    Gem + wad
+```
 
-iff in range int256
+#### moving unencumbered collateral
+```
+behaviour flux of Vat
+interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
 
-    Wad + wad
+types
+
+    Gem_src : uint256
+    Gem_dst : uint256
+
+storage
+
+    #Vat.gem(ilk, src) |-> Gem_src => Gem_src - wad
+    #Vat.gem(ilk, dst) |-> Gem_dst => Gem_dst + wad
+    
+iff in range uint256
+
+    Gem_src - rad
+    Gem_dst + rad
 ```
 
 #### adminstering a position
 
 ```
 behaviour tune of Vat
-interface tune(bytes32 ilk, address lad, int256 dink, int256 dart)
+interface tune(bytes32 ilk, bytes32 u_, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
 types
 
-    Gem   : int256
-    Ink   : int256
-    Art_u : int256
-    Art_i : int256
-    Rate  : int256
-    Dai   : int256
-    Tab   : int256
+    Gem_v : uint256
+    Ink_u : uint256
+    Art_u : uint256
+    Art_i : uint256
+    Rate  : uint256
+    Dai   : uint256
+    Debt  : uint256
 
 storage
 
-    #Vat.urns(ilk, lad).gem |-> uint(Gem_u)  => uint(Gem_u - dink)
-    #Vat.urns(ilk, lad).ink |-> uint(Ink_u)  => uint(Ink_u + dink)
-    #Vat.urns(ilk, lad).art |-> uint(Art_u)  => uint(Art_u + dart)
-    #Vat.ilks(ilk).rate     |-> uint(Rate_i)
-    #Vat.ilks(ilk).Art      |-> uint(Art_i)  => uint(Art_i + dart)
-    #Vat.dai(lad)           |-> uint(Dai)    => uint(Dai + (Rate_i * dart))
-    #Vat.Tab                |-> uint(Tab)    => uint(Tab + (Rate_i * dart))
+    #Vat.gem(ilk, v)        |-> Gem_v  => Gem_v - dink
+    #Vat.urns(ilk, u_).ink  |-> Ink_u  => Ink_u + dink
+    #Vat.urns(ilk, u_).art  |-> Art_u  => Art_u + dart
+    #Vat.ilks(ilk).rate     |-> Rate_i
+    #Vat.ilks(ilk).Art      |-> Art_i  => Art_i + dart
+    #Vat.dai(w)             |-> Dai    => Dai + (Rate * dart)
+    #Vat.debt               |-> Debt   => Debt + (Rate * dart)
 
-iff
+iff in range uint256
 
-    Rate =/= 0
-    (((((Art_u + dart) * Rate_i) <= #wad2rad(Spot_i)) and (((Tab + (Rate_i * dart))) < #wad2rad(Line))) or (dart <= 0))
-    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot_i) >= ((Art_u + dart) * Rate_i)))
-    Live == 1
-
-iff in range int256
-
-    Gem_u - dink
+    Gem_v - dink
     Ink_u + dink
     Art_u + dart
     Art_i + dart
-    Rate_i * dart
-    Dai + (Rate_i * dart)
-    Tab + (Rate_i * dart)
-    (Art_u + dart) * Rate_i
-    (Ink_u + dink) * Spot_i
-    #wad2rad(Spot_i)
-    #wad2rad(Line)
+    Dai + (Rate * dart)
+    Debt + (Rate * dart)
+    
+iff in range int256
+
+    Rate * dart
 ```
 
 #### confiscating a position
 ```
 behaviour grab of Vat
-interface grab(bytes32 ilk, address lad, address vow, int256 dink, int256 dart)
+interface grab(bytes32 ilk, bytes32 u_, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
 types
 
-    Ink   : int256
-    Art_u : int256
-    Art_i : int256
-    Rate  : int256
-    Sin   : int256
+    Gem_v : uint256
+    Ink_u : uint256
+    Art_u : uint256
+    Art_i : uint256
+    Rate  : uint256
+    Sin   : uint256
+    Vice  : uint256
 
 storage
 
-    #Vat.urns(ABI_ilk, ABI_lad).ink |-> uint(Ink)   => uint(Ink + dink)
-    #Vat.urns(ABI_ilk, ABI_lad).art |-> uint(Art_u) => uint(Art_u + dart)
-    #Vat.ilks(ABI_ilk).rate         |-> uint(Rate)
-    #Vat.ilks(ABI_ilk).Art          |-> uint(Art_i) => uint(Art_i + dart)
-    #Vat.sin(ABI_vow)               |-> uint(Sin)   => uint(Sin + Rate * dart)
-    #Vat.vice                       |-> uint(Vice)  => uint(Vice + Rate * dart)
+    #Vat.gem(ilk, v)       |-> Gem_v => Gem_v - dink
+    #Vat.urns(ilk, u_).ink |-> Ink_u => Ink_u + dink
+    #Vat.urns(ilk, u_).art |-> Art_u => Art_u + dart
+    #Vat.ilks(ilk).rate    |-> Rate
+    #Vat.ilks(ilk).Art     |-> Art_i => Art_i + dart
+    #Vat.sin(w)            |-> Sin   => Sin - Rate * dart
+    #Vat.vice              |-> Vice  => Vice - Rate * dart
 
 
-iff in range int256
+iff in range uint256
 
+    Gem_v - dink
     Ink + dink
     Art_u + dart
     Art_i + dart
+    Sin - Rate * dart
+    Vice - Rate * dart
+    
+iff in range int256
+
     Rate * dart
-    Sin + Rate * dart
-    Vice + Rate * dart
 ```
 
-#### cancelling bad debt and surplus
+#### manipulating debt and surplus
 ```
 behaviour heal of Vat
-interface heal(address u, address v, int256 wad)
+interface heal(bytes32 u, bytes32 v, int256 rad)
 
 types
 
-    Dai_v : int256
-    Sin_u : int256
-    Tab   : int256
-    Vice  : int256
+    Dai_v : uint256
+    Sin_u : uint256
+    Debt  : uint256
+    Vice  : uint256
 
 storage
 
-    #Vat.dai(v) |-> uint(Dai_v) => uint(Dai_v - #wad2rad(wad))
-    #Vat.sin(u) |-> uint(Sin_u) => uint(Sin_u - #wad2rad(wad))
-    #Vat.Tab    |-> uint(Tab)   => uint(Tab - #wad2rad(wad))
-    #Vat.vice   |-> uint(Vice)  => uint(Vice - #wad2rad(wad))
+    #Vat.dai(v) |-> Dai_v => Dai_v - rad
+    #Vat.sin(u) |-> Sin_u => Sin_u - rad
+    #Vat.debt   |-> Debt  => Debt - rad
+    #Vat.vice   |-> Vice  => Vice - rad
 
-iff
+iff in range uint256
 
-    Dai_v - #wad2rad(wad) >= 0
-    Sin_u - #wad2rad(wad) >= 0
-    Tab - #wad2rad(wad)   >= 0
-    Vice - #wad2rad(wad)  >= 0
-
-iff in range int256
-
-    Dai_v - #wad2rad(wad)
-    Sin_u - #wad2rad(wad)
-    Tab - #wad2rad(wad)
-    Vice - #wad2rad(wad)
+    Dai_v - rad
+    Sin_u - rad
+    Debt - rad
+    Vice - rad
 ```
 
-#### applying interest to `ilk`
+#### applying interest to an `ilk`
 ```
 behaviour fold of Vat
-interface fold(bytes32 ilk, address vow, int256 rate)
+interface fold(bytes32 ilk, bytes32 vow, int256 rate)
 
 types
 
-    Rate  : int256
-    Dai   : int256
-    Art_i : int256
-    Tab   : int256
+    Rate  : uint256
+    Dai   : uint256
+    Art_i : uint256
+    Debt  : uint256
 
 storage
 
-    #Vat.ilks(ilk).rate |-> uint(Rate => uint(Rate + rate)
-    #Vat.ilks(ilk).Art  |-> uint(Art)
-    #Vat.dai(vow)       |-> uint(Dai) => uint(Dai + Art_i * rate)
-    #Vat.Tab            |-> uint(Tab) => uint(Tab + Art_i * rate)
+    #Vat.ilks(ilk).rate |-> Rate => Rate + rate
+    #Vat.ilks(ilk).Art  |-> Art_i
+    #Vat.dai(vow)       |-> Dai  => Dai + Art_i * rate
+    #Vat.debt           |-> Debt => Debt + Art_i * rate
 
-iff in range int256
+iff in range uint256
 
     Rate + rate
-    Art * rate
     Dai + Art_i * rate
-    Tab + Art_i * rate
+    Debt + Art_i * rate
+    
+iff in range int256
+
+    Art_i * rate
 ```
 
 # frob
@@ -362,6 +343,38 @@ iff in range int256
 ## Specification of behaviours
 
 ### Accessors
+
+#### `vat` address
+```
+behaviour vat of Pit
+interface vat()
+
+types
+
+    Vat : address Vat
+
+storage
+
+    #Pit.vat |-> Vat
+
+returns Vat
+```
+
+#### global debt ceiling
+```
+behaviour Line of Pit
+interface Line()
+
+types
+
+    Line : uint256
+
+storage
+
+    #Pit.Line |-> Line
+
+returns Line
+```
 
 #### system liveness
 ```
@@ -379,38 +392,6 @@ storage
 returns Live
 ```
 
-#### global debt ceiling
-```
-behaviour Line of Pit
-interface Line()
-
-types
-
-    Line : int256
-
-storage
-
-    #Pit.Line |-> uint(Line)
-
-returns uint(Line)
-```
-
-#### `vat` address
-```
-behaviour vat of Pit
-interface vat()
-
-types
-
-    Vat : address {Vat}
-
-storage
-
-    #Pit.vat |-> Vat
-
-returns Vat
-```
-
 #### `ilk` data
 ```
 behaviour ilks of Pit
@@ -418,17 +399,17 @@ interface ilks(bytes32 ilk)
 
 types
 
-    Spot_i : int256
-    Line_i : int256
+    Spot_i : uint256
+    Line_i : uint256
 
 storage
 
-    #Pit.ilks(ilk).spot |-> uint(Spot_i)
-    #Pit.ilks(ilk).line |-> uint(Line_i)
+    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks(ilk).line |-> Line_i
 
 returns
 
-    uint(Spot_i) : uint(Line_i)
+    Spot_i : Line_i
 ```
 
 ### Mutators
@@ -436,31 +417,31 @@ returns
 #### setting `ilk` data
 ```
 behaviour file-ilk of Pit
-interface file(bytes32 ilk, bytes32 what, int256 risk)
+interface file(bytes32 ilk, bytes32 what, uint256 risk)
 
 types
 
-    Spot_i : int256
-    Line_i : int256
+    Spot_i : uint256
+    Line_i : uint256
 
 storage
 
-    #Pit.ilks(ilk).spot |-> Spot_i => uint(#if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi)
-    #Pit.ilks(ilk).line |-> Line_i => uint(#if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi)
+    #Pit.ilks(ilk).spot |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
+    #Pit.ilks(ilk).line |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
 ```
 
 #### setting the global debt ceiling
 ```
 behaviour file-line of Pit
-interface file(bytes32 what, int256 risk)
+interface file(bytes32 what, uint256 risk)
 
 types
 
-    Line : int256
+    Line : uint256
 
 storage
 
-    #Pit.Line |-> Line => uint(#if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi)
+    #Pit.Line |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
 ```
 
 #### manipulating a position
@@ -472,56 +453,59 @@ interface frob(bytes32 ilk, int256 dink, int256 dart)
 types
 
     Live   : bool
-    Line   : int256
-    Vat    : address VatLike
-    Spot_i : int256
-    Line_i : int256
-    Gem_u  : int256
-    Ink_u  : int256
-    Art_u  : int256
-    Art_i  : int256
-    Rate_i : int256
-    Dai    : int256
-    Tab    : int256
+    Line   : uint256
+    Vat    : address Vat
+    Spot   : uint256
+    Line_i : uint256
+    Gem_u  : uint256
+    Ink_u  : uint256
+    Art_u  : uint256
+    Art_i  : uint256
+    Rate_i : uint256
+    Dai    : uint256
+    Debt   : uint256
 
 storage
 
     #Pit.live           |-> Live
-    #Pit.Line           |-> uint(Line)
+    #Pit.Line           |-> Line
     #Pit.vat            |-> Vat
-    #Pit.ilks(ilk).line |-> uint(Line_i)
-    #Pit.ilks(ilk).spot |-> uint(Spot_i)
+    #Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks(ilk).spot |-> Spot
 
 storage Vat
 
-    #Vat.urns(ilk, CALLER_ID).gem |-> uint(Gem_u) => uint(Gem_u - dink)
-    #Vat.urns(ilk, CALLER_ID).ink |-> uint(Ink_u) => uint(Ink_u + dink)
-    #Vat.urns(ilk, CALLER_ID).art |-> uint(Art_u) => uint(Art_u + dart)
-    #Vat.ilks(ilk).rate           |-> uint(Rate_i)
-    #Vat.ilks(ilk).Art            |-> uint(Art_i) => uint(Art_i + dart)
-    #Vat.dai(CALLER_ID)           |-> uint(Dai) => uint(Dai + (Rate_i * dart))
-    #Vat.Tab                      |-> uint(Tab) => uint(Tab + (Rate_i * dart))
+    #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - dink
+    #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u  => Ink_u + dink
+    #Vat.urns(ilk, CALLER_ID).art |-> Art_u  => Art_u + dart
+    #Vat.ilks(ilk).rate           |-> Rate
+    #Vat.ilks(ilk).Art            |-> Art_i  => Art_i + dart
+    #Vat.dai(CALLER_ID)           |-> Dai    => Dai + Rate * dart
+    #Vat.debt                     |-> Debt   => debt + Rate * dart
 
 iff
 
     Rate =/= 0
-    (((((Art_u + dart) * Rate_i) <= #wad2rad(Spot_i)) and (((Tab + (Rate_i * dart))) < #wad2rad(Line))) or (dart <= 0))
-    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot_i) >= ((Art_u + dart) * Rate_i)))
+    (((((Art_u + dart) * Rate) <= #wad2rad(Spot)) and (((debt + (Rate * dart))) < #wad2rad(Line))) or (dart <= 0))
+    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * Rate)))
     Live == 1
 
-iff in range int256
+iff in range uint256
 
     Gem_u - dink
     Ink_u + dink
     Art_u + dart
     Art_i + dart
-    Rate_i * dart
-    Dai + (Rate_i * dart)
-    Tab + (Rate_i * dart)
-    (Art_u + dart) * Rate_i
-    (Ink_u + dink) * Spot_i
-    #wad2rad(Spot_i)
+    Dai + (Rate * dart)
+    debt + (Rate * dart)
+    (Art_u + dart) * Rate
+    (Ink_u + dink) * Spot
+    #wad2rad(Spot)
     #wad2rad(Line)
+    
+iff in range int256
+
+    Rate * dart
 ```
 
 # heal
@@ -529,6 +513,14 @@ iff in range int256
 ## Specification of behaviours
 
 ### Accessors
+
+#### getting the time
+```
+behaviour era of Vow
+interface era()
+    
+returns TIME
+```
 
 #### getting a `sin` packet
 ```
@@ -642,14 +634,6 @@ storage
 returns Pad
 ```
 
-#### getting the time
-```
-behaviour era of Vow
-interface era()
-    
-returns TIME
-```
-
 #### getting the `Awe`
 ```
 behaviour Awe of Vow
@@ -682,8 +666,8 @@ interface Joy()
 
 types
 
-    Vat : address VatLike
-    Dai : int256
+    Vat : address Vat
+    Dai : uint256
 
 storage
 
@@ -691,11 +675,7 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> uint(Dai)
-    
-iff in range uint256
-
-    Dai
+    #Vat.dai(ACCT_ID) |-> Dai
     
 returns Dai / 1000000000000000000000000000
 ```
@@ -736,6 +716,93 @@ storage
     #Vow.vat |-> Vat => (#if what == 54321 #then addr #else Vat #fi)
 ```
 
+#### cancelling bad debt and surplus
+```
+behaviour heal of Vow
+interface heal(uint256 wad)
+
+types
+
+    Vat  : address Vat
+    Woe  : uint256
+    Dai  : uint256
+    Sin  : uint256
+    Vice : uint256
+    Debt : uint256
+
+storage
+
+    #Vow.vat |-> Vat
+    #Vow.Woe |-> Woe - wad
+
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
+    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
+    #Vat.vice         |-> Vice => Vice - #wad2rad(wad)
+    #Vat.debt         |-> Debt => Debt - #wad2rad(wad)
+
+iff
+
+    wad <= Dai / 1000000000000000000000000000
+    wad <= Woe
+
+iff in range uint256
+
+    Woe - wad
+    Dai - #wad2rad(wad)
+    Sin - #wad2rad(wad)
+    Vice - #wad2rad(wad)
+    Debt - #wad2rad(wad)
+    
+iff in range int256
+
+    #wad2rad(wad)
+```
+
+```
+behaviour kiss of Vow
+interface kiss(uint256 wad)
+
+types
+
+    Vat  : address Vat
+    Woe  : uint256
+    Dai  : uint256
+    Sin  : uint256
+    Vice : uint256
+    Debt : uint256
+
+storage
+
+    #Vow.vat |-> Vat
+    #Vow.Ash |-> Ash - wad
+
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
+    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
+    #Vat.vice         |-> Vice => Vice - #wad2rad(wad)
+    #Vat.debt         |-> Debt => Debt - #wad2rad(wad)
+
+iff
+
+    wad <= Dai / 1000000000000000000000000000
+    wad <= Ash
+
+iff in range uint256
+
+    Ash - wad
+    Dai - #wad2rad(wad)
+    Sin - #wad2rad(wad)
+    Vice - #wad2rad(wad)
+    Debt - #wad2rad(wad)
+    
+iff in range int256
+
+    #wad2rad(wad)
+```
+
 #### adding to the `sin` queue
 ```
 behaviour fess of Vow
@@ -749,7 +816,7 @@ types
 storage
 
     #Vow.sin(TIME) |-> Sin_era => Sin_era + tab
-    #Vow.Sin       |-> Sin => Sin + tab
+    #Vow.Sin       |-> Sin     => Sin + tab
     
 iff in range uint256
 
@@ -769,102 +836,14 @@ types
 storage
 
     #Vow.sin(era_) |-> Sin_era_ => 0
-    #Vow.Sin       |-> Sin => Sin - Sin_era_
-    #Vow.Woe       |-> Woe => Woe + Sin_era_
+    #Vow.Sin       |-> Sin      => Sin - Sin_era_
+    #Vow.Woe       |-> Woe      => Woe + Sin_era_
 
 iff in range uint256
 
     Sin - Sin_era_
     Woe + Sin_era_
 ```
-
-#### cancelling bad debt and surplus
-```
-behaviour heal of Vow
-interface heal(uint256 wad)
-
-types
-
-    Vat  : address VatLike
-    Woe  : uint256
-    Dai  : int256
-    Sin  : int256
-    Vice : int256
-    Tab  : int256
-
-storage
-
-    #Vow.vat |-> Vat
-    #Vow.Woe |-> Woe - wad
-
-storage Vat
-
-    #Vat.dai(ACCT_ID) |-> uint(Dai)  => uint(Dai - #wad2rad(wad))
-    #Vat.sin(ACCT_ID) |-> uint(Sin)  => uint(Sin - #wad2rad(wad))
-    #Vat.vice         |-> uint(Vice) => uint(Vice - #wad2rad(wad))
-    #Vat.Tab          |-> uint(Tab)  => uint(Tab - #wad2rad(wad))
-
-iff
-
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Woe
-
-iff in range uint256
-
-    Woe - wad
-    
-iff in range int256
-
-    wad
-    Dai - #wad2rad(wad)
-    Sin - #wad2rad(wad)
-    Vice - #wad2rad(wad)
-    Tab - #wad2rad(wad)
-```
-
-```
-behaviour kiss of Vow
-interface kiss(uint256 wad)
-
-types
-
-    Vat  : address VatLike
-    Woe  : uint256
-    Dai  : int256
-    Sin  : int256
-    Vice : int256
-    Tab  : int256
-
-storage
-
-    #Vow.vat |-> Vat
-    #Vow.Ash |-> Ash - wad
-
-storage Vat
-
-    #Vat.dai(ACCT_ID) |-> uint(Dai)  => uint(Dai - #wad2rad(wad))
-    #Vat.sin(ACCT_ID) |-> uint(Sin)  => uint(Sin - #wad2rad(wad))
-    #Vat.vice         |-> uint(Vice) => uint(Vice - #wad2rad(wad))
-    #Vat.Tab          |-> uint(Tab)  => uint(Tab - #wad2rad(wad))
-
-iff
-
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Ash
-
-iff in range uint256
-
-    Ash - wad
-    
-iff in range int256
-
-    wad
-    Dai - #wad2rad(wad)
-    Sin - #wad2rad(wad)
-    Vice - #wad2rad(wad)
-    Tab - #wad2rad(wad)
-```
-
 
 #### starting a debt auction
 ```
@@ -874,14 +853,14 @@ interface flop()
 types
 
     Row   : address Flopper
-    Vat   : address VatLike
+    Vat   : address Vat
     Lump  : uint256
     Woe   : uint256
     Ash   : uint256
     Ttl   : uint48
     Tau   : uint48
     Kicks : uint256
-    Dai   : int256
+    Dai   : uint256
     
 storage
 
@@ -901,7 +880,7 @@ storage Row
     
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> uint(Dai)
+    #Vat.dai(ACCT_ID) |-> Dai
     
 iff
 
@@ -909,7 +888,6 @@ iff
     
 iff in range uint256
 
-    Dai
     Woe - Lump
     Ash + Lump
     
@@ -924,7 +902,7 @@ interface flap()
 types
 
     Cow   : address Flapper
-    Vat   : address VatLike
+    Vat   : address Vat
     Lump  : uint256
     Pad   : uint256
     Woe   : uint256
@@ -932,7 +910,7 @@ types
     Ttl   : uint48
     Tau   : uint48
     Kicks : uint256
-    Dai   : int256
+    Dai   : uint256
     
 storage
 
@@ -954,7 +932,7 @@ storage Cow
     
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> uint(Dai)
+    #Vat.dai(ACCT_ID) |-> Dai
 
 iff
 
@@ -963,7 +941,6 @@ iff
     
 iff in range uint256
 
-    Dai
     Sin + Woe
     Sin + Woe + Ash
     Sin + Woe + Ash + Lump
@@ -1145,17 +1122,17 @@ interface bite(bytes32 ilk, address guy)
 
 types
 
-    Vat : address VatLike
-    Pit : address PitLike
-    Vow : address VowLike
-    Nflip : uint256
-    Rate_i : int256
-    Art_i : int256
-    Ink_u : int256
-    Art_u : int256
-    Sin_v : int256
-    Vice : int256
-    Sin : uint256
+    Vat     : address Vat
+    Pit     : address Pit
+    Vow     : address Vow
+    Nflip   : uint256
+    Rate    : uint256
+    Art_i   : uint256
+    Ink_u   : uint256
+    Art_u   : uint256
+    Sin_v   : uint256
+    Vice    : uint256
+    Sin     : uint256
     Sin_era : uint256
     
 storage
@@ -1164,44 +1141,42 @@ storage
     #Cat.pit              |-> Pit
     #Cat.vow              |-> Vow
     #Cat.nflip            |-> Nflip => Nflip + 1
-    #Cat.flips(Nflip).ilk |-> 0 => ilk
-    #Cat.flips(Nflip).lad |-> 0 => guy
-    #Cat.flips(Nflip).ink |-> 0 => Ink_u
-    #Cat.flips(Nflip).tab |-> 0 => Rate_i * Art_u
+    #Cat.flips(Nflip).ilk |-> 0     => ilk
+    #Cat.flips(Nflip).lad |-> 0     => guy
+    #Cat.flips(Nflip).ink |-> 0     => Ink_u
+    #Cat.flips(Nflip).tab |-> 0     => Rate * Art_u
     
 storage Vat
 
-    #Vat.ilks(ilk).rate |-> uint(Rate_i)
-    #Vat.ilks(ilk).Art  |-> uint(Art_i) => uint(Art_i - Art_u)
-    #Vat.urns(ilk, guy).ink |-> uint(Ink_u) => 0
-    #Vat.urns(ilk, guy).art |-> uint(Art_u) => 0
-    #Vat.sin(Vow) |-> uint(Sin_v) => uint(Sin_v - Rate_i * Art_u)
-    #Vat.vice |-> uint(Vice) => uint(Vice - Rate_i * Art_u)
+    #Vat.ilks(ilk).rate     |-> Rate
+    #Vat.ilks(ilk).Art      |-> Art_i => Art_i - Art_u
+    #Vat.urns(ilk, guy).ink |-> Ink_u => 0
+    #Vat.urns(ilk, guy).art |-> Art_u => 0
+    #Vat.sin(Vow)           |-> Sin_v => Sin_v - Rate * Art_u
+    #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
 
 storage Pit
 
-    #Pit.ilks(ilk).spot |-> uint(Spot_i)
+    #Pit.ilks(ilk).spot |-> Spot_i
     
 Storage Vow
 
-    #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate_i
-    #Vow.Sin       |-> Sin => Sin + Art_u * Rate_i
+    #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate
+    #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
     
 iff
 
-    Ink_u * Spot_i < Art_u * Rate_i
+    Ink_u * Spot_i < Art_u * Rate
 
 iff in range int256
 
-    Art_u - Art_u
-    Rate_i * Art_u
-    Rate_i * (0 - Art_u)
-    Sin_v - Rate_i * Art_u
-    Vice - Rate_i * Art_u
+    Rate * (0 - Art_u)
 
 iff in range uint256
 
-    Rate_i * Art_u
+    Art_i - Art_u
+    Sin_v - Rate * Art_u
+    Vice - Rate * Art_u
     Sin_era + Art_u * Rate_i
     Sin + Art_u * Rate_i
 
@@ -1253,10 +1228,6 @@ iff
 
     wad <= Tab
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
-
-iff in range int256
-
-    wad
 
 iff in range uint256
 
@@ -1329,10 +1300,10 @@ interface join(uint256 wad)
 
 types
 
-    Vat         : address VatLike
+    Vat         : address Vat
     Ilk         : bytes32
     Gem         : address GemLike
-    Wad         : int256
+    Wad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
     
@@ -1344,20 +1315,20 @@ storage
 
 storage Vat
 
-    #Vat.urns(Ilk, CALLER_ID).gem |-> uint(Wad) => uint(Wad + wad)
+    #Vat.gem(Ilk, CALLER_ID) |-> Wad => Wad + wad
     
 storage Gem
 
-    #Gem.balances(CALLER_ID) |-> Bal_guy - wad
-    #Gem.balances(ACCT_ID)   |-> Bal_adapter + wad
+    #Gem.balances(CALLER_ID) |-> Bal_guy     => Bal_guy - wad
+    #Gem.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter + wad
     
 iff in range int256
 
     wad
-    Wad + wad
 
 iff in range uint256
 
+    Wad + wad
     Bal_guy - wad
     Bal_adapter + wad
 ```
@@ -1369,10 +1340,10 @@ interface exit(uint256 wad)
 
 types
 
-    Vat         : address VatLike
+    Vat         : address Vat
     Ilk         : bytes32
     Gem         : address GemLike
-    Wad         : int256
+    Wad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
     
@@ -1384,24 +1355,16 @@ storage
 
 storage Vat
 
-    #Vat.urns(Ilk, CALLER_ID).gem |-> uint(Wad) => uint(Wad - wad)
+    #Vat.gem(Ilk, CALLER_ID) |-> Wad => Wad - wad
     
 storage Gem
 
-    #Gem.balances(CALLER_ID) |-> Bal_guy + wad
-    #Gem.balances(ACCT_ID)   |-> Bal_adapter - wad
-    
-iff
-
-    Wad - wad >= 0
-    
-iff in range int256
-
-    wad
-    Wad - wad
+    #Gem.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
+    #Gem.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad
 
 iff in range uint256
 
+    Wad - wad
     Bal_guy + wad
     Bal_adapter - wad
 ```
