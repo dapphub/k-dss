@@ -267,10 +267,6 @@ syntax Int ::= "#Gem.balances" "(" Int ")" [function]
 // --------------------------------------------------
 rule #Gem.balances(A) => #hashedLocation("Solidity", 1, A)
 
-
-
-
-
 // misc:
 
 // hashed storage offsets never overflow (probabilistic assumption):
@@ -300,54 +296,7 @@ rule #asWord(#padToWidth(32, #asByteStack(#unsigned(X)))) => #unsigned(X)
 
 rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 
-// n.b. how + cases use +Int because of earlier application of +Word
-rule (#unsigned(A) +Int #unsigned(B)) => #unsigned(A +Int B)
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A +Int B)
-
-rule (#unsigned(A) +Int C) => #unsigned(A +Int C)
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, C)
-  andBool C >=Int 0
-  andBool #rangeSInt(256, A +Int C)
-
-rule (#unsigned(A) -Word #unsigned(B)) => #unsigned(A -Int B)
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A -Int B)
-
-rule (#unsigned(A) -Word C) => #unsigned(A -Int C)
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, C)
-  andBool C >=Int 0
-  andBool #rangeSInt(256, A -Int C)
-
-rule chop(#unsigned(A) *Int B) => #unsigned(A *Int B)
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A *Int B)
-  andBool B >=Int 0
-
-rule #sgnInterp(sgn(#unsigned(A)), abs(#unsigned(A))) => #unsigned(A)
-  requires #rangeSInt(256, A)
-
-rule chop(abs(#unsigned(A))) => abs(#unsigned(A))
-  requires #rangeSInt(256, A)
-
-rule sgn(#unsigned(A *Int B)) => sgn(#unsigned(A)) *Int sgn(#unsigned(B))
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A *Int B)
-
-rule abs(#unsigned(A *Int B)) /Int B => abs(#unsigned(A))
-  requires #rangeSInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A *Int B)
-  andBool notBool (B ==Int 0)
-  
-rule chop(#unsigned(W)) => #unsigned(W)
-  requires #rangeSInt(256, W)
+rule W0 s<Word W1 => #signed(W0) <Word #signed(W1)
 
 rule #signed(#unsigned(W)) => W
   requires #rangeSInt(256, W)
@@ -355,46 +304,85 @@ rule #signed(#unsigned(W)) => W
 rule #unsigned(#signed(W)) => W
   requires #rangeUInt(256, W)
 
-rule W0 s<Word W1 => #signed(W0) <Word #signed(W1)
+rule #unsigned(X) ==K 0 => X ==Int 0
 
-// lemmas to tell us that our non-overflow conditions are necessary for
-// the overflow checks in iadd and isub
-rule notBool (P orBool Q) => (notBool P) andBool (notBool Q)
-rule notBool (P andBool Q) => (notBool P) orBool (notBool Q)
-rule notBool (notBool P) => P
+rule 0 <Int #unsigned(X) => 0 <Int X
 
-// these just encode implications
-// (¬A or B) is (A -> B) 
-rule (notBool (0 <Int B))
-    orBool
-     (#signed (#unsigned(A) -Word #unsigned(B)) <Int A)
-    => (A -Int B >=Int minSInt256)	      
-  requires #rangeSInt(256, A)
-  andBool  #rangeSInt(256, B)
+// addui
+// lemmas for sufficiency
+rule chop(A +Int #unsigned(B)) => A +Int B
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeUInt(256, A +Int B)
 
-rule (notBool (B <Int 0))
-    orBool
-     (A <Int #signed (#unsigned(A) -Word #unsigned(B)))
-    => (A -Int B <=Int maxSInt256)	      
-  requires #rangeSInt(256, A)
-  andBool  #rangeSInt(256, B)
+// lemmas for necessity
+rule chop(A +Int #unsigned(B)) >Int A => (A +Int B <=Int maxUInt256)	      
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B >=Int 0
 
-// n.b. how + cases use chop and +Int because of earlier application of +Word 
-rule (notBool (0 <Int B))
-    orBool
-     (A <Int #signed (chop (#unsigned (A) +Int #unsigned (B))))
-    => (A +Int B <=Int maxSInt256)
-  requires #rangeSInt(256, A)
-  andBool  #rangeSInt(256, B)
+rule chop(A +Int #unsigned(B)) <Int A => (A +Int B >=Int minUInt256)	      
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
 
-rule (notBool (B <Int 0))
-    orBool
-     (#signed (chop (#unsigned (A) +Int #unsigned (B))) <Int A)
-    => (A +Int B >=Int minSInt256)
-  requires #rangeSInt(256, A)
-  andBool  #rangeSInt(256, B)
+// subui
+// lemmas for sufficiency
+rule A -Word #unsigned(B) => A -Int B
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeUInt(256, A -Int B)
 
-// TODO: converses for imul
+// lemmas for necessity
+rule A -Word #unsigned(B) <Int A => (A -Int B >=Int minUInt256)	      
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B >=Int 0
+
+rule A -Word #unsigned(B) >Int A => (A -Int B <=Int maxUInt256)	      
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
+
+// mului
+// lemmas for sufficiency
+rule A *Int #unsigned(B) => #unsigned(A *Int B)
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+
+rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+  andBool notBool (#unsigned(B) ==Int 0)
+
+// possibly get rid of
+rule #sgnInterp(sgn(W), abs(W)) => W
+  requires #rangeUInt(256, W)
+
+rule #sgnInterp(sgn(#unsigned(A *Int B)), A) => A
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+  andBool B >=Int 0
+
+rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int (-1), A) => A
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+  andBool B <Int 0
+
+// lemmas for necessity
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B <=Int maxSInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B >Int 0
+
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B >=Int minSInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
 
 // idk?
 rule A modInt pow160 => A

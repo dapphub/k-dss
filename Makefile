@@ -17,11 +17,12 @@ passing_tests = out/Vat_gem_succ.ini \
 		out/Vat_vice_succ.ini \
 		out/Vat_init_succ.ini \
 		out/Vat_move_succ.ini \
-		out/Vat_move_fail.ini \
 		out/Vat_slip_succ.ini \
 		out/Vat_slip_fail.ini \
 		out/Vat_flux_succ.ini \
-		out/Vat_flux_fail.ini
+		out/Vat_flux_fail.ini \
+		out/Vat_heal_succ.ini \
+		out/Vat_heal_fail.ini
 
 all: dapp spec
 
