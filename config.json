@@ -1,13 +1,13 @@
 {
   "spec": "./out/spec_slip_success.ini",
-  "prelude": "./exp.smt2",
+  "prelude": "./prelude.smt2",
   "lemmas": "./lemmas.k",
   "implements": [
-    "dss/out/tune.2.sol.json"
+    "./dss/out/tune.2.sol.json"
   ],
   "behaviour_of": "Vat",
   "var2name": {},
-  "path_root": "dss",
+  "path_root": "./dss",
   "host": "127.0.0.1:8080",
   "control": {
     "0"      : "branch 0",
