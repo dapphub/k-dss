@@ -205,7 +205,7 @@ iff in range uint256
 
 ```
 behaviour tune of Vat
-interface tune(bytes32 ilk, bytes32 u_, bytes32 v, bytes32 w, int256 dink, int256 dart)
+interface tune(bytes32 ilk, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
 types
 
@@ -220,9 +220,9 @@ types
 storage
 
     #Vat.gem(ilk, v)        |-> Gem_v  => Gem_v - dink
-    #Vat.urns(ilk, u_).ink  |-> Ink_u  => Ink_u + dink
-    #Vat.urns(ilk, u_).art  |-> Art_u  => Art_u + dart
-    #Vat.ilks(ilk).rate     |-> Rate_i
+    #Vat.urns(ilk, u).ink   |-> Ink_u  => Ink_u + dink
+    #Vat.urns(ilk, u).art   |-> Art_u  => Art_u + dart
+    #Vat.ilks(ilk).rate     |-> Rate
     #Vat.ilks(ilk).Art      |-> Art_i  => Art_i + dart
     #Vat.dai(w)             |-> Dai    => Dai + (Rate * dart)
     #Vat.debt               |-> Debt   => Debt + (Rate * dart)
@@ -238,13 +238,14 @@ iff in range uint256
     
 iff in range int256
 
+    Rate
     Rate * dart
 ```
 
 #### confiscating a position
 ```
 behaviour grab of Vat
-interface grab(bytes32 ilk, bytes32 u_, bytes32 v, bytes32 w, int256 dink, int256 dart)
+interface grab(bytes32 ilk, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
 types
 
@@ -259,8 +260,8 @@ types
 storage
 
     #Vat.gem(ilk, v)       |-> Gem_v => Gem_v - dink
-    #Vat.urns(ilk, u_).ink |-> Ink_u => Ink_u + dink
-    #Vat.urns(ilk, u_).art |-> Art_u => Art_u + dart
+    #Vat.urns(ilk, u).ink  |-> Ink_u => Ink_u + dink
+    #Vat.urns(ilk, u).art  |-> Art_u => Art_u + dart
     #Vat.ilks(ilk).rate    |-> Rate
     #Vat.ilks(ilk).Art     |-> Art_i => Art_i + dart
     #Vat.sin(w)            |-> Sin   => Sin - Rate * dart
@@ -270,7 +271,7 @@ storage
 iff in range uint256
 
     Gem_v - dink
-    Ink + dink
+    Ink_u + dink
     Art_u + dart
     Art_i + dart
     Sin - Rate * dart
@@ -278,6 +279,7 @@ iff in range uint256
     
 iff in range int256
 
+    Rate
     Rate * dart
 ```
 
@@ -461,7 +463,7 @@ types
     Ink_u  : uint256
     Art_u  : uint256
     Art_i  : uint256
-    Rate_i : uint256
+    Rate   : uint256
     Dai    : uint256
     Debt   : uint256
 
@@ -505,6 +507,7 @@ iff in range uint256
     
 iff in range int256
 
+    Rate
     Rate * dart
 ```
 
@@ -1170,6 +1173,7 @@ iff
 
 iff in range int256
 
+    Rate
     Rate * (0 - Art_u)
 
 iff in range uint256
@@ -1177,8 +1181,8 @@ iff in range uint256
     Art_i - Art_u
     Sin_v - Rate * Art_u
     Vice - Rate * Art_u
-    Sin_era + Art_u * Rate_i
-    Sin + Art_u * Rate_i
+    Sin_era + Art_u * Rate
+    Sin + Art_u * Rate
 
 returns Nflip + 1
 ```
