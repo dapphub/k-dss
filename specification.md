@@ -337,6 +337,7 @@ iff in range uint256
     
 iff in range int256
 
+    Art_i
     Art_i * rate
 ```
 
