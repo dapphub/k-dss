@@ -197,8 +197,8 @@ storage
     
 iff in range uint256
 
-    Gem_src - rad
-    Gem_dst + rad
+    Gem_src - wad
+    Gem_dst + wad
 ```
 
 #### adminstering a position
