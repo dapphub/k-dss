@@ -6,6 +6,22 @@ What follows is an executable K specification of the smart contracts of multicol
 
 ### Accessors
 
+#### owners
+```
+behaviour wards of Vat
+interface wards(address guy)
+
+types
+
+    Can : bool
+
+storage
+
+    #Vat.wards(guy) |-> Can
+
+returns Can
+```
+
 #### `ilk` data
 ```
 behaviour ilks of Vat
@@ -123,38 +139,87 @@ returns Vice
 ```
 ### Mutators
 
+#### adding an owner
+```
+behaviour rely of Vat
+interface rely(address guy)
+
+types
+
+    Can   : bool
+    Could : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.wards(guy)       |-> Could => 1
+
+iff
+
+    Can == 1
+```
+
+#### removing an owner
+```
+behaviour deny of Vat
+interface deny(address guy)
+
+types
+
+    Can   : bool
+    Could : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.wards(guy)       |-> Could => 0
+
+iff
+
+    Can == 1
+```
+
 #### initialising an `ilk`
 ```
 behaviour init of Vat
 interface init(bytes32 ilk)
 
+types
+
+    Can  : bool
+    Rate : uint256
+
 storage
 
-    #Vat.ilks(ilk).rate |-> Rate => 1000000000000000000000000000
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.ilks(ilk).rate   |-> Rate => 1000000000000000000000000000
     
 iff
 
+    Can == 1
     Rate == 0
 ```
 
 #### transferring dai balances
 ```
 behaviour move of Vat
-interface move(bytes32 src, bytes32 dst, uint256 rad)
+interface move(bytes32 src, bytes32 dst, int256 rad)
 
 types
 
+    Can     : bool
     Dai_src : uint256
     Dai_dst : uint256
 
 storage
 
-    #Vat.dai(src) |-> Dai_src => Dai_src - rad
-    #Vat.dai(dst) |-> Dai_dst => Dai_dst + rad
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.dai(src)         |-> Dai_src => Dai_src - rad
+    #Vat.dai(dst)         |-> Dai_dst => Dai_dst + rad
 
-iff in range int256
+iff
 
-    rad
+    Can == 1
     
 iff in range uint256
 
@@ -169,11 +234,17 @@ interface slip(bytes32 ilk, bytes32 guy, int256 wad)
 
 types
 
+    Can : bool
     Gem : uint256
 
 storage
 
-    #Vat.gem(ilk, guy) |-> Gem => Gem + wad
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.gem(ilk, guy)    |-> Gem => Gem + wad
+
+iff
+
+    Can == 1
 
 iff in range uint256
 
@@ -187,14 +258,20 @@ interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
 
 types
 
+    Can     : bool
     Gem_src : uint256
     Gem_dst : uint256
 
 storage
 
-    #Vat.gem(ilk, src) |-> Gem_src => Gem_src - wad
-    #Vat.gem(ilk, dst) |-> Gem_dst => Gem_dst + wad
-    
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.gem(ilk, src)    |-> Gem_src => Gem_src - wad
+    #Vat.gem(ilk, dst)    |-> Gem_dst => Gem_dst + wad
+
+iff
+
+    Can == 1
+
 iff in range uint256
 
     Gem_src - wad
@@ -209,6 +286,7 @@ interface tune(bytes32 ilk, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256
 
 types
 
+    Can   : bool
     Gem_v : uint256
     Ink_u : uint256
     Art_u : uint256
@@ -219,6 +297,7 @@ types
 
 storage
 
+    #Vat.wards(CALLER_ID)   |-> Can
     #Vat.gem(ilk, v)        |-> Gem_v  => Gem_v - dink
     #Vat.urns(ilk, u).ink   |-> Ink_u  => Ink_u + dink
     #Vat.urns(ilk, u).art   |-> Art_u  => Art_u + dart
@@ -226,6 +305,10 @@ storage
     #Vat.ilks(ilk).Art      |-> Art_i  => Art_i + dart
     #Vat.dai(w)             |-> Dai    => Dai + (Rate * dart)
     #Vat.debt               |-> Debt   => Debt + (Rate * dart)
+
+iff
+
+    Can == 1
 
 iff in range uint256
 
@@ -249,6 +332,7 @@ interface grab(bytes32 ilk, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256
 
 types
 
+    Can   : bool
     Gem_v : uint256
     Ink_u : uint256
     Art_u : uint256
@@ -259,6 +343,7 @@ types
 
 storage
 
+    #Vat.wards(CALLER_ID)  |-> Can
     #Vat.gem(ilk, v)       |-> Gem_v => Gem_v - dink
     #Vat.urns(ilk, u).ink  |-> Ink_u => Ink_u + dink
     #Vat.urns(ilk, u).art  |-> Art_u => Art_u + dart
@@ -267,6 +352,9 @@ storage
     #Vat.sin(w)            |-> Sin   => Sin - Rate * dart
     #Vat.vice              |-> Vice  => Vice - Rate * dart
 
+iff
+
+    Can == 1
 
 iff in range uint256
 
@@ -290,6 +378,7 @@ interface heal(bytes32 u, bytes32 v, int256 rad)
 
 types
 
+    Can   : bool
     Dai_v : uint256
     Sin_u : uint256
     Debt  : uint256
@@ -297,10 +386,15 @@ types
 
 storage
 
-    #Vat.dai(v) |-> Dai_v => Dai_v - rad
-    #Vat.sin(u) |-> Sin_u => Sin_u - rad
-    #Vat.debt   |-> Debt  => Debt - rad
-    #Vat.vice   |-> Vice  => Vice - rad
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.dai(v)           |-> Dai_v => Dai_v - rad
+    #Vat.sin(u)           |-> Sin_u => Sin_u - rad
+    #Vat.debt             |-> Debt  => Debt - rad
+    #Vat.vice             |-> Vice  => Vice - rad
+
+iff
+
+    Can == 1
 
 iff in range uint256
 
@@ -317,6 +411,7 @@ interface fold(bytes32 ilk, bytes32 vow, int256 rate)
 
 types
 
+    Can   : bool
     Rate  : uint256
     Dai   : uint256
     Art_i : uint256
@@ -324,10 +419,15 @@ types
 
 storage
 
-    #Vat.ilks(ilk).rate |-> Rate => Rate + rate
-    #Vat.ilks(ilk).Art  |-> Art_i
-    #Vat.dai(vow)       |-> Dai  => Dai + Art_i * rate
-    #Vat.debt           |-> Debt => Debt + Art_i * rate
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.ilks(ilk).rate   |-> Rate => Rate + rate
+    #Vat.ilks(ilk).Art    |-> Art_i
+    #Vat.dai(vow)         |-> Dai  => Dai + Art_i * rate
+    #Vat.debt             |-> Debt => Debt + Art_i * rate
+
+iff
+
+    Can == 1
 
 iff in range uint256
 
@@ -346,6 +446,22 @@ iff in range int256
 ## Specification of behaviours
 
 ### Accessors
+
+#### owners
+```
+behaviours wards of Pit
+interface wards(address guy)
+
+types
+
+    Can : bool
+
+storage
+
+    #Pit.wards(guy) |-> Can
+
+returns Can
+```
 
 #### `vat` address
 ```
@@ -415,7 +531,81 @@ returns
     Spot_i : Line_i
 ```
 
+#### `drip` address
+```
+behaviour drip of Pit
+interface drip()
+
+types
+
+    Drip : address Dripper
+
+storage
+
+    #Pit.drip |-> Drip
+
+returns Drip
+```
+
 ### Mutators
+
+#### adding an owner
+```
+behaviour rely of Pit
+interface rely(address guy)
+
+types
+
+    Can : bool
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.wards(guy)       |-> _ => 1
+
+iff
+
+    Can == 1
+```
+
+#### removing an owner
+```
+behaviour deny of Pit
+interface deny(address guy)
+
+types
+
+    Can : bool
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.wards(guy)       |-> _ => 0
+
+iff
+
+    Can == 1
+```
+
+#### setting `drip` address
+```
+behaviour file-drip of Pit
+interface file(bytes32 what, address who)
+
+types
+
+    Can    : bool
+    Drip   : address
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.drip             |-> Drip => #if (what == 123) #then Drip #else who #fi
+
+iff
+
+    Can == 1
+```
 
 #### setting `ilk` data
 ```
@@ -424,13 +614,19 @@ interface file(bytes32 ilk, bytes32 what, uint256 risk)
 
 types
 
+    Can    : bool
     Spot_i : uint256
     Line_i : uint256
 
 storage
 
-    #Pit.ilks(ilk).spot |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
-    #Pit.ilks(ilk).line |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.ilks(ilk).spot   |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then risk #else Spot_i #fi
+    #Pit.ilks(ilk).line   |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then risk #else Line_i #fi
+
+iff
+
+    Can == 1
 ```
 
 #### setting the global debt ceiling
@@ -440,11 +636,17 @@ interface file(bytes32 what, uint256 risk)
 
 types
 
+    Can  : bool
     Line : uint256
 
 storage
 
-    #Pit.Line |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.Line             |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then risk #else Line #fi
+
+iff
+
+    Can == 1
 ```
 
 #### manipulating a position
@@ -476,7 +678,7 @@ storage
     #Pit.ilks(ilk).line |-> Line_i
     #Pit.ilks(ilk).spot |-> Spot
 
-storage VatLike
+storage Vat
 
     #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - dink
     #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u  => Ink_u + dink
@@ -677,7 +879,7 @@ storage
 
     #Vow.vat |-> Vat
 
-storage VatLike
+storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
     
@@ -739,7 +941,7 @@ storage
     #Vow.vat |-> Vat
     #Vow.Woe |-> Woe - wad
 
-storage VatLike
+storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
     #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
@@ -782,7 +984,7 @@ storage
     #Vow.vat |-> Vat
     #Vow.Ash |-> Ash - wad
 
-storage VatLike
+storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
     #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
@@ -873,7 +1075,7 @@ storage
     #Vow.Woe  |-> Woe => Woe - Lump
     #Vow.Ash  |-> Ash => Ash + Lump
     
-storage Floppy
+storage Row
 
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flopper.kicks                       |-> Kicks => Kicks + 1
@@ -882,7 +1084,7 @@ storage Floppy
     #Flopper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flopper.bids(Kicks + 1).vow         |-> _ => ACCT_ID
     
-storage VatLike
+storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
     
@@ -925,7 +1127,7 @@ storage
     #Vow.Woe  |-> Woe
     #Vow.Ash  |-> Ash
     
-storage Flappy
+storage Cow
 
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks => Kicks + 1
@@ -934,7 +1136,7 @@ storage Flappy
     #Flapper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flapper.bids(Kicks + 1).gal         |-> _ => ACCT_ID
     
-storage VatLike
+storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
 
@@ -1150,7 +1352,7 @@ storage
     #Cat.flips(Nflip).ink |-> 0     => Ink_u
     #Cat.flips(Nflip).tab |-> 0     => Rate * Art_u
     
-storage VatLike
+storage Vat
 
     #Vat.ilks(ilk).rate     |-> Rate
     #Vat.ilks(ilk).Art      |-> Art_i => Art_i - Art_u
@@ -1159,11 +1361,11 @@ storage VatLike
     #Vat.sin(Vow)           |-> Sin_v => Sin_v - Rate * Art_u
     #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
 
-storage PitLike
+storage Pit
 
     #Pit.ilks(ilk).spot |-> Spot_i
     
-storage VowLike
+storage Vow
 
     #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate
     #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
@@ -1218,7 +1420,7 @@ storage
     #Cat.lump             |-> Lump
     #Cat.vow              |-> Vow
     
-storage Flippy
+storage Flip
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flipper.kicks                       |-> Kicks => Kicks + 1
@@ -1318,11 +1520,11 @@ storage
     #Adapter.ilk |-> Ilk
     #Adapter.gem |-> Gem
 
-storage VatLike
+storage Vat
 
     #Vat.gem(Ilk, CALLER_ID) |-> Wad => Wad + wad
     
-storage GemLike
+storage Gem
 
     #Gem.balances(CALLER_ID) |-> Bal_guy     => Bal_guy - wad
     #Gem.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter + wad
@@ -1358,11 +1560,11 @@ storage
     #Adapter.ilk |-> Ilk
     #Adapter.gem |-> Gem
 
-storage VatLike
+storage Vat
 
     #Vat.gem(Ilk, CALLER_ID) |-> Wad => Wad - wad
     
-storage GemLike
+storage Gem
 
     #Gem.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
     #Gem.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad

@@ -8,16 +8,22 @@ export TMPDIR
 test_dir = out
 tests = $(wildcard $(test_dir)/*)
 
-passing_tests = out/Vat_gem_succ.ini  \
-		out/Vat_dai_succ.ini  \
-		out/Vat_sin_succ.ini  \
+passing_tests =	out/Vat_wards_succ.ini \
 		out/Vat_ilks_succ.ini \
 		out/Vat_urns_succ.ini \
+		out/Vat_gem_succ.ini  \
+		out/Vat_dai_succ.ini  \
+		out/Vat_sin_succ.ini  \
 		out/Vat_debt_succ.ini \
 		out/Vat_vice_succ.ini \
+		out/Vat_rely_succ.ini \
+		out/Vat_rely_fail.ini \
+		out/Vat_deny_succ.ini \
+		out/Vat_deny_fail.ini \
 		out/Vat_init_succ.ini \
 		out/Vat_init_fail.ini \
 		out/Vat_move_succ.ini \
+		out/Vat_move_fail.ini \
 		out/Vat_slip_succ.ini \
 		out/Vat_slip_fail.ini \
 		out/Vat_flux_succ.ini \
@@ -30,8 +36,6 @@ passing_tests = out/Vat_gem_succ.ini  \
 		out/Vat_heal_fail.ini \
 		out/Vat_fold_succ.ini \
 		out/Vat_fold_fail.ini
-# casting issue:
-#		out/Vat_move_fail.ini
 
 all: dapp spec
 

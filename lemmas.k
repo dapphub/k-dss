@@ -25,61 +25,77 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^I
   andBool #rangeUInt(48, Y)
 
 // DSL for abstracted storage:
-syntax Int ::= "#Vat.dai" "(" Int ")" [function]
-// ---------------------------------------------
-rule #Vat.dai(A) => #hashedLocation("Solidity", 1, A)
-
-syntax Int ::= "#Vat.sin" "(" Int ")" [function]
-// ---------------------------------------------
-rule #Vat.sin(A) => #hashedLocation("Solidity", 2, A)
+syntax Int ::= "#Vat.wards" "(" Int ")" [function]
+// -----------------------------------------------
+rule #Vat.wards(A) => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Vat.ilks" "(" Int ").rate" [function]
 // ----------------------------------------------------
-rule #Vat.ilks(Ilk).rate => #hashedLocation("Solidity", 3, Ilk) +Int 0
+rule #Vat.ilks(Ilk).rate => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Vat.ilks" "(" Int ").Art" [function]
 // -----------------------------------------------
-rule #Vat.ilks(Ilk).Art => #hashedLocation("Solidity", 3, Ilk) +Int 1
+rule #Vat.ilks(Ilk).Art => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Vat.urns" "(" Int "," Int ").ink" [function]
 // ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).ink => #hashedLocation("Solidity", 4, Ilk Guy) +Int 1
+rule #Vat.urns(Ilk, Guy).ink => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
 
 syntax Int ::= "#Vat.urns" "(" Int "," Int ").art" [function]
 // ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).art => #hashedLocation("Solidity", 4, Ilk Guy) +Int 2
-
-syntax Int ::= "#Vat.debt" [function]
-// ---------------------------------
-rule #Vat.debt => 5
-
-syntax Int ::= "#Vat.vice" [function]
-// ----------------------------------
-rule #Vat.vice => 6
+rule #Vat.urns(Ilk, Guy).art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 2
 
 syntax Int ::= "#Vat.gem" "(" Int "," Int ")" [function]
 // ---------------------------------------------
-rule #Vat.gem(Ilk, Guy) => #hashedLocation("Solidity", 7, Ilk Guy)
+rule #Vat.gem(Ilk, Guy) => #hashedLocation("Solidity", 3, Ilk Guy)
 
-syntax Int ::= "#Pit.vat" [function]
+syntax Int ::= "#Vat.dai" "(" Int ")" [function]
+// ---------------------------------------------
+rule #Vat.dai(A) => #hashedLocation("Solidity", 4, A)
+
+syntax Int ::= "#Vat.sin" "(" Int ")" [function]
+// ---------------------------------------------
+rule #Vat.sin(A) => #hashedLocation("Solidity", 5, A)
+
+syntax Int ::= "#Vat.debt" [function]
 // ---------------------------------
-rule #Pit.vat => 0
+rule #Vat.debt => 6
 
-syntax Int ::= "#Pit.Line" [function]
+syntax Int ::= "#Vat.vice" [function]
 // ----------------------------------
-rule #Pit.Line => 1
+rule #Vat.vice => 7
 
-syntax Int ::= "#Pit.live" [function]
-// ----------------------------------
-rule #Pit.live => 2
+syntax Int ::= "#Pit.wards" "(" Int ")" [function]
+// ---------------------------------
+rule #Pit.wards(A) => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Pit.ilks" "(" Int ").spot" [function]
 // ---------------------------------------------------
-rule #Pit.ilks(Ilk).spot => #hashedLocation("Solidity", 3, Ilk) +Int 0
+rule #Pit.ilks(Ilk).spot => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Pit.ilks" "(" Int ").line" [function]
 // ---------------------------------------------------
-rule #Pit.ilks(Ilk).line => #hashedLocation("Solidity", 3, Ilk) +Int 1
+rule #Pit.ilks(Ilk).line => #hashedLocation("Solidity", 1, Ilk) +Int 1
+
+syntax Int ::= "#Pit.vat" [function]
+// ---------------------------------
+rule #Pit.vat => 2
+
+syntax Int ::= "#Pit.Line" [function]
+// ----------------------------------
+rule #Pit.Line => 3
+
+syntax Int ::= "#Pit.live" [function]
+// ----------------------------------
+rule #Pit.live => 4
+
+syntax Int ::= "#Pit.drip" [function]
+// ----------------------------------
+rule #Pit.drip => 5
+
+syntax Int ::= "#Vow.wards" "(" Int ")" [function]
+// ---------------------------------
+rule #Vow.wards(A) => #hashedLocation("Solidity", 10, A)
 
 syntax Int ::= "#Vow.vat" [function]
 // ---------------------------------
@@ -120,6 +136,10 @@ rule #Vow.lump => 8
 syntax Int ::= "#Vow.pad" [function]
 // ---------------------------------
 rule #Vow.pad => 9
+
+syntax Int ::= "#Cat.wards" "(" Int ")" [function]
+// ---------------------------------
+rule #Cat.wards(A) => #hashedLocation("Solidity", 7, A)
 
 syntax Int ::= "#Cat.vat" [function]
 // ---------------------------------
