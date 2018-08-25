@@ -13,7 +13,7 @@ interface wards(address guy)
 
 types
 
-    Can : bool
+    Can : uint256
 
 storage
 
@@ -29,8 +29,8 @@ interface ilks(bytes32 ilk)
 
 types
 
-    Rate : uint256
-    Art_i  : uint256
+    Rate  : uint256
+    Art_i : uint256
 
 storage
 
@@ -146,7 +146,7 @@ interface rely(address guy)
 
 types
 
-    Can   : bool
+    Can   : uint256
     Could : uint256
 
 storage
@@ -166,7 +166,7 @@ interface deny(address guy)
 
 types
 
-    Can   : bool
+    Can   : uint256
     Could : uint256
 
 storage
@@ -186,7 +186,7 @@ interface init(bytes32 ilk)
 
 types
 
-    Can  : bool
+    Can  : uint256
     Rate : uint256
 
 storage
@@ -207,7 +207,7 @@ interface move(bytes32 src, bytes32 dst, int256 rad)
 
 types
 
-    Can     : bool
+    Can     : uint256
     Dai_src : uint256
     Dai_dst : uint256
 
@@ -234,7 +234,7 @@ interface slip(bytes32 ilk, bytes32 guy, int256 wad)
 
 types
 
-    Can : bool
+    Can : uint256
     Gem : uint256
 
 storage
@@ -258,7 +258,7 @@ interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
 
 types
 
-    Can     : bool
+    Can     : uint256
     Gem_src : uint256
     Gem_dst : uint256
 
@@ -286,7 +286,7 @@ interface tune(bytes32 ilk, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256
 
 types
 
-    Can   : bool
+    Can   : uint256
     Gem_v : uint256
     Ink_u : uint256
     Art_u : uint256
@@ -332,7 +332,7 @@ interface grab(bytes32 ilk, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256
 
 types
 
-    Can   : bool
+    Can   : uint256
     Gem_v : uint256
     Ink_u : uint256
     Art_u : uint256
@@ -378,7 +378,7 @@ interface heal(bytes32 u, bytes32 v, int256 rad)
 
 types
 
-    Can   : bool
+    Can   : uint256
     Dai_v : uint256
     Sin_u : uint256
     Debt  : uint256
@@ -411,7 +411,7 @@ interface fold(bytes32 ilk, bytes32 vow, int256 rate)
 
 types
 
-    Can   : bool
+    Can   : uint256
     Rate  : uint256
     Dai   : uint256
     Art_i : uint256
@@ -454,7 +454,7 @@ interface wards(address guy)
 
 types
 
-    Can : bool
+    Can : uint256
 
 storage
 
@@ -502,7 +502,7 @@ interface live()
 
 types
 
-    Live : bool
+    Live : uint256
 
 storage
 
@@ -556,7 +556,7 @@ interface rely(address guy)
 
 types
 
-    Can : bool
+    Can : uint256
 
 storage
 
@@ -575,7 +575,7 @@ interface deny(address guy)
 
 types
 
-    Can : bool
+    Can : uint256
 
 storage
 
@@ -594,7 +594,7 @@ interface file(bytes32 what, address who)
 
 types
 
-    Can    : bool
+    Can    : uint256
     Drip   : address
 
 storage
@@ -614,7 +614,7 @@ interface file(bytes32 ilk, bytes32 what, uint256 risk)
 
 types
 
-    Can    : bool
+    Can    : uint256
     Spot_i : uint256
     Line_i : uint256
 
@@ -636,7 +636,7 @@ interface file(bytes32 what, uint256 risk)
 
 types
 
-    Can  : bool
+    Can  : uint256
     Line : uint256
 
 storage
@@ -657,7 +657,7 @@ interface frob(bytes32 ilk, int256 dink, int256 dart)
 
 types
 
-    Live   : bool
+    Live   : uint256
     Line   : uint256
     Vat    : address VatLike
     Spot   : uint256
