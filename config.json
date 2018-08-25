@@ -3,10 +3,18 @@
   "prelude": "./prelude.smt2",
   "lemmas": "./lemmas.k",
   "implements": [
-    "./dss/out/tune.2.sol.json"
+    "./dss/out/tune.2.sol.json",
+    "./dss/out/heal.2.sol.json"
   ],
   "behaviour_of": "Vat",
-  "var2name": {},
+  "var2name": {
+    "Vat" : "Vat",
+    "Pit" : "Pit",
+    "Vow" : "Vow",
+    "Flip" : "Flipper",
+    "Row" : "Flopper",
+    "Cow" : "Flapper"
+  },
   "path_root": "./dss",
   "host": "127.0.0.1:8080",
   "control": {

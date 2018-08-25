@@ -36,7 +36,9 @@ const bound = {
   "uint256": name => `#rangeUInt(256, ${ name })`,
   "int256" : name => `#rangeSInt(256, ${ name })`,
   "bytes32": name => `#rangeBytes(32, ${ name })`,
-  "address": name => `#rangeNotPrecompileAddress(${ name })`
+  // TODO this does not actually work because lemmas don't get applied to constraints:
+  //"address": name => `#rangeNotPrecompileAddress(${ name })`
+  "address": name => `#rangeAddress(${ name})`
 }
 const toK = str => str
   .replace(/ \+ /g, " +Int ")
@@ -220,8 +222,11 @@ let behaviours = acts
       .filter(name => name != "ACCT_ID")
       .map(name => {
         let code = "";
-        if(testPath("dss/out/" + name + ".bin-runtime")) {
-          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        let klab_config = JSON.parse(fs.readFileSync("./config.json"));
+        let contract_label = klab_config.var2name[name]
+        if(testPath("dss/out/" + contract_label + ".bin-runtime")) {
+          console.log("Reading bytecode for " + name + " from dss/out/" + contract_label + ".bin-runtime")
+          code = fs.readFileSync("dss/out/" + contract_label + ".bin-runtime") // TODO
         } else {
           console.log(clc.xterm(208)("WARN: no implementation provided for " + name));
         }
@@ -246,8 +251,11 @@ let behaviours = acts
       .filter(name => name != "ACCT_ID")
       .map(name => {
         let code = "";
-        if(testPath("dss/out/" + name + ".bin-runtime")) {
-          let code = fs.readFileSync("dss/out/" + name + ".bin-runtime") // TODO
+        let klab_config = JSON.parse(fs.readFileSync("./config.json"));
+        let contract_label = klab_config.var2name[name]
+        if(testPath("dss/out/" + contract_label + ".bin-runtime")) {
+          console.log("Reading bytecode for " + name + " from dss/out/" + contract_label + ".bin-runtime")
+          code = fs.readFileSync("dss/out/" + contract_label + ".bin-runtime") // TODO
         } else {
           console.log(clc.xterm(208)("WARN: no implementation provided for " + name));
         }

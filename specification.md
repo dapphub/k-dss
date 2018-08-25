@@ -354,7 +354,7 @@ interface vat()
 
 types
 
-    Vat : address Vat
+    Vat : address VatLike
 
 storage
 
@@ -457,7 +457,7 @@ types
 
     Live   : bool
     Line   : uint256
-    Vat    : address Vat
+    Vat    : address VatLike
     Spot   : uint256
     Line_i : uint256
     Gem_u  : uint256
@@ -476,7 +476,7 @@ storage
     #Pit.ilks(ilk).line |-> Line_i
     #Pit.ilks(ilk).spot |-> Spot
 
-storage Vat
+storage VatLike
 
     #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - dink
     #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u  => Ink_u + dink
@@ -670,14 +670,14 @@ interface Joy()
 
 types
 
-    Vat : address Vat
+    Vat : address VatLike
     Dai : uint256
 
 storage
 
     #Vow.vat |-> Vat
 
-storage Vat
+storage VatLike
 
     #Vat.dai(ACCT_ID) |-> Dai
     
@@ -727,7 +727,7 @@ interface heal(uint256 wad)
 
 types
 
-    Vat  : address Vat
+    Vat  : address VatLike
     Woe  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -739,7 +739,7 @@ storage
     #Vow.vat |-> Vat
     #Vow.Woe |-> Woe - wad
 
-storage Vat
+storage VatLike
 
     #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
     #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
@@ -770,7 +770,7 @@ interface kiss(uint256 wad)
 
 types
 
-    Vat  : address Vat
+    Vat  : address VatLike
     Woe  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -782,7 +782,7 @@ storage
     #Vow.vat |-> Vat
     #Vow.Ash |-> Ash - wad
 
-storage Vat
+storage VatLike
 
     #Vat.dai(ACCT_ID) |-> Dai  => Dai - #wad2rad(wad)
     #Vat.sin(ACCT_ID) |-> Sin  => Sin - #wad2rad(wad)
@@ -856,8 +856,8 @@ interface flop()
 
 types
 
-    Row   : address Flopper
-    Vat   : address Vat
+    Row   : address Floppy
+    Vat   : address VatLike
     Lump  : uint256
     Woe   : uint256
     Ash   : uint256
@@ -873,7 +873,7 @@ storage
     #Vow.Woe  |-> Woe => Woe - Lump
     #Vow.Ash  |-> Ash => Ash + Lump
     
-storage Row
+storage Floppy
 
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flopper.kicks                       |-> Kicks => Kicks + 1
@@ -882,7 +882,7 @@ storage Row
     #Flopper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flopper.bids(Kicks + 1).vow         |-> _ => ACCT_ID
     
-storage Vat
+storage VatLike
 
     #Vat.dai(ACCT_ID) |-> Dai
     
@@ -905,8 +905,8 @@ interface flap()
 
 types
 
-    Cow   : address Flapper
-    Vat   : address Vat
+    Cow   : address Flappy
+    Vat   : address VatLike
     Lump  : uint256
     Pad   : uint256
     Woe   : uint256
@@ -925,7 +925,7 @@ storage
     #Vow.Woe  |-> Woe
     #Vow.Ash  |-> Ash
     
-storage Cow
+storage Flappy
 
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks => Kicks + 1
@@ -934,7 +934,7 @@ storage Cow
     #Flapper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flapper.bids(Kicks + 1).gal         |-> _ => ACCT_ID
     
-storage Vat
+storage VatLike
 
     #Vat.dai(ACCT_ID) |-> Dai
 
@@ -1126,9 +1126,9 @@ interface bite(bytes32 ilk, address guy)
 
 types
 
-    Vat     : address Vat
-    Pit     : address Pit
-    Vow     : address Vow
+    Vat     : address VatLike
+    Pit     : address PitLike
+    Vow     : address VowLike
     Nflip   : uint256
     Rate    : uint256
     Art_i   : uint256
@@ -1150,7 +1150,7 @@ storage
     #Cat.flips(Nflip).ink |-> 0     => Ink_u
     #Cat.flips(Nflip).tab |-> 0     => Rate * Art_u
     
-storage Vat
+storage VatLike
 
     #Vat.ilks(ilk).rate     |-> Rate
     #Vat.ilks(ilk).Art      |-> Art_i => Art_i - Art_u
@@ -1159,11 +1159,11 @@ storage Vat
     #Vat.sin(Vow)           |-> Sin_v => Sin_v - Rate * Art_u
     #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
 
-storage Pit
+storage PitLike
 
     #Pit.ilks(ilk).spot |-> Spot_i
     
-Storage Vow
+storage VowLike
 
     #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate
     #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
@@ -1199,7 +1199,7 @@ types
     Lad   : address
     Ink   : uint256
     Tab   : uint256
-    Flip  : address Flipper
+    Flip  : address Flippy
     Chop  : uint256
     Lump  : uint256
     Vow   : address
@@ -1218,7 +1218,7 @@ storage
     #Cat.lump             |-> Lump
     #Cat.vow              |-> Vow
     
-storage Flip
+storage Flippy
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flipper.kicks                       |-> Kicks => Kicks + 1
@@ -1255,7 +1255,7 @@ interface vat()
 
 types
 
-    Vat : address Vat
+    Vat : address VatLike
 
 storage
 
@@ -1305,9 +1305,9 @@ interface join(uint256 wad)
 
 types
 
-    Vat         : address Vat
+    Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address GemLike
+    Gem         : address
     Wad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
@@ -1318,11 +1318,11 @@ storage
     #Adapter.ilk |-> Ilk
     #Adapter.gem |-> Gem
 
-storage Vat
+storage VatLike
 
     #Vat.gem(Ilk, CALLER_ID) |-> Wad => Wad + wad
     
-storage Gem
+storage GemLike
 
     #Gem.balances(CALLER_ID) |-> Bal_guy     => Bal_guy - wad
     #Gem.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter + wad
@@ -1345,9 +1345,9 @@ interface exit(uint256 wad)
 
 types
 
-    Vat         : address Vat
+    Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address GemLike
+    Gem         : address
     Wad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
@@ -1358,11 +1358,11 @@ storage
     #Adapter.ilk |-> Ilk
     #Adapter.gem |-> Gem
 
-storage Vat
+storage VatLike
 
     #Vat.gem(Ilk, CALLER_ID) |-> Wad => Wad - wad
     
-storage Gem
+storage GemLike
 
     #Gem.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
     #Gem.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad
