@@ -30,18 +30,18 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | **Vat**     |      |      |
 | `ilks`      | x    | -    |
 | `urns`      | x    | -    |
-| `gem`       |      | -    |
+| `gem`       | x    | -    |
 | `dai`       | x    | -    |
 | `sin`       | x    | -    |
 | `debt`      | x    | -    |
 | `vice`      | x    | -    |
-| `init`      |      |      |
+| `init`      | x    | x    |
 | `move`      | x    | o    |
 | `slip`      | x    | x    |
-| `flux`      |      |      |
-| `tune`      |      |      |
-| `grab`      |      |      |
-| `fold`      |      |      |
+| `flux`      | x    | x    |
+| `tune`      | x    | x    |
+| `grab`      | x    | x    |
+| `fold`      | x    | x    |
 |             |      |      |
 | **Pit**     |      |      |
 | `live`      |      | -    |
