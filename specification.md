@@ -1209,22 +1209,6 @@ storage
 returns Vow
 ```
 
-#### liquidation lot size
-```
-behaviour lump of Cat
-interface lump()
-
-types
-
-    Lump : uint256
-    
-storage
-
-    #Cat.lump |-> Lump
-    
-returns Lump
-```
-
 #### `ilk` data
 ```
 behaviour ilks of Cat
@@ -1234,13 +1218,15 @@ types
 
     Chop : uint256
     Flip : address
+    Lump : uint256
     
 storage
 
     #Cat.ilks(ilk).chop |-> Chop
     #Cat.ilks(ilk).flip |-> Flip
+    #Cat.ilks(ilk).lump |-> Lump
     
-returns Chop : Flip
+returns Chop : Flip : Lump
 ```
 
 #### liquidation counter
@@ -1283,32 +1269,20 @@ returns Ilk : Lad : Ink : Tab
 
 ### Mutators
 
-#### setting liquidation lot size
+#### setting liquidation data
 ```
-behaviour file-lump of Cat
-interface file(bytes32 what, uint256 risk)
-
-types
-
-    Lump : uint256
-
-storage
-
-    #Cat.lump |-> Lump => (#if what == 12345 #then risk #else Lump #fi)
-```
-
-#### setting liquidation penalty
-```
-behaviour file-chop of Cat
+behaviour file of Cat
 interface file(bytes32 ilk, bytes32 what, uint256 risk)
 
 types
 
     Chop : uint256
+    Lump : uint256
 
 storage
 
     #Cat.ilks(ilk).chop |-> Chop => (#if what == 12345 #then risk #else Chop #fi)
+    #Cat.ilks(ilk).lump |-> Lump => (#if what == 54321 #then risk #else Lump #fi)
 ```
 
 #### setting liquidator address
@@ -1417,7 +1391,7 @@ storage
     #Cat.flips(Nflip).tab |-> Tab => Tab - wad
     #Cat.ilks(ilk).flip   |-> Flip
     #Cat.ilks(ilk).chop   |-> Chop
-    #Cat.lump             |-> Lump
+    #Cat.ilks(ilk).lump   |-> Lump
     #Cat.vow              |-> Vow
     
 storage Flip

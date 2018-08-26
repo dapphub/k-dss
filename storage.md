@@ -164,10 +164,6 @@ syntax Int ::= "#Cat.vow" [function]
 // ---------------------------------
 rule #Cat.vow => 2
 
-syntax Int ::= "#Cat.lump" [function]
-// ----------------------------------
-rule #Cat.lump => 3
-
 syntax Int ::= "#Cat.ilks" "(" Int ").chop" [function]
 // ---------------------------------------------------
 rule #Cat.ilks(Ilk).chop => #hashedLocation("Solidity", 4, Ilk) +Int 0
@@ -175,6 +171,10 @@ rule #Cat.ilks(Ilk).chop => #hashedLocation("Solidity", 4, Ilk) +Int 0
 syntax Int ::= "#Cat.ilks" "(" Int ").flip" [function]
 // ---------------------------------------------------
 rule #Cat.ilks(Ilk).flip => #hashedLocation("Solidity", 4, Ilk) +Int 1
+
+syntax Int ::= "#Cat.ilks" "(" Int ").lump" [function]
+// ---------------------------------------------------
+rule #Cat.ilks(Ilk).lump => #hashedLocation("Solidity", 4, Ilk) +Int 2
 
 syntax Int ::= "#Cat.nflip" [function]
 // -----------------------------------
