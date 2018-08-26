@@ -37,11 +37,11 @@ rule #Vat.ilks(Ilk).Art => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Vat.urns" "(" Int "," Int ").ink" [function]
 // ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).ink => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
+rule #Vat.urns(Ilk, Guy).ink => #hashedLocation("Solidity", 2, Ilk Guy)
 
 syntax Int ::= "#Vat.urns" "(" Int "," Int ").art" [function]
 // ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 2
+rule #Vat.urns(Ilk, Guy).art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
 
 syntax Int ::= "#Vat.gem" "(" Int "," Int ")" [function]
 // ---------------------------------------------
