@@ -19,55 +19,58 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 
 # Progress
 
-`x` means the proof is succeeding
+`x` - the proof is succeeding
 
-`o` means in development (ask before attacking)
+`?` - expected to succeed but yet to be checked
 
-`-` means not applicable
+`o` - in development (ask before attacking)
+
+`-` - no fail behaviour
 
 ```
 -----------------------------------------
 | behaviour |   .2.sol    |    .sol     |
 |-----------| succ | fail | succ | fail |
 | Vat       +------+------+------+------|
-| wards     | x    | -    |      | -    |
-| ilks      | x    | -    |      | -    |
-| urns      | x    | -    |      | -    |
-| gem       | x    | -    |      | -    |
-| dai       | x    | -    |      | -    |
-| sin       | x    | -    |      | -    |
-| debt      | x    | -    |      | -    |
-| vice      | x    | -    |      | -    |
-| rely      | x    | x    |      |      |
-| deny      | x    | x    |      |      |
-| init      | x    | x    |      |      |
-| move      | x    | x    |      |      |
-| slip      | x    | x    |      |      |
-| flux      | x    | x    |      |      |
-| tune      | x    | x    |      |      |
-| grab      | x    | x    |      |      |
-| fold      | x    | x    |      |      |
+| wards     | x    | -    | x    | -    |
+| ilks      | x    | -    | x    | -    |
+| urns      | x    | -    | x    | -    |
+| gem       | x    | -    | x    | -    |
+| dai       | x    | -    | x    | -    |
+| sin       | x    | -    | x    | -    |
+| debt      | x    | -    | x    | -    |
+| vice      | x    | -    | x    | -    |
+| rely      | x    | x    | ?    | x    |
+| deny      | x    | x    | ?    | ?    |
+| init      | x    | x    | x    | ?    |
+| move      | x    | x    | x    | x    |
+| slip      | x    | x    | ?    | ?    |
+| flux      | x    | x    | ?    | ?    |
+| tune      | x    | x    | x    | ?    |
+| grab      | x    | x    | ?    | ?    |
+| fold      | x    | x    | ?    | ?    |
 | Pit       +------+------+------+------|
-| live      |      | -    |      | -    |
-| Line      |      | -    |      | -    |
-| vat       |      | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| file      |      |      |      |      |
-| file      |      |      |      |      |
-| frob      |      |      |      |      |
+| live      | ?    | -    | ?    | -    |
+| Line      | ?    | -    | ?    | -    |
+| vat       | ?    | -    | ?    | -    |
+| ilks      | ?    | -    | ?    | -    |
+| file-drip | ?    | ?    | ?    | ?    |
+| file-ilk  | ?    | ?    | ?    | ?    |
+| file-Line | ?    | ?    | ?    | ?    |
+| frob      | ?    | ?    |      |      |
 | Vow       +------+------+------+------|
-| sin       | x    | -    |      | -    |
-| Sin       | x    | -    |      | -    |
-| Woe       | x    | -    |      | -    |
-| Ash       | x    | -    |      | -    |
+| sin       | x    | -    | ?    | -    |
+| Sin       | x    | -    | ?    | -    |
+| Woe       | x    | -    | ?    | -    |
+| Ash       | x    | -    | ?    | -    |
 | wait      | x    | -    |      | -    |
-| lump      | x    | -    |      | -    |
-| pad       | x    | -    |      | -    |
+| lump      | x    | -    | ?    | -    |
+| pad       | x    | -    | ?    | -    |
 | era       | x    | -    |      | -    |
-| Awe       | x    | x    |      |      |
+| Awe       | x    | x    | ?    |      |
 | Joy       | o    | o    |      |      |
-| file-risk | o    |      |      |      |
-| file-addr | o    |      |      |      |
+| file-risk | o    | ?    | ?    |      |
+| file-addr | o    | ?    | ?    |      |
 | heal      | o    | o    |      |      |
 | kiss      | o    | o    |      |      |
 | fess      | x    | x    |      |      |
@@ -75,21 +78,19 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | flop      |      |      |      |      |
 | flap      |      |      |      |      |
 | Cat       +------+------+------+------|
-| vat       |      | -    |      | -    |
-| pit       |      | -    |      | -    |
-| vow       |      | -    |      | -    |
-| lump      |      | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| nflip     |      | -    |      | -    |
-| flips     |      | -    |      | -    |
-| file      |      |      |      |      |
-| file      |      |      |      |      |
+| vat       | ?    | -    | ?    | -    |
+| pit       | ?    | -    | ?    | -    |
+| vow       | ?    | -    | ?    | -    |
+| ilks      | ?    | -    | ?    | -    |
+| nflip     | ?    | -    | ?    | -    |
+| flips     | ?    | -    | ?    | -    |
+| file      | ?    | ?    | ?    |      |
 | bite      |      |      |      |      |
 | flip      |      |      |      |      |
 | Adapter   +------+------+------+------|
-| vat       |      | -    |      | -    |
-| ilk       |      | -    |      | -    |
-| gem       |      | -    |      | -    |
+| vat       | ?    | -    | ?    | -    |
+| ilk       | ?    | -    | ?    | -    |
+| gem       | ?    | -    | ?    | -    |
 | join      |      |      |      |      |
 | exit      |      |      |      |      |
 -----------------------------------------
