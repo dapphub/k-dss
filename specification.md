@@ -631,7 +631,7 @@ iff
 
 #### setting the global debt ceiling
 ```
-behaviour file-line of Pit
+behaviour file-Line of Pit
 interface file(bytes32 what, uint256 risk)
 
 types
