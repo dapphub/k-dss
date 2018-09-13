@@ -959,13 +959,13 @@ storage Vat
     #Vat.urns(ilk, CALLER_ID).art |-> Art_u  => Art_u + dart
     #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - Take * dink
     #Vat.dai(CALLER_ID)           |-> Dai    => Dai + Rate * dart
-    #Vat.debt                     |-> Debt   => debt + Rate * dart
+    #Vat.debt                     |-> Debt   => Debt + Rate * dart
 
 iff
 
     Can == 1
     Rate =/= 0
-    (((((Art_u + dart) * Rate) <= #wad2rad(Spot)) and (((debt + (Rate * dart))) < #wad2rad(Line))) or (dart <= 0))
+    (((((Art_u + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
     (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * Rate)))
     Live == 1
 
@@ -977,11 +977,11 @@ iff in range uint256
     Art_u + dart
     Gem_u - Take * dink
     Dai + (Rate * dart)
-    debt + (Rate * dart)
+    Debt + (Rate * dart)
     (Art_u + dart) * Rate
     (Ink_u + dink) * Spot
-    #wad2rad(Spot)
-    #wad2rad(Line)
+    #Ray * Spot
+    #Ray * Line
     
 iff in range int256
 
