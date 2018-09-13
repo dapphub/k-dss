@@ -43,12 +43,25 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | rely      | x    | x    | ?    | x    |
 | deny      | x    | x    | ?    | ?    |
 | init      | x    | x    | x    | ?    |
-| move      | x    | x    | x    | x    |
 | slip      | x    | x    | ?    | ?    |
 | flux      | x    | x    | ?    | ?    |
+| move      | x    | x    | x    | x    |
 | tune      | x    | x    | x    | ?    |
-| grab      | x    | x    | ?    | ?    |
+| grab      | x    | x    | x    | ?    |
 | fold      | x    | x    | ?    | ?    |
+| Drip      +------+------+------+------|
+| wards     | ?    | -    | ?    | -    |
+| ilks      | ?    | -    | ?    | -    |
+| vat       | ?    | -    | ?    | -    |
+| repo      | ?    | -    | ?    | -    |
+| era       | ?    | -    | ?    | -    |
+| rely      | ?    | ?    | ?    | ?    |
+| deny      | ?    | ?    | ?    | ?    |
+| init      | ?    | ?    | ?    | ?    |
+| file      | ?    | ?    | ?    | ?    |
+| file-repo | ?    | -    | ?    | -    |
+| file-vow  | ?    | -    | ?    | -    |
+| drip      | ?    | ?    | ?    | ?    |
 | Pit       +------+------+------+------|
 | live      | ?    | -    | ?    | -    |
 | Line      | ?    | -    | ?    | -    |
@@ -64,8 +77,9 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | Woe       | x    | -    | ?    | -    |
 | Ash       | x    | -    | ?    | -    |
 | wait      | x    | -    |      | -    |
-| lump      | x    | -    | ?    | -    |
-| pad       | x    | -    | ?    | -    |
+| sump      | ?    | -    | ?    | -    |
+| bump      | ?    | -    | ?    | -    |
+| hump      | x    | -    | ?    | -    |
 | era       | x    | -    |      | -    |
 | Awe       | x    | x    | ?    |      |
 | Joy       | o    | o    |      |      |
@@ -84,13 +98,25 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | ilks      | ?    | -    | ?    | -    |
 | nflip     | ?    | -    | ?    | -    |
 | flips     | ?    | -    | ?    | -    |
+| file-addr | ?    | ?    | ?    |      |
 | file      | ?    | ?    | ?    |      |
+| file-flip | ?    | ?    | ?    |      |
 | bite      |      |      |      |      |
 | flip      |      |      |      |      |
-| Adapter   +------+------+------+------|
+| GemJoin   +------+------+------+------|
 | vat       | ?    | -    | ?    | -    |
 | ilk       | ?    | -    | ?    | -    |
 | gem       | ?    | -    | ?    | -    |
+| join      |      |      |      |      |
+| exit      |      |      |      |      |
+| ETHJoin   +------+------+------+------|
+| vat       | ?    | -    | ?    | -    |
+| ilk       | ?    | -    | ?    | -    |
+| join      |      |      |      |      |
+| exit      |      |      |      |      |
+| DaiJoin   +------+------+------+------|
+| vat       | ?    | -    | ?    | -    |
+| dai       | ?    | -    | ?    | -    |
 | join      |      |      |      |      |
 | exit      |      |      |      |      |
 -----------------------------------------
