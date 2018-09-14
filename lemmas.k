@@ -483,6 +483,12 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   andBool #rangeSInt(256, B)
   andBool B <Int 0
 
+syntax Bool ::= #rangeNotPrecompileAddress ( Int ) [function]
+// ---------------------------------------
+rule #rangeNotPrecompileAddress ( X ) =>
+     #rangeAddress ( X )
+     andBool 9 <=Int X
+
 // idk?
 rule A modInt pow160 => A
   requires #rangeAddress(A)

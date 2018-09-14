@@ -36,9 +36,7 @@ const bound = {
   "uint256": name => `#rangeUInt(256, ${ name })`,
   "int256" : name => `#rangeSInt(256, ${ name })`,
   "bytes32": name => `#rangeBytes(32, ${ name })`,
-  // TODO this does not actually work because lemmas don't get applied to constraints:
-  //"address": name => `#rangeNotPrecompileAddress(${ name })`
-  "address": name => `#rangeAddress(${ name})`
+  "address": name => `#rangeNotPrecompileAddress(${ name })`
 }
 const toK = str => str
   .replace(/ \+ /g, " +Int ")
@@ -200,6 +198,12 @@ let behaviours = acts
         return range(name)
       })
       .concat(act.if || [])
+      .concat(
+          Object.keys(act.storage || [])
+              .filter(name => !(name == 'ACCT_ID'))
+              .map(name => `${ name } =/=Int ACCT_ID`)
+      )
+
 
     const storage_success = "  " + Object.keys(act.storage && act.storage.ACCT_ID || [])
       .map(key => key + " |-> (" + act.storage.ACCT_ID[key].join(" => ") + ")" )
@@ -242,10 +246,9 @@ let behaviours = acts
             ${fstore}
           </storage>
           <nonce> _ </nonce>
-        </account>
-        `
+        </account>`
       })
-      .join("\n")
+      .join("\n" + " ".repeat(12))
 
     const accounts_fail = Object.keys(act.storage || {})
       .filter(name => name != "ACCT_ID")
