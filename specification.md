@@ -29,15 +29,19 @@ interface ilks(bytes32 ilk)
 
 types
 
+    Take  : uint256
     Rate  : uint256
+    Ink_i : uint256
     Art_i : uint256
 
 storage
 
+    #Vat.ilks(ilk).take |-> Take
     #Vat.ilks(ilk).rate |-> Rate
+    #Vat.ilks(ilk).Ink  |-> Ink_i
     #Vat.ilks(ilk).Art  |-> Art_i
 
-returns Rate : Art_i
+returns Take : Rate : Ink_i : Art_i
 ```
 
 #### `urn` data
@@ -47,15 +51,15 @@ interface urns(bytes32 ilk, bytes32 urn)
 
 types
 
-    Ink   : uint256
+    Ink_u : uint256
     Art_u : uint256
 
 storage
 
-    #Vat.urns(ilk, urn).ink |-> Ink
+    #Vat.urns(ilk, urn).ink |-> Ink_u
     #Vat.urns(ilk, urn).art |-> Art_u
 
-returns Ink : Art_u
+returns Ink_u : Art_u
 ```
 
 #### internal gem balances
@@ -303,6 +307,7 @@ types
 storage
 
     #Vat.wards(CALLER_ID) |-> Can
+    #Vat.ilks(i).take     |-> Take
     #Vat.ilks(i).rate     |-> Rate
     #Vat.urns(i, u).ink   |-> Ink_u  => Ink_u + dink
     #Vat.urns(i, u).art   |-> Art_u  => Art_u + dart
