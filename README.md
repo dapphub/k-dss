@@ -10,12 +10,12 @@ make
 ```
 
 ### usage
-to run a proof with [klab](https://github.com/dapphub/klab):
+to run a proof with [klab](https://github.com/dapphub/klab), try e.g.
 ```sh
 klab run --spec out/Vat_dai_succ.ini
 ```
 
-or any other spec in the `out` dir. You will need a bleeding edge `klab` and `evm-semantics`.
+or any other spec in the `out` dir. You will need to be up to date with the `master` branch of `klab`.
 
 # Progress
 
