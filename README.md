@@ -74,10 +74,10 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | drip      | ?    | ?    | ?    | ?    |
 | Pit       +------+------+------+------|
 | wards     | ?    | -    | ?    | -    |
+| ilks      | ?    | -    | ?    | -    |
 | live      | ?    | -    | ?    | -    |
 | Line      | ?    | -    | ?    | -    |
 | vat       | ?    | -    | ?    | -    |
-| ilks      | ?    | -    | ?    | -    |
 | drip      | ?    | -    | ?    | -    |
 | rely      | ?    | ?    | ?    | ?    |
 | deny      | ?    | ?    | ?    | ?    |
@@ -110,12 +110,13 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | flap      |      |      |      |      |
 | Cat       +------+------+------+------|
 | wards     | ?    | -    | ?    | -    |
+| ilks      | ?    | -    | ?    | -    |
+| flips     | ?    | -    | ?    | -    |
+| nflip     | ?    | -    | ?    | -    |
+| live      | ?    | -    | ?    | -    |
 | vat       | ?    | -    | ?    | -    |
 | pit       | ?    | -    | ?    | -    |
 | vow       | ?    | -    | ?    | -    |
-| ilks      | ?    | -    | ?    | -    |
-| nflip     | ?    | -    | ?    | -    |
-| flips     | ?    | -    | ?    | -    |
 | rely      | ?    | ?    | ?    | ?    |
 | deny      | ?    | ?    | ?    | ?    |
 | file-addr | ?    | ?    | ?    |      |

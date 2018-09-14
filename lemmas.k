@@ -94,17 +94,13 @@ syntax Int ::= "#Drip.wards" "(" Int ")" [function]
 // -----------------------------------------------
 rule #Drip.wards(A) => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Drip.ilks" "(" Int ").vow" [function]
-// ----------------------------------------------------
-rule #Drip.ilks(Ilk).vow => #hashedLocation("Solidity", 1, Ilk) +Int 0
-
 syntax Int ::= "#Drip.ilks" "(" Int ").tax" [function]
 // ----------------------------------------------------
-rule #Drip.ilks(Ilk).tax => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Drip.ilks(Ilk).tax => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Drip.ilks" "(" Int ").rho" [function]
 // ----------------------------------------------------
-rule #Drip.ilks(Ilk).rho => #hashedLocation("Solidity", 1, Ilk) +Int 2
+rule #Drip.ilks(Ilk).rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Drip.vat" [function]
 // ----------------------------------
@@ -130,17 +126,17 @@ syntax Int ::= "#Pit.ilks" "(" Int ").line" [function]
 // ---------------------------------------------------
 rule #Pit.ilks(Ilk).line => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
-syntax Int ::= "#Pit.vat" [function]
-// ---------------------------------
-rule #Pit.vat => 2
+syntax Int ::= "#Pit.live" [function]
+// ----------------------------------
+rule #Pit.live => 2
 
 syntax Int ::= "#Pit.Line" [function]
 // ----------------------------------
 rule #Pit.Line => 3
 
-syntax Int ::= "#Pit.live" [function]
-// ----------------------------------
-rule #Pit.live => 4
+syntax Int ::= "#Pit.vat" [function]
+// ---------------------------------
+rule #Pit.vat => 4
 
 syntax Int ::= "#Pit.drip" [function]
 // ----------------------------------
@@ -148,103 +144,103 @@ rule #Pit.drip => 5
 
 syntax Int ::= "#Vow.wards" "(" Int ")" [function]
 // ---------------------------------
-rule #Vow.wards(A) => #hashedLocation("Solidity", 10, A)
+rule #Vow.wards(A) => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Vow.vat" [function]
 // ---------------------------------
-rule #Vow.vat => 0
+rule #Vow.vat => 1
 
 syntax Int ::= "#Vow.cow" [function]
 // ---------------------------------
-rule #Vow.cow => 1
+rule #Vow.cow => 2
 
 syntax Int ::= "#Vow.row" [function]
 // ---------------------------------
-rule #Vow.row => 2
+rule #Vow.row => 3
 
 syntax Int ::= "#Vow.sin" "(" Int ")" [function]
 // ---------------------------------------------
-rule #Vow.sin(A) => #hashedLocation("Solidity", 3, A)
+rule #Vow.sin(A) => #hashedLocation("Solidity", 4, A)
 
 syntax Int ::= "#Vow.Sin" [function]
 // ---------------------------------
-rule #Vow.Sin => 4
+rule #Vow.Sin => 5
 
 syntax Int ::= "#Vow.Woe" [function]
 // ---------------------------------
-rule #Vow.Woe => 5
+rule #Vow.Woe => 6
 
 syntax Int ::= "#Vow.Ash" [function]
 // ---------------------------------
-rule #Vow.Ash => 6
+rule #Vow.Ash => 7
 
 syntax Int ::= "#Vow.wait" [function]
 // ----------------------------------
-rule #Vow.wait => 7
+rule #Vow.wait => 8
 
 syntax Int ::= "#Vow.sump" [function]
 // ----------------------------------
-rule #Vow.sump => 8
+rule #Vow.sump => 9
 
 syntax Int ::= "#Vow.bump" [function]
 // ----------------------------------
-rule #Vow.bump => 9
+rule #Vow.bump => 10
 
 syntax Int ::= "#Vow.hump" [function]
 // ---------------------------------
-rule #Vow.hump => 10
+rule #Vow.hump => 11
 
 syntax Int ::= "#Cat.wards" "(" Int ")" [function]
 // ---------------------------------
-rule #Cat.wards(A) => #hashedLocation("Solidity", 7, A)
-
-syntax Int ::= "#Cat.vat" [function]
-// ---------------------------------
-rule #Cat.vat => 0
-
-syntax Int ::= "#Cat.pit" [function]
-// ---------------------------------
-rule #Cat.pit => 1
-
-syntax Int ::= "#Cat.vow" [function]
-// ---------------------------------
-rule #Cat.vow => 2
+rule #Cat.wards(A) => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Cat.ilks" "(" Int ").chop" [function]
 // ---------------------------------------------------
-rule #Cat.ilks(Ilk).chop => #hashedLocation("Solidity", 4, Ilk) +Int 0
+rule #Cat.ilks(Ilk).chop => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Cat.ilks" "(" Int ").flip" [function]
 // ---------------------------------------------------
-rule #Cat.ilks(Ilk).flip => #hashedLocation("Solidity", 4, Ilk) +Int 1
+rule #Cat.ilks(Ilk).flip => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Cat.ilks" "(" Int ").lump" [function]
 // ---------------------------------------------------
-rule #Cat.ilks(Ilk).lump => #hashedLocation("Solidity", 4, Ilk) +Int 2
-
-syntax Int ::= "#Cat.nflip" [function]
-// -----------------------------------
-rule #Cat.nflip => 5
+rule #Cat.ilks(Ilk).lump => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
 syntax Int ::= "#Cat.Flips" "(" Int ").ilk" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).ilk => #hashedLocation("Solidity", 6, N) +Int 0
+rule #Cat.Flips(N).ilk => #hashedLocation("Solidity", 2, N) +Int 0
 
 syntax Int ::= "#Cat.Flips" "(" Int ").urn" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).urn => #hashedLocation("Solidity", 6, N) +Int 1
+rule #Cat.Flips(N).urn => #hashedLocation("Solidity", 2, N) +Int 1
 
 syntax Int ::= "#Cat.Flips" "(" Int ").ink" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).ink => #hashedLocation("Solidity", 6, N) +Int 2
+rule #Cat.Flips(N).ink => #hashedLocation("Solidity", 2, N) +Int 2
 
 syntax Int ::= "#Cat.Flips" "(" Int ").tab" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).tab => #hashedLocation("Solidity", 6, N) +Int 3
+rule #Cat.Flips(N).tab => #hashedLocation("Solidity", 2, N) +Int 3
+
+syntax Int ::= "#Cat.nflip" [function]
+// -----------------------------------
+rule #Cat.nflip => 3
 
 syntax Int ::= "#Cat.live" [function]
 // ----------------------------------
-rule #Cat.live => 8
+rule #Cat.live => 4
+
+syntax Int ::= "#Cat.vat" [function]
+// ---------------------------------
+rule #Cat.vat => 5
+
+syntax Int ::= "#Cat.pit" [function]
+// ---------------------------------
+rule #Cat.pit => 6
+
+syntax Int ::= "#Cat.vow" [function]
+// ---------------------------------
+rule #Cat.vow => 7
 
 syntax Int ::= "#GemJoin.vat" [function]
 // -------------------------------------
@@ -363,6 +359,8 @@ rule #Flopper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
 syntax Int ::= "#Flopper.bids" "(" Int ").vow" [function]
 // ------------------------------------------------------
 rule #Flopper.bids(N).vow => #hashedLocation("Solidity", 5, N) +Int 3
+
+// A hypothetical token contract, based on `ds-token`:
 
 syntax Int ::= "#GemLike.balances" "(" Int ")" [function]
 // --------------------------------------------------

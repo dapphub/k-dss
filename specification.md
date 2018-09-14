@@ -730,6 +730,43 @@ storage
 returns Can
 ```
 
+
+#### `ilk` data
+```
+behaviour ilks of Pit
+interface ilks(bytes32 ilk)
+
+types
+
+    Spot_i : uint256
+    Line_i : uint256
+
+storage
+
+    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks(ilk).line |-> Line_i
+
+returns
+
+    Spot_i : Line_i
+```
+
+#### liveness
+```
+behaviour live of Pit
+interface live()
+
+types
+
+    Live : uint256
+
+storage
+
+    #Pit.live |-> Live
+
+returns Live
+```
+
 #### `vat` address
 ```
 behaviour vat of Pit
@@ -760,42 +797,6 @@ storage
     #Pit.Line |-> Line
 
 returns Line
-```
-
-#### liveness
-```
-behaviour live of Pit
-interface live()
-
-types
-
-    Live : uint256
-
-storage
-
-    #Pit.live |-> Live
-
-returns Live
-```
-
-#### `ilk` data
-```
-behaviour ilks of Pit
-interface ilks(bytes32 ilk)
-
-types
-
-    Spot_i : uint256
-    Line_i : uint256
-
-storage
-
-    #Pit.ilks(ilk).spot |-> Spot_i
-    #Pit.ilks(ilk).line |-> Line_i
-
-returns
-
-    Spot_i : Line_i
 ```
 
 #### `drip` address
@@ -1547,6 +1548,80 @@ storage
 returns Can
 ```
 
+#### `ilk` data
+```
+behaviour ilks of Cat
+interface ilks(bytes32 ilk)
+
+types
+
+    Chop : uint256
+    Flip : address
+    Lump : uint256
+    
+storage
+
+    #Cat.ilks(ilk).chop |-> Chop
+    #Cat.ilks(ilk).flip |-> Flip
+    #Cat.ilks(ilk).lump |-> Lump
+    
+returns Chop : Flip : Lump
+```
+
+#### liquidation data
+```
+behaviour flips of Cat
+interface flips(uint256 n)
+
+types
+
+    Ilk : bytes32
+    Urn : bytes32
+    Ink : uint256
+    Tab : uint256
+    
+storage
+
+    #Cat.flips(n).ilk |-> Ilk
+    #Cat.flips(n).urn |-> Urn
+    #Cat.flips(n).ink |-> Ink
+    #Cat.flips(n).tab |-> Tab
+    
+returns Ilk : Urn : Ink : Tab
+```
+
+#### liquidation counter
+```
+behaviour nflip of Cat
+interface nflip()
+
+types
+
+    Nflip : uint256
+    
+storage
+
+    #Cat.nflip |-> Nflip
+    
+returns Nflip
+```
+
+#### liveness
+```
+behaviour live of Cat
+interface live()
+
+types
+
+    Live : uint256
+
+storage
+
+    #Cat.live |-> Live
+
+returns Live
+```
+
 #### `vat` address
 ```
 behaviour vat of Cat
@@ -1593,64 +1668,6 @@ storage
     #Cat.vow |-> Vow
     
 returns Vow
-```
-
-#### `ilk` data
-```
-behaviour ilks of Cat
-interface ilks(bytes32 ilk)
-
-types
-
-    Chop : uint256
-    Flip : address
-    Lump : uint256
-    
-storage
-
-    #Cat.ilks(ilk).chop |-> Chop
-    #Cat.ilks(ilk).flip |-> Flip
-    #Cat.ilks(ilk).lump |-> Lump
-    
-returns Chop : Flip : Lump
-```
-
-#### liquidation counter
-```
-behaviour nflip of Cat
-interface nflip()
-
-types
-
-    Nflip : uint256
-    
-storage
-
-    #Cat.nflip |-> Nflip
-    
-returns Nflip
-```
-
-#### liquidation data
-```
-behaviour flips of Cat
-interface flips(uint256 n)
-
-types
-
-    Ilk : bytes32
-    Urn : bytes32
-    Ink : uint256
-    Tab : uint256
-    
-storage
-
-    #Cat.flips(n).ilk |-> Ilk
-    #Cat.flips(n).urn |-> Urn
-    #Cat.flips(n).ink |-> Ink
-    #Cat.flips(n).tab |-> Tab
-    
-returns Ilk : Urn : Ink : Tab
 ```
 
 ### Mutators
