@@ -73,15 +73,20 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | file-vow  | ?    | -    | ?    | -    |
 | drip      | ?    | ?    | ?    | ?    |
 | Pit       +------+------+------+------|
+| wards     | ?    | -    | ?    | -    |
 | live      | ?    | -    | ?    | -    |
 | Line      | ?    | -    | ?    | -    |
 | vat       | ?    | -    | ?    | -    |
 | ilks      | ?    | -    | ?    | -    |
+| drip      | ?    | -    | ?    | -    |
+| rely      | ?    | ?    | ?    | ?    |
+| deny      | ?    | ?    | ?    | ?    |
 | file-drip | ?    | ?    | ?    | ?    |
 | file-ilk  | ?    | ?    | ?    | ?    |
 | file-Line | ?    | ?    | ?    | ?    |
 | frob      | ?    | ?    |      |      |
 | Vow       +------+------+------+------|
+| wards     | ?    | -    | ?    | -    |
 | sin       | x    | -    | ?    | -    |
 | Sin       | x    | -    | ?    | -    |
 | Woe       | x    | -    | ?    | -    |
@@ -92,7 +97,9 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | hump      | x    | -    | ?    | -    |
 | era       | x    | -    |      | -    |
 | Awe       | x    | x    | ?    |      |
-| Joy       | x    | -    | o    | -    |
+| Joy       | x    | o    |      |      |
+| rely      | ?    | ?    | ?    | ?    |
+| deny      | ?    | ?    | ?    | ?    |
 | file-risk | o    | ?    | ?    |      |
 | file-addr | o    | ?    | ?    |      |
 | heal      | o    | o    |      |      |
@@ -102,12 +109,15 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | flop      |      |      |      |      |
 | flap      |      |      |      |      |
 | Cat       +------+------+------+------|
+| wards     | ?    | -    | ?    | -    |
 | vat       | ?    | -    | ?    | -    |
 | pit       | ?    | -    | ?    | -    |
 | vow       | ?    | -    | ?    | -    |
 | ilks      | ?    | -    | ?    | -    |
 | nflip     | ?    | -    | ?    | -    |
 | flips     | ?    | -    | ?    | -    |
+| rely      | ?    | ?    | ?    | ?    |
+| deny      | ?    | ?    | ?    | ?    |
 | file-addr | ?    | ?    | ?    |      |
 | file      | ?    | ?    | ?    |      |
 | file-flip | ?    | ?    | ?    |      |

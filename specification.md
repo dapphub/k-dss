@@ -1002,6 +1002,22 @@ iff in range int256
 
 ### Accessors
 
+#### owners
+```
+behaviours wards of Vow
+interface wards(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Vow.wards(guy) |-> Can
+
+returns Can
+```
+
 #### getting the time
 ```
 behaviour era of Vow
@@ -1186,6 +1202,45 @@ returns Dai / 1000000000000000000000000000
 
 ### Mutators
 
+#### adding an owner
+```
+behaviour rely of Vow
+interface rely(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.wards(guy)       |-> _ => 1
+
+iff
+
+    Can == 1
+```
+
+#### removing an owner
+```
+behaviour deny of Vow
+interface deny(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.wards(guy)       |-> _ => 0
+
+iff
+
+    Can == 1
+```
+
+
 #### setting `Vow` parameters
 ```
 behaviour file-data of Vow
@@ -1193,15 +1248,21 @@ interface file(bytes32 what, uint256 data)
 
 types
 
+    Can  : uint256
     Sump : uint256
     Bump : uint256
-    Hump  : uint256
+    Hump : uint256
 
 storage
 
-    #Vow.sump |-> Sump => (#if what == 12345 #then data #else Sump #fi)
-    #Vow.bump |-> Bump => (#if what == 12345 #then data #else Bump #fi)
-    #Vow.hump |-> Hump => (#if what == 67890 #then data #else Hump #fi)
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.sump             |-> Sump => (#if what == 12345 #then data #else Sump #fi)
+    #Vow.bump             |-> Bump => (#if what == 12345 #then data #else Bump #fi)
+    #Vow.hump             |-> Hump => (#if what == 67890 #then data #else Hump #fi)
+    
+iff
+
+    Can == 1
 ```
 
 #### setting vat and liquidators
@@ -1211,15 +1272,21 @@ interface file(bytes32 what, address addr)
 
 types
 
+    Can : uint256
     Cow : address
     Row : address
     Vat : address
 
 storage
 
-    #Vow.cow |-> Cow => (#if what == 12345 #then addr #else Cow #fi)
-    #Vow.row |-> Row => (#if what == 67890 #then addr #else Row #fi)
-    #Vow.vat |-> Vat => (#if what == 54321 #then addr #else Vat #fi)
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.cow              |-> Cow => (#if what == 12345 #then addr #else Cow #fi)
+    #Vow.row              |-> Row => (#if what == 67890 #then addr #else Row #fi)
+    #Vow.vat              |-> Vat => (#if what == 54321 #then addr #else Vat #fi)
+    
+iff
+
+    Can == 1
 ```
 
 #### cancelling bad debt and surplus
@@ -1322,14 +1389,20 @@ interface fess(uint256 tab)
 
 types
 
+    Can     : uint256
     Sin_era : uint256
     Sin     : uint256
     
 storage
 
-    #Vow.sin(TIME) |-> Sin_era => Sin_era + tab
-    #Vow.Sin       |-> Sin     => Sin + tab
-    
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.sin(TIME)        |-> Sin_era => Sin_era + tab
+    #Vow.Sin              |-> Sin     => Sin + tab
+
+iff
+
+    Can == 1
+
 iff in range uint256
 
     Sin_era + tab
@@ -1369,6 +1442,7 @@ types
     Sump  : uint256
     Woe   : uint256
     Ash   : uint256
+    Can   : uint256
     Ttl   : uint48
     Tau   : uint48
     Kicks : uint256
@@ -1383,6 +1457,7 @@ storage
     
 storage Row
 
+    #Flopper.wards(ACCT_ID)              |-> Can
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flopper.kicks                       |-> Kicks => Kicks + 1
     #Flopper.bids(Kicks + 1).bid         |-> _ => Sump
@@ -1396,6 +1471,7 @@ storage Vat
     
 iff
 
+    Can == 1
     Dai == 0
     
 iff in range uint256
@@ -1466,6 +1542,22 @@ returns Kicks + 1
 ## Specification of behaviours
 
 ### Accessors
+
+#### owners
+```
+behaviours wards of Cat
+interface wards(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Cat.wards(guy) |-> Can
+
+returns Can
+```
 
 #### `vat` address
 ```
@@ -1575,6 +1667,44 @@ returns Ilk : Urn : Ink : Tab
 
 ### Mutators
 
+#### adding an owner
+```
+behaviour rely of Cat
+interface rely(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.wards(guy)       |-> _ => 1
+
+iff
+
+    Can == 1
+```
+
+#### removing an owner
+```
+behaviour deny of Cat
+interface deny(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.wards(guy)       |-> _ => 0
+
+iff
+
+    Can == 1
+```
+
 #### setting contract addresses
 ```
 behaviour file-addr of Cat
@@ -1582,13 +1712,19 @@ interface file(bytes32 what, address data)
 
 types
 
+    Can : uint256
     Pit : address
     Vow : address
 
 storage
 
-    #Cat.pit |-> Pit => (#if what == 12345 #then data #else Pit #fi)
-    #Cat.vow |-> Vow => (#if what == 54321 #then data #else Vow #fi)
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.pit              |-> Pit => (#if what == 12345 #then data #else Pit #fi)
+    #Cat.vow              |-> Vow => (#if what == 54321 #then data #else Vow #fi)
+    
+iff
+
+    Can == 1
 ```
 
 #### setting liquidation data
@@ -1598,13 +1734,19 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 types
 
+    Can  : uint256
     Chop : uint256
     Lump : uint256
 
 storage
 
-    #Cat.ilks(ilk).chop |-> Chop => (#if what == 12345 #then data #else Chop #fi)
-    #Cat.ilks(ilk).lump |-> Lump => (#if what == 54321 #then data #else Lump #fi)
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.ilks(ilk).chop   |-> Chop => (#if what == 12345 #then data #else Chop #fi)
+    #Cat.ilks(ilk).lump   |-> Lump => (#if what == 54321 #then data #else Lump #fi)
+    
+iff
+
+    Can == 1
 ```
 
 #### setting liquidator address
@@ -1614,11 +1756,17 @@ interface file(bytes32 ilk, bytes32 what, address flip)
 
 types
 
+    Can  : uint256
     Flip : address
 
 storage
 
-    #Cat.ilks(ilk).flip |-> Flip => (#if what == 12345 #then flip #else Flip #fi)
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.ilks(ilk).flip   |-> Flip => (#if what == 12345 #then flip #else Flip #fi)
+    
+iff
+
+    Can == 1
 ```
 
 #### marking a position for liquidation

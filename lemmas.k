@@ -334,6 +334,10 @@ syntax Int ::= "#Flapper.bids" "(" Int ").gal" [function]
 // ------------------------------------------------------
 rule #Flapper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 3
 
+syntax Int ::= "#Flopper.wards" "(" Int ")" [function]
+// ---------------------------------------
+rule #Flopper.wards(A) => #hashedLocation("Solidity", 0, A)
+
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
