@@ -22,7 +22,7 @@ storage
 returns Can
 ```
 
-#### `ilk` data
+#### collateral type data
 ```
 behaviour ilks of Vat
 interface ilks(bytes32 ilk)
@@ -62,7 +62,7 @@ storage
 returns Ink_u : Art_u
 ```
 
-#### internal gem balances
+#### internal unencumbered collateral balances
 ```
 behaviour gem of Vat
 interface gem(bytes32 ilk, bytes32 urn)
@@ -143,7 +143,7 @@ returns Vice
 ```
 ### Mutators
 
-#### adding an owner
+#### adding and removing owners
 ```
 behaviour rely of Vat
 interface rely(address guy)
@@ -161,10 +161,7 @@ storage
 iff
 
     Can == 1
-```
 
-#### removing an owner
-```
 behaviour deny of Vat
 interface deny(address guy)
 
@@ -393,7 +390,7 @@ iff in range int256
     Rate * dart
 ```
 
-#### manipulating debt and surplus
+#### manipulating bad debt and surplus
 ```
 behaviour heal of Vat
 interface heal(bytes32 u, bytes32 v, int256 rad)
@@ -552,7 +549,7 @@ returns TIME
 
 ### Mutators
 
-#### adding an owner
+#### adding and removing owners
 ```
 behaviour rely of Drip
 interface rely(address guy)
@@ -570,10 +567,7 @@ storage
 iff
 
     Can == 1
-```
 
-#### removing an owner
-```
 behaviour deny of Drip
 interface deny(address guy)
 
@@ -768,7 +762,7 @@ storage
 returns Line
 ```
 
-#### system liveness
+#### liveness
 ```
 behaviour live of Pit
 interface live()
@@ -822,7 +816,7 @@ returns Drip
 
 ### Mutators
 
-#### adding an owner
+#### adding and removing owners
 ```
 behaviour rely of Pit
 interface rely(address guy)
@@ -839,10 +833,7 @@ storage
 iff
 
     Can == 1
-```
 
-#### removing an owner
-```
 behaviour deny of Pit
 interface deny(address guy)
 
@@ -1202,7 +1193,7 @@ returns Dai / 1000000000000000000000000000
 
 ### Mutators
 
-#### adding an owner
+#### adding and removing owners
 ```
 behaviour rely of Vow
 interface rely(address guy)
@@ -1219,10 +1210,7 @@ storage
 iff
 
     Can == 1
-```
 
-#### removing an owner
-```
 behaviour deny of Vow
 interface deny(address guy)
 
@@ -1667,7 +1655,7 @@ returns Ilk : Urn : Ink : Tab
 
 ### Mutators
 
-#### adding an owner
+#### addingg and removing owners
 ```
 behaviour rely of Cat
 interface rely(address guy)
@@ -1684,10 +1672,7 @@ storage
 iff
 
     Can == 1
-```
 
-#### removing an owner
-```
 behaviour deny of Cat
 interface deny(address guy)
 
