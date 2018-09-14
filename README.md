@@ -50,7 +50,7 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | grab      | x    | x    | x    | ?    |
 | heal      | x    | x    | x    | ?    |
 | fold      | x    | x    | ?    | ?    |
-| toll      | ?    | ?    | ?    | ?    |
+| toll      | x    | x    | ?    | ?    |
 | Drip      +------+------+------+------|
 | wards     | ?    | -    | ?    | -    |
 | ilks      | ?    | -    | ?    | -    |
