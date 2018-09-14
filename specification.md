@@ -1240,7 +1240,7 @@ types
 storage
 
     #Vow.vat |-> Vat
-    #Vow.Woe |-> Woe - wad
+    #Vow.Woe |-> Woe => Woe - wad
 
 storage Vat
     

@@ -92,7 +92,7 @@ or any other spec in the `out` dir. You will need to be up to date with the `mas
 | hump      | x    | -    | ?    | -    |
 | era       | x    | -    |      | -    |
 | Awe       | x    | x    | ?    |      |
-| Joy       | o    | o    |      |      |
+| Joy       | x    | -    | o    | -    |
 | file-risk | o    | ?    | ?    |      |
 | file-addr | o    | ?    | ?    |      |
 | heal      | o    | o    |      |      |
