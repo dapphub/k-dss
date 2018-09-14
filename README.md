@@ -48,7 +48,9 @@ or any other spec in the `out` dir. You will need a bleeding edge `klab` and `ev
 | move      | x    | x    | x    | x    |
 | tune      | x    | x    | x    | ?    |
 | grab      | x    | x    | x    | ?    |
+| heal      | x    | x    | x    | ?    |
 | fold      | x    | x    | ?    | ?    |
+| toll      | ?    | ?    | ?    | ?    |
 | Drip      +------+------+------+------|
 | wards     | ?    | -    | ?    | -    |
 | ilks      | ?    | -    | ?    | -    |
