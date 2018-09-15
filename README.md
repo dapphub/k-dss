@@ -47,11 +47,11 @@ or any other spec in the `out/specs` directory. You will need to be up to date w
 | sin       | x    | -    | x    | -    |
 | debt      | x    | -    | x    | -    |
 | vice      | x    | -    | x    | -    |
-| rely      | x    | x    | ?    | x    |
-| deny      | x    | x    | ?    | ?    |
-| init      | x    | x    | x    | ?    |
-| slip      | x    | x    | ?    | ?    |
-| flux      | x    | x    | ?    | ?    |
+| rely      | x    | x    | x    | x    |
+| deny      | x    | x    | x    | x    |
+| init      | x    | x    | x    | x    |
+| slip      | x    | x    | x    | x    |
+| flux      | x    | x    | x    | x    |
 | move      | x    | x    | x    | x    |
 | tune      | x    | x    | x    | ?    |
 | grab      | x    | x    | x    | ?    |
