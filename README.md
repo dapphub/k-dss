@@ -7,8 +7,7 @@ The behavior of these contracts is specified in a literate format at [specificat
 More information about the specification format can be found under [Specification format](###Specification-format)
 
 ### dependencies
-* `nodejs` V8 or higher
-* klab. Installation can be found at [klab](https://github.com/dapphub/klab).
+* klab. Installation instructions can be found at [klab](https://github.com/dapphub/klab).
 
 
 ### build
@@ -20,10 +19,10 @@ make
 ### usage
 to run a proof with [klab](https://github.com/dapphub/klab), try e.g.
 ```sh
-klab run --spec out/Vat_dai_succ.ini
+klab run --spec out/specs/Proof-Vat_dai_succ.k
 ```
 
-or any other spec in the `out` dir. You will need to be up to date with the `master` branch of `klab`.
+or any other spec in the `out/specs` directory. You will need to be up to date with the `master` branch of `klab`, and you'll need to have a `klab server` running.
 
 # Progress
 
