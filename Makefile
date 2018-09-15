@@ -60,7 +60,8 @@ pre-test:
 	klab server & mkdir -p $(TMPDIR)
 
 %.test: pre-test
-	klab run --headless --force --spec $*
+	klab run --headless --force --spec $* \
+        || klab run --headless --force --spec $*
 
 clean: dapp-clean
 	rm -f $(OUT_DIR)*
