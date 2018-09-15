@@ -161,7 +161,9 @@ storage
 iff
 
     Can == 1
+```
 
+```
 behaviour deny of Vat
 interface deny(address guy)
 
