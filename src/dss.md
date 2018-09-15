@@ -19,6 +19,10 @@ storage
 
     #Vat.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
 ```
 
@@ -41,6 +45,10 @@ storage
     #Vat.ilks(ilk).Ink  |-> Ink_i
     #Vat.ilks(ilk).Art  |-> Art_i
 
+if
+
+    VGas > 300000
+
 returns Take : Rate : Ink_i : Art_i
 ```
 
@@ -59,6 +67,10 @@ storage
     #Vat.urns(ilk, urn).ink |-> Ink_u
     #Vat.urns(ilk, urn).art |-> Art_u
 
+if
+
+    VGas > 300000
+
 returns Ink_u : Art_u
 ```
 
@@ -74,6 +86,10 @@ types
 storage
 
     #Vat.gem(ilk, urn) |-> Gem
+
+if
+
+    VGas > 300000
 
 returns Gem
 ```
@@ -91,6 +107,10 @@ storage
 
     #Vat.dai(lad) |-> Rad
 
+if
+
+    VGas > 300000
+
 returns Rad
 ```
 
@@ -106,6 +126,10 @@ types
 storage
 
     #Vat.sin(lad) |-> Rad
+
+if
+
+    VGas > 300000
 
 returns Rad
 ```
@@ -123,6 +147,10 @@ storage
 
     #Vat.debt |-> Debt
 
+if
+
+    VGas > 300000
+
 returns Debt
 ```
 
@@ -138,6 +166,10 @@ types
 storage
 
     #Vat.vice |-> Vice
+
+if
+
+    VGas > 300000
 
 returns Vice
 ```
@@ -161,6 +193,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 ```
@@ -180,6 +216,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### initialising an `ilk`
@@ -204,6 +244,10 @@ iff
     Can == 1
     Rate == 0
     Take == 0
+
+if
+
+    VGas > 300000
 ```
 
 #### assigning unencumbered collateral
@@ -228,6 +272,10 @@ iff
 iff in range uint256
 
     Gem + wad
+
+if
+
+    VGas > 300000
 ```
 
 #### moving unencumbered collateral
@@ -255,6 +303,10 @@ iff in range uint256
 
     Gem_src - wad
     Gem_dst + wad
+
+if
+
+    VGas > 300000
 ```
 
 #### transferring dai balances
@@ -282,6 +334,10 @@ iff in range uint256
 
     Dai_src - rad
     Dai_dst + rad
+
+if
+
+    VGas > 300000
 ```
 
 #### administering a position
@@ -336,6 +392,10 @@ iff in range int256
     Take * dink
     Rate
     Rate * dart
+
+if
+
+    VGas > 300000
 ```
 
 #### confiscating a position
@@ -390,6 +450,10 @@ iff in range int256
     Take * dink
     Rate
     Rate * dart
+
+if
+
+    VGas > 300000
 ```
 
 #### manipulating bad debt and surplus
@@ -423,6 +487,10 @@ iff in range uint256
     Sin_u - rad
     Debt - rad
     Vice - rad
+
+if
+
+    VGas > 300000
 ```
 
 #### applying interest to an `ilk`
@@ -460,6 +528,10 @@ iff in range int256
 
     Art_i
     Art_i * rate
+
+if
+
+    VGas > 300000
 ```
 
 #### applying collateral adjustment to an `ilk`
@@ -494,6 +566,10 @@ iff in range int256
 
     Ink
     Ink * take
+
+if
+
+    VGas > 300000
 ```
 
 # Drip
@@ -1483,7 +1559,7 @@ types
     Cow   : address Flappy
     Vat   : address VatLike
     Bump  : uint256
-    Hump   : uint256
+    Hump  : uint256
     Woe   : uint256
     Ash   : uint256
     Ttl   : uint48
@@ -1977,7 +2053,7 @@ types
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address
+    Gem         : address GemLike
     Can         : uint256
     Rad         : uint256
     Bal_guy     : uint256
@@ -2023,7 +2099,7 @@ types
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address
+    Gem         : address GemLike
     Can         : uint256
     Rad         : uint256
     Bal_guy     : uint256
@@ -2111,7 +2187,6 @@ types
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address
     Can         : uint256
     Rad         : uint256
     Bal_adapter : uint256
@@ -2151,7 +2226,6 @@ types
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address
     Can         : uint256
     Rad         : uint256
     Bal_guy     : uint256
@@ -2160,7 +2234,6 @@ storage
 
     #ETHJoin.vat |-> Vat
     #ETHJoin.ilk |-> Ilk
-    #ETHJoin.gem |-> Gem
 
 storage Vat
 
