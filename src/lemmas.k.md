@@ -1,3 +1,4 @@
+```
 // uint48 support:
 
 syntax Int ::= "minUInt48"      [function]
@@ -494,3 +495,4 @@ rule #rangeNotPrecompileAddress ( X ) =>
 // idk?
 rule A modInt pow160 => A
   requires #rangeAddress(A)
+```
