@@ -26,9 +26,9 @@ klab run --spec out/specs/proof-Vat_dai_succ.k
 
 This will open an interactive `klab` session exploring the success behaviour of the `dai()` method of the contract `Vat`.
 
-It's also possible to check the behaviours non-interactively, directly using `kprove`, which is much faster. To check all behaviours of the `Vat` contract:
+It's also possible to check the behaviours non-interactively, directly using `kprove`, which is much faster. To check all behaviours of the `Vat` contract, executing 4 jobs in parallel:
 ```sh
-make proofs-Vat
+make proofs-Vat -j4
 ```
 
 Specific behaviours can also be checked in this way, for example:
