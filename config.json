@@ -3,6 +3,7 @@
     "specification": "./src/dss.md",
     "smt_prelude": "./src/prelude.smt2.md",
     "rules": [
+      "./src/storage.k.md",
       "./src/lemmas.k.md"
     ]
   },

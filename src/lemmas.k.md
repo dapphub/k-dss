@@ -69,14 +69,6 @@ rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 ### signed 256-bit integer arithmetic
 
 ```
-rule W0 s<Word W1 => #signed(W0) <Word #signed(W1)
-
-rule #signed(#unsigned(W)) => W
-  requires #rangeSInt(256, W)
-
-rule #unsigned(#signed(W)) => W
-  requires #rangeUInt(256, W)
-
 rule #unsigned(X) ==K 0 => X ==Int 0
 
 rule 0 <Int #unsigned(X) => 0 <Int X
@@ -162,8 +154,4 @@ syntax Bool ::= #rangeNotPrecompileAddress ( Int ) [function]
 rule #rangeNotPrecompileAddress ( X ) =>
      #rangeAddress ( X )
      andBool 9 <=Int X
-
-// idk?
-rule A modInt pow160 => A
-  requires #rangeAddress(A)
 ```

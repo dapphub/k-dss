@@ -5,13 +5,13 @@ We will have to use some of these tricks when reasoning about solidity implement
 
 **TODO** : unpacking these might require some easy lemmas about division
 ```
-syntax "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
+syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
 // ----------------------------------------------------------
 rule #WordPackUInt48UInt48(X, Y) => Y *Int (2 ^Int 48) +Int X
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-syntax "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
+syntax Int ::= "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
 // ----------------------------------------------------------------------
 rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^Int 160) +Int A
   requires #rangeAddress(A)
