@@ -794,7 +794,7 @@ iff in range int256
 
 #### owners
 ```
-behaviours wards of Pit
+behaviour wards of Pit
 interface wards(address guy)
 
 types
@@ -1074,7 +1074,7 @@ iff in range int256
 
 #### owners
 ```
-behaviours wards of Vow
+behaviour wards of Vow
 interface wards(address guy)
 
 types
@@ -1612,7 +1612,7 @@ returns Kicks + 1
 
 #### owners
 ```
-behaviours wards of Cat
+behaviour wards of Cat
 interface wards(address guy)
 
 types
