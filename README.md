@@ -21,10 +21,20 @@ This will download and build the target contracts in `dss/`, and compile the lit
 
 To run a proof with [klab](https://github.com/dapphub/klab), you'll need to have a `klab server` running. Then try:
 ```sh
-klab run --spec out/specs/Proof-Vat_dai_succ.k
+klab run --spec out/specs/proof-Vat_dai_succ.k
 ```
 
 This will open an interactive `klab` session exploring the success behaviour of the `dai()` method of the contract `Vat`.
+
+It's also possible to check the behaviours non-interactively, directly using `kprove`, which is much faster. To check all behaviours of the `Vat` contract:
+```sh
+make proofs-Vat
+```
+
+Specific behaviours can also be checked in this way, for example:
+```sh
+make out/specs/proof-Vat_dai_succ.k.proof
+```
 
 # progress
 
