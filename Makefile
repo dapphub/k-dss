@@ -1,46 +1,27 @@
-SRC_DIR = dss/
-OUT_DIR = out/
+SRC_DIR = dss
+OUT_DIR = out
 TMPDIR = $(CURDIR)/tmp
 
-export PATH
-export TMPDIR
+ifndef KLAB_EVMS_PATH
+	$(error $(red)Error$(reset): KLAB_EVMS_PATH must be defined and point to evm-semantics!)
+endif
 
-test_dir = out
-tests = $(wildcard $(test_dir)/*)
+SMT_PRELUDE = $(OUT_DIR)/prelude.smt2
 
-passing_tests =	out/Vat_wards_succ.ini \
-		out/Vat_ilks_succ.ini \
-		out/Vat_urns_succ.ini \
-		out/Vat_gem_succ.ini  \
-		out/Vat_dai_succ.ini  \
-		out/Vat_sin_succ.ini  \
-		out/Vat_debt_succ.ini \
-		out/Vat_vice_succ.ini \
-		out/Vat_rely_succ.ini \
-		out/Vat_rely_fail.ini \
-		out/Vat_deny_succ.ini \
-		out/Vat_deny_fail.ini \
-		out/Vat_init_succ.ini \
-		out/Vat_init_fail.ini \
-		out/Vat_move_succ.ini \
-		out/Vat_move_fail.ini \
-		out/Vat_slip_succ.ini \
-		out/Vat_slip_fail.ini \
-		out/Vat_flux_succ.ini \
-		out/Vat_flux_fail.ini \
-		out/Vat_tune_succ.ini \
-		out/Vat_tune_fail.ini \
-		out/Vat_grab_succ.ini \
-		out/Vat_grab_fail.ini \
-		out/Vat_heal_succ.ini \
-		out/Vat_heal_fail.ini \
-		out/Vat_fold_succ.ini \
-		out/Vat_fold_fail.ini
+KPROVE = $(KLAB_EVMS_PATH)/.build/k/k-distribution/target/release/k/bin/kprove
+KPROVE_ARGS = --directory $(KLAB_EVMS_PATH)/.build/java/ --z3-executable --def-module RULES --output-tokenize "\#And _==K_ <k> \#unsigned" --output-omit "<programBytes> <program> <code>" --output-flatten "_Map_ \#And" --output json --smt_prelude $(SMT_PRELUDE) --z3-tactic "(or-else (using-params smt :random-seed 3 :timeout 1000) (using-params smt :random-seed 2 :timeout 2000) (using-params smt :random-seed 1))"
+
+# shell output colouring:
+red:=$(shell tput setaf 1)
+green:=$(shell tput setaf 2)
+yellow:=$(shell tput setaf 3)
+bold:=$(shell tput bold)
+reset:=$(shell tput sgr0)
+
+specs_dir = out/specs
+specs = $(wildcard $(specs_dir)/*)
 
 all: dapp spec
-
-spec: deps-npm
-	./abi2specs specification.md
 
 dapp:
 	git submodule update --init --recursive
@@ -49,17 +30,27 @@ dapp:
 dapp-clean:
 	cd $(SRC_DIR) && dapp clean && cd ../
 
-deps-npm:
-	npm install
-
-test:  $(passing_tests:=.test)
-	pkill klab
-
-pre-test:
-	klab server & mkdir -p $(TMPDIR)
-
-%.test: pre-test
-	klab run --headless --force --spec $*
+spec:
+	klab build
 
 clean: dapp-clean
-	rm -f $(OUT_DIR)*
+	rm -rf $(OUT_DIR)/*
+
+proofs: proofs-Vat
+
+# workaround for patsubst in pattern matching target below
+PERCENT := %
+
+.SECONDEXPANSION:
+
+proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof,$$(wildcard $(specs_dir)/proof-%*.k))
+	$(info $(bold)CHECKED$(reset) all behaviours of contract $*.)
+
+%.k.proof: %.k
+	$(info Proof $(bold)STARTING$(reset): $<)
+	@ $(KPROVE) $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<"
+
+
+
+
+

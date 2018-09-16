@@ -1,45 +1,62 @@
 {
-  "spec": "./out/spec_slip_success.ini",
-  "prelude": "./prelude.smt2",
-  "lemmas": "./lemmas.k",
-  "implements": [
-    "./dss/out/tune.2.sol.json",
-    "./dss/out/heal.2.sol.json"
-  ],
-  "behaviour_of": "Vat",
-  "var2name": {
-    "Vat" : "Vat",
-    "Pit" : "Pit",
-    "Vow" : "Vow",
-    "Flip" : "Flipper",
-    "Row" : "Flopper",
-    "Cow" : "Flapper"
+  "src": {
+    "specification": "./src/dss.md",
+    "smt_prelude": "./src/prelude.smt2.md",
+    "rules": [
+      "./src/storage.k.md",
+      "./src/lemmas.k.md"
+    ]
   },
-  "path_root": "./dss",
-  "host": "127.0.0.1:8080",
-  "control": {
-    "0"      : "branch 0",
-    "1"      : "branch 1",
-    "2"      : "branch 2",
-    "3"      : "branch 3",
-    "4"      : "branch 4",
-    "5"      : "branch 5",
-    "6"      : "branch 6",
-    "S-n"    : "next_k",
-    "S-p"    : "prev_k",
-    "n"      : "next_step",
-    "p"      : "prev_step",
-    "C-n"    : "next_branch",
-    "C-p"    : "prev_branch",
-    "e"      : "toggle_module evm",
-    "b"      : "toggle_module behaviour",
-    "c"      : "toggle_module constraint",
-    "r"      : "toggle_module rule",
-    "k"      : "toggle_module kcell",
-    "z"      : "toggle_module z3feedback",
-    "d"      : "toggle_module debug",
-    "up"     : "scroll_up",
-    "down"   : "scroll_down"
-  }
+  "implementations": {
+    "Vat": {
+      "solc_output": "./dss/out/tune.2.sol.json"
+    },
+    "Drip": {
+      "solc_output": "./dss/out/drip.2.sol.json"
+    },
+    "Pit": {
+      "solc_output": "./dss/out/frob.2.sol.json"
+    },
+    "Vow": {
+      "solc_output": "./dss/out/heal.2.sol.json"
+    },
+    "Cat": {
+      "solc_output": "./dss/out/bite.2.sol.json"
+    },
+    "GemJoin": {
+      "solc_output": "./dss/out/join.2.sol.json"
+    },
+    "ETHJoin": {
+      "solc_output": "./dss/out/join.2.sol.json"
+    },
+    "DaiJoin": {
+      "solc_output": "./dss/out/join.2.sol.json"
+    },
+    "VatLike": {
+      "name" : "Vat",
+      "solc_output": "./dss/out/tune.2.sol.json"
+    },
+    "PitLike": {
+      "name" : "Pit",
+      "solc_output": "./dss/out/frob.2.sol.json"
+    },
+    "VowLike": {
+      "name" : "Vow",
+      "solc_output": "./dss/out/heal.2.sol.json"
+    },
+    "Flippy": {
+      "name" : "Flipper",
+      "solc_output": "./dss/out/flip.sol.json"
+    },
+    "Floppy": {
+      "name" : "Flopper",
+      "solc_output": "./dss/out/flop.sol.json"
+    },
+    "Flappy": {
+      "name" : "Flapper",
+      "solc_output": "./dss/out/flap.sol.json"
+    }
+  },
+  "dapp_root": "./dss",
+  "host": "127.0.0.1:8080"
 }
-
