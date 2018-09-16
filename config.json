@@ -9,32 +9,32 @@
   },
   "implementations": {
     "Vat": {
-      "solc_output": "./dss/out/tune.2.sol.json"
+      "solc_output": "./dss/out/tune.sol.json"
     },
     "Drip": {
-      "solc_output": "./dss/out/drip.2.sol.json"
+      "solc_output": "./dss/out/drip.sol.json"
     },
     "Pit": {
-      "solc_output": "./dss/out/frob.2.sol.json"
+      "solc_output": "./dss/out/frob.sol.json"
     },
     "Vow": {
-      "solc_output": "./dss/out/heal.2.sol.json"
+      "solc_output": "./dss/out/heal.sol.json"
     },
     "Cat": {
-      "solc_output": "./dss/out/bite.2.sol.json"
+      "solc_output": "./dss/out/bite.sol.json"
     },
     "GemJoin": {
-      "solc_output": "./dss/out/join.2.sol.json"
+      "solc_output": "./dss/out/join.sol.json"
     },
     "ETHJoin": {
-      "solc_output": "./dss/out/join.2.sol.json"
+      "solc_output": "./dss/out/join.sol.json"
     },
     "DaiJoin": {
-      "solc_output": "./dss/out/join.2.sol.json"
+      "solc_output": "./dss/out/join.sol.json"
     },
     "VatLike": {
       "name" : "Vat",
-      "solc_output": "./dss/out/tune.2.sol.json"
+      "solc_output": "./dss/out/tune.sol.json"
     },
     "Dripper": {
       "name": "Drip",
@@ -42,11 +42,11 @@
     },    
     "PitLike": {
       "name" : "Pit",
-      "solc_output": "./dss/out/frob.2.sol.json"
+      "solc_output": "./dss/out/frob.sol.json"
     },
     "VowLike": {
       "name" : "Vow",
-      "solc_output": "./dss/out/heal.2.sol.json"
+      "solc_output": "./dss/out/heal.sol.json"
     },
     "Flippy": {
       "name" : "Flipper",
