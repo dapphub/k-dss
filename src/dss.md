@@ -427,8 +427,8 @@ storage
     #Vat.ilks(i).Ink      |-> Ink_i  => Ink_i + dink
     #Vat.ilks(i).Art      |-> Art_i  => Art_i + dart
     #Vat.gem(i, v)        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.sin(w)           |-> Sin_w  => Sin_w + (Rate * dart)
-    #Vat.vice             |-> Vice   => Vice + (Rate * dart)
+    #Vat.sin(w)           |-> Sin_w  => Sin_w - (Rate * dart)
+    #Vat.vice             |-> Vice   => Vice - (Rate * dart)
 
 iff
 
@@ -441,8 +441,8 @@ iff in range uint256
     Ink_i + dink
     Art_i + dart
     Gem_v - (Take * dink)
-    Sin_w + (Rate * dart)
-    Vice + (Rate * dart)
+    Sin_w - (Rate * dart)
+    Vice - (Rate * dart)
     
 iff in range int256
 
