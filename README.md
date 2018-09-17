@@ -66,7 +66,7 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | flux      | x    | x    | x    | x    |
 | move      | x    | x    | x    | x    |
 | tune      | x    | x    | ?    | x    |
-| grab      | x    | x    | ?    | ?    |
+| grab      | x    | x    | ?    | x    |
 | heal      | x    | x    | x    | x    |
 | fold      | x    | x    | x    | x    |
 | toll      | x    | x    | x    | x    |
