@@ -33,8 +33,10 @@ dapp-clean:
 spec:
 	klab build
 
-clean: dapp-clean
+spec-clean:
 	rm -rf $(OUT_DIR)/*
+
+clean: dapp-clean spec-clean
 
 proofs: proofs-Vat
 
