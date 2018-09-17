@@ -201,3 +201,6 @@ To prove this reachability claim, the k prover explores all possible execution p
 
 More information about how the K prover and the K Framework in general works can be found at [Semantics-Based Program Verifiers for All Languages](http://fsl.cs.illinois.edu/FSL/papers/2016/stefanescu-park-yuwen-li-rosu-2016-oopsla/stefanescu-park-yuwen-li-rosu-2016-oopsla-public.pdf) and a detailed description of the semantics of EVM defined in K is given in [KEVM: A Complete Semantics of the Ethereum Virtual Machine](https://www.ideals.illinois.edu/handle/2142/97207).
 
+### license
+All applicable work in this repository is licensed under AGPL-3.0. Authors:
+* Lev Livnev
