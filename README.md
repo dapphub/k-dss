@@ -1,6 +1,6 @@
 # k-dss
 
-This repo contains the formal verification of [multicollateral dai](https://github.com/makerdao/dss). 
+This repo contains the formal verification of [multicollateral dai](https://github.com/makerdao/dss).
 
 The behavior of the contracts is specified in a literate format at [dss.md](src/dss.md), which generates a series of reachability claims, defining `succeeding` and `reverting` behavior for each function of each contract. These reachability claims are then tested against the [formal semantics of the EVM](https://github.com/kframework/evm-semantics) using the [klab](https://github.com/dapphub/klab) tool for interactive proof inspection and debugging.
 
@@ -15,7 +15,7 @@ git clone git@github.com:dapphub/k-dss.git
 make
 ```
 
-This will download and build the target contracts in `dss/`, and compile the literate specifications in `src/` to K specifications, saving the results in `out/specs`. 
+This will download and build the target contracts in `dss/`, and compile the literate specifications in `src/` to K specifications, saving the results in `out/specs`.
 
 ### usage
 
@@ -197,10 +197,11 @@ The interesting part of this particular function happens under the `storage` hea
 `#Vat.dai(v)           |-> Dai_v => Dai_v - rad`
 is that in the `success` case, the value at the storage location which we call `#Vat.dai(v)` will be updated from `Dai_v` to `Dai_v - rad`.
 
-To prove this reachability claim, the k prover explores all possible execution paths starting from the precondition (whats on the left hand side of a `=>`) and the claim is proven if they all end in a state satisfying the postcondition (right hand side of the `=>`). 
+To prove this reachability claim, the k prover explores all possible execution paths starting from the precondition (whats on the left hand side of a `=>`) and the claim is proven if they all end in a state satisfying the postcondition (right hand side of the `=>`).
 
 More information about how the K prover and the K Framework in general works can be found at [Semantics-Based Program Verifiers for All Languages](http://fsl.cs.illinois.edu/FSL/papers/2016/stefanescu-park-yuwen-li-rosu-2016-oopsla/stefanescu-park-yuwen-li-rosu-2016-oopsla-public.pdf) and a detailed description of the semantics of EVM defined in K is given in [KEVM: A Complete Semantics of the Ethereum Virtual Machine](https://www.ideals.illinois.edu/handle/2142/97207).
 
 ### license
 All applicable work in this repository is licensed under AGPL-3.0. Authors:
 * Lev Livnev
+* Denis Erfurt
