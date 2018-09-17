@@ -8,7 +8,7 @@ endif
 
 SMT_PRELUDE = $(OUT_DIR)/prelude.smt2
 
-KPROVE = $(KLAB_EVMS_PATH)/.build/k/k-distribution/target/release/k/bin/kprove
+KPROVE = K_OPTS=-Xmx10G $(KLAB_EVMS_PATH)/.build/k/k-distribution/target/release/k/bin/kprove
 KPROVE_ARGS = --directory $(KLAB_EVMS_PATH)/.build/java/ --z3-executable --def-module RULES --output-tokenize "\#And _==K_ <k> \#unsigned" --output-omit "<programBytes> <program> <code>" --output-flatten "_Map_ \#And" --output json --smt_prelude $(SMT_PRELUDE) --z3-tactic "(or-else (using-params smt :random-seed 3 :timeout 1000) (using-params smt :random-seed 2 :timeout 2000) (using-params smt :random-seed 1))"
 
 DEBUG_ARGS = --debugg --debugg-path $(TMPDIR)/klab --debugg-id
