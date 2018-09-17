@@ -205,3 +205,4 @@ More information about how the K prover and the K Framework in general works can
 All applicable work in this repository is licensed under AGPL-3.0. Authors:
 * Lev Livnev
 * Denis Erfurt
+* Martin Lundfall
