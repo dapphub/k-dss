@@ -11,6 +11,8 @@ SMT_PRELUDE = $(OUT_DIR)/prelude.smt2
 KPROVE = $(KLAB_EVMS_PATH)/.build/k/k-distribution/target/release/k/bin/kprove
 KPROVE_ARGS = --directory $(KLAB_EVMS_PATH)/.build/java/ --z3-executable --def-module RULES --output-tokenize "\#And _==K_ <k> \#unsigned" --output-omit "<programBytes> <program> <code>" --output-flatten "_Map_ \#And" --output json --smt_prelude $(SMT_PRELUDE) --z3-tactic "(or-else (using-params smt :random-seed 3 :timeout 1000) (using-params smt :random-seed 2 :timeout 2000) (using-params smt :random-seed 1))"
 
+DEBUG_ARGS = --debugg --debugg-path $(TMPDIR)/klab --debugg-id
+
 # shell output colouring:
 red:=$(shell tput setaf 1)
 green:=$(shell tput setaf 2)
@@ -51,10 +53,16 @@ PERCENT := %
 proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof,$$(wildcard $(specs_dir)/proof-%*.k))
 	$(info $(bold)CHECKED$(reset) all behaviours of contract $*.)
 
+debug-proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug,$$(wildcard $(specs_dir)/proof-%*.k))
+	$(info $(bold)CHECKED$(reset) all behaviours of contract $*.)
+
 %.k.proof: %.k
 	$(info Proof $(bold)STARTING$(reset): $<)
 	@ $(KPROVE) $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<"
 
+%.k.proof.debug: %.k
+	$(info Proof $(bold)STARTING$(reset): $< (in $(yellow)$(bold)debug mode$(reset)))
+	@ $(KPROVE) $(DEBUG_ARGS) `klab hash --spec $<` $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<"
 
 
 
