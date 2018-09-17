@@ -1,0 +1,16 @@
+behaviour file-Line of Pit
+interface file(bytes32 what, uint256 data)
+
+types
+
+    Can  : uint256
+    Line : uint256
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.Line             |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then data #else Line #fi
+
+iff
+
+    Can == 1

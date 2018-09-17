@@ -1,0 +1,12 @@
+behaviour vat of ETHJoin
+interface vat()
+
+types
+
+    Vat : address VatLike
+
+storage
+
+    #ETHJoin.vat |-> Vat
+
+returns Vat

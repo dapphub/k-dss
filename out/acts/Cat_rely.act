@@ -1,0 +1,15 @@
+behaviour rely of Cat
+interface rely(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.wards(guy)       |-> _ => 1
+
+iff
+
+    Can == 1

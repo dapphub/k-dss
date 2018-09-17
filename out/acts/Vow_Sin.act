@@ -1,0 +1,12 @@
+behaviour Sin of Vow
+interface Sin()
+
+types
+
+    Sin : uint256
+
+storage
+
+    #Vow.Sin |-> Sin
+
+returns Sin

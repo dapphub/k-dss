@@ -1,0 +1,18 @@
+behaviour urns of Vat
+interface urns(bytes32 ilk, bytes32 urn)
+
+types
+
+    Ink_u : uint256
+    Art_u : uint256
+
+storage
+
+    #Vat.urns(ilk, urn).ink |-> Ink_u
+    #Vat.urns(ilk, urn).art |-> Art_u
+
+if
+
+    VGas > 300000
+
+returns Ink_u : Art_u

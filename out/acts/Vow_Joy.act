@@ -1,0 +1,17 @@
+behaviour Joy of Vow
+interface Joy()
+
+types
+
+    Vat : address VatLike
+    Dai : uint256
+
+storage
+
+    #Vow.vat |-> Vat
+
+storage Vat
+
+    #Vat.dai(ACCT_ID) |-> Dai
+
+returns Dai / 1000000000000000000000000000

@@ -30,8 +30,11 @@ dapp:
 dapp-clean:
 	cd $(SRC_DIR) && dapp clean && cd ../
 
-spec:
+$(OUT_DIR)/spec.timestamp:
+	mkdir -p $(OUT_DIR) && touch $@
 	klab build
+
+spec: $(OUT_DIR)/spec.timestamp
 
 spec-clean:
 	rm -rf $(OUT_DIR)/*

@@ -1,0 +1,10 @@
+behaviour file-repo of Drip
+interface file(bytes32 what, uint256 data)
+
+types
+
+    Repo : uint256
+
+storage
+
+    #Drip.repo |-> Repo => (#if what == 12345 #then data #else Repo #fi)

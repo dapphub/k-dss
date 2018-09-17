@@ -1,0 +1,37 @@
+behaviour fold of Vat
+interface fold(bytes32 i, bytes32 u, int256 rate)
+
+types
+
+    Can   : uint256
+    Rate  : uint256
+    Dai   : uint256
+    Art_i : uint256
+    Debt  : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.ilks(i).rate     |-> Rate => Rate + rate
+    #Vat.ilks(i).Art      |-> Art_i
+    #Vat.dai(u)           |-> Dai  => Dai + Art_i * rate
+    #Vat.debt             |-> Debt => Debt + Art_i * rate
+
+iff
+
+    Can == 1
+
+iff in range uint256
+
+    Rate + rate
+    Dai + Art_i * rate
+    Debt + Art_i * rate
+
+iff in range int256
+
+    Art_i
+    Art_i * rate
+
+if
+
+    VGas > 300000

@@ -1,0 +1,27 @@
+behaviour flux of Vat
+interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
+
+types
+
+    Can     : uint256
+    Gem_src : uint256
+    Gem_dst : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.gem(ilk, src)    |-> Gem_src => Gem_src - wad
+    #Vat.gem(ilk, dst)    |-> Gem_dst => Gem_dst + wad
+
+iff
+
+    Can == 1
+
+iff in range uint256
+
+    Gem_src - wad
+    Gem_dst + wad
+
+if
+
+    VGas > 300000

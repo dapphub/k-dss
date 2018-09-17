@@ -1,0 +1,69 @@
+behaviour frob of Pit
+interface frob(bytes32 ilk, int256 dink, int256 dart)
+
+types
+
+    Live   : uint256
+    Line   : uint256
+    Vat    : address VatLike
+    Spot   : uint256
+    Line_i : uint256
+    Ink_i  : uint256
+    Art_i  : uint256
+    Ink_u  : uint256
+    Art_u  : uint256
+    Take   : uint256
+    Rate   : uint256
+    Gem_u  : uint256
+    Dai    : uint256
+    Debt   : uint256
+
+storage
+
+    #Pit.live           |-> Live
+    #Pit.Line           |-> Line
+    #Pit.vat            |-> Vat
+    #Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks(ilk).spot |-> Spot
+
+storage Vat
+
+    #Vat.wards(ACCT_ID)           |-> Can
+    #Vat.ilks(ilk).take           |-> Take
+    #Vat.ilks(ilk).rate           |-> Rate
+    #Vat.ilks(ilk).Ink            |-> Ink_i  => Ink_i + dink
+    #Vat.ilks(ilk).Art            |-> Art_i  => Art_i + dart
+    #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u  => Ink_u + dink
+    #Vat.urns(ilk, CALLER_ID).art |-> Art_u  => Art_u + dart
+    #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - Take * dink
+    #Vat.dai(CALLER_ID)           |-> Dai    => Dai + Rate * dart
+    #Vat.debt                     |-> Debt   => Debt + Rate * dart
+
+iff
+
+    Can == 1
+    Rate =/= 0
+    (((((Art_u + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * Rate)))
+    Live == 1
+
+iff in range uint256
+
+    Ink_i + dink
+    Art_i + dart
+    Ink_u + dink
+    Art_u + dart
+    Gem_u - Take * dink
+    Dai + (Rate * dart)
+    Debt + (Rate * dart)
+    (Art_u + dart) * Rate
+    (Ink_u + dink) * Spot
+    #Ray * Spot
+    #Ray * Line
+
+iff in range int256
+
+    Take
+    Take * dink
+    Rate
+    Rate * dart

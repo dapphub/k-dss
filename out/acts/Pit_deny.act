@@ -1,0 +1,15 @@
+behaviour deny of Pit
+interface deny(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.wards(guy)       |-> _ => 0
+
+iff
+
+    Can == 1

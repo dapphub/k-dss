@@ -1,0 +1,16 @@
+behaviour sin of Vat
+interface sin(bytes32 lad)
+
+types
+
+    Rad : uint256
+
+storage
+
+    #Vat.sin(lad) |-> Rad
+
+if
+
+    VGas > 300000
+
+returns Rad

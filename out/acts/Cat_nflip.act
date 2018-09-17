@@ -1,0 +1,12 @@
+behaviour nflip of Cat
+interface nflip()
+
+types
+
+    Nflip : uint256
+
+storage
+
+    #Cat.nflip |-> Nflip
+
+returns Nflip

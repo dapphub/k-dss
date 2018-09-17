@@ -1,0 +1,12 @@
+behaviour bump of Vow
+interface bump()
+
+types
+
+    Bump : uint256
+
+storage
+
+    #Vow.bump |-> Bump
+
+returns Bump

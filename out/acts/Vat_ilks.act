@@ -1,0 +1,22 @@
+behaviour ilks of Vat
+interface ilks(bytes32 ilk)
+
+types
+
+    Take  : uint256
+    Rate  : uint256
+    Ink_i : uint256
+    Art_i : uint256
+
+storage
+
+    #Vat.ilks(ilk).take |-> Take
+    #Vat.ilks(ilk).rate |-> Rate
+    #Vat.ilks(ilk).Ink  |-> Ink_i
+    #Vat.ilks(ilk).Art  |-> Art_i
+
+if
+
+    VGas > 300000
+
+returns Take : Rate : Ink_i : Art_i

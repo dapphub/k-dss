@@ -1,0 +1,12 @@
+behaviour ilk of GemJoin
+interface ilk()
+
+types
+
+    Ilk : bytes32
+
+storage
+
+    #GemJoin.ilk |-> Ilk
+
+returns Ilk

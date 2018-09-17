@@ -1,0 +1,33 @@
+behaviour join of ETHJoin
+interface join(bytes32 urn)
+
+types
+
+    Vat         : address VatLike
+    Ilk         : bytes32
+    Can         : uint256
+    Rad         : uint256
+    Bal_adapter : uint256
+
+storage
+
+    #ETHJoin.vat |-> Vat
+    #ETHJoin.ilk |-> Ilk
+
+storage Vat
+
+    #Vat.wards(ACCT_ID)           |-> Can
+    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad + #Ray * VALUE
+
+iff
+
+    Can == 1
+
+iff in range int256
+
+    #Ray * VALUE
+
+iff in range uint256
+
+    Rad + #Ray * VALUE
+    Bal_adapter + VALUE

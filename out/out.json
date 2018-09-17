@@ -1,0 +1,737 @@
+{
+  "Vat_wards_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_ilks_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_urns_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_gem_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_dai_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_sin_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_debt_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_vice_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_rely_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_rely_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_deny_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_deny_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_init_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_init_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_slip_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_slip_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_flux_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_flux_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_move_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_move_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_tune_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_tune_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_grab_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_grab_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_heal_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_heal_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_fold_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_fold_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_toll_succ": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Vat_toll_fail": {
+    "v2n": {
+      "ACCT_ID": "Vat"
+    }
+  },
+  "Drip_wards_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_ilks_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_era_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_rely_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_rely_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_deny_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_deny_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_init_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_init_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_file_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_file_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_file-repo_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_file-vow_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    }
+  },
+  "Drip_drip_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip",
+      "Vat": "VatLike"
+    }
+  },
+  "Drip_drip_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip",
+      "Vat": "VatLike"
+    }
+  },
+  "Pit_wards_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_ilks_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_live_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit",
+      "Vat": "VatLike"
+    }
+  },
+  "Pit_Line_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_drip_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit",
+      "Drip": "Dripper"
+    }
+  },
+  "Pit_rely_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_rely_fail": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_deny_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_deny_fail": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_file-drip_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_file-drip_fail": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_file-ilk_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_file-ilk_fail": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_file-Line_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_file-Line_fail": {
+    "v2n": {
+      "ACCT_ID": "Pit"
+    }
+  },
+  "Pit_frob_succ": {
+    "v2n": {
+      "ACCT_ID": "Pit",
+      "Vat": "VatLike"
+    }
+  },
+  "Pit_frob_fail": {
+    "v2n": {
+      "ACCT_ID": "Pit",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_wards_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_era_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_sin_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_Sin_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_Woe_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_Ash_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_wait_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_sump_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_bump_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_hump_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_Awe_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_Awe_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_Joy_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_rely_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_rely_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_deny_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_deny_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_file-data_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_file-data_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_file-addr_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_file-addr_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_heal_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_heal_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_kiss_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_kiss_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_fess_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_fess_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_flog_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_flog_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow"
+    }
+  },
+  "Vow_flop_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Row": "Floppy",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_flop_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Row": "Floppy",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_flap_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Cow": "Flappy",
+      "Vat": "VatLike"
+    }
+  },
+  "Vow_flap_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Cow": "Flappy",
+      "Vat": "VatLike"
+    }
+  },
+  "Cat_wards_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_ilks_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_flips_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_nflip_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_live_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_pit_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_vow_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_rely_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_rely_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_deny_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_deny_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_file-addr_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_file-addr_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_file_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_file_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_file-flip_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_file-flip_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat"
+    }
+  },
+  "Cat_bite_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat",
+      "Vat": "VatLike",
+      "Pit": "PitLike",
+      "Vow": "VowLike"
+    }
+  },
+  "Cat_bite_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat",
+      "Vat": "VatLike",
+      "Pit": "PitLike",
+      "Vow": "VowLike"
+    }
+  },
+  "Cat_flip_succ": {
+    "v2n": {
+      "ACCT_ID": "Cat",
+      "Flip": "Flippy"
+    }
+  },
+  "Cat_flip_fail": {
+    "v2n": {
+      "ACCT_ID": "Cat",
+      "Flip": "Flippy"
+    }
+  },
+  "GemJoin_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "GemJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "GemJoin_ilk_succ": {
+    "v2n": {
+      "ACCT_ID": "GemJoin"
+    }
+  },
+  "GemJoin_gem_succ": {
+    "v2n": {
+      "ACCT_ID": "GemJoin"
+    }
+  },
+  "GemJoin_join_succ": {
+    "v2n": {
+      "ACCT_ID": "GemJoin",
+      "Vat": "VatLike",
+      "Gem": "GemLike"
+    }
+  },
+  "GemJoin_join_fail": {
+    "v2n": {
+      "ACCT_ID": "GemJoin",
+      "Vat": "VatLike",
+      "Gem": "GemLike"
+    }
+  },
+  "GemJoin_exit_succ": {
+    "v2n": {
+      "ACCT_ID": "GemJoin",
+      "Vat": "VatLike",
+      "Gem": "GemLike"
+    }
+  },
+  "GemJoin_exit_fail": {
+    "v2n": {
+      "ACCT_ID": "GemJoin",
+      "Vat": "VatLike",
+      "Gem": "GemLike"
+    }
+  },
+  "ETHJoin_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "ETHJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "ETHJoin_ilk_succ": {
+    "v2n": {
+      "ACCT_ID": "ETHJoin"
+    }
+  },
+  "ETHJoin_join_succ": {
+    "v2n": {
+      "ACCT_ID": "ETHJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "ETHJoin_join_fail": {
+    "v2n": {
+      "ACCT_ID": "ETHJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "ETHJoin_exit_succ": {
+    "v2n": {
+      "ACCT_ID": "ETHJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "ETHJoin_exit_fail": {
+    "v2n": {
+      "ACCT_ID": "ETHJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "DaiJoin_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiJoin",
+      "Vat": "VatLike"
+    }
+  },
+  "DaiJoin_dai_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiJoin"
+    }
+  },
+  "DaiJoin_join_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiJoin",
+      "Vat": "VatLike",
+      "Dai": "GemLike"
+    }
+  },
+  "DaiJoin_join_fail": {
+    "v2n": {
+      "ACCT_ID": "DaiJoin",
+      "Vat": "VatLike",
+      "Dai": "GemLike"
+    }
+  },
+  "DaiJoin_exit_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiJoin",
+      "Vat": "VatLike",
+      "Dai": "GemLike"
+    }
+  },
+  "DaiJoin_exit_fail": {
+    "v2n": {
+      "ACCT_ID": "DaiJoin",
+      "Vat": "VatLike",
+      "Dai": "GemLike"
+    }
+  }
+}

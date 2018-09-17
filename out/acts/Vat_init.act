@@ -1,0 +1,24 @@
+behaviour init of Vat
+interface init(bytes32 ilk)
+
+types
+
+    Can  : uint256
+    Rate : uint256
+    Take : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.ilks(ilk).rate   |-> Rate => 1000000000000000000000000000
+    #Vat.ilks(ilk).take   |-> Take => 1000000000000000000000000000
+
+iff
+
+    Can == 1
+    Rate == 0
+    Take == 0
+
+if
+
+    VGas > 300000

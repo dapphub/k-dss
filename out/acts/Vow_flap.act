@@ -1,0 +1,51 @@
+behaviour flap of Vow
+interface flap()
+
+types
+
+    Cow   : address Flappy
+    Vat   : address VatLike
+    Bump  : uint256
+    Hump  : uint256
+    Woe   : uint256
+    Ash   : uint256
+    Ttl   : uint48
+    Tau   : uint48
+    Kicks : uint256
+    Dai   : uint256
+
+storage
+
+    #Vow.cow  |-> Cow
+    #Vow.lump |-> Bump
+    #Vow.hump  |-> Hump
+    #Vow.Sin  |-> Sin
+    #Vow.Woe  |-> Woe
+    #Vow.Ash  |-> Ash
+
+storage Cow
+
+    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flapper.kicks                       |-> Kicks => Kicks + 1
+    #Flapper.bids(Kicks + 1).bid         |-> _ => 0
+    #Flapper.bids(Kicks + 1).lot         |-> _ => Bump
+    #Flapper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids(Kicks + 1).gal         |-> _ => ACCT_ID
+
+storage Vat
+
+    #Vat.dai(ACCT_ID)   |-> Dai
+
+iff
+
+    Dai / 1000000000000000000000000000 >= Sin + Woe + Ash + Bump + Hump
+    Woe == 0
+
+iff in range uint256
+
+    Sin + Woe
+    Sin + Woe + Ash
+    Sin + Woe + Ash + Bump
+    Sin + Woe + Ash + Bump + Hump
+
+returns Kicks + 1

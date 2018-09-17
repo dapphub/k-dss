@@ -1,0 +1,12 @@
+behaviour pit of Cat
+interface pit()
+
+types
+
+    Pit : address
+
+storage
+
+    #Cat.pit |-> Pit
+
+returns Pit

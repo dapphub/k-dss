@@ -1,0 +1,53 @@
+behaviour flip of Cat
+interface flip(uint256 n, uint256 wad)
+
+types
+
+    Ilk   : bytes32
+    Urn   : address
+    Ink   : uint256
+    Tab   : uint256
+    Flip  : address Flippy
+    Chop  : uint256
+    Lump  : uint256
+    Vow   : address
+    Ttl   : uint48
+    Tau   : uint48
+    Kicks : uint256
+    Live  : uint256
+
+storage
+
+    #Cat.flips(Nflip).ilk |-> Ilk
+    #Cat.flips(Nflip).urn |-> Urn
+    #Cat.flips(Nflip).ink |-> Ink => Ink - (Ink * wad) / Tab
+    #Cat.flips(Nflip).tab |-> Tab => Tab - wad
+    #Cat.ilks(ilk).flip   |-> Flip
+    #Cat.ilks(ilk).chop   |-> Chop
+    #Cat.ilks(ilk).lump   |-> Lump
+    #Cat.vow              |-> Vow
+    #Cat.live             |-> Live
+
+storage Flip
+
+    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flipper.kicks                       |-> Kicks => Kicks + 1
+    #Flipper.bids(Kicks + 1).bid         |-> _ => 0
+    #Flipper.bids(Kicks + 1).lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids(Kicks + 1).urn         |-> _ => Urn
+    #Flipper.bids(Kicks + 1).gal         |-> _ => Vow
+    #Flipper.bids(Kicks + 1).tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+
+iff
+
+    Live == 1
+    wad <= Tab
+    (wad == Lump) or ((wad < Lump) and (wad == Tab))
+
+iff in range uint256
+
+    Ink * wad
+    wad * Chop
+
+returns Kicks + 1

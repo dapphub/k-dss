@@ -1,0 +1,12 @@
+behaviour sin of Vow
+interface sin(uint48 era_)
+
+types
+
+    Sin_era : uint256
+
+storage
+
+    #Vow.sin(era_) |-> Sin_era
+
+returns Sin_era

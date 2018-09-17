@@ -1,0 +1,21 @@
+behaviour Awe of Vow
+interface Awe()
+
+types
+
+    Sin : uint256
+    Woe : uint256
+    Ash : uint256
+
+storage
+
+    #Vow.Sin |-> Sin
+    #Vow.Woe |-> Woe
+    #Vow.Ash |-> Ash
+
+iff in range uint256
+
+    Sin + Woe
+    Sin + Woe + Ash
+
+returns Sin + Woe + Ash

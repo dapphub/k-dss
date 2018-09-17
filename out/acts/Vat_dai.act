@@ -1,0 +1,16 @@
+behaviour dai of Vat
+interface dai(bytes32 lad)
+
+types
+
+    Rad : uint256
+
+storage
+
+    #Vat.dai(lad) |-> Rad
+
+if
+
+    VGas > 300000
+
+returns Rad

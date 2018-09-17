@@ -1,0 +1,16 @@
+behaviour ilks of Pit
+interface ilks(bytes32 ilk)
+
+types
+
+    Spot_i : uint256
+    Line_i : uint256
+
+storage
+
+    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks(ilk).line |-> Line_i
+
+returns
+
+    Spot_i : Line_i

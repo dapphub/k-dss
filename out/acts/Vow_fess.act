@@ -1,0 +1,23 @@
+behaviour fess of Vow
+interface fess(uint256 tab)
+
+types
+
+    Can     : uint256
+    Sin_era : uint256
+    Sin     : uint256
+
+storage
+
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.sin(TIME)        |-> Sin_era => Sin_era + tab
+    #Vow.Sin              |-> Sin     => Sin + tab
+
+iff
+
+    Can == 1
+
+iff in range uint256
+
+    Sin_era + tab
+    Sin + tab

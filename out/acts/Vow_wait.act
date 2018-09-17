@@ -1,0 +1,12 @@
+behaviour wait of Vow
+interface wait()
+
+types
+
+    Wait : uint256
+
+storage
+
+    #Vow.wait |-> Wait
+
+returns Wait

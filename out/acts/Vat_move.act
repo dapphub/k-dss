@@ -1,0 +1,27 @@
+behaviour move of Vat
+interface move(bytes32 src, bytes32 dst, int256 rad)
+
+types
+
+    Can     : uint256
+    Dai_src : uint256
+    Dai_dst : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.dai(src)         |-> Dai_src => Dai_src - rad
+    #Vat.dai(dst)         |-> Dai_dst => Dai_dst + rad
+
+iff
+
+    Can == 1
+
+iff in range uint256
+
+    Dai_src - rad
+    Dai_dst + rad
+
+if
+
+    VGas > 300000

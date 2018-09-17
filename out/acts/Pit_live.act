@@ -1,0 +1,12 @@
+behaviour live of Pit
+interface live()
+
+types
+
+    Live : uint256
+
+storage
+
+    #Pit.live |-> Live
+
+returns Live

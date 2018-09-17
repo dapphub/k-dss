@@ -1,0 +1,34 @@
+behaviour toll of Vat
+interface toll(bytes32 i, bytes32 u, int256 take) 
+
+types
+
+    Can  : uint256
+    Take : uint256
+    Ink  : uint256
+    Gem  : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.ilks(i).take     |-> Take => Take + take
+    #Vat.ilks(i).Ink      |-> Ink
+    #Vat.gem(i, u)        |-> Gem => Gem - (Ink * take)
+
+iff
+
+    Can == 1
+
+iff in range uint256
+
+    Take + take
+    Gem - (Ink * take)
+
+iff in range int256
+
+    Ink
+    Ink * take
+
+if
+
+    VGas > 300000

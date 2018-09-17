@@ -1,0 +1,4 @@
+behaviour era of Drip
+interface era()
+
+returns TIME

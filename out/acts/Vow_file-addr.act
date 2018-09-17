@@ -1,0 +1,20 @@
+behaviour file-addr of Vow
+interface file(bytes32 what, address addr)
+
+types
+
+    Can : uint256
+    Cow : address
+    Row : address
+    Vat : address
+
+storage
+
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.cow              |-> Cow => (#if what == 12345 #then addr #else Cow #fi)
+    #Vow.row              |-> Row => (#if what == 67890 #then addr #else Row #fi)
+    #Vow.vat              |-> Vat => (#if what == 54321 #then addr #else Vat #fi)
+
+iff
+
+    Can == 1

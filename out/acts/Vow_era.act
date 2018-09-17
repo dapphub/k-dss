@@ -1,0 +1,4 @@
+behaviour era of Vow
+interface era()
+
+returns TIME

@@ -1,0 +1,12 @@
+behaviour vow of Cat
+interface vow()
+
+types
+
+    Vow : address
+
+storage
+
+    #Cat.vow |-> Vow
+
+returns Vow

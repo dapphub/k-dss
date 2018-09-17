@@ -1,0 +1,12 @@
+behaviour Ash of Vow
+interface Ash()
+
+types
+
+    Ash : uint256
+
+storage
+
+    #Vow.Ash |-> Ash
+
+returns Ash

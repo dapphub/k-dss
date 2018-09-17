@@ -1,0 +1,12 @@
+behaviour wards of Drip
+interface wards(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Drip.wards(guy) |-> Can
+
+returns Can

@@ -1,0 +1,16 @@
+behaviour rely of Drip
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+    Could : uint256
+
+storage
+
+    #Drip.wards(CALLER_ID) |-> Can
+    #Drip.wards(guy)       |-> Could => 1
+
+iff
+
+    Can == 1

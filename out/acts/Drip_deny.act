@@ -1,0 +1,16 @@
+behaviour deny of Drip
+interface deny(address guy)
+
+types
+
+    Can   : uint256
+    Could : uint256
+
+storage
+
+    #Drip.wards(CALLER_ID) |-> Can
+    #Drip.wards(guy)       |-> Could => 0
+
+iff
+
+    Can == 1

@@ -1,0 +1,33 @@
+behaviour exit of ETHJoin
+interface exit(bytes32, uint256 wad)
+
+types
+
+    Vat         : address VatLike
+    Ilk         : bytes32
+    Can         : uint256
+    Rad         : uint256
+    Bal_guy     : uint256
+
+storage
+
+    #ETHJoin.vat |-> Vat
+    #ETHJoin.ilk |-> Ilk
+
+storage Vat
+
+    #Vat.wards(ACCT_ID)           |-> Can
+    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+
+iff
+
+    Can == 1
+
+iff in range int256
+
+    #Ray * wad
+
+iff in range uint256
+
+    Rad - #Ray * wad
+    Bal_guy + wad

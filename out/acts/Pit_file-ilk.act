@@ -1,0 +1,18 @@
+behaviour file-ilk of Pit
+interface file(bytes32 ilk, bytes32 what, uint256 data)
+
+types
+
+    Can    : uint256
+    Spot_i : uint256
+    Line_i : uint256
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.ilks(ilk).spot   |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then data #else Spot_i #fi
+    #Pit.ilks(ilk).line   |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then data #else Line_i #fi
+
+iff
+
+    Can == 1

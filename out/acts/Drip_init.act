@@ -1,0 +1,16 @@
+behaviour init of Drip
+interface init(bytes32 ilk)
+
+types
+
+    Tax : uint256
+    Rho : uint48
+
+storage
+
+    #Drip.ilks(ilk).tax |-> Tax => #Ray
+    #Drip.ilks(ilk).rho |-> Rho => TIME
+
+iff
+
+    Tax == 0

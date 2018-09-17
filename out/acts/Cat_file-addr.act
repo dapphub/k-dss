@@ -1,0 +1,18 @@
+behaviour file-addr of Cat
+interface file(bytes32 what, address data)
+
+types
+
+    Can : uint256
+    Pit : address
+    Vow : address
+
+storage
+
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.pit              |-> Pit => (#if what == 12345 #then data #else Pit #fi)
+    #Cat.vow              |-> Vow => (#if what == 54321 #then data #else Vow #fi)
+
+iff
+
+    Can == 1

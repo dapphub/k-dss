@@ -1,0 +1,12 @@
+behaviour drip of Pit
+interface drip()
+
+types
+
+    Drip : address Dripper
+
+storage
+
+    #Pit.drip |-> Drip
+
+returns Drip

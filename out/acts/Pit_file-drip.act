@@ -1,0 +1,16 @@
+behaviour file-drip of Pit
+interface file(bytes32 what, address who)
+
+types
+
+    Can    : uint256
+    Drip   : address
+
+storage
+
+    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.drip             |-> Drip => (#if (what == 123) #then Drip #else who #fi)
+
+iff
+
+    Can == 1

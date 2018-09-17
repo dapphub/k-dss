@@ -1,0 +1,20 @@
+behaviour rely of Vat
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+    Could : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.wards(guy)       |-> Could => 1
+
+iff
+
+    Can == 1
+
+if
+
+    VGas > 300000

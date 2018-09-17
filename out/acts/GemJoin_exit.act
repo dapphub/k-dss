@@ -1,0 +1,42 @@
+behaviour exit of GemJoin
+interface exit(bytes32 urn, uint256 wad)
+
+types
+
+    Vat         : address VatLike
+    Ilk         : bytes32
+    Gem         : address GemLike
+    Can         : uint256
+    Rad         : uint256
+    Bal_guy     : uint256
+    Bal_adapter : uint256
+
+storage
+
+    #GemJoin.vat |-> Vat
+    #GemJoin.ilk |-> Ilk
+    #GemJoin.gem |-> Gem
+
+storage Vat
+
+    #Vat.wards(ACCT_ID)           |-> Can
+    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+
+storage Gem
+
+    #GemLike.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
+    #GemLike.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad
+
+iff
+
+    Can == 1
+
+iff in range int256
+
+    #Ray * wad
+
+iff in range uint256
+
+    Rad - #Ray * wad
+    Bal_guy + wad
+    Bal_adapter - wad

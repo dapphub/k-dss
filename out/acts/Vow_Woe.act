@@ -1,0 +1,12 @@
+behaviour Woe of Vow
+interface Woe()
+
+types
+
+    Woe : uint256
+
+storage
+
+    #Vow.Woe |-> Woe
+
+returns Woe

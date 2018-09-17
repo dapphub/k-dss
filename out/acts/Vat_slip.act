@@ -1,0 +1,24 @@
+behaviour slip of Vat
+interface slip(bytes32 ilk, bytes32 guy, int256 wad)
+
+types
+
+    Can : uint256
+    Gem : uint256
+
+storage
+
+    #Vat.wards(CALLER_ID) |-> Can
+    #Vat.gem(ilk, guy)    |-> Gem => Gem + wad
+
+iff
+
+    Can == 1
+
+iff in range uint256
+
+    Gem + wad
+
+if
+
+    VGas > 300000

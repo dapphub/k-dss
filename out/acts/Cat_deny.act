@@ -1,0 +1,15 @@
+behaviour deny of Cat
+interface deny(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.wards(guy)       |-> _ => 0
+
+iff
+
+    Can == 1

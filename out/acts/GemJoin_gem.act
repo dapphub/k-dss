@@ -1,0 +1,12 @@
+behaviour gem of GemJoin
+interface gem()
+
+types
+
+    Gem : address
+
+storage
+
+    #GemJoin.gem |-> Gem
+
+returns Gem

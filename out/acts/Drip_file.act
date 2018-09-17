@@ -1,0 +1,14 @@
+behaviour file of Drip
+interface file(bytes32 ilk, bytes32 what, uint256 data)
+
+types
+
+    Tax : uint256
+
+storage
+
+    #Drip.ilks(ilk).tax |-> Tax => (#if what == 12345 #then data #else Tax #fi)
+
+iff
+
+    #Drip.ilks(ilk).rho == TIME

@@ -1,0 +1,12 @@
+behaviour vat of Pit
+interface vat()
+
+types
+
+    Vat : address VatLike
+
+storage
+
+    #Pit.vat |-> Vat
+
+returns Vat

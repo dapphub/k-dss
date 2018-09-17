@@ -1,0 +1,12 @@
+behaviour vat of Cat
+interface vat()
+
+types
+
+    Vat : address
+
+storage
+
+    #Cat.vat |-> Vat
+
+returns Vat

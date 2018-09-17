@@ -1,0 +1,15 @@
+behaviour deny of Vow
+interface deny(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.wards(guy)       |-> _ => 0
+
+iff
+
+    Can == 1

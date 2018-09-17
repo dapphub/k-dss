@@ -1,0 +1,12 @@
+behaviour dai of DaiJoin
+interface dai()
+
+types
+
+    Dai : address
+
+storage
+
+    #DaiJoin.dai |-> Dai
+
+returns Dai

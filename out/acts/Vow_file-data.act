@@ -1,0 +1,20 @@
+behaviour file-data of Vow
+interface file(bytes32 what, uint256 data)
+
+types
+
+    Can  : uint256
+    Sump : uint256
+    Bump : uint256
+    Hump : uint256
+
+storage
+
+    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.sump             |-> Sump => (#if what == 12345 #then data #else Sump #fi)
+    #Vow.bump             |-> Bump => (#if what == 12345 #then data #else Bump #fi)
+    #Vow.hump             |-> Hump => (#if what == 67890 #then data #else Hump #fi)
+
+iff
+
+    Can == 1

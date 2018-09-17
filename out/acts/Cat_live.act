@@ -1,0 +1,12 @@
+behaviour live of Cat
+interface live()
+
+types
+
+    Live : uint256
+
+storage
+
+    #Cat.live |-> Live
+
+returns Live

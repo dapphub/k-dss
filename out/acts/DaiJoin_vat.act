@@ -1,0 +1,12 @@
+behaviour vat of DaiJoin
+interface vat()
+
+types
+
+    Vat : address VatLike
+
+storage
+
+    #DaiJoin.vat |-> Vat
+
+returns Vat

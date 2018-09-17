@@ -1,0 +1,12 @@
+behaviour Line of Pit
+interface Line()
+
+types
+
+    Line : uint256
+
+storage
+
+    #Pit.Line |-> Line
+
+returns Line

@@ -1,0 +1,12 @@
+behaviour wards of Vow
+interface wards(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Vow.wards(guy) |-> Can
+
+returns Can

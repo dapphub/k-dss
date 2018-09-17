@@ -1,0 +1,12 @@
+behaviour sump of Vow
+interface sump()
+
+types
+
+    Sump : uint256
+
+storage
+
+    #Vow.sump |-> Sump
+
+returns Sump

@@ -1,0 +1,12 @@
+behaviour wards of Cat
+interface wards(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Cat.wards(guy) |-> Can
+
+returns Can

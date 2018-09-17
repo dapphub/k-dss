@@ -1,0 +1,18 @@
+behaviour flips of Cat
+interface flips(uint256 n)
+
+types
+
+    Ilk : bytes32
+    Urn : bytes32
+    Ink : uint256
+    Tab : uint256
+
+storage
+
+    #Cat.flips(n).ilk |-> Ilk
+    #Cat.flips(n).urn |-> Urn
+    #Cat.flips(n).ink |-> Ink
+    #Cat.flips(n).tab |-> Tab
+
+returns Ilk : Urn : Ink : Tab

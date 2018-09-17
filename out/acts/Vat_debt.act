@@ -1,0 +1,16 @@
+behaviour debt of Vat
+interface debt()
+
+types
+
+    Debt : uint256
+
+storage
+
+    #Vat.debt |-> Debt
+
+if
+
+    VGas > 300000
+
+returns Debt

@@ -1,0 +1,12 @@
+behaviour wards of Pit
+interface wards(address guy)
+
+types
+
+    Can : uint256
+
+storage
+
+    #Pit.wards(guy) |-> Can
+
+returns Can

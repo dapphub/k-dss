@@ -1,0 +1,43 @@
+behaviour heal of Vow
+interface heal(uint256 wad)
+
+types
+
+    Can  : uint256
+    Vat  : address VatLike
+    Woe  : uint256
+    Dai  : uint256
+    Sin  : uint256
+    Vice : uint256
+    Debt : uint256
+
+storage
+
+    #Vow.vat |-> Vat
+    #Vow.Woe |-> Woe => Woe - wad
+
+storage Vat
+
+    #Vat.wards(ACCT_ID) |-> Can
+    #Vat.dai(ACCT_ID)   |-> Dai  => Dai - #Ray * wad
+    #Vat.sin(ACCT_ID)   |-> Sin  => Sin - #Ray * wad
+    #Vat.vice           |-> Vice => Vice - #Ray * wad
+    #Vat.debt           |-> Debt => Debt - #Ray * wad
+
+iff
+
+    Can == 1
+    wad <= Dai / 1000000000000000000000000000
+    wad <= Woe
+
+iff in range uint256
+
+    Woe - wad
+    Dai - #Ray * wad
+    Sin - #Ray * wad
+    Vice - #Ray * wad
+    Debt - #Ray * wad
+
+iff in range int256
+
+    #Ray * wad

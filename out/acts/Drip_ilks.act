@@ -1,0 +1,16 @@
+behaviour ilks of Drip
+interface ilks(bytes32 ilk)
+
+types
+
+    Vow : bytes32
+    Tax : uint256
+    Rho : uint48
+
+storage
+
+    #Drip.ilks(ilk).vow |-> Vow
+    #Drip.ilks(ilk).tax |-> Tax
+    #Drip.ilks(ilk).rho |-> Rho
+
+returns Vow : Tax : Rho

@@ -1,0 +1,16 @@
+behaviour ilks of Cat
+interface ilks(bytes32 ilk)
+
+types
+
+    Chop : uint256
+    Flip : address
+    Lump : uint256
+
+storage
+
+    #Cat.ilks(ilk).chop |-> Chop
+    #Cat.ilks(ilk).flip |-> Flip
+    #Cat.ilks(ilk).lump |-> Lump
+
+returns Chop : Flip : Lump

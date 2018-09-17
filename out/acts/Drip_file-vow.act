@@ -1,0 +1,10 @@
+behaviour file-vow of Drip
+interface file(bytes32 what, bytes32 data)
+
+types
+
+    Vow : bytes32
+
+storage
+
+    #Drip.vow |-> Vow => (#if what == 12345 #then data #else Vow #fi)

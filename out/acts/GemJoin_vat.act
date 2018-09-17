@@ -1,0 +1,12 @@
+behaviour vat of GemJoin
+interface vat()
+
+types
+
+    Vat : address VatLike
+
+storage
+
+    #GemJoin.vat |-> Vat
+
+returns Vat

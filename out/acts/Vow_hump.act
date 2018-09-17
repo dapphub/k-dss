@@ -1,0 +1,12 @@
+behaviour hump of Vow
+interface hump()
+
+types
+
+    Hump : uint256
+
+storage
+
+    #Vow.hump |-> Hump
+
+returns Hump

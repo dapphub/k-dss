@@ -1,0 +1,16 @@
+behaviour gem of Vat
+interface gem(bytes32 ilk, bytes32 urn)
+
+types
+
+    Gem : uint256
+
+storage
+
+    #Vat.gem(ilk, urn) |-> Gem
+
+if
+
+    VGas > 300000
+
+returns Gem

@@ -1,0 +1,12 @@
+behaviour ilk of ETHJoin
+interface ilk()
+
+types
+
+    Ilk : bytes32
+
+storage
+
+    #ETHJoin.ilk |-> Ilk
+
+returns Ilk

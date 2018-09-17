@@ -1,0 +1,17 @@
+behaviour flog of Vow
+interface flog(uint48 era_)
+
+types
+
+    Sin_era_ : uint256
+
+storage
+
+    #Vow.sin(era_) |-> Sin_era_ => 0
+    #Vow.Sin       |-> Sin      => Sin - Sin_era_
+    #Vow.Woe       |-> Woe      => Woe + Sin_era_
+
+iff in range uint256
+
+    Sin - Sin_era_
+    Woe + Sin_era_
