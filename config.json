@@ -36,6 +36,9 @@
       "name" : "Vat",
       "solc_output": "./dss/out/tune.2.sol.json"
     },
+    "Dripper": {
+      "solc_output": "./dss/out/drip.2.sol.json"
+    },    
     "PitLike": {
       "name" : "Pit",
       "solc_output": "./dss/out/frob.2.sol.json"
