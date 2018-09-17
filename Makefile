@@ -36,7 +36,7 @@ spec:
 clean: dapp-clean
 	rm -rf $(OUT_DIR)/*
 
-proofs: proofs-Vat
+proofs: proofs-Vat proofs-Vow proofs-Pit proofs-Cat proofs-GemJoin proofs-DaiJoin
 
 # workaround for patsubst in pattern matching target below
 PERCENT := %
