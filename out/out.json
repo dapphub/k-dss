@@ -311,12 +311,14 @@
   "Pit_frob_succ": {
     "v2n": {
       "ACCT_ID": "Pit",
+      "Drip": "Dripper",
       "Vat": "VatLike"
     }
   },
   "Pit_frob_fail": {
     "v2n": {
       "ACCT_ID": "Pit",
+      "Drip": "Dripper",
       "Vat": "VatLike"
     }
   },

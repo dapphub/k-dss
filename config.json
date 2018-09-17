@@ -37,6 +37,7 @@
       "solc_output": "./dss/out/tune.2.sol.json"
     },
     "Dripper": {
+      "name": "Drip",
       "solc_output": "./dss/out/drip.2.sol.json"
     },    
     "PitLike": {

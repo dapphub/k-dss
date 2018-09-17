@@ -16,6 +16,7 @@ types
 
 storage
 
+    #Drip.vat           |-> Vat
     #Drip.repo          |-> Repo
     #Drip.ilks(ilk).vow |-> Vow
     #Drip.ilks(ilk).tax |-> Tax
@@ -25,8 +26,8 @@ storage Vat
 
     #Vat.wards(ADDRESS) |-> Can
     #Vat.ilks(ilk).rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.ilks(i).Art    |-> Art_i
-    #Vat.dai(u)         |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.ilks(ilk).Art  |-> Art_i
+    #Vat.dai(Vow)       |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
