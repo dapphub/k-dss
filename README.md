@@ -65,8 +65,8 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | slip      | x    | x    | x    | x    |
 | flux      | x    | x    | x    | x    |
 | move      | x    | x    | x    | x    |
-| tune      | x    | x    | ?    | x    |
-| grab      | x    | x    | ?    | x    |
+| tune      | x    | x    | x    | x    |
+| grab      | x    | x    | x    | x    |
 | heal      | x    | x    | x    | x    |
 | fold      | x    | x    | x    | x    |
 | toll      | x    | x    | x    | x    |
