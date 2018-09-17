@@ -38,6 +38,8 @@ make out/specs/proof-Vat_dai_succ.k.proof
 
 # progress
 
+(proof CI running at [dapp.ci](https://dapp.ci) )
+
 `x` - the proof is succeeding
 
 `?` - expected to succeed but yet to be checked
