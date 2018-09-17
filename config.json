@@ -38,7 +38,7 @@
     },
     "Dripper": {
       "name": "Drip",
-      "solc_output": "./dss/out/drip.2.sol.json"
+      "solc_output": "./dss/out/drip.sol.json"
     },    
     "PitLike": {
       "name" : "Pit",
