@@ -4,12 +4,17 @@ interface deny(address guy)
 types
 
     Can : uint256
+    Could : uint256
 
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> _ => 0
+    #Cat.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000

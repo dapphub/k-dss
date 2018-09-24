@@ -20,17 +20,6 @@ syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
 syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(smt_rpow)]
 ```
 
-### `uint48` support
-
-```
-syntax Int ::= "minUInt48"      [function]
-             | "maxUInt48"      [function]
-
-rule minUInt48      =>  0               [macro]
-rule maxUInt48      =>  281474976710655 [macro]  /*   2^48 - 1  */
-
-rule #rangeUInt ( 48 , X ) => #range ( minUInt48 <= X <= maxUInt48) [macro]
-```
 ### hashed storage
 
 ```
@@ -148,10 +137,4 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B <Int 0
-
-syntax Bool ::= #rangeNotPrecompileAddress ( Int ) [function]
-// ---------------------------------------
-rule #rangeNotPrecompileAddress ( X ) =>
-     #rangeAddress ( X )
-     andBool 9 <=Int X
 ```

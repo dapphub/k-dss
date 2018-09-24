@@ -14,3 +14,7 @@ storage
 iff
 
     Tax == 0
+
+if
+
+    VGas > 300000

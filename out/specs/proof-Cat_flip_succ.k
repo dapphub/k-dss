@@ -33,7 +33,7 @@ rule
         <memoryUsed> 0 => _ </memoryUsed>
         <previousGas> _ => _ </previousGas>
         <static> false </static>
-        <callDepth> CALL_DEPTH => _ </callDepth>
+        <callDepth> VCallDepth => _ </callDepth>
       </callState>
       <substate>
         <selfDestruct> VSelfDestruct </selfDestruct>
@@ -75,7 +75,8 @@ rule
                       #Flipper.bids(Kicks +Int 1).guy_tic_end |-> (_ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME +Int Tau))
                       #Flipper.bids(Kicks +Int 1).urn |-> (_ => Urn)
                       #Flipper.bids(Kicks +Int 1).gal |-> (_ => Vow)
-                      #Flipper.bids(Kicks +Int 1).tab |-> (_ => (ABI_wad *Int Chop) /Int 1000000000000000000000000000)) </storage>
+                      #Flipper.bids(Kicks +Int 1).tab |-> (_ => (ABI_wad *Int Chop) /Int 1000000000000000000000000000))
+                      _:Map </storage>
           <nonce> _ </nonce>
         </account>
         <account>
@@ -102,9 +103,13 @@ rule
       <messages> _ </messages>
     </network>
   </ethereum>
-requires 0 <=Int ACCT_ID    andBool ACCT_ID    <Int (2 ^Int 160)
-andBool 0 <=Int CALLER_ID  andBool CALLER_ID  <Int (2 ^Int 160)
-andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
+requires #rangeAddress(ACCT_ID)
+andBool #notPrecompileAddress(ACCT_ID)
+andBool #rangeAddress(CALLER_ID)
+andBool #rangeAddress(ORIGIN_ID)
+andBool #rangeUInt(48, TIME)
+andBool #rangeUInt(256, BAL)
+andBool VCallDepth <Int 1024
   andBool #rangeUInt(256, ABI_n)
   andBool #rangeUInt(256, ABI_wad)
   andBool #rangeBytes(32, Ilk)
@@ -120,6 +125,13 @@ andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
   andBool #rangeUInt(256, Kicks)
   andBool #rangeUInt(256, Live)
   andBool #rangeUInt(256, Flip_balance)
+  andBool #notPrecompileAddress(Urn)
+  andBool ACCT_ID =/=Int Urn
+  andBool #notPrecompileAddress(Flip)
+  andBool ACCT_ID =/=Int Flip
+  andBool #notPrecompileAddress(Vow)
+  andBool ACCT_ID =/=Int Vow
+  andBool VGas >Int 300000
   andBool Live ==Int 1
   andBool ABI_wad <=Int Tab
   andBool (ABI_wad ==Int Lump) orBool ((ABI_wad <Int Lump) andBool (ABI_wad ==Int Tab))

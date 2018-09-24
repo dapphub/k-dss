@@ -13,4 +13,8 @@ storage
     #Cat.ilks(ilk).flip |-> Flip
     #Cat.ilks(ilk).lump |-> Lump
 
+if
+
+    VGas > 300000
+
 returns Chop : Flip : Lump

@@ -8,3 +8,7 @@ types
 storage
 
     #Drip.vow |-> Vow => (#if what == 12345 #then data #else Vow #fi)
+
+if
+
+    VGas > 300000

@@ -9,4 +9,8 @@ storage
 
     #GemJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat

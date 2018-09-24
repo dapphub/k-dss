@@ -21,3 +21,7 @@ iff in range uint256
 
     Sin_era + tab
     Sin + tab
+
+if
+
+    VGas > 300000

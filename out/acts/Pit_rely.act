@@ -3,13 +3,18 @@ interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> _ => 1
+    #Pit.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000

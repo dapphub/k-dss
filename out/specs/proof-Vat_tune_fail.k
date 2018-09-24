@@ -33,7 +33,7 @@ rule
         <memoryUsed> 0 => _ </memoryUsed>
         <previousGas> _ => _ </previousGas>
         <static> false </static>
-        <callDepth> CALL_DEPTH => _ </callDepth>
+        <callDepth> VCallDepth => _ </callDepth>
       </callState>
       <substate>
         <selfDestruct> VSelfDestruct </selfDestruct>
@@ -88,9 +88,13 @@ rule
       <messages> _ </messages>
     </network>
   </ethereum>
-requires 0 <=Int ACCT_ID    andBool ACCT_ID    <Int (2 ^Int 160)
-andBool 0 <=Int CALLER_ID  andBool CALLER_ID  <Int (2 ^Int 160)
-andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
+requires #rangeAddress(ACCT_ID)
+andBool #notPrecompileAddress(ACCT_ID)
+andBool #rangeAddress(CALLER_ID)
+andBool #rangeAddress(ORIGIN_ID)
+andBool #rangeUInt(48, TIME)
+andBool #rangeUInt(256, BAL)
+andBool VCallDepth <Int 1024
   andBool #rangeBytes(32, ABI_i)
   andBool #rangeBytes(32, ABI_u)
   andBool #rangeBytes(32, ABI_v)

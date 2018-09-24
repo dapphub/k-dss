@@ -1,5 +1,5 @@
 behaviour sin of Vow
-interface sin(uint48 era_)
+interface sin(uint48 era)
 
 types
 
@@ -7,6 +7,10 @@ types
 
 storage
 
-    #Vow.sin(era_) |-> Sin_era
+    #Vow.sin(era) |-> Sin_era
+
+if
+
+    VGas > 300000
 
 returns Sin_era

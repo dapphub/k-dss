@@ -9,4 +9,8 @@ storage
 
     #Pit.Line |-> Line
 
+if
+
+    VGas > 300000
+
 returns Line

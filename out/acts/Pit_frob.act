@@ -101,3 +101,4 @@ iff in range int256
 if
 
     CALLER_ID =/= Vow
+    VGas > 300000

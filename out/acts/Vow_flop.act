@@ -45,4 +45,8 @@ iff in range uint256
     Woe - Sump
     Ash + Sump
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1

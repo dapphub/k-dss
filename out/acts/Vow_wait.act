@@ -9,4 +9,8 @@ storage
 
     #Vow.wait |-> Wait
 
+if
+
+    VGas > 300000
+
 returns Wait

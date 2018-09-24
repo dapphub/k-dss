@@ -9,4 +9,8 @@ storage
 
     #Vow.hump |-> Hump
 
+if
+
+    VGas > 300000
+
 returns Hump

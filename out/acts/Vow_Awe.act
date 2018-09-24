@@ -18,4 +18,8 @@ iff in range uint256
     Sin + Woe
     Sin + Woe + Ash
 
+if
+
+    VGas > 300000
+
 returns Sin + Woe + Ash

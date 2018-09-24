@@ -15,4 +15,8 @@ storage
     #Cat.flips(n).ink |-> Ink
     #Cat.flips(n).tab |-> Tab
 
+if
+
+    VGas > 300000
+
 returns Ilk : Urn : Ink : Tab

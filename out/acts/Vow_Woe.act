@@ -9,4 +9,8 @@ storage
 
     #Vow.Woe |-> Woe
 
+if
+
+    VGas > 300000
+
 returns Woe

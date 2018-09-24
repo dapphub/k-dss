@@ -13,4 +13,8 @@ storage
     #Drip.ilks(ilk).tax |-> Tax
     #Drip.ilks(ilk).rho |-> Rho
 
+if
+
+    VGas > 300000
+
 returns Vow : Tax : Rho

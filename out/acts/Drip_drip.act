@@ -49,3 +49,7 @@ iff in range int256
     Art_i
     #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+
+if
+
+    VGas > 300000

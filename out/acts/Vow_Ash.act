@@ -9,4 +9,8 @@ storage
 
     #Vow.Ash |-> Ash
 
+if
+
+    VGas > 300000
+
 returns Ash

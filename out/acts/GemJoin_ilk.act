@@ -9,4 +9,8 @@ storage
 
     #GemJoin.ilk |-> Ilk
 
+if
+
+    VGas > 300000
+
 returns Ilk

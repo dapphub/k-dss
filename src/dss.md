@@ -592,6 +592,10 @@ storage
 
     #Drip.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
 ```
 
@@ -613,6 +617,10 @@ storage
     #Drip.ilks(ilk).tax |-> Tax
     #Drip.ilks(ilk).rho |-> Rho
 
+if
+
+    VGas > 300000
+
 returns Vow : Tax : Rho
 ```
 
@@ -621,6 +629,10 @@ returns Vow : Tax : Rho
 behaviour era of Drip
 interface era()
     
+if
+
+    VGas > 300000
+
 returns TIME
 ```
 
@@ -646,6 +658,10 @@ iff
 
     Can == 1
 
+if
+
+    VGas > 300000
+
 behaviour deny of Drip
 interface deny(address guy)
 
@@ -662,6 +678,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### initialising an `ilk`
@@ -683,6 +703,10 @@ storage
 iff
 
     Tax == 0
+
+if
+
+    VGas > 300000
 ```
 
 #### setting `ilk` data
@@ -702,6 +726,10 @@ storage
 iff
 
     #Drip.ilks(ilk).rho == TIME
+
+if
+
+    VGas > 300000
 ```
 
 #### setting the base rate
@@ -716,6 +744,10 @@ types
 storage
 
     #Drip.repo |-> Repo => (#if what == 12345 #then data #else Repo #fi)
+
+if
+
+    VGas > 300000
 ```
 
 #### setting the `vow`
@@ -730,6 +762,10 @@ types
 storage
 
     #Drip.vow |-> Vow => (#if what == 12345 #then data #else Vow #fi)
+
+if
+
+    VGas > 300000
 ```
 
 #### updating the rates
@@ -785,6 +821,10 @@ iff in range int256
     Art_i
     #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+
+if
+
+    VGas > 300000
 ```
 
 # Pit
@@ -806,6 +846,10 @@ storage
 
     #Pit.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
 ```
 
@@ -825,6 +869,10 @@ storage
     #Pit.ilks(ilk).spot |-> Spot_i
     #Pit.ilks(ilk).line |-> Line_i
 
+if
+
+    VGas > 300000
+
 returns
 
     Spot_i : Line_i
@@ -843,6 +891,10 @@ storage
 
     #Pit.live |-> Live
 
+if
+
+    VGas > 300000
+
 returns Live
 ```
 
@@ -858,6 +910,10 @@ types
 storage
 
     #Pit.vat |-> Vat
+
+if
+
+    VGas > 300000
 
 returns Vat
 ```
@@ -875,6 +931,10 @@ storage
 
     #Pit.Line |-> Line
 
+if
+
+    VGas > 300000
+
 returns Line
 ```
 
@@ -891,6 +951,10 @@ storage
 
     #Pit.drip |-> Drip
 
+if
+
+    VGas > 300000
+
 returns Drip
 ```
 
@@ -903,32 +967,42 @@ interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> _ => 1
+    #Pit.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 
 behaviour deny of Pit
 interface deny(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> _ => 0
+    #Pit.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting `drip` address
@@ -949,6 +1023,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting `ilk` data
@@ -971,6 +1049,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting the global debt ceiling
@@ -991,6 +1073,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### manipulating a position
@@ -1099,6 +1185,7 @@ iff in range int256
 if
 
     CALLER_ID =/= Vow
+    VGas > 300000
 ```
 
 # Vow
@@ -1120,6 +1207,10 @@ storage
 
     #Vow.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
 ```
 
@@ -1127,14 +1218,18 @@ returns Can
 ```
 behaviour era of Vow
 interface era()
-    
+
+if
+
+    VGas > 300000
+
 returns TIME
 ```
 
 #### getting a `sin` packet
 ```
 behaviour sin of Vow
-interface sin(uint48 era_)
+interface sin(uint48 era)
 
 types
 
@@ -1142,8 +1237,12 @@ types
     
 storage
 
-    #Vow.sin(era_) |-> Sin_era
-    
+    #Vow.sin(era) |-> Sin_era
+
+if
+
+    VGas > 300000
+
 returns Sin_era
 ```
 
@@ -1159,6 +1258,10 @@ types
 storage
 
     #Vow.Sin |-> Sin
+
+if
+
+    VGas > 300000
     
 returns Sin
 ```
@@ -1175,6 +1278,10 @@ types
 storage
 
     #Vow.Woe |-> Woe
+
+if
+
+    VGas > 300000
     
 returns Woe
 ```
@@ -1191,6 +1298,10 @@ types
 storage
 
     #Vow.Ash |-> Ash
+
+if
+
+    VGas > 300000
     
 returns Ash
 ```
@@ -1207,6 +1318,10 @@ types
 storage
 
     #Vow.wait |-> Wait
+
+if
+
+    VGas > 300000
     
 returns Wait
 ```
@@ -1223,7 +1338,11 @@ types
 storage
 
     #Vow.sump |-> Sump
-    
+
+if
+
+    VGas > 300000
+
 returns Sump
 ```
 
@@ -1239,6 +1358,10 @@ types
 storage
 
     #Vow.bump |-> Bump
+
+if
+
+    VGas > 300000
     
 returns Bump
 ```
@@ -1255,6 +1378,10 @@ types
 storage
 
     #Vow.hump |-> Hump
+
+if
+
+    VGas > 300000
     
 returns Hump
 ```
@@ -1280,6 +1407,10 @@ iff in range uint256
 
     Sin + Woe
     Sin + Woe + Ash
+
+if
+
+    VGas > 300000
     
 returns Sin + Woe + Ash
 ```
@@ -1301,6 +1432,10 @@ storage
 storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
+
+if
+
+    VGas > 300000
     
 returns Dai / 1000000000000000000000000000
 ```
@@ -1314,32 +1449,42 @@ interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> _ => 1
+    #Vow.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 
 behaviour deny of Vow
 interface deny(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> _ => 0
+    #Vow.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 
@@ -1365,6 +1510,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting vat and liquidators
@@ -1389,6 +1538,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### cancelling bad debt and surplus
@@ -1436,6 +1589,10 @@ iff in range uint256
 iff in range int256
 
     #Ray * wad
+
+if
+
+    VGas > 300000
 ```
 
 ```
@@ -1482,6 +1639,10 @@ iff in range uint256
 iff in range int256
 
     #Ray * wad
+
+if
+
+    VGas > 300000
 ```
 
 #### adding to the `sin` queue
@@ -1509,6 +1670,10 @@ iff in range uint256
 
     Sin_era + tab
     Sin + tab
+
+if
+
+    VGas > 300000
 ```
 
 #### processing `sin` queue
@@ -1530,6 +1695,10 @@ iff in range uint256
 
     Sin - Sin_era_
     Woe + Sin_era_
+
+if
+
+    VGas > 300000
 ```
 
 #### starting a debt auction
@@ -1580,6 +1749,10 @@ iff in range uint256
 
     Woe - Sump
     Ash + Sump
+
+if
+
+    VGas > 300000
     
 returns Kicks + 1
 ```
@@ -1635,6 +1808,10 @@ iff in range uint256
     Sin + Woe + Ash
     Sin + Woe + Ash + Bump
     Sin + Woe + Ash + Bump + Hump
+
+if
+
+    VGas > 300000
     
 returns Kicks + 1
 ```
@@ -1677,6 +1854,10 @@ storage
     #Cat.ilks(ilk).chop |-> Chop
     #Cat.ilks(ilk).flip |-> Flip
     #Cat.ilks(ilk).lump |-> Lump
+
+if
+
+    VGas > 300000
     
 returns Chop : Flip : Lump
 ```
@@ -1699,6 +1880,10 @@ storage
     #Cat.flips(n).urn |-> Urn
     #Cat.flips(n).ink |-> Ink
     #Cat.flips(n).tab |-> Tab
+
+if
+
+    VGas > 300000
     
 returns Ilk : Urn : Ink : Tab
 ```
@@ -1715,6 +1900,10 @@ types
 storage
 
     #Cat.nflip |-> Nflip
+
+if
+
+    VGas > 300000
     
 returns Nflip
 ```
@@ -1732,6 +1921,10 @@ storage
 
     #Cat.live |-> Live
 
+if
+
+    VGas > 300000
+
 returns Live
 ```
 
@@ -1747,6 +1940,10 @@ types
 storage
 
     #Cat.vat |-> Vat
+
+if
+
+    VGas > 300000
     
 returns Vat
 ```
@@ -1763,6 +1960,10 @@ types
 storage
 
     #Cat.pit |-> Pit
+
+if
+
+    VGas > 300000
     
 returns Pit
 ```
@@ -1779,6 +1980,10 @@ types
 storage
 
     #Cat.vow |-> Vow
+
+if
+
+    VGas > 300000
     
 returns Vow
 ```
@@ -1792,16 +1997,21 @@ interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> _ => 1
+    #Cat.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 
 behaviour deny of Cat
 interface deny(address guy)
@@ -1809,15 +2019,20 @@ interface deny(address guy)
 types
 
     Can : uint256
+    Could : uint256
 
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> _ => 0
+    #Cat.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting contract addresses
@@ -1840,6 +2055,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting liquidation data
@@ -1862,6 +2081,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### setting liquidator address
@@ -1882,6 +2105,10 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 ```
 
 #### marking a position for liquidation
@@ -1963,6 +2190,10 @@ iff in range uint256
     Sin_era + Art_u * Rate
     Sin + Art_u * Rate
 
+if
+
+    VGas > 300000
+
 returns Nflip + 1
 ```
 
@@ -2020,6 +2251,10 @@ iff in range uint256
     Ink * wad
     wad * Chop
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1
 ```
 
@@ -2042,6 +2277,10 @@ storage
 
     #GemJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
 ```
 
@@ -2057,6 +2296,10 @@ types
 storage
 
     #GemJoin.ilk |-> Ilk
+
+if
+
+    VGas > 300000
     
 returns Ilk
 ```
@@ -2073,6 +2316,10 @@ types
 storage
 
     #GemJoin.gem |-> Gem
+
+if
+
+    VGas > 300000
     
 returns Gem
 ```
@@ -2123,6 +2370,10 @@ iff in range uint256
     Rad + #Ray * wad
     Bal_guy - wad
     Bal_adapter + wad
+
+if
+
+    VGas > 300000
 ```
 
 #### withdrawing from the system
@@ -2169,6 +2420,10 @@ iff in range uint256
     Rad - #Ray * wad
     Bal_guy + wad
     Bal_adapter - wad
+
+if
+
+    VGas > 300000
 ```
 
 # ETHJoin
@@ -2190,6 +2445,10 @@ storage
 
     #ETHJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
 ```
 
@@ -2205,6 +2464,10 @@ types
 storage
 
     #ETHJoin.ilk |-> Ilk
+
+if
+
+    VGas > 300000
     
 returns Ilk
 ```
@@ -2248,6 +2511,10 @@ iff in range uint256
 
     Rad + #Ray * VALUE
     Bal_adapter + VALUE
+
+if
+
+    VGas > 300000
 ```
 
 #### withdrawing from the system
@@ -2287,6 +2554,10 @@ iff in range uint256
 
     Rad - #Ray * wad
     Bal_guy + wad
+
+if
+
+    VGas > 300000
 ```
 
 # DaiJoin
@@ -2308,6 +2579,10 @@ storage
 
     #DaiJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
 ```
 
@@ -2323,6 +2598,10 @@ types
 storage
 
     #DaiJoin.dai |-> Dai
+
+if
+
+    VGas > 300000
     
 returns Dai
 ```
@@ -2371,6 +2650,10 @@ iff in range uint256
     Rad + #Ray * wad
     Bal_guy - wad
     Bal_adapter + wad
+
+if
+
+    VGas > 300000
 ```
 
 #### withdrawing from the system
@@ -2415,4 +2698,8 @@ iff in range uint256
     Rad - #Ray * wad
     Bal_guy + wad
     Bal_adapter - wad
+
+if
+
+    VGas > 300000
 ```

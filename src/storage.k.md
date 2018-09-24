@@ -19,26 +19,6 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^I
   andBool #rangeUInt(48, Y)
 ```
 
-### Arithmetic functions
-
-```
-syntax Int ::= "#Wad" [function]
-// -----------------------------
-rule #Wad => 1000000000000000000
-
-syntax Int ::= "#Ray" [function]
-// -----------------------------
-rule #Ray => 1000000000000000000000000000
-```
-
-We leave these symbolic for now:
-
-```
-syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
-
-syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(smt_rpow)]
-```
-
 ### Vat
 
 ```

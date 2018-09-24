@@ -8,3 +8,7 @@ types
 storage
 
     #Drip.repo |-> Repo => (#if what == 12345 #then data #else Repo #fi)
+
+if
+
+    VGas > 300000

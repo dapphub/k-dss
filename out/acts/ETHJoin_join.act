@@ -31,3 +31,7 @@ iff in range uint256
 
     Rad + #Ray * VALUE
     Bal_adapter + VALUE
+
+if
+
+    VGas > 300000

@@ -41,3 +41,7 @@ iff in range uint256
 iff in range int256
 
     #Ray * wad
+
+if
+
+    VGas > 300000

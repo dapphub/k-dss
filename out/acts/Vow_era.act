@@ -1,4 +1,8 @@
 behaviour era of Vow
 interface era()
 
+if
+
+    VGas > 300000
+
 returns TIME

@@ -1,4 +1,6 @@
-SRC_DIR = dss
+DAPP_DIR = dss
+SRC_DIR = src
+SRCS = $(addprefix $(SRC_DIR)/, dss.md lemmas.k.md storage.k.md prelude.smt2.md)
 OUT_DIR = out
 TMPDIR = $(CURDIR)/tmp
 
@@ -27,12 +29,12 @@ all: dapp spec
 
 dapp:
 	git submodule update --init --recursive
-	cd $(SRC_DIR) && dapp build && cd ../
+	cd $(DAPP_DIR) && dapp build && cd ../
 
 dapp-clean:
-	cd $(SRC_DIR) && dapp clean && cd ../
+	cd $(DAPP_DIR) && dapp clean && cd ../
 
-$(OUT_DIR)/spec.timestamp:
+$(OUT_DIR)/spec.timestamp: $(SRCS)
 	mkdir -p $(OUT_DIR) && touch $@
 	klab build
 

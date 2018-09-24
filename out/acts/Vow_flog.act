@@ -15,3 +15,7 @@ iff in range uint256
 
     Sin - Sin_era_
     Woe + Sin_era_
+
+if
+
+    VGas > 300000

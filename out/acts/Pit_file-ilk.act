@@ -16,3 +16,7 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000

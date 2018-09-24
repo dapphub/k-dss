@@ -33,7 +33,7 @@ rule
         <memoryUsed> 0 => _ </memoryUsed>
         <previousGas> _ => _ </previousGas>
         <static> false </static>
-        <callDepth> CALL_DEPTH => _ </callDepth>
+        <callDepth> VCallDepth => _ </callDepth>
       </callState>
       <substate>
         <selfDestruct> VSelfDestruct </selfDestruct>
@@ -73,7 +73,8 @@ rule
                       #Drip.repo |-> (Repo)
                       #Drip.ilks(ABI_ilk).vow |-> (Vow)
                       #Drip.ilks(ABI_ilk).tax |-> (Tax)
-                      #Drip.ilks(ABI_ilk).rho |-> (Rho => TIME) </storage>
+                      #Drip.ilks(ABI_ilk).rho |-> (Rho => TIME)
+                      _:Map </storage>
           <nonce> _ </nonce>
         </account>
         <account>
@@ -91,7 +92,8 @@ rule
                       #Vat.urns(ABI_ilk, CALLER_ID).art |-> (Art_u => Art_u +Int ABI_dart)
                       #Vat.gem(ABI_ilk, CALLER_ID) |-> (Gem_u => Gem_u -Int Take *Int ABI_dink)
                       #Vat.dai(CALLER_ID) |-> (Dai => Dai +Int (Rate +Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate)) *Int ABI_dart)
-                      #Vat.debt |-> (Debt => Debt +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate) +Int (Rate +Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate)) *Int ABI_dart) </storage>
+                      #Vat.debt |-> (Debt => Debt +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate) +Int (Rate +Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate)) *Int ABI_dart)
+                      _:Map </storage>
           <nonce> _ </nonce>
         </account>
         <account>
@@ -115,9 +117,13 @@ rule
       <messages> _ </messages>
     </network>
   </ethereum>
-requires 0 <=Int ACCT_ID    andBool ACCT_ID    <Int (2 ^Int 160)
-andBool 0 <=Int CALLER_ID  andBool CALLER_ID  <Int (2 ^Int 160)
-andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
+requires #rangeAddress(ACCT_ID)
+andBool #notPrecompileAddress(ACCT_ID)
+andBool #rangeAddress(CALLER_ID)
+andBool #rangeAddress(ORIGIN_ID)
+andBool #rangeUInt(48, TIME)
+andBool #rangeUInt(256, BAL)
+andBool VCallDepth <Int 1024
   andBool #rangeBytes(32, ABI_ilk)
   andBool #rangeSInt(256, ABI_dink)
   andBool #rangeSInt(256, ABI_dart)
@@ -144,7 +150,12 @@ andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
   andBool #rangeUInt(256, Debt)
   andBool #rangeUInt(256, Drip_balance)
   andBool #rangeUInt(256, Vat_balance)
+  andBool #notPrecompileAddress(Drip)
+  andBool ACCT_ID =/=Int Drip
+  andBool #notPrecompileAddress(Vat)
+  andBool ACCT_ID =/=Int Vat
   andBool CALLER_ID =/=Int Vow
+  andBool VGas >Int 300000
   andBool Can_drip ==Int 1
   andBool Can_frob ==Int 1
   andBool TIME >=Int Rho

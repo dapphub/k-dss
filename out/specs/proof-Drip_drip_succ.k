@@ -33,7 +33,7 @@ rule
         <memoryUsed> 0 => _ </memoryUsed>
         <previousGas> _ => _ </previousGas>
         <static> false </static>
-        <callDepth> CALL_DEPTH => _ </callDepth>
+        <callDepth> VCallDepth => _ </callDepth>
       </callState>
       <substate>
         <selfDestruct> VSelfDestruct </selfDestruct>
@@ -72,7 +72,8 @@ rule
                       #Vat.ilks(ABI_ilk).rate |-> (Rate => Rate +Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
                       #Vat.ilks(ABI_ilk).Art |-> (Art_i)
                       #Vat.dai(Vow) |-> (Dai => Dai +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
-                      #Vat.debt |-> (Debt => Debt +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate)) </storage>
+                      #Vat.debt |-> (Debt => Debt +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
+                      _:Map </storage>
           <nonce> _ </nonce>
         </account>
         <account>
@@ -95,9 +96,13 @@ rule
       <messages> _ </messages>
     </network>
   </ethereum>
-requires 0 <=Int ACCT_ID    andBool ACCT_ID    <Int (2 ^Int 160)
-andBool 0 <=Int CALLER_ID  andBool CALLER_ID  <Int (2 ^Int 160)
-andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
+requires #rangeAddress(ACCT_ID)
+andBool #notPrecompileAddress(ACCT_ID)
+andBool #rangeAddress(CALLER_ID)
+andBool #rangeAddress(ORIGIN_ID)
+andBool #rangeUInt(48, TIME)
+andBool #rangeUInt(256, BAL)
+andBool VCallDepth <Int 1024
   andBool #rangeBytes(32, ABI_ilk)
   andBool #rangeAddress(Vat)
   andBool #rangeUInt(256, Repo)
@@ -110,6 +115,9 @@ andBool 0 <=Int ORIGIN_ID  andBool ORIGIN_ID  <Int (2 ^Int 160)
   andBool #rangeUInt(256, Dai)
   andBool #rangeUInt(256, Debt)
   andBool #rangeUInt(256, Vat_balance)
+  andBool #notPrecompileAddress(Vat)
+  andBool ACCT_ID =/=Int Vat
+  andBool VGas >Int 300000
   andBool Can ==Int 1
   andBool TIME >=Int Rho
   andBool #rangeUInt(256, Repo +Int Tax)

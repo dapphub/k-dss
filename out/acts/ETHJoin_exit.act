@@ -31,3 +31,7 @@ iff in range uint256
 
     Rad - #Ray * wad
     Bal_guy + wad
+
+if
+
+    VGas > 300000

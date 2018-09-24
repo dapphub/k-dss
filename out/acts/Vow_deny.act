@@ -3,13 +3,18 @@ interface deny(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> _ => 0
+    #Vow.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000

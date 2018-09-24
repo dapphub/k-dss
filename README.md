@@ -73,84 +73,84 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | fold      | x    | x    | x    | x    |
 | toll      | x    | x    | x    | x    |
 | Drip      +------+------+------+------|
-| wards     | ?    | -    | ?    | -    |
-| ilks      | ?    | -    | ?    | -    |
-| vat       | ?    | -    | ?    | -    |
-| repo      | ?    | -    | ?    | -    |
-| era       | ?    | -    | ?    | -    |
-| rely      | ?    | ?    | ?    | ?    |
-| deny      | ?    | ?    | ?    | ?    |
-| init      | ?    | ?    | ?    | ?    |
-| file      | ?    | ?    | ?    | ?    |
-| file-repo | ?    | -    | ?    | -    |
-| file-vow  | ?    | -    | ?    | -    |
-| drip      | ?    | ?    | ?    | ?    |
+| wards     |      | -    |      | -    |
+| ilks      |      | -    |      | -    |
+| vat       |      | -    |      | -    |
+| repo      |      | -    |      | -    |
+| era       |      | -    |      | -    |
+| rely      |      |      |      |      |
+| deny      |      |      |      |      |
+| init      |      |      |      |      |
+| file      |      |      |      |      |
+| file-repo |      | -    |      | -    |
+| file-vow  |      | -    |      | -    |
+| drip      |      |      |      |      |
 | Pit       +------+------+------+------|
-| wards     | ?    | -    | ?    | -    |
-| ilks      | ?    | -    | ?    | -    |
-| live      | ?    | -    | ?    | -    |
-| Line      | ?    | -    | ?    | -    |
-| vat       | ?    | -    | ?    | -    |
-| drip      | ?    | -    | ?    | -    |
-| rely      | ?    | ?    | ?    | ?    |
-| deny      | ?    | ?    | ?    | ?    |
-| file-drip | ?    | ?    | ?    | ?    |
-| file-ilk  | ?    | ?    | ?    | ?    |
-| file-Line | ?    | ?    | ?    | ?    |
-| frob      | ?    | ?    |      |      |
+| wards     |  x   | -    |      | -    |
+| ilks      |      | -    |      | -    |
+| live      |  x   | -    |      | -    |
+| Line      |  x   | -    |      | -    |
+| vat       |  x   | -    |      | -    |
+| drip      |  x   | -    |      | -    |
+| rely      |      |  x   |      |      |
+| deny      |      |  x   |      |      |
+| file-drip |  o   |  x   |      |      |
+| file-ilk  |  x   |  x   |      |      |
+| file-Line |  x   |  x   |      |      |
+| frob      |      |      |      |      |
 | Vow       +------+------+------+------|
-| wards     | ?    | -    | ?    | -    |
-| sin       | x    | -    | ?    | -    |
-| Sin       | x    | -    | ?    | -    |
-| Woe       | x    | -    | ?    | -    |
-| Ash       | x    | -    | ?    | -    |
+| wards     | x    | -    |      | -    |
+| sin       | x    | -    |      | -    |
+| Sin       | x    | -    |      | -    |
+| Woe       | x    | -    |      | -    |
+| Ash       | x    | -    |      | -    |
 | wait      | x    | -    |      | -    |
-| sump      | ?    | -    | ?    | -    |
-| bump      | ?    | -    | ?    | -    |
-| hump      | x    | -    | ?    | -    |
+| sump      | x    | -    |      | -    |
+| bump      | x    | -    |      | -    |
+| hump      | x    | -    |      | -    |
 | era       | x    | -    |      | -    |
-| Awe       | x    | x    | ?    |      |
-| Joy       | x    | o    |      |      |
-| rely      | ?    | ?    | ?    | ?    |
-| deny      | ?    | ?    | ?    | ?    |
-| file-risk | o    | ?    | ?    |      |
-| file-addr | o    | ?    | ?    |      |
-| heal      | o    | o    |      |      |
-| kiss      | o    | o    |      |      |
+| Awe       | x    | x    |      |      |
+| Joy       | x    | -    |      |      |
+| rely      |      | x    |      |      |
+| deny      |      | x    |      |      |
+| file-data | o    | x    |      |      |
+| file-addr |      | x    |      |      |
+| heal      |      | o    |      |      |
+| kiss      |      | o    |      |      |
 | fess      | x    | x    |      |      |
-| flog      | x    | x    |      |      |
+| flog      | o    | o    |      |      |
 | flop      |      |      |      |      |
 | flap      |      |      |      |      |
 | Cat       +------+------+------+------|
-| wards     | ?    | -    | ?    | -    |
-| ilks      | ?    | -    | ?    | -    |
-| flips     | ?    | -    | ?    | -    |
-| nflip     | ?    | -    | ?    | -    |
-| live      | ?    | -    | ?    | -    |
-| vat       | ?    | -    | ?    | -    |
-| pit       | ?    | -    | ?    | -    |
-| vow       | ?    | -    | ?    | -    |
-| rely      | ?    | ?    | ?    | ?    |
-| deny      | ?    | ?    | ?    | ?    |
-| file-addr | ?    | ?    | ?    |      |
-| file      | ?    | ?    | ?    |      |
-| file-flip | ?    | ?    | ?    |      |
+| wards     |      | -    |      | -    |
+| ilks      |      | -    |      | -    |
+| flips     |      | -    |      | -    |
+| nflip     |      | -    |      | -    |
+| live      |      | -    |      | -    |
+| vat       |      | -    |      | -    |
+| pit       |      | -    |      | -    |
+| vow       |      | -    |      | -    |
+| rely      |      |      |      |      |
+| deny      |      |      |      |      |
+| file-addr |      |      |      |      |
+| file      |      |      |      |      |
+| file-flip |      |      |      |      |
 | bite      |      |      |      |      |
 | flip      |      |      |      |      |
 | GemJoin   +------+------+------+------|
-| vat       | ?    | -    | ?    | -    |
-| ilk       | ?    | -    | ?    | -    |
-| gem       | ?    | -    | ?    | -    |
+| vat       |      | -    |      | -    |
+| ilk       |      | -    |      | -    |
+| gem       |      | -    |      | -    |
 | join      |      |      |      |      |
 | exit      |      |      |      |      |
 | ETHJoin   +------+------+------+------|
-| vat       | ?    | -    | ?    | -    |
-| ilk       | ?    | -    | ?    | -    |
+| vat       |      | -    |      | -    |
+| ilk       |      | -    |      | -    |
 | join      |      |      |      |      |
 | exit      |      |      |      |      |
 | DaiJoin   +------+------+------+------|
-| vat       | ?    | -    | ?    | -    |
-| dai       | ?    | -    | ?    | -    |
+| vat       |      | -    |      | -    |
+| dai       |      | -    |      | -    |
 | join      |      |      |      |      |
 | exit      |      |      |      |      |
 -----------------------------------------

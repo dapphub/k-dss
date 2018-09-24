@@ -14,6 +14,7 @@ if
     VGas > 300000
 
 returns Can
+
 behaviour ilks of Vat
 interface ilks(bytes32 ilk)
 
@@ -36,6 +37,7 @@ if
     VGas > 300000
 
 returns Take : Rate : Ink_i : Art_i
+
 behaviour urns of Vat
 interface urns(bytes32 ilk, bytes32 urn)
 
@@ -54,6 +56,7 @@ if
     VGas > 300000
 
 returns Ink_u : Art_u
+
 behaviour gem of Vat
 interface gem(bytes32 ilk, bytes32 urn)
 
@@ -70,6 +73,7 @@ if
     VGas > 300000
 
 returns Gem
+
 behaviour dai of Vat
 interface dai(bytes32 lad)
 
@@ -86,6 +90,7 @@ if
     VGas > 300000
 
 returns Rad
+
 behaviour sin of Vat
 interface sin(bytes32 lad)
 
@@ -102,6 +107,7 @@ if
     VGas > 300000
 
 returns Rad
+
 behaviour debt of Vat
 interface debt()
 
@@ -118,6 +124,7 @@ if
     VGas > 300000
 
 returns Debt
+
 behaviour vice of Vat
 interface vice()
 
@@ -134,6 +141,7 @@ if
     VGas > 300000
 
 returns Vice
+
 behaviour rely of Vat
 interface rely(address guy)
 
@@ -154,6 +162,7 @@ iff
 if
 
     VGas > 300000
+
 behaviour deny of Vat
 interface deny(address guy)
 
@@ -174,6 +183,7 @@ iff
 if
 
     VGas > 300000
+
 behaviour init of Vat
 interface init(bytes32 ilk)
 
@@ -198,6 +208,7 @@ iff
 if
 
     VGas > 300000
+
 behaviour slip of Vat
 interface slip(bytes32 ilk, bytes32 guy, int256 wad)
 
@@ -222,6 +233,7 @@ iff in range uint256
 if
 
     VGas > 300000
+
 behaviour flux of Vat
 interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
 
@@ -249,6 +261,7 @@ iff in range uint256
 if
 
     VGas > 300000
+
 behaviour move of Vat
 interface move(bytes32 src, bytes32 dst, int256 rad)
 
@@ -276,6 +289,7 @@ iff in range uint256
 if
 
     VGas > 300000
+
 behaviour tune of Vat
 interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
@@ -329,6 +343,7 @@ iff in range int256
 if
 
     VGas > 300000
+
 behaviour grab of Vat
 interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
@@ -382,6 +397,7 @@ iff in range int256
 if
 
     VGas > 300000
+
 behaviour heal of Vat
 interface heal(bytes32 u, bytes32 v, int256 rad)
 
@@ -415,6 +431,7 @@ iff in range uint256
 if
 
     VGas > 300000
+
 behaviour fold of Vat
 interface fold(bytes32 i, bytes32 u, int256 rate)
 
@@ -452,6 +469,7 @@ iff in range int256
 if
 
     VGas > 300000
+
 behaviour toll of Vat
 interface toll(bytes32 i, bytes32 u, int256 take) 
 
@@ -486,6 +504,7 @@ iff in range int256
 if
 
     VGas > 300000
+
 behaviour wards of Drip
 interface wards(address guy)
 
@@ -497,7 +516,12 @@ storage
 
     #Drip.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
+
 behaviour ilks of Drip
 interface ilks(bytes32 ilk)
 
@@ -513,11 +537,21 @@ storage
     #Drip.ilks(ilk).tax |-> Tax
     #Drip.ilks(ilk).rho |-> Rho
 
+if
+
+    VGas > 300000
+
 returns Vow : Tax : Rho
+
 behaviour era of Drip
 interface era()
 
+if
+
+    VGas > 300000
+
 returns TIME
+
 behaviour rely of Drip
 interface rely(address guy)
 
@@ -535,6 +569,10 @@ iff
 
     Can == 1
 
+if
+
+    VGas > 300000
+
 behaviour deny of Drip
 interface deny(address guy)
 
@@ -551,6 +589,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour init of Drip
 interface init(bytes32 ilk)
 
@@ -567,6 +610,11 @@ storage
 iff
 
     Tax == 0
+
+if
+
+    VGas > 300000
+
 behaviour file of Drip
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
@@ -581,6 +629,11 @@ storage
 iff
 
     #Drip.ilks(ilk).rho == TIME
+
+if
+
+    VGas > 300000
+
 behaviour file-repo of Drip
 interface file(bytes32 what, uint256 data)
 
@@ -591,6 +644,11 @@ types
 storage
 
     #Drip.repo |-> Repo => (#if what == 12345 #then data #else Repo #fi)
+
+if
+
+    VGas > 300000
+
 behaviour file-vow of Drip
 interface file(bytes32 what, bytes32 data)
 
@@ -601,6 +659,11 @@ types
 storage
 
     #Drip.vow |-> Vow => (#if what == 12345 #then data #else Vow #fi)
+
+if
+
+    VGas > 300000
+
 behaviour drip of Drip
 interface drip(bytes32 ilk)
 
@@ -652,6 +715,11 @@ iff in range int256
     Art_i
     #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+
+if
+
+    VGas > 300000
+
 behaviour wards of Pit
 interface wards(address guy)
 
@@ -663,7 +731,12 @@ storage
 
     #Pit.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
+
 behaviour ilks of Pit
 interface ilks(bytes32 ilk)
 
@@ -677,9 +750,14 @@ storage
     #Pit.ilks(ilk).spot |-> Spot_i
     #Pit.ilks(ilk).line |-> Line_i
 
+if
+
+    VGas > 300000
+
 returns
 
     Spot_i : Line_i
+
 behaviour live of Pit
 interface live()
 
@@ -691,7 +769,12 @@ storage
 
     #Pit.live |-> Live
 
+if
+
+    VGas > 300000
+
 returns Live
+
 behaviour vat of Pit
 interface vat()
 
@@ -703,7 +786,12 @@ storage
 
     #Pit.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
+
 behaviour Line of Pit
 interface Line()
 
@@ -715,7 +803,12 @@ storage
 
     #Pit.Line |-> Line
 
+if
+
+    VGas > 300000
+
 returns Line
+
 behaviour drip of Pit
 interface drip()
 
@@ -727,38 +820,54 @@ storage
 
     #Pit.drip |-> Drip
 
+if
+
+    VGas > 300000
+
 returns Drip
+
 behaviour rely of Pit
 interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> _ => 1
+    #Pit.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 
 behaviour deny of Pit
 interface deny(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> _ => 0
+    #Pit.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-drip of Pit
 interface file(bytes32 what, address who)
 
@@ -775,6 +884,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-ilk of Pit
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
@@ -793,6 +907,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-Line of Pit
 interface file(bytes32 what, uint256 data)
 
@@ -809,6 +928,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour frob of Pit
 interface frob(bytes32 ilk, int256 dink, int256 dart)
 
@@ -912,6 +1036,8 @@ iff in range int256
 if
 
     CALLER_ID =/= Vow
+    VGas > 300000
+
 behaviour wards of Vow
 interface wards(address guy)
 
@@ -923,13 +1049,23 @@ storage
 
     #Vow.wards(guy) |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
+
 behaviour era of Vow
 interface era()
 
+if
+
+    VGas > 300000
+
 returns TIME
+
 behaviour sin of Vow
-interface sin(uint48 era_)
+interface sin(uint48 era)
 
 types
 
@@ -937,9 +1073,14 @@ types
 
 storage
 
-    #Vow.sin(era_) |-> Sin_era
+    #Vow.sin(era) |-> Sin_era
+
+if
+
+    VGas > 300000
 
 returns Sin_era
+
 behaviour Sin of Vow
 interface Sin()
 
@@ -951,7 +1092,12 @@ storage
 
     #Vow.Sin |-> Sin
 
+if
+
+    VGas > 300000
+
 returns Sin
+
 behaviour Woe of Vow
 interface Woe()
 
@@ -963,7 +1109,12 @@ storage
 
     #Vow.Woe |-> Woe
 
+if
+
+    VGas > 300000
+
 returns Woe
+
 behaviour Ash of Vow
 interface Ash()
 
@@ -975,7 +1126,12 @@ storage
 
     #Vow.Ash |-> Ash
 
+if
+
+    VGas > 300000
+
 returns Ash
+
 behaviour wait of Vow
 interface wait()
 
@@ -987,7 +1143,12 @@ storage
 
     #Vow.wait |-> Wait
 
+if
+
+    VGas > 300000
+
 returns Wait
+
 behaviour sump of Vow
 interface sump()
 
@@ -999,7 +1160,12 @@ storage
 
     #Vow.sump |-> Sump
 
+if
+
+    VGas > 300000
+
 returns Sump
+
 behaviour bump of Vow
 interface bump()
 
@@ -1011,7 +1177,12 @@ storage
 
     #Vow.bump |-> Bump
 
+if
+
+    VGas > 300000
+
 returns Bump
+
 behaviour hump of Vow
 interface hump()
 
@@ -1023,7 +1194,12 @@ storage
 
     #Vow.hump |-> Hump
 
+if
+
+    VGas > 300000
+
 returns Hump
+
 behaviour Awe of Vow
 interface Awe()
 
@@ -1044,7 +1220,12 @@ iff in range uint256
     Sin + Woe
     Sin + Woe + Ash
 
+if
+
+    VGas > 300000
+
 returns Sin + Woe + Ash
+
 behaviour Joy of Vow
 interface Joy()
 
@@ -1061,38 +1242,54 @@ storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
 
+if
+
+    VGas > 300000
+
 returns Dai / 1000000000000000000000000000
+
 behaviour rely of Vow
 interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> _ => 1
+    #Vow.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 
 behaviour deny of Vow
 interface deny(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> _ => 0
+    #Vow.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-data of Vow
 interface file(bytes32 what, uint256 data)
 
@@ -1113,6 +1310,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-addr of Vow
 interface file(bytes32 what, address addr)
 
@@ -1133,6 +1335,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour heal of Vow
 interface heal(uint256 wad)
 
@@ -1176,6 +1383,11 @@ iff in range uint256
 iff in range int256
 
     #Ray * wad
+
+if
+
+    VGas > 300000
+
 behaviour kiss of Vow
 interface kiss(uint256 wad)
 
@@ -1219,6 +1431,11 @@ iff in range uint256
 iff in range int256
 
     #Ray * wad
+
+if
+
+    VGas > 300000
+
 behaviour fess of Vow
 interface fess(uint256 tab)
 
@@ -1242,6 +1459,11 @@ iff in range uint256
 
     Sin_era + tab
     Sin + tab
+
+if
+
+    VGas > 300000
+
 behaviour flog of Vow
 interface flog(uint48 era_)
 
@@ -1259,6 +1481,11 @@ iff in range uint256
 
     Sin - Sin_era_
     Woe + Sin_era_
+
+if
+
+    VGas > 300000
+
 behaviour flop of Vow
 interface flop()
 
@@ -1306,7 +1533,12 @@ iff in range uint256
     Woe - Sump
     Ash + Sump
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1
+
 behaviour flap of Vow
 interface flap()
 
@@ -1357,7 +1589,12 @@ iff in range uint256
     Sin + Woe + Ash + Bump
     Sin + Woe + Ash + Bump + Hump
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1
+
 behaviour wards of Cat
 interface wards(address guy)
 
@@ -1370,6 +1607,7 @@ storage
     #Cat.wards(guy) |-> Can
 
 returns Can
+
 behaviour ilks of Cat
 interface ilks(bytes32 ilk)
 
@@ -1385,7 +1623,12 @@ storage
     #Cat.ilks(ilk).flip |-> Flip
     #Cat.ilks(ilk).lump |-> Lump
 
+if
+
+    VGas > 300000
+
 returns Chop : Flip : Lump
+
 behaviour flips of Cat
 interface flips(uint256 n)
 
@@ -1403,7 +1646,12 @@ storage
     #Cat.flips(n).ink |-> Ink
     #Cat.flips(n).tab |-> Tab
 
+if
+
+    VGas > 300000
+
 returns Ilk : Urn : Ink : Tab
+
 behaviour nflip of Cat
 interface nflip()
 
@@ -1415,7 +1663,12 @@ storage
 
     #Cat.nflip |-> Nflip
 
+if
+
+    VGas > 300000
+
 returns Nflip
+
 behaviour live of Cat
 interface live()
 
@@ -1427,7 +1680,12 @@ storage
 
     #Cat.live |-> Live
 
+if
+
+    VGas > 300000
+
 returns Live
+
 behaviour vat of Cat
 interface vat()
 
@@ -1439,7 +1697,12 @@ storage
 
     #Cat.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
+
 behaviour pit of Cat
 interface pit()
 
@@ -1451,7 +1714,12 @@ storage
 
     #Cat.pit |-> Pit
 
+if
+
+    VGas > 300000
+
 returns Pit
+
 behaviour vow of Cat
 interface vow()
 
@@ -1463,22 +1731,32 @@ storage
 
     #Cat.vow |-> Vow
 
+if
+
+    VGas > 300000
+
 returns Vow
+
 behaviour rely of Cat
 interface rely(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
+    Could : uint256
 
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> _ => 1
+    #Cat.wards(guy)       |-> Could => 1
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
 
 behaviour deny of Cat
 interface deny(address guy)
@@ -1486,15 +1764,21 @@ interface deny(address guy)
 types
 
     Can : uint256
+    Could : uint256
 
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> _ => 0
+    #Cat.wards(guy)       |-> Could => 0
 
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-addr of Cat
 interface file(bytes32 what, address data)
 
@@ -1513,6 +1797,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file of Cat
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
@@ -1531,6 +1820,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address flip)
 
@@ -1547,6 +1841,11 @@ storage
 iff
 
     Can == 1
+
+if
+
+    VGas > 300000
+
 behaviour bite of Cat
 interface bite(bytes32 ilk, address urn)
 
@@ -1624,7 +1923,12 @@ iff in range uint256
     Sin_era + Art_u * Rate
     Sin + Art_u * Rate
 
+if
+
+    VGas > 300000
+
 returns Nflip + 1
+
 behaviour flip of Cat
 interface flip(uint256 n, uint256 wad)
 
@@ -1677,7 +1981,12 @@ iff in range uint256
     Ink * wad
     wad * Chop
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1
+
 behaviour vat of GemJoin
 interface vat()
 
@@ -1689,7 +1998,12 @@ storage
 
     #GemJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
+
 behaviour ilk of GemJoin
 interface ilk()
 
@@ -1701,7 +2015,12 @@ storage
 
     #GemJoin.ilk |-> Ilk
 
+if
+
+    VGas > 300000
+
 returns Ilk
+
 behaviour gem of GemJoin
 interface gem()
 
@@ -1713,7 +2032,12 @@ storage
 
     #GemJoin.gem |-> Gem
 
+if
+
+    VGas > 300000
+
 returns Gem
+
 behaviour join of GemJoin
 interface join(bytes32 urn, uint256 wad)
 
@@ -1756,6 +2080,11 @@ iff in range uint256
     Rad + #Ray * wad
     Bal_guy - wad
     Bal_adapter + wad
+
+if
+
+    VGas > 300000
+
 behaviour exit of GemJoin
 interface exit(bytes32 urn, uint256 wad)
 
@@ -1798,6 +2127,11 @@ iff in range uint256
     Rad - #Ray * wad
     Bal_guy + wad
     Bal_adapter - wad
+
+if
+
+    VGas > 300000
+
 behaviour vat of ETHJoin
 interface vat()
 
@@ -1809,7 +2143,12 @@ storage
 
     #ETHJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
+
 behaviour ilk of ETHJoin
 interface ilk()
 
@@ -1821,7 +2160,12 @@ storage
 
     #ETHJoin.ilk |-> Ilk
 
+if
+
+    VGas > 300000
+
 returns Ilk
+
 behaviour join of ETHJoin
 interface join(bytes32 urn)
 
@@ -1855,6 +2199,11 @@ iff in range uint256
 
     Rad + #Ray * VALUE
     Bal_adapter + VALUE
+
+if
+
+    VGas > 300000
+
 behaviour exit of ETHJoin
 interface exit(bytes32, uint256 wad)
 
@@ -1888,6 +2237,11 @@ iff in range uint256
 
     Rad - #Ray * wad
     Bal_guy + wad
+
+if
+
+    VGas > 300000
+
 behaviour vat of DaiJoin
 interface vat()
 
@@ -1899,7 +2253,12 @@ storage
 
     #DaiJoin.vat |-> Vat
 
+if
+
+    VGas > 300000
+
 returns Vat
+
 behaviour dai of DaiJoin
 interface dai()
 
@@ -1911,7 +2270,12 @@ storage
 
     #DaiJoin.dai |-> Dai
 
+if
+
+    VGas > 300000
+
 returns Dai
+
 behaviour join of DaiJoin
 interface join(bytes32 urn, uint256 wad)
 
@@ -1952,6 +2316,11 @@ iff in range uint256
     Rad + #Ray * wad
     Bal_guy - wad
     Bal_adapter + wad
+
+if
+
+    VGas > 300000
+
 behaviour exit of DaiJoin
 interface exit(bytes32 urn, uint256 wad)
 
@@ -1992,3 +2361,7 @@ iff in range uint256
     Rad - #Ray * wad
     Bal_guy + wad
     Bal_adapter - wad
+
+if
+
+    VGas > 300000

@@ -14,4 +14,8 @@ storage Vat
 
     #Vat.dai(ACCT_ID) |-> Dai
 
+if
+
+    VGas > 300000
+
 returns Dai / 1000000000000000000000000000

@@ -12,3 +12,7 @@ storage
 iff
 
     #Drip.ilks(ilk).rho == TIME
+
+if
+
+    VGas > 300000

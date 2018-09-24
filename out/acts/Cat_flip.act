@@ -50,4 +50,8 @@ iff in range uint256
     Ink * wad
     wad * Chop
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1

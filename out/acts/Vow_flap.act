@@ -48,4 +48,8 @@ iff in range uint256
     Sin + Woe + Ash + Bump
     Sin + Woe + Ash + Bump + Hump
 
+if
+
+    VGas > 300000
+
 returns Kicks + 1
