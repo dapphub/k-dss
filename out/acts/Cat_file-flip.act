@@ -9,7 +9,7 @@ types
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).flip   |-> Flip => (#if what == 12345 #then flip #else Flip #fi)
+    #Cat.ilks(ilk).flip   |-> Flip => (#if what == #string2Word("flip") #then flip #else Flip #fi)
 
 iff
 

@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Drip.ilks(ilk).tax |-> Tax => (#if what == 12345 #then data #else Tax #fi)
+    #Drip.ilks(ilk).tax |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
 
 iff
 

@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Drip.vow |-> Vow => (#if what == 12345 #then data #else Vow #fi)
+    #Drip.vow |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 if
 

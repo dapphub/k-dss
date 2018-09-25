@@ -9,7 +9,7 @@ types
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.drip             |-> Drip => (#if (what == 123) #then Drip #else who #fi)
+    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then Drip #else who #fi)
 
 iff
 

@@ -10,8 +10,8 @@ types
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.ilks(ilk).spot   |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then data #else Spot_i #fi
-    #Pit.ilks(ilk).line   |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then data #else Line_i #fi
+    #Pit.ilks(ilk).spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
+    #Pit.ilks(ilk).line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
 
 iff
 

@@ -721,7 +721,7 @@ types
 
 storage
 
-    #Drip.ilks(ilk).tax |-> Tax => (#if what == 12345 #then data #else Tax #fi)
+    #Drip.ilks(ilk).tax |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
 
 iff
 
@@ -743,7 +743,7 @@ types
 
 storage
 
-    #Drip.repo |-> Repo => (#if what == 12345 #then data #else Repo #fi)
+    #Drip.repo |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
 
 if
 
@@ -761,7 +761,7 @@ types
 
 storage
 
-    #Drip.vow |-> Vow => (#if what == 12345 #then data #else Vow #fi)
+    #Drip.vow |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 if
 
@@ -1018,7 +1018,7 @@ types
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.drip             |-> Drip => (#if (what == 123) #then Drip #else who #fi)
+    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then Drip #else who #fi)
 
 iff
 
@@ -1043,8 +1043,8 @@ types
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.ilks(ilk).spot   |-> Spot_i => #if (what == 52214633679529120849900229181229190823836184335472955378023737308807130251264) #then data #else Spot_i #fi
-    #Pit.ilks(ilk).line   |-> Line_i => #if (what == 49036068503847260643156492622631591831542628249327578363867825373603329736704) #then data #else Line_i #fi
+    #Pit.ilks(ilk).spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
+    #Pit.ilks(ilk).line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
 
 iff
 
@@ -1068,7 +1068,7 @@ types
 storage
 
     #Pit.wards(CALLER_ID) |-> Can
-    #Pit.Line             |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then data #else Line #fi
+    #Pit.Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
 
 iff
 
@@ -1504,9 +1504,10 @@ types
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.sump             |-> Sump => (#if what == 12345 #then data #else Sump #fi)
-    #Vow.bump             |-> Bump => (#if what == 12345 #then data #else Bump #fi)
-    #Vow.hump             |-> Hump => (#if what == 67890 #then data #else Hump #fi)
+    #Vow.wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
+    #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
+    #Vow.hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
     
 iff
 
@@ -1532,9 +1533,9 @@ types
 storage
 
     #Vow.wards(CALLER_ID) |-> Can
-    #Vow.cow              |-> Cow => (#if what == 12345 #then addr #else Cow #fi)
-    #Vow.row              |-> Row => (#if what == 67890 #then addr #else Row #fi)
-    #Vow.vat              |-> Vat => (#if what == 54321 #then addr #else Vat #fi)
+    #Vow.cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
+    #Vow.row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
+    #Vow.vat              |-> Vat => (#if what == #string2Word("vat") #then addr #else Vat #fi)
     
 iff
 
@@ -2044,8 +2045,8 @@ types
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.pit              |-> Pit => (#if what == 12345 #then data #else Pit #fi)
-    #Cat.vow              |-> Vow => (#if what == 54321 #then data #else Vow #fi)
+    #Cat.pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
+    #Cat.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
     
 iff
 
@@ -2070,8 +2071,8 @@ types
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).chop   |-> Chop => (#if what == 12345 #then data #else Chop #fi)
-    #Cat.ilks(ilk).lump   |-> Lump => (#if what == 54321 #then data #else Lump #fi)
+    #Cat.ilks(ilk).chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
+    #Cat.ilks(ilk).lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
     
 iff
 
@@ -2095,7 +2096,7 @@ types
 storage
 
     #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).flip   |-> Flip => (#if what == 12345 #then flip #else Flip #fi)
+    #Cat.ilks(ilk).flip   |-> Flip => (#if what == #string2Word("flip") #then flip #else Flip #fi)
     
 iff
 

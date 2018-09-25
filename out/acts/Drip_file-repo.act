@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Drip.repo |-> Repo => (#if what == 12345 #then data #else Repo #fi)
+    #Drip.repo |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
 
 if
 
