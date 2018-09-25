@@ -1496,6 +1496,7 @@ interface file(bytes32 what, uint256 data)
 types
 
     Can  : uint256
+    Wait : uint256
     Sump : uint256
     Bump : uint256
     Hump : uint256
@@ -1551,7 +1552,6 @@ interface heal(uint256 wad)
 
 types
 
-    Can  : uint256
     Vat  : address VatLike
     Woe  : uint256
     Dai  : uint256
@@ -1566,7 +1566,6 @@ storage
 
 storage Vat
     
-    #Vat.wards(ACCT_ID) |-> Can
     #Vat.dai(ACCT_ID)   |-> Dai  => Dai - #Ray * wad
     #Vat.sin(ACCT_ID)   |-> Sin  => Sin - #Ray * wad
     #Vat.vice           |-> Vice => Vice - #Ray * wad
@@ -1574,7 +1573,6 @@ storage Vat
 
 iff
 
-    Can == 1
     wad <= Dai / 1000000000000000000000000000
     wad <= Woe
 
@@ -1601,7 +1599,6 @@ interface kiss(uint256 wad)
 
 types
 
-    Can  : uint256
     Vat  : address VatLike
     Woe  : uint256
     Dai  : uint256
@@ -1612,19 +1609,17 @@ types
 storage
 
     #Vow.vat |-> Vat
-    #Vow.Ash |-> Ash - wad
+    #Vow.Ash |-> Ash => Ash - wad
 
 storage Vat
 
-    #Vat.wards(ACCT_ID) |-> Can
-    #Vat.dai(ACCT_ID) |-> Dai  => Dai - #Ray * wad
-    #Vat.sin(ACCT_ID) |-> Sin  => Sin - #Ray * wad
-    #Vat.vice         |-> Vice => Vice - #Ray * wad
-    #Vat.debt         |-> Debt => Debt - #Ray * wad
+    #Vat.dai(ACCT_ID)   |-> Dai  => Dai - #Ray * wad
+    #Vat.sin(ACCT_ID)   |-> Sin  => Sin - #Ray * wad
+    #Vat.vice           |-> Vice => Vice - #Ray * wad
+    #Vat.debt           |-> Debt => Debt - #Ray * wad
 
 iff
 
-    Can == 1
     wad <= Dai / 1000000000000000000000000000
     wad <= Ash
 

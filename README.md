@@ -92,8 +92,8 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | Line      |  x   | -    |      | -    |
 | vat       |  x   | -    |      | -    |
 | drip      |  x   | -    |      | -    |
-| rely      |      |  x   |      |      |
-| deny      |      |  x   |      |      |
+| rely      |  x   |  x   |      |      |
+| deny      |  x   |  x   |      |      |
 | file-drip |  o   |  x   |      |      |
 | file-ilk  |  x   |  x   |      |      |
 | file-Line |  x   |  x   |      |      |
@@ -111,16 +111,16 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | era       | x    | -    |      | -    |
 | Awe       | x    | x    |      |      |
 | Joy       | x    | -    |      |      |
-| rely      |      | x    |      |      |
-| deny      |      | x    |      |      |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
 | file-data | o    | x    |      |      |
-| file-addr |      | x    |      |      |
-| heal      |      | o    |      |      |
-| kiss      |      | o    |      |      |
+| file-addr | o    | x    |      |      |
+| heal      | x    | o    |      |      |
+| kiss      | x    | o    |      |      |
 | fess      | x    | x    |      |      |
 | flog      | o    | o    |      |      |
-| flop      |      |      |      |      |
-| flap      |      |      |      |      |
+| flop      | o    | o    |      |      |
+| flap      | o    | o    |      |      |
 | Cat       +------+------+------+------|
 | wards     |      | -    |      | -    |
 | ilks      |      | -    |      | -    |
