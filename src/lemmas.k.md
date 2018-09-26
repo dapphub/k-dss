@@ -12,7 +12,7 @@ rule #rightPadInt(N, X) => #rightPadInt(N, 128 *Int X)
 
 syntax Int ::= "#string2Word" "(" String ")" [function]
 // ----------------------------------------------------
-rule #string2Word(S) => #rightPadInt(32, String2Int(S))
+rule #string2Word(S) => #rightPadInt(32, Bytes2Int(String2Bytes(S), BE, Unsigned))
 ```
 
 ### special fixed-point arithmetic
