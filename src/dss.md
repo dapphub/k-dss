@@ -17,7 +17,7 @@ types
 
 storage
 
-    #Vat.wards(guy) |-> Can
+    #Vat.wards[guy] |-> Can
 
 if
 
@@ -40,10 +40,10 @@ types
 
 storage
 
-    #Vat.ilks(ilk).take |-> Take
-    #Vat.ilks(ilk).rate |-> Rate
-    #Vat.ilks(ilk).Ink  |-> Ink_i
-    #Vat.ilks(ilk).Art  |-> Art_i
+    #Vat.ilks[ilk].take |-> Take
+    #Vat.ilks[ilk].rate |-> Rate
+    #Vat.ilks[ilk].Ink  |-> Ink_i
+    #Vat.ilks[ilk].Art  |-> Art_i
 
 if
 
@@ -64,8 +64,8 @@ types
 
 storage
 
-    #Vat.urns(ilk, urn).ink |-> Ink_u
-    #Vat.urns(ilk, urn).art |-> Art_u
+    #Vat.urns[ilk][urn].ink |-> Ink_u
+    #Vat.urns[ilk][urn].art |-> Art_u
 
 if
 
@@ -85,7 +85,7 @@ types
 
 storage
 
-    #Vat.gem(ilk, urn) |-> Gem
+    #Vat.gem[ilk][urn] |-> Gem
 
 if
 
@@ -105,7 +105,7 @@ types
 
 storage
 
-    #Vat.dai(lad) |-> Rad
+    #Vat.dai[lad] |-> Rad
 
 if
 
@@ -125,7 +125,7 @@ types
 
 storage
 
-    #Vat.sin(lad) |-> Rad
+    #Vat.sin[lad] |-> Rad
 
 if
 
@@ -187,8 +187,8 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.wards(guy)       |-> Could => 1
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.wards[guy]       |-> Could => 1
 
 iff
 
@@ -210,8 +210,8 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.wards(guy)       |-> Could => 0
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.wards[guy]       |-> Could => 0
 
 iff
 
@@ -235,9 +235,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(ilk).rate   |-> Rate => 1000000000000000000000000000
-    #Vat.ilks(ilk).take   |-> Take => 1000000000000000000000000000
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
+    #Vat.ilks[ilk].take   |-> Take => 1000000000000000000000000000
 
 iff
 
@@ -262,8 +262,8 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.gem(ilk, guy)    |-> Gem => Gem + wad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.gem[ilk][guy]    |-> Gem => Gem + wad
 
 iff
 
@@ -291,9 +291,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.gem(ilk, src)    |-> Gem_src => Gem_src - wad
-    #Vat.gem(ilk, dst)    |-> Gem_dst => Gem_dst + wad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.gem[ilk][src]    |-> Gem_src => Gem_src - wad
+    #Vat.gem[ilk][dst]    |-> Gem_dst => Gem_dst + wad
 
 iff
 
@@ -322,9 +322,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.dai(src)         |-> Dai_src => Dai_src - rad
-    #Vat.dai(dst)         |-> Dai_dst => Dai_dst + rad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.dai[src]         |-> Dai_src => Dai_src - rad
+    #Vat.dai[dst]         |-> Dai_dst => Dai_dst + rad
 
 iff
 
@@ -361,15 +361,15 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).take     |-> Take
-    #Vat.ilks(i).rate     |-> Rate
-    #Vat.urns(i, u).ink   |-> Ink_u  => Ink_u + dink
-    #Vat.urns(i, u).art   |-> Art_u  => Art_u + dart
-    #Vat.ilks(i).Ink      |-> Ink_i  => Ink_i + dink
-    #Vat.ilks(i).Art      |-> Art_i  => Art_i + dart
-    #Vat.gem(i, v)        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.dai(w)           |-> Dai_w  => Dai_w + (Rate * dart)
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].take     |-> Take
+    #Vat.ilks[i].rate     |-> Rate
+    #Vat.urns[i][u].ink   |-> Ink_u  => Ink_u + dink
+    #Vat.urns[i][u].art   |-> Art_u  => Art_u + dart
+    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i + dink
+    #Vat.ilks[i].Art      |-> Art_i  => Art_i + dart
+    #Vat.gem[i][v]        |-> Gem_v  => Gem_v - (Take * dink)
+    #Vat.dai[w]           |-> Dai_w  => Dai_w + (Rate * dart)
     #Vat.debt             |-> Debt   => Debt + (Rate * dart)
 
 iff
@@ -419,15 +419,15 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).take     |-> Take
-    #Vat.ilks(i).rate     |-> Rate
-    #Vat.urns(i, u).ink   |-> Ink_u  => Ink_u + dink
-    #Vat.urns(i, u).art   |-> Art_u  => Art_u + dart
-    #Vat.ilks(i).Ink      |-> Ink_i  => Ink_i + dink
-    #Vat.ilks(i).Art      |-> Art_i  => Art_i + dart
-    #Vat.gem(i, v)        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.sin(w)           |-> Sin_w  => Sin_w - (Rate * dart)
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].take     |-> Take
+    #Vat.ilks[i].rate     |-> Rate
+    #Vat.urns[i][u].ink   |-> Ink_u  => Ink_u + dink
+    #Vat.urns[i][u].art   |-> Art_u  => Art_u + dart
+    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i + dink
+    #Vat.ilks[i].Art      |-> Art_i  => Art_i + dart
+    #Vat.gem[i][v]        |-> Gem_v  => Gem_v - (Take * dink)
+    #Vat.sin[w]           |-> Sin_w  => Sin_w - (Rate * dart)
     #Vat.vice             |-> Vice   => Vice - (Rate * dart)
 
 iff
@@ -471,9 +471,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.dai(v)           |-> Dai_v => Dai_v - rad
-    #Vat.sin(u)           |-> Sin_u => Sin_u - rad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.dai[v]           |-> Dai_v => Dai_v - rad
+    #Vat.sin[u]           |-> Sin_u => Sin_u - rad
     #Vat.debt             |-> Debt  => Debt - rad
     #Vat.vice             |-> Vice  => Vice - rad
 
@@ -508,10 +508,10 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).rate     |-> Rate => Rate + rate
-    #Vat.ilks(i).Art      |-> Art_i
-    #Vat.dai(u)           |-> Dai  => Dai + Art_i * rate
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].rate     |-> Rate => Rate + rate
+    #Vat.ilks[i].Art      |-> Art_i
+    #Vat.dai[u]           |-> Dai  => Dai + Art_i * rate
     #Vat.debt             |-> Debt => Debt + Art_i * rate
 
 iff
@@ -548,10 +548,10 @@ types
     
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).take     |-> Take => Take + take
-    #Vat.ilks(i).Ink      |-> Ink
-    #Vat.gem(i, u)        |-> Gem => Gem - (Ink * take)
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].take     |-> Take => Take + take
+    #Vat.ilks[i].Ink      |-> Ink
+    #Vat.gem[i][u]        |-> Gem => Gem - (Ink * take)
 
 iff
 
@@ -590,7 +590,7 @@ types
 
 storage
 
-    #Drip.wards(guy) |-> Can
+    #Drip.wards[guy] |-> Can
 
 if
 
@@ -613,9 +613,9 @@ types
 
 storage
 
-    #Drip.ilks(ilk).vow |-> Vow
-    #Drip.ilks(ilk).tax |-> Tax
-    #Drip.ilks(ilk).rho |-> Rho
+    #Drip.ilks[ilk].vow |-> Vow
+    #Drip.ilks[ilk].tax |-> Tax
+    #Drip.ilks[ilk].rho |-> Rho
 
 if
 
@@ -651,8 +651,8 @@ types
 
 storage
 
-    #Drip.wards(CALLER_ID) |-> Can
-    #Drip.wards(guy)       |-> Could => 1
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.wards[guy]       |-> Could => 1
 
 iff
 
@@ -672,8 +672,8 @@ types
 
 storage
 
-    #Drip.wards(CALLER_ID) |-> Can
-    #Drip.wards(guy)       |-> Could => 0
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.wards[guy]       |-> Could => 0
 
 iff
 
@@ -697,8 +697,8 @@ types
 
 storage
 
-    #Drip.ilks(ilk).tax |-> Tax => #Ray
-    #Drip.ilks(ilk).rho |-> Rho => TIME
+    #Drip.ilks[ilk].tax |-> Tax => #Ray
+    #Drip.ilks[ilk].rho |-> Rho => TIME
 
 iff
 
@@ -721,11 +721,11 @@ types
 
 storage
 
-    #Drip.ilks(ilk).tax |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    #Drip.ilks[ilk].tax |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
 
 iff
 
-    #Drip.ilks(ilk).rho == TIME
+    #Drip.ilks[ilk].rho == TIME
 
 if
 
@@ -790,16 +790,16 @@ storage
 
     #Drip.vat           |-> Vat
     #Drip.repo          |-> Repo
-    #Drip.ilks(ilk).vow |-> Vow
-    #Drip.ilks(ilk).tax |-> Tax
-    #Drip.ilks(ilk).rho |-> Rho => TIME
+    #Drip.ilks[ilk].vow |-> Vow
+    #Drip.ilks[ilk].tax |-> Tax
+    #Drip.ilks[ilk].rho |-> Rho => TIME
 
 storage Vat
 
-    #Vat.wards(ADDRESS) |-> Can
-    #Vat.ilks(ilk).rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.ilks(ilk).Art  |-> Art_i
-    #Vat.dai(Vow)       |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.ilks[ilk].Art  |-> Art_i
+    #Vat.dai[Vow]       |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
@@ -844,7 +844,7 @@ types
 
 storage
 
-    #Pit.wards(guy) |-> Can
+    #Pit.wards[guy] |-> Can
 
 if
 
@@ -866,8 +866,8 @@ types
 
 storage
 
-    #Pit.ilks(ilk).spot |-> Spot_i
-    #Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks[ilk].spot |-> Spot_i
+    #Pit.ilks[ilk].line |-> Line_i
 
 if
 
@@ -972,8 +972,8 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> Could => 1
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.wards[guy]       |-> Could => 1
 
 iff
 
@@ -993,8 +993,8 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> Could => 0
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.wards[guy]       |-> Could => 0
 
 iff
 
@@ -1017,7 +1017,7 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.wards[CALLER_ID] |-> Can
     #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then Drip #else who #fi)
 
 iff
@@ -1042,9 +1042,9 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.ilks(ilk).spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
-    #Pit.ilks(ilk).line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.ilks[ilk].spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
+    #Pit.ilks[ilk].line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
 
 iff
 
@@ -1067,7 +1067,7 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.wards[CALLER_ID] |-> Can
     #Pit.Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
 
 iff
@@ -1115,31 +1115,31 @@ storage
     #Pit.live           |-> Live
     #Pit.Line           |-> Line
     #Pit.vat            |-> Vat
-    #Pit.ilks(ilk).line |-> Line_i
-    #Pit.ilks(ilk).spot |-> Spot
+    #Pit.ilks[ilk].line |-> Line_i
+    #Pit.ilks[ilk].spot |-> Spot
 
 storage Drip
 
     #Drip.vat           |-> Vat
     #Drip.repo          |-> Repo
-    #Drip.ilks(ilk).vow |-> Vow
-    #Drip.ilks(ilk).tax |-> Tax
-    #Drip.ilks(ilk).rho |-> Rho => TIME
+    #Drip.ilks[ilk].vow |-> Vow
+    #Drip.ilks[ilk].tax |-> Tax
+    #Drip.ilks[ilk].rho |-> Rho => TIME
 
 storage Vat
 
 
     #Vat.wards(Drip)              |-> Can_drip
-    #Vat.ilks(ilk).rate           |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.ilks[ilk].rate           |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.dai(Vow)                 |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.wards(ACCT_ID)           |-> Can_frob
-    #Vat.ilks(ilk).take           |-> Take
-    #Vat.ilks(ilk).Ink            |-> Ink_i  => Ink_i + dink
-    #Vat.ilks(ilk).Art            |-> Art_i  => Art_i + dart
-    #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u  => Ink_u + dink
-    #Vat.urns(ilk, CALLER_ID).art |-> Art_u  => Art_u + dart
-    #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - Take * dink
-    #Vat.dai(CALLER_ID)           |-> Dai    => Dai + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
+    #Vat.wards[ACCT_ID]           |-> Can_frob
+    #Vat.ilks[ilk].take           |-> Take
+    #Vat.ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
+    #Vat.ilks[ilk].Art            |-> Art_i  => Art_i + dart
+    #Vat.urns[ilk][CALLER_ID].ink |-> Ink_u  => Ink_u + dink
+    #Vat.urns[ilk][CALLER_ID].art |-> Art_u  => Art_u + dart
+    #Vat.gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
+    #Vat.dai[CALLER_ID]           |-> Dai    => Dai + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
     #Vat.debt                     |-> Debt   => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate) + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
 
 iff
@@ -1205,7 +1205,7 @@ types
 
 storage
 
-    #Vow.wards(guy) |-> Can
+    #Vow.wards[guy] |-> Can
 
 if
 
@@ -1237,7 +1237,7 @@ types
     
 storage
 
-    #Vow.sin(era) |-> Sin_era
+    #Vow.sin[era] |-> Sin_era
 
 if
 
@@ -1431,7 +1431,7 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai
+    #Vat.dai[ACCT_ID] |-> Dai
 
 if
 
@@ -1454,8 +1454,8 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> Could => 1
+    #Vow.wards[CALLER_ID] |-> Can
+    #Vow.wards[guy]       |-> Could => 1
 
 iff
 
@@ -1475,8 +1475,8 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> Could => 0
+    #Vow.wards[CALLER_ID] |-> Can
+    #Vow.wards[guy]       |-> Could => 0
 
 iff
 
@@ -1503,7 +1503,7 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.wards[CALLER_ID] |-> Can
     #Vow.wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
     #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
@@ -1532,7 +1532,7 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.wards[CALLER_ID] |-> Can
     #Vow.cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
     #Vow.row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
     #Vow.vat              |-> Vat => (#if what == #string2Word("vat") #then addr #else Vat #fi)
@@ -1567,8 +1567,8 @@ storage
 
 storage Vat
     
-    #Vat.dai(ACCT_ID)   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin(ACCT_ID)   |-> Sin  => Sin - #Ray * wad
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
     #Vat.vice           |-> Vice => Vice - #Ray * wad
     #Vat.debt           |-> Debt => Debt - #Ray * wad
 
@@ -1614,8 +1614,8 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID)   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin(ACCT_ID)   |-> Sin  => Sin - #Ray * wad
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
     #Vat.vice           |-> Vice => Vice - #Ray * wad
     #Vat.debt           |-> Debt => Debt - #Ray * wad
 
@@ -1654,8 +1654,8 @@ types
     
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
-    #Vow.sin(TIME)        |-> Sin_era => Sin_era + tab
+    #Vow.wards[CALLER_ID] |-> Can
+    #Vow.sin[TIME]        |-> Sin_era => Sin_era + tab
     #Vow.Sin              |-> Sin     => Sin + tab
 
 iff
@@ -1724,17 +1724,17 @@ storage
     
 storage Row
 
-    #Flopper.wards(ACCT_ID)              |-> Can
+    #Flopper.wards[ACCT_ID]              |-> Can
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flopper.kicks                       |-> Kicks => Kicks + 1
-    #Flopper.bids(Kicks + 1).bid         |-> _ => Sump
-    #Flopper.bids(Kicks + 1).lot         |-> _ => pow256 - 1
-    #Flopper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flopper.bids(Kicks + 1).vow         |-> _ => ACCT_ID
+    #Flopper.bids[Kicks + 1].bid         |-> _ => Sump
+    #Flopper.bids[Kicks + 1].lot         |-> _ => pow256 - 1
+    #Flopper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flopper.bids[Kicks + 1].vow         |-> _ => ACCT_ID
     
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai
+    #Vat.dai[ACCT_ID] |-> Dai
     
 iff
 
@@ -1784,14 +1784,14 @@ storage Cow
 
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks => Kicks + 1
-    #Flapper.bids(Kicks + 1).bid         |-> _ => 0
-    #Flapper.bids(Kicks + 1).lot         |-> _ => Bump
-    #Flapper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids(Kicks + 1).gal         |-> _ => ACCT_ID
+    #Flapper.bids[Kicks + 1].bid         |-> _ => 0
+    #Flapper.bids[Kicks + 1].lot         |-> _ => Bump
+    #Flapper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids[Kicks + 1].gal         |-> _ => ACCT_ID
     
 storage Vat
 
-    #Vat.dai(ACCT_ID)   |-> Dai
+    #Vat.dai[ACCT_ID]   |-> Dai
 
 iff
 
@@ -1829,7 +1829,7 @@ types
 
 storage
 
-    #Cat.wards(guy) |-> Can
+    #Cat.wards[guy] |-> Can
 
 returns Can
 ```
@@ -1847,9 +1847,9 @@ types
     
 storage
 
-    #Cat.ilks(ilk).chop |-> Chop
-    #Cat.ilks(ilk).flip |-> Flip
-    #Cat.ilks(ilk).lump |-> Lump
+    #Cat.ilks[ilk].chop |-> Chop
+    #Cat.ilks[ilk].flip |-> Flip
+    #Cat.ilks[ilk].lump |-> Lump
 
 if
 
@@ -1872,10 +1872,10 @@ types
     
 storage
 
-    #Cat.flips(n).ilk |-> Ilk
-    #Cat.flips(n).urn |-> Urn
-    #Cat.flips(n).ink |-> Ink
-    #Cat.flips(n).tab |-> Tab
+    #Cat.flips[n].ilk |-> Ilk
+    #Cat.flips[n].urn |-> Urn
+    #Cat.flips[n].ink |-> Ink
+    #Cat.flips[n].tab |-> Tab
 
 if
 
@@ -1998,8 +1998,8 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> Could => 1
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.wards[guy]       |-> Could => 1
 
 iff
 
@@ -2019,8 +2019,8 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> Could => 0
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.wards[guy]       |-> Could => 0
 
 iff
 
@@ -2044,7 +2044,7 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
+    #Cat.wards[CALLER_ID] |-> Can
     #Cat.pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
     #Cat.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
     
@@ -2070,9 +2070,9 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
-    #Cat.ilks(ilk).lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
+    #Cat.ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
     
 iff
 
@@ -2095,8 +2095,8 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).flip   |-> Flip => (#if what == #string2Word("flip") #then flip #else Flip #fi)
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then flip #else Flip #fi)
     
 iff
 
@@ -2136,32 +2136,32 @@ storage
     #Cat.pit              |-> Pit
     #Cat.vow              |-> Vow
     #Cat.nflip            |-> Nflip => Nflip + 1
-    #Cat.flips(Nflip).ilk |-> 0     => ilk
-    #Cat.flips(Nflip).urn |-> 0     => urn
-    #Cat.flips(Nflip).ink |-> 0     => Ink_u
-    #Cat.flips(Nflip).tab |-> 0     => Rate * Art_u
+    #Cat.flips[Nflip].ilk |-> 0     => ilk
+    #Cat.flips[Nflip].urn |-> 0     => urn
+    #Cat.flips[Nflip].ink |-> 0     => Ink_u
+    #Cat.flips[Nflip].tab |-> 0     => Rate * Art_u
     #Cat.live             |-> Live
 
 storage Vat
 
-    #Vat.wards(ADDRESS)     |-> Can
-    #Vat.ilks(ilk).take     |-> Take
-    #Vat.ilks(ilk).rate     |-> Rate
-    #Vat.urns(ilk, urn).ink |-> Ink_u => 0
-    #Vat.urns(ilk, urn).art |-> Art_u => 0
-    #Vat.ilks(ilk).Ink      |-> Ink_i => Ink_i - Ink_u
-    #Vat.ilks(ilk).Art      |-> Art_i => Art_i - Art_u
-    #Vat.gem(ilk, ADDRESS)  |-> Gem_v => Gem_v + Take * Ink_u
-    #Vat.sin(Vow)           |-> Sin_w => Sin_w - Rate * Art_u
+    #Vat.wards[ACCT_ID]     |-> Can
+    #Vat.ilks[ilk].take     |-> Take
+    #Vat.ilks[ilk].rate     |-> Rate
+    #Vat.urns[ilk][urn].ink |-> Ink_u => 0
+    #Vat.urns[ilk][urn].art |-> Art_u => 0
+    #Vat.ilks[ilk].Ink      |-> Ink_i => Ink_i - Ink_u
+    #Vat.ilks[ilk].Art      |-> Art_i => Art_i - Art_u
+    #Vat.gem[ilk][ACCT_ID]  |-> Gem_v => Gem_v + Take * Ink_u
+    #Vat.sin[Vow]           |-> Sin_w => Sin_w - Rate * Art_u
     #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
 
 storage Pit
 
-    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks[ilk].spot |-> Spot_i
     
 storage Vow
 
-    #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate
+    #Vow.sin[TIME] |-> Sin_era => Sin_era + Art_u * Rate
     #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
     
 iff
@@ -2215,26 +2215,26 @@ types
 
 storage
 
-    #Cat.flips(Nflip).ilk |-> Ilk
-    #Cat.flips(Nflip).urn |-> Urn
-    #Cat.flips(Nflip).ink |-> Ink => Ink - (Ink * wad) / Tab
-    #Cat.flips(Nflip).tab |-> Tab => Tab - wad
-    #Cat.ilks(ilk).flip   |-> Flip
-    #Cat.ilks(ilk).chop   |-> Chop
-    #Cat.ilks(ilk).lump   |-> Lump
-    #Cat.vow              |-> Vow
-    #Cat.live             |-> Live
+    #Cat.flips[n].ilk   |-> Ilk
+    #Cat.flips[n].urn   |-> Urn
+    #Cat.flips[n].ink   |-> Ink => Ink - (Ink * wad) / Tab
+    #Cat.flips[n].tab   |-> Tab => Tab - wad
+    #Cat.ilks[ilk].flip |-> Flip
+    #Cat.ilks[ilk].chop |-> Chop
+    #Cat.ilks[ilk].lump |-> Lump
+    #Cat.vow            |-> Vow
+    #Cat.live           |-> Live
     
 storage Flip
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flipper.kicks                       |-> Kicks => Kicks + 1
-    #Flipper.bids(Kicks + 1).bid         |-> _ => 0
-    #Flipper.bids(Kicks + 1).lot         |-> _ => (Ink * wad) / Tab
-    #Flipper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flipper.bids(Kicks + 1).urn         |-> _ => Urn
-    #Flipper.bids(Kicks + 1).gal         |-> _ => Vow
-    #Flipper.bids(Kicks + 1).tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.bids[Kicks + 1].bid         |-> _ => 0
+    #Flipper.bids[Kicks + 1].lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[Kicks + 1].urn         |-> _ => Urn
+    #Flipper.bids[Kicks + 1].gal         |-> _ => Vow
+    #Flipper.bids[Kicks + 1].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
@@ -2345,13 +2345,13 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad + #Ray * wad
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * wad
     
 storage Gem
 
-    #GemLike.balances(CALLER_ID) |-> Bal_guy     => Bal_guy - wad
-    #GemLike.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter + wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
     
 iff
 
@@ -2395,13 +2395,13 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 storage Gem
 
-    #GemLike.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
-    #GemLike.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy + wad
+    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
@@ -2492,8 +2492,8 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad + #Ray * VALUE
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
 
 iff
 
@@ -2535,8 +2535,8 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 iff
 
@@ -2625,13 +2625,13 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.dai(Ilk, urn, CALLER_ID) |-> Rad => Rad + #Ray * wad
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
     
 storage Dai
 
-    #GemLike.balances(CALLER_ID) |-> Bal_guy     => Bal_guy - wad
-    #GemLike.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter + wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
     
 iff
 
@@ -2673,13 +2673,13 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 storage Dai
 
-    #GemLike.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
-    #GemLike.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy + wad
+    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 

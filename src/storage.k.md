@@ -22,45 +22,45 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^I
 ### Vat
 
 ```
-syntax Int ::= "#Vat.wards" "(" Int ")" [function]
+syntax Int ::= "#Vat.wards" "[" Int "]" [function]
 // -----------------------------------------------
-rule #Vat.wards(A) => #hashedLocation("Solidity", 0, A)
+rule #Vat.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Vat.ilks" "(" Int ").take" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].take" [function]
 // ----------------------------------------------------
-rule #Vat.ilks(Ilk).take => #hashedLocation("Solidity", 1, Ilk) +Int 0
+rule #Vat.ilks[Ilk].take => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
-syntax Int ::= "#Vat.ilks" "(" Int ").rate" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].rate" [function]
 // ----------------------------------------------------
-rule #Vat.ilks(Ilk).rate => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Vat.ilks[Ilk].rate => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
-syntax Int ::= "#Vat.ilks" "(" Int ").Ink" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].Ink" [function]
 // -----------------------------------------------
-rule #Vat.ilks(Ilk).Ink => #hashedLocation("Solidity", 1, Ilk) +Int 2
+rule #Vat.ilks[Ilk].Ink => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
-syntax Int ::= "#Vat.ilks" "(" Int ").Art" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].Art" [function]
 // -----------------------------------------------
-rule #Vat.ilks(Ilk).Art => #hashedLocation("Solidity", 1, Ilk) +Int 3
+rule #Vat.ilks[Ilk].Art => #hashedLocation("Solidity", 1, Ilk) +Int 3
 
-syntax Int ::= "#Vat.urns" "(" Int "," Int ").ink" [function]
+syntax Int ::= "#Vat.urns" "[" Int "][" Int "].ink" [function]
 // ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).ink => #hashedLocation("Solidity", 2, Ilk Guy)
+rule #Vat.urns[Ilk][Guy].ink => #hashedLocation("Solidity", 2, Ilk Guy)
 
-syntax Int ::= "#Vat.urns" "(" Int "," Int ").art" [function]
+syntax Int ::= "#Vat.urns" "[" Int "][" Int "].art" [function]
 // ----------------------------------------------------------
-rule #Vat.urns(Ilk, Guy).art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
+rule #Vat.urns[Ilk][Guy].art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
 
-syntax Int ::= "#Vat.gem" "(" Int "," Int ")" [function]
+syntax Int ::= "#Vat.gem" "[" Int "][" Int "]" [function]
 // ---------------------------------------------
-rule #Vat.gem(Ilk, Guy) => #hashedLocation("Solidity", 3, Ilk Guy)
+rule #Vat.gem[Ilk][Guy] => #hashedLocation("Solidity", 3, Ilk Guy)
 
-syntax Int ::= "#Vat.dai" "(" Int ")" [function]
+syntax Int ::= "#Vat.dai" "[" Int "]" [function]
 // ---------------------------------------------
-rule #Vat.dai(A) => #hashedLocation("Solidity", 4, A)
+rule #Vat.dai[A] => #hashedLocation("Solidity", 4, A)
 
-syntax Int ::= "#Vat.sin" "(" Int ")" [function]
+syntax Int ::= "#Vat.sin" "[" Int "]" [function]
 // ---------------------------------------------
-rule #Vat.sin(A) => #hashedLocation("Solidity", 5, A)
+rule #Vat.sin[A] => #hashedLocation("Solidity", 5, A)
 
 syntax Int ::= "#Vat.debt" [function]
 // ---------------------------------
@@ -73,17 +73,17 @@ rule #Vat.vice => 7
 
 ### Drip
 ```
-syntax Int ::= "#Drip.wards" "(" Int ")" [function]
+syntax Int ::= "#Drip.wards" "[" Int "]" [function]
 // -----------------------------------------------
-rule #Drip.wards(A) => #hashedLocation("Solidity", 0, A)
+rule #Drip.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Drip.ilks" "(" Int ").tax" [function]
+syntax Int ::= "#Drip.ilks" "[" Int "].tax" [function]
 // ----------------------------------------------------
-rule #Drip.ilks(Ilk).tax => #hashedLocation("Solidity", 1, Ilk) +Int 0
+rule #Drip.ilks[Ilk].tax => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
-syntax Int ::= "#Drip.ilks" "(" Int ").rho" [function]
+syntax Int ::= "#Drip.ilks" "[" Int "].rho" [function]
 // ----------------------------------------------------
-rule #Drip.ilks(Ilk).rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Drip.ilks[Ilk].rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Drip.vat" [function]
 // ----------------------------------
@@ -101,17 +101,17 @@ rule #Drip.repo => 4
 ### Pit
 
 ```
-syntax Int ::= "#Pit.wards" "(" Int ")" [function]
+syntax Int ::= "#Pit.wards" "[" Int "]" [function]
 // ---------------------------------
-rule #Pit.wards(A) => #hashedLocation("Solidity", 0, A)
+rule #Pit.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Pit.ilks" "(" Int ").spot" [function]
+syntax Int ::= "#Pit.ilks" "[" Int "].spot" [function]
 // ---------------------------------------------------
-rule #Pit.ilks(Ilk).spot => #hashedLocation("Solidity", 1, Ilk) +Int 0
+rule #Pit.ilks[Ilk].spot => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
-syntax Int ::= "#Pit.ilks" "(" Int ").line" [function]
+syntax Int ::= "#Pit.ilks" "[" Int "].line" [function]
 // ---------------------------------------------------
-rule #Pit.ilks(Ilk).line => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Pit.ilks[Ilk].line => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Pit.live" [function]
 // ----------------------------------
@@ -133,9 +133,9 @@ rule #Pit.drip => 5
 ### Vow
 
 ```
-syntax Int ::= "#Vow.wards" "(" Int ")" [function]
+syntax Int ::= "#Vow.wards" "[" Int "]" [function]
 // ---------------------------------
-rule #Vow.wards(A) => #hashedLocation("Solidity", 0, A)
+rule #Vow.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Vow.vat" [function]
 // ---------------------------------
@@ -149,9 +149,9 @@ syntax Int ::= "#Vow.row" [function]
 // ---------------------------------
 rule #Vow.row => 3
 
-syntax Int ::= "#Vow.sin" "(" Int ")" [function]
+syntax Int ::= "#Vow.sin" "[" Int "]" [function]
 // ---------------------------------------------
-rule #Vow.sin(A) => #hashedLocation("Solidity", 4, A)
+rule #Vow.sin[A] => #hashedLocation("Solidity", 4, A)
 
 syntax Int ::= "#Vow.Sin" [function]
 // ---------------------------------
@@ -185,37 +185,37 @@ rule #Vow.hump => 11
 ### Cat
 
 ```
-syntax Int ::= "#Cat.wards" "(" Int ")" [function]
+syntax Int ::= "#Cat.wards" "[" Int "]" [function]
 // ---------------------------------
-rule #Cat.wards(A) => #hashedLocation("Solidity", 0, A)
+rule #Cat.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Cat.ilks" "(" Int ").chop" [function]
+syntax Int ::= "#Cat.ilks" "[" Int "].chop" [function]
 // ---------------------------------------------------
-rule #Cat.ilks(Ilk).chop => #hashedLocation("Solidity", 1, Ilk) +Int 0
+rule #Cat.ilks[Ilk].chop => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
-syntax Int ::= "#Cat.ilks" "(" Int ").flip" [function]
+syntax Int ::= "#Cat.ilks" "[" Int "].flip" [function]
 // ---------------------------------------------------
-rule #Cat.ilks(Ilk).flip => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Cat.ilks[Ilk].flip => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
-syntax Int ::= "#Cat.ilks" "(" Int ").lump" [function]
+syntax Int ::= "#Cat.ilks" "[" Int "].lump" [function]
 // ---------------------------------------------------
-rule #Cat.ilks(Ilk).lump => #hashedLocation("Solidity", 1, Ilk) +Int 2
+rule #Cat.ilks[Ilk].lump => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
-syntax Int ::= "#Cat.Flips" "(" Int ").ilk" [function]
+syntax Int ::= "#Cat.Flips" "[" Int "].ilk" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).ilk => #hashedLocation("Solidity", 2, N) +Int 0
+rule #Cat.Flips[N].ilk => #hashedLocation("Solidity", 2, N) +Int 0
 
-syntax Int ::= "#Cat.Flips" "(" Int ").urn" [function]
+syntax Int ::= "#Cat.Flips" "[" Int "].urn" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).urn => #hashedLocation("Solidity", 2, N) +Int 1
+rule #Cat.Flips[N].urn => #hashedLocation("Solidity", 2, N) +Int 1
 
-syntax Int ::= "#Cat.Flips" "(" Int ").ink" [function]
+syntax Int ::= "#Cat.Flips" "[" Int "].ink" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).ink => #hashedLocation("Solidity", 2, N) +Int 2
+rule #Cat.Flips[N].ink => #hashedLocation("Solidity", 2, N) +Int 2
 
-syntax Int ::= "#Cat.Flips" "(" Int ").tab" [function]
+syntax Int ::= "#Cat.Flips" "[" Int "].tab" [function]
 // ---------------------------------------------------
-rule #Cat.Flips(N).tab => #hashedLocation("Solidity", 2, N) +Int 3
+rule #Cat.Flips[N].tab => #hashedLocation("Solidity", 2, N) +Int 3
 
 syntax Int ::= "#Cat.nflip" [function]
 // -----------------------------------
@@ -290,30 +290,30 @@ syntax Int ::= "#Flipper.kicks" [function]
 // ---------------------------------------
 rule #Flipper.kicks => 4
 
-syntax Int ::= "#Flipper.bids" "(" Int ").bid" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
-rule #Flipper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+rule #Flipper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
 
-syntax Int ::= "#Flipper.bids" "(" Int ").lot" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
-rule #Flipper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+rule #Flipper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flipper.bids" "(" Int ").guy_tic_end" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
-rule #Flipper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+rule #Flipper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
 
-syntax Int ::= "#Flipper.bids" "(" Int ").urn" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].urn" [function]
 // ------------------------------------------------------
-rule #Flipper.bids(N).urn => #hashedLocation("Solidity", 5, N) +Int 3
+rule #Flipper.bids[N].urn => #hashedLocation("Solidity", 5, N) +Int 3
 
-syntax Int ::= "#Flipper.bids" "(" Int ").gal" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
-rule #Flipper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 4
+rule #Flipper.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 4
 
-syntax Int ::= "#Flipper.bids" "(" Int ").tab" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].tab" [function]
 // ------------------------------------------------------
-rule #Flipper.bids(N).tab => #hashedLocation("Solidity", 5, N) +Int 5
+rule #Flipper.bids[N].tab => #hashedLocation("Solidity", 5, N) +Int 5
 ```
 
 ### Flapper
@@ -328,30 +328,30 @@ syntax Int ::= "#Flapper.kicks" [function]
 // ---------------------------------------
 rule #Flapper.kicks => 4
 
-syntax Int ::= "#Flapper.bids" "(" Int ").bid" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
-rule #Flapper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
 
-syntax Int ::= "#Flapper.bids" "(" Int ").lot" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
-rule #Flapper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flapper.bids" "(" Int ").guy_tic_end" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
-rule #Flapper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
 
-syntax Int ::= "#Flapper.bids" "(" Int ").gal" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
-rule #Flapper.bids(N).gal => #hashedLocation("Solidity", 5, N) +Int 3
+rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 3
 ```
 
 ### Flopper
 
 ```
-syntax Int ::= "#Flopper.wards" "(" Int ")" [function]
+syntax Int ::= "#Flopper.wards" "[" Int "]" [function]
 // ---------------------------------------
-rule #Flopper.wards(A) => #hashedLocation("Solidity", 0, A)
+rule #Flopper.wards[A] => #hashedLocation("Solidity", 0, A)
 
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
@@ -362,22 +362,22 @@ syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------
 rule #Flopper.kicks => 4
 
-syntax Int ::= "#Flopper.bids" "(" Int ").bid" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
-rule #Flopper.bids(N).bid => #hashedLocation("Solidity", 5, N) +Int 0
+rule #Flopper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
 
-syntax Int ::= "#Flopper.bids" "(" Int ").lot" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
-rule #Flopper.bids(N).lot => #hashedLocation("Solidity", 5, N) +Int 1
+rule #Flopper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flopper.bids" "(" Int ").guy_tic_end" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
-rule #Flopper.bids(N).guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+rule #Flopper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
 
-syntax Int ::= "#Flopper.bids" "(" Int ").vow" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
 // ------------------------------------------------------
-rule #Flopper.bids(N).vow => #hashedLocation("Solidity", 5, N) +Int 3
+rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 5, N) +Int 3
 ```
 
 ### GemLike
@@ -385,7 +385,7 @@ rule #Flopper.bids(N).vow => #hashedLocation("Solidity", 5, N) +Int 3
 A hypothetical token contract, based on `ds-token`:
 
 ```
-syntax Int ::= "#GemLike.balances" "(" Int ")" [function]
+syntax Int ::= "#GemLike.balances" "[" Int "]" [function]
 // --------------------------------------------------
-rule #GemLike.balances(A) => #hashedLocation("Solidity", 1, A)
+rule #GemLike.balances[A] => #hashedLocation("Solidity", 1, A)
 ```
