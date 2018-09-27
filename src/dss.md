@@ -613,7 +613,6 @@ types
 
 storage
 
-    #Drip.ilks[ilk].vow |-> Vow
     #Drip.ilks[ilk].tax |-> Tax
     #Drip.ilks[ilk].rho |-> Rho
 
@@ -621,7 +620,67 @@ if
 
     VGas > 300000
 
-returns Vow : Tax : Rho
+returns Tax : Rho
+```
+
+#### `vat` address
+```
+behaviour vat of Drip
+interface vat()
+
+types
+
+    Vat : address
+
+storage
+
+    #Drip.vat |-> Vat
+
+if
+
+    VGas > 300000
+
+returns Vat
+```
+
+#### `vow` address
+```
+behaviour vow of Drip
+interface vow()
+
+types
+
+    Vow : address
+
+storage
+
+    #Drip.vow |-> Vow
+
+if
+
+    VGas > 300000
+
+returns Vow
+```
+
+#### global interest rate
+```
+behaviour repo of Drip
+interface repo()
+
+types
+
+    Repo : uint256
+
+storage
+
+    #Drip.repo |-> Repo
+
+if
+
+    VGas > 300000
+
+returns Repo
 ```
 
 #### getting the time
@@ -1849,6 +1908,10 @@ storage
 
     #Cat.wards[guy] |-> Can
 
+if
+
+    VGas > 300000
+
 returns Can
 ```
 
@@ -1865,15 +1928,15 @@ types
     
 storage
 
-    #Cat.ilks[ilk].chop |-> Chop
     #Cat.ilks[ilk].flip |-> Flip
+    #Cat.ilks[ilk].chop |-> Chop
     #Cat.ilks[ilk].lump |-> Lump
 
 if
 
     VGas > 300000
-    
-returns Chop : Flip : Lump
+
+returns Flip : Chop : Lump
 ```
 
 #### liquidation data

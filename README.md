@@ -73,14 +73,15 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | fold      | x    | x    | x    | x    |
 | toll      | x    | x    | x    | x    |
 | Drip      +------+------+------+------|
-| wards     |      | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| vat       |      | -    |      | -    |
-| repo      |      | -    |      | -    |
+| wards     | x    | -    |      | -    |
+| ilks      | x    | -    |      | -    |
+| vat       | x    | -    |      | -    |
+| vow       | x    | -    |      | -    |
+| repo      | x    | -    |      | -    |
 | era       | x    | -    |      | -    |
-| rely      |      |      |      |      |
-| deny      |      |      |      |      |
-| init      |      |      |      |      |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
+| init      | x    | x    |      |      |
 | file      | x    | x    |      |      |
 | file-repo | x    | x    |      | -    |
 | file-vow  | x    | x    |      | -    |
@@ -122,16 +123,16 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | flop      | o    | o    |      |      |
 | flap      | o    | o    |      |      |
 | Cat       +------+------+------+------|
-| wards     |      | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| flips     |      | -    |      | -    |
-| nflip     |      | -    |      | -    |
-| live      |      | -    |      | -    |
-| vat       |      | -    |      | -    |
-| pit       |      | -    |      | -    |
-| vow       |      | -    |      | -    |
-| rely      |      |      |      |      |
-| deny      |      |      |      |      |
+| wards     | x    | -    |      | -    |
+| ilks      | x    | -    |      | -    |
+| flips     | x    | -    |      | -    |
+| nflip     | x    | -    |      | -    |
+| live      | x    | -    |      | -    |
+| vat       | x    | -    |      | -    |
+| pit       | x    | -    |      | -    |
+| vow       | x    | -    |      | -    |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
 | file-addr | x    | x    |      |      |
 | file      | x    | x    |      |      |
 | file-flip | x    | x    |      |      |

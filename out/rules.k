@@ -492,21 +492,21 @@ syntax Int ::= "#Cat.ilks" "[" Int "].lump" [function]
 // ---------------------------------------------------
 rule #Cat.ilks[Ilk].lump => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
-syntax Int ::= "#Cat.Flips" "[" Int "].ilk" [function]
+syntax Int ::= "#Cat.flips" "[" Int "].ilk" [function]
 // ---------------------------------------------------
-rule #Cat.Flips[N].ilk => #hashedLocation("Solidity", 2, N) +Int 0
+rule #Cat.flips[N].ilk => #hashedLocation("Solidity", 2, N) +Int 0
 
-syntax Int ::= "#Cat.Flips" "[" Int "].urn" [function]
+syntax Int ::= "#Cat.flips" "[" Int "].urn" [function]
 // ---------------------------------------------------
-rule #Cat.Flips[N].urn => #hashedLocation("Solidity", 2, N) +Int 1
+rule #Cat.flips[N].urn => #hashedLocation("Solidity", 2, N) +Int 1
 
-syntax Int ::= "#Cat.Flips" "[" Int "].ink" [function]
+syntax Int ::= "#Cat.flips" "[" Int "].ink" [function]
 // ---------------------------------------------------
-rule #Cat.Flips[N].ink => #hashedLocation("Solidity", 2, N) +Int 2
+rule #Cat.flips[N].ink => #hashedLocation("Solidity", 2, N) +Int 2
 
-syntax Int ::= "#Cat.Flips" "[" Int "].tab" [function]
+syntax Int ::= "#Cat.flips" "[" Int "].tab" [function]
 // ---------------------------------------------------
-rule #Cat.Flips[N].tab => #hashedLocation("Solidity", 2, N) +Int 3
+rule #Cat.flips[N].tab => #hashedLocation("Solidity", 2, N) +Int 3
 
 syntax Int ::= "#Cat.nflip" [function]
 // -----------------------------------
