@@ -12,7 +12,7 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID) |-> Dai
+    #Vat.dai[ACCT_ID] |-> Dai
 
 if
 

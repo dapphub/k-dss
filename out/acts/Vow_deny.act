@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
-    #Vow.wards(guy)       |-> Could => 0
+    #Vow.wards[CALLER_ID] |-> Can
+    #Vow.wards[guy]       |-> Could => 0
 
 iff
 

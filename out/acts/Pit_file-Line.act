@@ -8,7 +8,7 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
+    #Pit.wards[CALLER_ID] |-> Can
     #Pit.Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
 
 iff

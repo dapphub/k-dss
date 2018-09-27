@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
-    #Cat.ilks(ilk).lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
+    #Cat.ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
 
 iff
 

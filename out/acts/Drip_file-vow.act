@@ -3,11 +3,17 @@ interface file(bytes32 what, bytes32 data)
 
 types
 
+    Can : uint256
     Vow : bytes32
 
 storage
 
-    #Drip.vow |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+
+iff
+
+    Can == 1
 
 if
 

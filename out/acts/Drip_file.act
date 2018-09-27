@@ -3,15 +3,20 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 types
 
+    Can : uint256
     Tax : uint256
+    Rho : uint48
 
 storage
 
-    #Drip.ilks(ilk).tax |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    #Drip.ilks[ilk].rho    |-> Rho
 
 iff
 
-    #Drip.ilks(ilk).rho == TIME
+    Can == 1
+    Rho == TIME
 
 if
 

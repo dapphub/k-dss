@@ -251,7 +251,19 @@
     },
     "act": "Drip_file-repo.act"
   },
+  "Drip_file-repo_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_file-repo.act"
+  },
   "Drip_file-vow_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_file-vow.act"
+  },
+  "Drip_file-vow_fail": {
     "v2n": {
       "ACCT_ID": "Drip"
     },

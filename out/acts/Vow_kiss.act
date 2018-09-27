@@ -17,8 +17,8 @@ storage
 
 storage Vat
 
-    #Vat.dai(ACCT_ID)   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin(ACCT_ID)   |-> Sin  => Sin - #Ray * wad
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
     #Vat.vice           |-> Vice => Vice - #Ray * wad
     #Vat.debt           |-> Debt => Debt - #Ray * wad
 

@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.wards(guy)       |-> Could => 1
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.wards[guy]       |-> Could => 1
 
 iff
 

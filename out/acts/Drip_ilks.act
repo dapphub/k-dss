@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Drip.ilks(ilk).vow |-> Vow
-    #Drip.ilks(ilk).tax |-> Tax
-    #Drip.ilks(ilk).rho |-> Rho
+    #Drip.ilks[ilk].vow |-> Vow
+    #Drip.ilks[ilk].tax |-> Tax
+    #Drip.ilks[ilk].rho |-> Rho
 
 if
 

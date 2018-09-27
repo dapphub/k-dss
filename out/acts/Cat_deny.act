@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.wards(guy)       |-> Could => 0
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.wards[guy]       |-> Could => 0
 
 iff
 

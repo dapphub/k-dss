@@ -11,7 +11,7 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
+    #Vow.wards[CALLER_ID] |-> Can
     #Vow.wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
     #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)

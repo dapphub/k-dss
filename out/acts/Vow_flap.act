@@ -27,14 +27,14 @@ storage Cow
 
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks => Kicks + 1
-    #Flapper.bids(Kicks + 1).bid         |-> _ => 0
-    #Flapper.bids(Kicks + 1).lot         |-> _ => Bump
-    #Flapper.bids(Kicks + 1).guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids(Kicks + 1).gal         |-> _ => ACCT_ID
+    #Flapper.bids[Kicks + 1].bid         |-> _ => 0
+    #Flapper.bids[Kicks + 1].lot         |-> _ => Bump
+    #Flapper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids[Kicks + 1].gal         |-> _ => ACCT_ID
 
 storage Vat
 
-    #Vat.dai(ACCT_ID)   |-> Dai
+    #Vat.dai[ACCT_ID]   |-> Dai
 
 iff
 

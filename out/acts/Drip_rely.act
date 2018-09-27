@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Drip.wards(CALLER_ID) |-> Can
-    #Drip.wards(guy)       |-> Could => 1
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.wards[guy]       |-> Could => 1
 
 iff
 

@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Vat.sin(lad) |-> Rad
+    #Vat.sin[lad] |-> Rad
 
 if
 

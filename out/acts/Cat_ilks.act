@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Cat.ilks(ilk).chop |-> Chop
-    #Cat.ilks(ilk).flip |-> Flip
-    #Cat.ilks(ilk).lump |-> Lump
+    #Cat.ilks[ilk].chop |-> Chop
+    #Cat.ilks[ilk].flip |-> Flip
+    #Cat.ilks[ilk].lump |-> Lump
 
 if
 

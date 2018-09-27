@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.wards(guy)       |-> Could => 1
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.wards[guy]       |-> Could => 1
 
 iff
 

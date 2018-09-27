@@ -189,13 +189,13 @@ syntax Int ::= "#Cat.wards" "[" Int "]" [function]
 // ---------------------------------
 rule #Cat.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Cat.ilks" "[" Int "].chop" [function]
-// ---------------------------------------------------
-rule #Cat.ilks[Ilk].chop => #hashedLocation("Solidity", 1, Ilk) +Int 0
-
 syntax Int ::= "#Cat.ilks" "[" Int "].flip" [function]
 // ---------------------------------------------------
-rule #Cat.ilks[Ilk].flip => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Cat.ilks[Ilk].flip => #hashedLocation("Solidity", 1, Ilk) +Int 0
+
+syntax Int ::= "#Cat.ilks" "[" Int "].chop" [function]
+// ---------------------------------------------------
+rule #Cat.ilks[Ilk].chop => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Cat.ilks" "[" Int "].lump" [function]
 // ---------------------------------------------------

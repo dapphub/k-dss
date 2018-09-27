@@ -7,6 +7,6 @@ types
 
 storage
 
-    #Cat.wards(guy) |-> Can
+    #Cat.wards[guy] |-> Can
 
 returns Can

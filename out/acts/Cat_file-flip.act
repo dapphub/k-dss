@@ -1,5 +1,5 @@
 behaviour file-flip of Cat
-interface file(bytes32 ilk, bytes32 what, address flip)
+interface file(bytes32 ilk, bytes32 what, address data)
 
 types
 
@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.ilks(ilk).flip   |-> Flip => (#if what == #string2Word("flip") #then flip #else Flip #fi)
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
 
 iff
 

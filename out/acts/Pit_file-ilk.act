@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.ilks(ilk).spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
-    #Pit.ilks(ilk).line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.ilks[ilk].spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
+    #Pit.ilks[ilk].line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
 
 iff
 

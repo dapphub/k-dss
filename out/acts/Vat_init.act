@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(ilk).rate   |-> Rate => 1000000000000000000000000000
-    #Vat.ilks(ilk).take   |-> Take => 1000000000000000000000000000
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
+    #Vat.ilks[ilk].take   |-> Take => 1000000000000000000000000000
 
 iff
 

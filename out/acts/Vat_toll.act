@@ -10,10 +10,10 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).take     |-> Take => Take + take
-    #Vat.ilks(i).Ink      |-> Ink
-    #Vat.gem(i, u)        |-> Gem => Gem - (Ink * take)
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].take     |-> Take => Take + take
+    #Vat.ilks[i].Ink      |-> Ink
+    #Vat.gem[i][u]        |-> Gem => Gem - (Ink * take)
 
 iff
 

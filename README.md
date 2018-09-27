@@ -77,26 +77,26 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | ilks      |      | -    |      | -    |
 | vat       |      | -    |      | -    |
 | repo      |      | -    |      | -    |
-| era       |      | -    |      | -    |
+| era       | x    | -    |      | -    |
 | rely      |      |      |      |      |
 | deny      |      |      |      |      |
 | init      |      |      |      |      |
-| file      |      |      |      |      |
-| file-repo |      | -    |      | -    |
-| file-vow  |      | -    |      | -    |
+| file      | x    | x    |      |      |
+| file-repo | x    | x    |      | -    |
+| file-vow  | x    | x    |      | -    |
 | drip      |      |      |      |      |
 | Pit       +------+------+------+------|
-| wards     |  x   | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| live      |  x   | -    |      | -    |
-| Line      |  x   | -    |      | -    |
-| vat       |  x   | -    |      | -    |
-| drip      |  x   | -    |      | -    |
-| rely      |  x   |  x   |      |      |
-| deny      |  x   |  x   |      |      |
-| file-drip |  o   |  x   |      |      |
-| file-ilk  |  x   |  x   |      |      |
-| file-Line |  x   |  x   |      |      |
+| wards     | x    | -    |      | -    |
+| ilks      | x    | -    |      | -    |
+| live      | x    | -    |      | -    |
+| Line      | x    | -    |      | -    |
+| vat       | x    | -    |      | -    |
+| drip      | x    | -    |      | -    |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
+| file-drip | x    | x    |      |      |
+| file-ilk  | x    | x    |      |      |
+| file-Line | x    | x    |      |      |
 | frob      |      |      |      |      |
 | Vow       +------+------+------+------|
 | wards     | x    | -    |      | -    |
@@ -113,8 +113,8 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | Joy       | x    | -    |      |      |
 | rely      | x    | x    |      |      |
 | deny      | x    | x    |      |      |
-| file-data | o    | x    |      |      |
-| file-addr | o    | x    |      |      |
+| file-data | x    | x    |      |      |
+| file-addr | x    | x    |      |      |
 | heal      | x    | o    |      |      |
 | kiss      | x    | o    |      |      |
 | fess      | x    | x    |      |      |
@@ -132,9 +132,9 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | vow       |      | -    |      | -    |
 | rely      |      |      |      |      |
 | deny      |      |      |      |      |
-| file-addr |      |      |      |      |
-| file      |      |      |      |      |
-| file-flip |      |      |      |      |
+| file-addr | x    | x    |      |      |
+| file      | x    | x    |      |      |
+| file-flip | x    | x    |      |      |
 | bite      |      |      |      |      |
 | flip      |      |      |      |      |
 | GemJoin   +------+------+------+------|

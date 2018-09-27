@@ -692,16 +692,19 @@ interface init(bytes32 ilk)
 
 types
 
+    Can : uint256
     Tax : uint256
     Rho : uint48
 
 storage
 
-    #Drip.ilks[ilk].tax |-> Tax => #Ray
-    #Drip.ilks[ilk].rho |-> Rho => TIME
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.ilks[ilk].tax    |-> Tax => #Ray
+    #Drip.ilks[ilk].rho    |-> Rho => TIME
 
 iff
 
+    Can == 1
     Tax == 0
 
 if
@@ -717,15 +720,20 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 types
 
+    Can : uint256
     Tax : uint256
+    Rho : uint48
 
 storage
 
-    #Drip.ilks[ilk].tax |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    #Drip.ilks[ilk].rho    |-> Rho
 
 iff
 
-    #Drip.ilks[ilk].rho == TIME
+    Can == 1
+    Rho == TIME
 
 if
 
@@ -739,11 +747,17 @@ interface file(bytes32 what, uint256 data)
 
 types
 
+    Can  : uint256
     Repo : uint256
 
 storage
 
-    #Drip.repo |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
+
+iff
+
+    Can == 1
 
 if
 
@@ -757,11 +771,17 @@ interface file(bytes32 what, bytes32 data)
 
 types
 
+    Can : uint256
     Vow : bytes32
 
 storage
 
-    #Drip.vow |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+
+iff
+
+    Can == 1
 
 if
 
@@ -873,9 +893,7 @@ if
 
     VGas > 300000
 
-returns
-
-    Spot_i : Line_i
+returns Spot_i : Line_i
 ```
 
 #### liveness
@@ -1008,7 +1026,7 @@ if
 #### setting `drip` address
 ```
 behaviour file-drip of Pit
-interface file(bytes32 what, address who)
+interface file(bytes32 what, address data)
 
 types
 
@@ -1018,7 +1036,7 @@ types
 storage
 
     #Pit.wards[CALLER_ID] |-> Can
-    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then Drip #else who #fi)
+    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then data #else Drip #fi)
 
 iff
 
@@ -2086,7 +2104,7 @@ if
 #### setting liquidator address
 ```
 behaviour file-flip of Cat
-interface file(bytes32 ilk, bytes32 what, address flip)
+interface file(bytes32 ilk, bytes32 what, address data)
 
 types
 
@@ -2096,7 +2114,7 @@ types
 storage
 
     #Cat.wards[CALLER_ID] |-> Can
-    #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then flip #else Flip #fi)
+    #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
     
 iff
 

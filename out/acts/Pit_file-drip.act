@@ -1,5 +1,5 @@
 behaviour file-drip of Pit
-interface file(bytes32 what, address who)
+interface file(bytes32 what, address data)
 
 types
 
@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then Drip #else who #fi)
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then data #else Drip #fi)
 
 iff
 

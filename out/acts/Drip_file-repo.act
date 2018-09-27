@@ -3,11 +3,17 @@ interface file(bytes32 what, uint256 data)
 
 types
 
+    Can  : uint256
     Repo : uint256
 
 storage
 
-    #Drip.repo |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
+
+iff
+
+    Can == 1
 
 if
 
