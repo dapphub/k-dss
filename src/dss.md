@@ -1042,6 +1042,7 @@ iff
 
     Can == 1
     TIME >= Rho
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1351,6 +1352,7 @@ iff
     (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
     (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
     Live == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1635,6 +1637,10 @@ storage Vat
 
     #Vat.dai[ACCT_ID] |-> Dai
 
+iff
+    
+    VCallDepth < 1024
+
 if
 
     VGas > 300000
@@ -1783,6 +1789,7 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1829,6 +1836,7 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1965,6 +1973,7 @@ iff
 
     Can == 1
     Dai < #Ray
+    VCallDepth < 1024
     
 iff in range uint256
 
@@ -2041,6 +2050,7 @@ iff
 
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
+    VCallDepth < 1023
     
 iff in range uint256
 
@@ -2440,6 +2450,7 @@ iff
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
     Ink_iu * Spot_i < Art_iu * Rate
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2513,6 +2524,7 @@ iff
     Live == 1
     wad <= Tab
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
+    VCallDepth < 1023
 
 iff in range uint256
 
@@ -2632,6 +2644,7 @@ storage Gem
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2652,7 +2665,7 @@ if
 
 ```act
 behaviour exit of GemJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2683,6 +2696,7 @@ storage Gem
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2799,7 +2813,7 @@ if
 
 ```act
 behaviour exit of ETHJoin
-interface exit(bytes32, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2822,6 +2836,8 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
+    wad <= BAL
 
 iff in range int256
 
@@ -2920,6 +2936,7 @@ storage Dai
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2940,7 +2957,7 @@ if
 
 ```act
 behaviour exit of DaiJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2969,6 +2986,7 @@ storage Dai
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
