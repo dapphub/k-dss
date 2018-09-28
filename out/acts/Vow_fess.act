@@ -9,8 +9,8 @@ types
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
-    #Vow.sin(TIME)        |-> Sin_era => Sin_era + tab
+    #Vow.wards[CALLER_ID] |-> Can
+    #Vow.sin[TIME]        |-> Sin_era => Sin_era + tab
     #Vow.Sin              |-> Sin     => Sin + tab
 
 iff

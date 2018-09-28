@@ -9,12 +9,11 @@ types
 
 storage
 
-    #Drip.ilks(ilk).vow |-> Vow
-    #Drip.ilks(ilk).tax |-> Tax
-    #Drip.ilks(ilk).rho |-> Rho
+    #Drip.ilks[ilk].tax |-> Tax
+    #Drip.ilks[ilk].rho |-> Rho
 
 if
 
     VGas > 300000
 
-returns Vow : Tax : Rho
+returns Tax : Rho

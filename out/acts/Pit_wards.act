@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Pit.wards(guy) |-> Can
+    #Pit.wards[guy] |-> Can
 
 if
 

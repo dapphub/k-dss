@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Cat.wards(CALLER_ID) |-> Can
-    #Cat.pit              |-> Pit => (#if what == 12345 #then data #else Pit #fi)
-    #Cat.vow              |-> Vow => (#if what == 54321 #then data #else Vow #fi)
+    #Cat.wards[CALLER_ID] |-> Can
+    #Cat.pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
+    #Cat.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 

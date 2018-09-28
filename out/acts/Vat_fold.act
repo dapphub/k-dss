@@ -11,10 +11,10 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).rate     |-> Rate => Rate + rate
-    #Vat.ilks(i).Art      |-> Art_i
-    #Vat.dai(u)           |-> Dai  => Dai + Art_i * rate
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].rate     |-> Rate => Rate + rate
+    #Vat.ilks[i].Art      |-> Art_i
+    #Vat.dai[u]           |-> Dai  => Dai + Art_i * rate
     #Vat.debt             |-> Debt => Debt + Art_i * rate
 
 iff

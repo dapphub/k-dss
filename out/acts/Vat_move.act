@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.dai(src)         |-> Dai_src => Dai_src - rad
-    #Vat.dai(dst)         |-> Dai_dst => Dai_dst + rad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.dai[src]         |-> Dai_src => Dai_src - rad
+    #Vat.dai[dst]         |-> Dai_dst => Dai_dst + rad
 
 iff
 

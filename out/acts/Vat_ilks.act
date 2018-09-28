@@ -10,10 +10,10 @@ types
 
 storage
 
-    #Vat.ilks(ilk).take |-> Take
-    #Vat.ilks(ilk).rate |-> Rate
-    #Vat.ilks(ilk).Ink  |-> Ink_i
-    #Vat.ilks(ilk).Art  |-> Art_i
+    #Vat.ilks[ilk].take |-> Take
+    #Vat.ilks[ilk].rate |-> Rate
+    #Vat.ilks[ilk].Ink  |-> Ink_i
+    #Vat.ilks[ilk].Art  |-> Art_i
 
 if
 

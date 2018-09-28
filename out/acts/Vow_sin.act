@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Vow.sin(era) |-> Sin_era
+    #Vow.sin[era] |-> Sin_era
 
 if
 

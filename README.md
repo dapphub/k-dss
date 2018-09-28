@@ -73,30 +73,31 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | fold      | x    | x    | x    | x    |
 | toll      | x    | x    | x    | x    |
 | Drip      +------+------+------+------|
-| wards     |      | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| vat       |      | -    |      | -    |
-| repo      |      | -    |      | -    |
-| era       |      | -    |      | -    |
-| rely      |      |      |      |      |
-| deny      |      |      |      |      |
-| init      |      |      |      |      |
-| file      |      |      |      |      |
-| file-repo |      | -    |      | -    |
-| file-vow  |      | -    |      | -    |
+| wards     | x    | -    |      | -    |
+| ilks      | x    | -    |      | -    |
+| vat       | x    | -    |      | -    |
+| vow       | x    | -    |      | -    |
+| repo      | x    | -    |      | -    |
+| era       | x    | -    |      | -    |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
+| init      | x    | x    |      |      |
+| file      | x    | x    |      |      |
+| file-repo | x    | x    |      | -    |
+| file-vow  | x    | x    |      | -    |
 | drip      |      |      |      |      |
 | Pit       +------+------+------+------|
-| wards     |  x   | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| live      |  x   | -    |      | -    |
-| Line      |  x   | -    |      | -    |
-| vat       |  x   | -    |      | -    |
-| drip      |  x   | -    |      | -    |
-| rely      |      |  x   |      |      |
-| deny      |      |  x   |      |      |
-| file-drip |  o   |  x   |      |      |
-| file-ilk  |  x   |  x   |      |      |
-| file-Line |  x   |  x   |      |      |
+| wards     | x    | -    |      | -    |
+| ilks      | x    | -    |      | -    |
+| live      | x    | -    |      | -    |
+| Line      | x    | -    |      | -    |
+| vat       | x    | -    |      | -    |
+| drip      | x    | -    |      | -    |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
+| file-drip | x    | x    |      |      |
+| file-ilk  | x    | x    |      |      |
+| file-Line | x    | x    |      |      |
 | frob      |      |      |      |      |
 | Vow       +------+------+------+------|
 | wards     | x    | -    |      | -    |
@@ -111,30 +112,30 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | era       | x    | -    |      | -    |
 | Awe       | x    | x    |      |      |
 | Joy       | x    | -    |      |      |
-| rely      |      | x    |      |      |
-| deny      |      | x    |      |      |
-| file-data | o    | x    |      |      |
-| file-addr |      | x    |      |      |
-| heal      |      | o    |      |      |
-| kiss      |      | o    |      |      |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
+| file-data | x    | x    |      |      |
+| file-addr | x    | x    |      |      |
+| heal      | x    | o    |      |      |
+| kiss      | x    | o    |      |      |
 | fess      | x    | x    |      |      |
 | flog      | o    | o    |      |      |
-| flop      |      |      |      |      |
-| flap      |      |      |      |      |
+| flop      | o    | o    |      |      |
+| flap      | o    | o    |      |      |
 | Cat       +------+------+------+------|
-| wards     |      | -    |      | -    |
-| ilks      |      | -    |      | -    |
-| flips     |      | -    |      | -    |
-| nflip     |      | -    |      | -    |
-| live      |      | -    |      | -    |
-| vat       |      | -    |      | -    |
-| pit       |      | -    |      | -    |
-| vow       |      | -    |      | -    |
-| rely      |      |      |      |      |
-| deny      |      |      |      |      |
-| file-addr |      |      |      |      |
-| file      |      |      |      |      |
-| file-flip |      |      |      |      |
+| wards     | x    | -    |      | -    |
+| ilks      | x    | -    |      | -    |
+| flips     | x    | -    |      | -    |
+| nflip     | x    | -    |      | -    |
+| live      | x    | -    |      | -    |
+| vat       | x    | -    |      | -    |
+| pit       | x    | -    |      | -    |
+| vow       | x    | -    |      | -    |
+| rely      | x    | x    |      |      |
+| deny      | x    | x    |      |      |
+| file-addr | x    | x    |      |      |
+| file      | x    | x    |      |      |
+| file-flip | x    | x    |      |      |
 | bite      |      |      |      |      |
 | flip      |      |      |      |      |
 | GemJoin   +------+------+------+------|

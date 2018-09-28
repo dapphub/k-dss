@@ -1,0 +1,16 @@
+behaviour vat of Drip
+interface vat()
+
+types
+
+    Vat : address
+
+storage
+
+    #Drip.vat |-> Vat
+
+if
+
+    VGas > 300000
+
+returns Vat

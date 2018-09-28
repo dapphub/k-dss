@@ -16,15 +16,15 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.ilks(i).take     |-> Take
-    #Vat.ilks(i).rate     |-> Rate
-    #Vat.urns(i, u).ink   |-> Ink_u  => Ink_u + dink
-    #Vat.urns(i, u).art   |-> Art_u  => Art_u + dart
-    #Vat.ilks(i).Ink      |-> Ink_i  => Ink_i + dink
-    #Vat.ilks(i).Art      |-> Art_i  => Art_i + dart
-    #Vat.gem(i, v)        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.dai(w)           |-> Dai_w  => Dai_w + (Rate * dart)
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.ilks[i].take     |-> Take
+    #Vat.ilks[i].rate     |-> Rate
+    #Vat.urns[i][u].ink   |-> Ink_u  => Ink_u + dink
+    #Vat.urns[i][u].art   |-> Art_u  => Art_u + dart
+    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i + dink
+    #Vat.ilks[i].Art      |-> Art_i  => Art_i + dart
+    #Vat.gem[i][v]        |-> Gem_v  => Gem_v - (Take * dink)
+    #Vat.dai[w]           |-> Dai_w  => Dai_w + (Rate * dart)
     #Vat.debt             |-> Debt   => Debt + (Rate * dart)
 
 iff

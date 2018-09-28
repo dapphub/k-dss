@@ -4,16 +4,18 @@ interface file(bytes32 what, uint256 data)
 types
 
     Can  : uint256
+    Wait : uint256
     Sump : uint256
     Bump : uint256
     Hump : uint256
 
 storage
 
-    #Vow.wards(CALLER_ID) |-> Can
-    #Vow.sump             |-> Sump => (#if what == 12345 #then data #else Sump #fi)
-    #Vow.bump             |-> Bump => (#if what == 12345 #then data #else Bump #fi)
-    #Vow.hump             |-> Hump => (#if what == 67890 #then data #else Hump #fi)
+    #Vow.wards[CALLER_ID] |-> Can
+    #Vow.wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
+    #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
+    #Vow.hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
 
 iff
 

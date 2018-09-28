@@ -1,6 +1,21 @@
 # dss lemmas
 
-### Special fixed-point arithmetic
+### string literal syntax
+
+```
+syntax Int ::= "#rightPadInt" "(" Int "," Int ")" [function]
+// ---------------------------------------------------------
+rule #rightPadInt(N, X) => X
+  requires 256 *Int X >=Int (2 ^Int (8 *Int N))
+rule #rightPadInt(N, X) => #rightPadInt(N, 256 *Int X)
+  requires 256 *Int X <Int (2 ^Int (8 *Int N))
+
+syntax Int ::= "#string2Word" "(" String ")" [function]
+// ----------------------------------------------------
+rule #string2Word(S) => #rightPadInt(32, Bytes2Int(String2Bytes(S), bigEndianBytes(.KList), unsignedBytes(.KList)))
+```
+
+### special fixed-point arithmetic
 
 ```
 syntax Int ::= "#Wad" [function]

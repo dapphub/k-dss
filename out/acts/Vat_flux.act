@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.gem(ilk, src)    |-> Gem_src => Gem_src - wad
-    #Vat.gem(ilk, dst)    |-> Gem_dst => Gem_dst + wad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.gem[ilk][src]    |-> Gem_src => Gem_src - wad
+    #Vat.gem[ilk][dst]    |-> Gem_dst => Gem_dst + wad
 
 iff
 

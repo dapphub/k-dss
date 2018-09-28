@@ -11,9 +11,9 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.dai(v)           |-> Dai_v => Dai_v - rad
-    #Vat.sin(u)           |-> Sin_u => Sin_u - rad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.dai[v]           |-> Dai_v => Dai_v - rad
+    #Vat.sin[u]           |-> Sin_u => Sin_u - rad
     #Vat.debt             |-> Debt  => Debt - rad
     #Vat.vice             |-> Vice  => Vice - rad
 

@@ -3,16 +3,19 @@ interface init(bytes32 ilk)
 
 types
 
+    Can : uint256
     Tax : uint256
     Rho : uint48
 
 storage
 
-    #Drip.ilks(ilk).tax |-> Tax => #Ray
-    #Drip.ilks(ilk).rho |-> Rho => TIME
+    #Drip.wards[CALLER_ID] |-> Can
+    #Drip.ilks[ilk].tax    |-> Tax => #Ray
+    #Drip.ilks[ilk].rho    |-> Rho => TIME
 
 iff
 
+    Can == 1
     Tax == 0
 
 if

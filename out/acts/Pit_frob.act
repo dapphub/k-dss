@@ -31,31 +31,31 @@ storage
     #Pit.live           |-> Live
     #Pit.Line           |-> Line
     #Pit.vat            |-> Vat
-    #Pit.ilks(ilk).line |-> Line_i
-    #Pit.ilks(ilk).spot |-> Spot
+    #Pit.ilks[ilk].line |-> Line_i
+    #Pit.ilks[ilk].spot |-> Spot
 
 storage Drip
 
     #Drip.vat           |-> Vat
     #Drip.repo          |-> Repo
-    #Drip.ilks(ilk).vow |-> Vow
-    #Drip.ilks(ilk).tax |-> Tax
-    #Drip.ilks(ilk).rho |-> Rho => TIME
+    #Drip.ilks[ilk].vow |-> Vow
+    #Drip.ilks[ilk].tax |-> Tax
+    #Drip.ilks[ilk].rho |-> Rho => TIME
 
 storage Vat
 
 
     #Vat.wards(Drip)              |-> Can_drip
-    #Vat.ilks(ilk).rate           |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.ilks[ilk].rate           |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.dai(Vow)                 |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.wards(ACCT_ID)           |-> Can_frob
-    #Vat.ilks(ilk).take           |-> Take
-    #Vat.ilks(ilk).Ink            |-> Ink_i  => Ink_i + dink
-    #Vat.ilks(ilk).Art            |-> Art_i  => Art_i + dart
-    #Vat.urns(ilk, CALLER_ID).ink |-> Ink_u  => Ink_u + dink
-    #Vat.urns(ilk, CALLER_ID).art |-> Art_u  => Art_u + dart
-    #Vat.gem(ilk, CALLER_ID)      |-> Gem_u  => Gem_u - Take * dink
-    #Vat.dai(CALLER_ID)           |-> Dai    => Dai + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
+    #Vat.wards[ACCT_ID]           |-> Can_frob
+    #Vat.ilks[ilk].take           |-> Take
+    #Vat.ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
+    #Vat.ilks[ilk].Art            |-> Art_i  => Art_i + dart
+    #Vat.urns[ilk][CALLER_ID].ink |-> Ink_u  => Ink_u + dink
+    #Vat.urns[ilk][CALLER_ID].art |-> Art_u  => Art_u + dart
+    #Vat.gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
+    #Vat.dai[CALLER_ID]           |-> Dai    => Dai + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
     #Vat.debt                     |-> Debt   => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate) + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
 
 iff

@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Vat.wards(CALLER_ID) |-> Can
-    #Vat.gem(ilk, guy)    |-> Gem => Gem + wad
+    #Vat.wards[CALLER_ID] |-> Can
+    #Vat.gem[ilk][guy]    |-> Gem => Gem + wad
 
 iff
 

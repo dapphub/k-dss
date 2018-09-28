@@ -8,13 +8,11 @@ types
 
 storage
 
-    #Pit.ilks(ilk).spot |-> Spot_i
-    #Pit.ilks(ilk).line |-> Line_i
+    #Pit.ilks[ilk].spot |-> Spot_i
+    #Pit.ilks[ilk].line |-> Line_i
 
 if
 
     VGas > 300000
 
-returns
-
-    Spot_i : Line_i
+returns Spot_i : Line_i

@@ -17,13 +17,13 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 storage Dai
 
-    #GemLike.balances(CALLER_ID) |-> Bal_guy     => Bal_guy + wad
-    #GemLike.balances(ACCT_ID)   |-> Bal_adapter => Bal_adapter - wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy + wad
+    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 

@@ -25,32 +25,32 @@ storage
     #Cat.pit              |-> Pit
     #Cat.vow              |-> Vow
     #Cat.nflip            |-> Nflip => Nflip + 1
-    #Cat.flips(Nflip).ilk |-> 0     => ilk
-    #Cat.flips(Nflip).urn |-> 0     => urn
-    #Cat.flips(Nflip).ink |-> 0     => Ink_u
-    #Cat.flips(Nflip).tab |-> 0     => Rate * Art_u
+    #Cat.flips[Nflip].ilk |-> 0     => ilk
+    #Cat.flips[Nflip].urn |-> 0     => urn
+    #Cat.flips[Nflip].ink |-> 0     => Ink_u
+    #Cat.flips[Nflip].tab |-> 0     => Rate * Art_u
     #Cat.live             |-> Live
 
 storage Vat
 
-    #Vat.wards(ADDRESS)     |-> Can
-    #Vat.ilks(ilk).take     |-> Take
-    #Vat.ilks(ilk).rate     |-> Rate
-    #Vat.urns(ilk, urn).ink |-> Ink_u => 0
-    #Vat.urns(ilk, urn).art |-> Art_u => 0
-    #Vat.ilks(ilk).Ink      |-> Ink_i => Ink_i - Ink_u
-    #Vat.ilks(ilk).Art      |-> Art_i => Art_i - Art_u
-    #Vat.gem(ilk, ADDRESS)  |-> Gem_v => Gem_v + Take * Ink_u
-    #Vat.sin(Vow)           |-> Sin_w => Sin_w - Rate * Art_u
+    #Vat.wards[ACCT_ID]     |-> Can
+    #Vat.ilks[ilk].take     |-> Take
+    #Vat.ilks[ilk].rate     |-> Rate
+    #Vat.urns[ilk][urn].ink |-> Ink_u => 0
+    #Vat.urns[ilk][urn].art |-> Art_u => 0
+    #Vat.ilks[ilk].Ink      |-> Ink_i => Ink_i - Ink_u
+    #Vat.ilks[ilk].Art      |-> Art_i => Art_i - Art_u
+    #Vat.gem[ilk][ACCT_ID]  |-> Gem_v => Gem_v + Take * Ink_u
+    #Vat.sin[Vow]           |-> Sin_w => Sin_w - Rate * Art_u
     #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
 
 storage Pit
 
-    #Pit.ilks(ilk).spot |-> Spot_i
+    #Pit.ilks[ilk].spot |-> Spot_i
 
 storage Vow
 
-    #Vow.sin(TIME) |-> Sin_era => Sin_era + Art_u * Rate
+    #Vow.sin[TIME] |-> Sin_era => Sin_era + Art_u * Rate
     #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
 
 iff

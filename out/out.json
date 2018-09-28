@@ -191,6 +191,24 @@
     },
     "act": "Drip_ilks.act"
   },
+  "Drip_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_vat.act"
+  },
+  "Drip_vow_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_vow.act"
+  },
+  "Drip_repo_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_repo.act"
+  },
   "Drip_era_succ": {
     "v2n": {
       "ACCT_ID": "Drip"
@@ -251,7 +269,19 @@
     },
     "act": "Drip_file-repo.act"
   },
+  "Drip_file-repo_fail": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_file-repo.act"
+  },
   "Drip_file-vow_succ": {
+    "v2n": {
+      "ACCT_ID": "Drip"
+    },
+    "act": "Drip_file-vow.act"
+  },
+  "Drip_file-vow_fail": {
     "v2n": {
       "ACCT_ID": "Drip"
     },

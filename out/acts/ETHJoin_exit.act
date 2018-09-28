@@ -16,8 +16,8 @@ storage
 
 storage Vat
 
-    #Vat.wards(ACCT_ID)           |-> Can
-    #Vat.gem(Ilk, urn, CALLER_ID) |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]      |-> Can
+    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 iff
 

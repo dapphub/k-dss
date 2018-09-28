@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Vat.urns(ilk, urn).ink |-> Ink_u
-    #Vat.urns(ilk, urn).art |-> Art_u
+    #Vat.urns[ilk][urn].ink |-> Ink_u
+    #Vat.urns[ilk][urn].art |-> Art_u
 
 if
 

@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Pit.wards(CALLER_ID) |-> Can
-    #Pit.Line             |-> Line => #if (what == 34562057349182736215210119496545603349883880166122507858935627372614188531712) #then data #else Line #fi
+    #Pit.wards[CALLER_ID] |-> Can
+    #Pit.Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
 
 iff
 
