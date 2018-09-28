@@ -885,6 +885,7 @@ iff
 
     Can == 1
     TIME >= Rho
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1228,6 +1229,7 @@ iff
     (((((Art_u + dart) * (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate))) <= (#Ray * Spot)) and (((Debt + ((Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart))) < (#Ray * Line))) or (dart <= 0))
     (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)))))
     Live == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1510,6 +1512,10 @@ storage Vat
 
     #Vat.dai[ACCT_ID] |-> Dai
 
+iff
+    
+    VCallDepth < 1024
+
 if
 
     VGas > 300000
@@ -1653,6 +1659,7 @@ iff
 
     wad <= Dai / 1000000000000000000000000000
     wad <= Woe
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1700,6 +1707,7 @@ iff
 
     wad <= Dai / 1000000000000000000000000000
     wad <= Ash
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1817,6 +1825,7 @@ iff
 
     Can == 1
     Dai == 0
+    VCallDepth < 1024
     
 iff in range uint256
 
@@ -1852,7 +1861,7 @@ storage
 
     #Vow.cow  |-> Cow
     #Vow.lump |-> Bump
-    #Vow.hump  |-> Hump
+    #Vow.hump |-> Hump
     #Vow.Sin  |-> Sin
     #Vow.Woe  |-> Woe
     #Vow.Ash  |-> Ash
@@ -1874,6 +1883,7 @@ iff
 
     Dai / 1000000000000000000000000000 >= Sin + Woe + Ash + Bump + Hump
     Woe == 0
+    VCallDepth < 1023
     
 iff in range uint256
 
@@ -2250,6 +2260,7 @@ iff
     Can == 1
     Live == 1
     Ink_u * Spot_i < Art_u * Rate
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2322,6 +2333,7 @@ iff
     Live == 1
     wad <= Tab
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
+    VCallDepth < 1023
 
 iff in range uint256
 
@@ -2437,6 +2449,7 @@ storage Gem
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2456,7 +2469,7 @@ if
 #### withdrawing from the system
 ```
 behaviour exit of GemJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2487,6 +2500,7 @@ storage Gem
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2599,7 +2613,7 @@ if
 *TODO* : add `balance ACCT_ID` block
 ```
 behaviour exit of ETHJoin
-interface exit(bytes32, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2622,6 +2636,8 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
+    wad <= BAL
 
 iff in range int256
 
@@ -2717,6 +2733,7 @@ storage Dai
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2736,7 +2753,7 @@ if
 #### withdrawing from the system
 ```
 behaviour exit of DaiJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2765,6 +2782,7 @@ storage Dai
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
