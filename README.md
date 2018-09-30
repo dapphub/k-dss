@@ -95,7 +95,6 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | drip      | x    | -    |      | -    |
 | rely      | x    | x    |      |      |
 | deny      | x    | x    |      |      |
-| file-drip | x    | x    |      |      |
 | file-ilk  | x    | x    |      |      |
 | file-Line | x    | x    |      |      |
 | frob      |      |      |      |      |

@@ -148,10 +148,6 @@ rule #Pit.Line => 3
 syntax Int ::= "#Pit.vat" [function]
 // ---------------------------------
 rule #Pit.vat => 4
-
-syntax Int ::= "#Pit.drip" [function]
-// ----------------------------------
-rule #Pit.drip => 5
 ```
 
 ### Vow

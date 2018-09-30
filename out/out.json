@@ -363,18 +363,6 @@
     },
     "act": "Pit_deny.act"
   },
-  "Pit_file-drip_succ": {
-    "v2n": {
-      "ACCT_ID": "Pit"
-    },
-    "act": "Pit_file-drip.act"
-  },
-  "Pit_file-drip_fail": {
-    "v2n": {
-      "ACCT_ID": "Pit"
-    },
-    "act": "Pit_file-drip.act"
-  },
   "Pit_file-ilk_succ": {
     "v2n": {
       "ACCT_ID": "Pit"
@@ -402,7 +390,6 @@
   "Pit_frob_succ": {
     "v2n": {
       "ACCT_ID": "Pit",
-      "Drip": "Dripper",
       "Vat": "VatLike"
     },
     "act": "Pit_frob.act"
@@ -410,7 +397,6 @@
   "Pit_frob_fail": {
     "v2n": {
       "ACCT_ID": "Pit",
-      "Drip": "Dripper",
       "Vat": "VatLike"
     },
     "act": "Pit_frob.act"

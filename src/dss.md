@@ -1085,30 +1085,6 @@ if
     VGas > 300000
 ```
 
-#### setting `drip` address
-```
-behaviour file-drip of Pit
-interface file(bytes32 what, address data)
-
-types
-
-    Can    : uint256
-    Drip   : address
-
-storage
-
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.drip             |-> Drip => (#if what == #string2Word("drip") #then data #else Drip #fi)
-
-iff
-
-    Can == 1
-
-if
-
-    VGas > 300000
-```
-
 #### setting `ilk` data
 ```
 behaviour file-ilk of Pit
@@ -1167,13 +1143,7 @@ interface frob(bytes32 ilk, int256 dink, int256 dart)
 
 types
 
-    Can_d  : uint256
-    Can_f  : uint256
-    Drip   : address Dripper
-    Repo   : uint256
-    Vow    : bytes32
-    Tax    : uint256
-    Rho    : uint48
+    Can    : uint256
     Live   : uint256
     Line   : uint256
     Vat    : address VatLike
@@ -1191,62 +1161,42 @@ types
 
 storage
 
-    #Pit.drip           |-> Drip
     #Pit.live           |-> Live
     #Pit.Line           |-> Line
     #Pit.vat            |-> Vat
     #Pit.ilks[ilk].line |-> Line_i
     #Pit.ilks[ilk].spot |-> Spot
 
-storage Drip
-
-    #Drip.vat           |-> Vat
-    #Drip.repo          |-> Repo
-    #Drip.ilks[ilk].vow |-> Vow
-    #Drip.ilks[ilk].tax |-> Tax
-    #Drip.ilks[ilk].rho |-> Rho => TIME
-
 storage Vat
 
-
-    #Vat.wards(Drip)              |-> Can_drip
-    #Vat.ilks[ilk].rate           |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.dai(Vow)                 |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.wards[ACCT_ID]           |-> Can_frob
+    #Vat.wards[ACCT_ID]           |-> Can
+    #Vat.ilks[ilk].rate           |-> Rate
     #Vat.ilks[ilk].take           |-> Take
     #Vat.ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
     #Vat.ilks[ilk].Art            |-> Art_i  => Art_i + dart
     #Vat.urns[ilk][CALLER_ID].ink |-> Ink_u  => Ink_u + dink
     #Vat.urns[ilk][CALLER_ID].art |-> Art_u  => Art_u + dart
     #Vat.gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
-    #Vat.dai[CALLER_ID]           |-> Dai    => Dai + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
-    #Vat.debt                     |-> Debt   => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate) + (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart
+    #Vat.dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
+    #Vat.debt                     |-> Debt   => Debt + Rate * dart
 
 iff
 
-    Can_drip == 1
-    Can_frob == 1
-    TIME >= Rho
-    (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) =/= 0
-    (((((Art_u + dart) * (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate))) <= (#Ray * Spot)) and (((Debt + ((Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart))) < (#Ray * Line))) or (dart <= 0))
-    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * (Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)))))
+    Can == 1
+    Rate =/= 0
+    (((((Art_u + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * Rate)))
     Live == 1
 
 iff in range uint256
 
-    Repo + Tax
-    #rpow(Repo + Tax, TIME - Rho, #Ray) * #Ray
-    #rpow(Repo + Tax, TIME - Rho, #Ray) * Rate
-    Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     Ink_i + dink
     Art_i + dart
     Ink_u + dink
     Art_u + dart
     Gem_u - Take * dink
-    Dai + ((Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart)
-    Debt + ((Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)) * dart)
+    Dai + Rate * dart
+    Debt + Rate * dart
     (Art_u + dart) * Rate
     (Ink_u + dink) * Spot
     #Ray * Spot
@@ -1254,9 +1204,6 @@ iff in range uint256
     
 iff in range int256
 
-    Art_i
-    #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
-    Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     Take
     Take * dink
     Rate
@@ -1264,7 +1211,6 @@ iff in range int256
 
 if
 
-    CALLER_ID =/= Vow
     VGas > 300000
 ```
 

@@ -449,10 +449,6 @@ rule #Pit.Line => 3
 syntax Int ::= "#Pit.vat" [function]
 // ---------------------------------
 rule #Pit.vat => 4
-
-syntax Int ::= "#Pit.drip" [function]
-// ----------------------------------
-rule #Pit.drip => 5
 syntax Int ::= "#Vow.wards" "[" Int "]" [function]
 // ---------------------------------
 rule #Vow.wards[A] => #hashedLocation("Solidity", 0, A)
