@@ -77,6 +77,18 @@ rule #unsigned(X) ==K 0 => X ==Int 0
 
 rule 0 <Int #unsigned(X) => 0 <Int X
 
+// uadd
+// lemmas for necessity
+rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+// usub
+// lemmas for necessity
+rule A -Word B <Int A => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
 // addui
 // lemmas for sufficiency
 rule chop(A +Int #unsigned(B)) => A +Int B
@@ -85,7 +97,12 @@ rule chop(A +Int #unsigned(B)) => A +Int B
   andBool #rangeUInt(256, A +Int B)
 
 // lemmas for necessity
-rule chop(A +Int #unsigned(B)) >Int A => (A +Int B <=Int maxUInt256)
+// rule chop(A +Int #unsigned(B)) >Int A => (A +Int B <=Int maxUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeSInt(256, B)
+//   andBool B >=Int 0
+
+rule (A +Int #unsigned(B) <=Int maxUInt256) => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B >=Int 0
@@ -103,7 +120,12 @@ rule A -Word #unsigned(B) => A -Int B
   andBool #rangeUInt(256, A -Int B)
 
 // lemmas for necessity
-rule A -Word #unsigned(B) <Int A => (A -Int B >=Int minUInt256)
+// rule A -Word #unsigned(B) <Int A => (A -Int B >=Int minUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeSInt(256, B)
+//   andBool B >=Int 0
+
+rule (A -Int #unsigned(B) >=Int minUInt256) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B >=Int 0
@@ -152,4 +174,8 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B <Int 0
+
+rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 ```

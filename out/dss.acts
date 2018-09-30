@@ -321,6 +321,7 @@ storage
 
 iff
 
+    // doc: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -1417,6 +1418,7 @@ types
 
     Vat  : address VatLike
     Woe  : uint256
+    Can  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1429,27 +1431,27 @@ storage
 
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
-    #Vat.vice           |-> Vice => Vice - #Ray * wad
-    #Vat.debt           |-> Debt => Debt - #Ray * wad
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.vice           |-> Vice => Vice - wad * #Ray
+    #Vat.debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Woe
+    Can == 1
 
 iff in range uint256
 
     Woe - wad
-    Dai - #Ray * wad
-    Sin - #Ray * wad
-    Vice - #Ray * wad
-    Debt - #Ray * wad
+    Dai - wad * #Ray
+    Sin - wad * #Ray
+    Vice - wad * #Ray
+    Debt - wad * #Ray
 
 iff in range int256
 
-    #Ray * wad
+    wad * #Ray
 
 if
 
@@ -1462,6 +1464,7 @@ types
 
     Vat  : address VatLike
     Woe  : uint256
+    Can  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1474,27 +1477,27 @@ storage
 
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
-    #Vat.vice           |-> Vice => Vice - #Ray * wad
-    #Vat.debt           |-> Debt => Debt - #Ray * wad
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.vice           |-> Vice => Vice - wad * #Ray
+    #Vat.debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Ash
+    Can == 1
 
 iff in range uint256
 
     Ash - wad
-    Dai - #Ray * wad
-    Sin - #Ray * wad
-    Vice - #Ray * wad
-    Debt - #Ray * wad
+    Dai - wad * #Ray
+    Sin - wad * #Ray
+    Vice - wad * #Ray
+    Debt - wad * #Ray
 
 iff in range int256
 
-    #Ray * wad
+    wad * #Ray
 
 if
 
@@ -1529,22 +1532,31 @@ if
     VGas > 300000
 
 behaviour flog of Vow
-interface flog(uint48 era_)
+interface flog(uint48 t)
 
 types
 
-    Sin_era_ : uint256
+    Wait  : uint256
+    Sin_t : uint256
+    Sin   : uint256
+    Woe   : uint256
 
 storage
 
-    #Vow.sin(era_) |-> Sin_era_ => 0
-    #Vow.Sin       |-> Sin      => Sin - Sin_era_
-    #Vow.Woe       |-> Woe      => Woe + Sin_era_
+    #Vow.wait   |-> Wait
+    #Vow.Sin    |-> Sin   => Sin - Sin_t
+    #Vow.Woe    |-> Woe   => Woe + Sin_t
+    #Vow.sin[t] |-> Sin_t => 0
+
+iff
+
+    t + Wait <= TIME
 
 iff in range uint256
 
-    Sin - Sin_era_
-    Woe + Sin_era_
+    t + Wait
+    Sin - Sin_t
+    Woe + Sin_t
 
 if
 
@@ -1971,8 +1983,11 @@ storage Vow
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: system is  `. ? : not` live
     Live == 1
+    // act: CDP is  `. ?  : not` vulnerable
     Ink_u * Spot_i < Art_u * Rate
 
 iff in range int256

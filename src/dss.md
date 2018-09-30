@@ -342,6 +342,8 @@ if
 
 #### administering a position
 
+This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the Ilk `i` to interact with, and agent identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
+
 ```
 behaviour tune of Vat
 interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
@@ -374,6 +376,7 @@ storage
 
 iff
 
+    // doc: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -385,7 +388,7 @@ iff in range uint256
     Gem_v - (Take * dink)
     Dai_w + (Rate * dart)
     Debt + (Rate * dart)
-    
+
 iff in range int256
 
     Take
@@ -456,7 +459,7 @@ if
     VGas > 300000
 ```
 
-#### manipulating bad debt and surplus
+#### creating/annihilating bad debt and surplus
 ```
 behaviour heal of Vat
 interface heal(bytes32 u, bytes32 v, int256 rad)
@@ -1632,6 +1635,7 @@ types
 
     Vat  : address VatLike
     Woe  : uint256
+    Can  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1643,28 +1647,28 @@ storage
     #Vow.Woe |-> Woe => Woe - wad
 
 storage Vat
-    
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
-    #Vat.vice           |-> Vice => Vice - #Ray * wad
-    #Vat.debt           |-> Debt => Debt - #Ray * wad
+
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.vice           |-> Vice => Vice - wad * #Ray
+    #Vat.debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Woe
+    Can == 1
 
 iff in range uint256
 
     Woe - wad
-    Dai - #Ray * wad
-    Sin - #Ray * wad
-    Vice - #Ray * wad
-    Debt - #Ray * wad
+    Dai - wad * #Ray
+    Sin - wad * #Ray
+    Vice - wad * #Ray
+    Debt - wad * #Ray
     
 iff in range int256
 
-    #Ray * wad
+    wad * #Ray
 
 if
 
@@ -1679,6 +1683,7 @@ types
 
     Vat  : address VatLike
     Woe  : uint256
+    Can  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1691,27 +1696,27 @@ storage
 
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
-    #Vat.vice           |-> Vice => Vice - #Ray * wad
-    #Vat.debt           |-> Debt => Debt - #Ray * wad
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.vice           |-> Vice => Vice - wad * #Ray
+    #Vat.debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Ash
+    Can == 1
 
 iff in range uint256
 
     Ash - wad
-    Dai - #Ray * wad
-    Sin - #Ray * wad
-    Vice - #Ray * wad
-    Debt - #Ray * wad
+    Dai - wad * #Ray
+    Sin - wad * #Ray
+    Vice - wad * #Ray
+    Debt - wad * #Ray
     
 iff in range int256
 
-    #Ray * wad
+    wad * #Ray
 
 if
 
@@ -1752,22 +1757,31 @@ if
 #### processing `sin` queue
 ```
 behaviour flog of Vow
-interface flog(uint48 era_)
+interface flog(uint48 t)
 
 types
 
-    Sin_era_ : uint256
-    
+    Wait  : uint256
+    Sin_t : uint256
+    Sin   : uint256
+    Woe   : uint256
+
 storage
 
-    #Vow.sin(era_) |-> Sin_era_ => 0
-    #Vow.Sin       |-> Sin      => Sin - Sin_era_
-    #Vow.Woe       |-> Woe      => Woe + Sin_era_
+    #Vow.wait   |-> Wait
+    #Vow.Sin    |-> Sin   => Sin - Sin_t
+    #Vow.Woe    |-> Woe   => Woe + Sin_t
+    #Vow.sin[t] |-> Sin_t => 0
+
+iff
+
+    t + Wait <= TIME
 
 iff in range uint256
 
-    Sin - Sin_era_
-    Woe + Sin_era_
+    t + Wait
+    Sin - Sin_t
+    Woe + Sin_t
 
 if
 
@@ -2247,8 +2261,11 @@ storage Vow
     
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: system is  `. ? : not` live
     Live == 1
+    // act: CDP is  `. ?  : not` vulnerable
     Ink_u * Spot_i < Art_u * Rate
 
 iff in range int256

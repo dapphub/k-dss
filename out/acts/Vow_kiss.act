@@ -5,6 +5,7 @@ types
 
     Vat  : address VatLike
     Woe  : uint256
+    Can  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -17,27 +18,27 @@ storage
 
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - #Ray * wad
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - #Ray * wad
-    #Vat.vice           |-> Vice => Vice - #Ray * wad
-    #Vat.debt           |-> Debt => Debt - #Ray * wad
+    #Vat.wards[ACCT_ID] |-> Can
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.vice           |-> Vice => Vice - wad * #Ray
+    #Vat.debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
-    wad <= Dai / 1000000000000000000000000000
-    wad <= Ash
+    Can == 1
 
 iff in range uint256
 
     Ash - wad
-    Dai - #Ray * wad
-    Sin - #Ray * wad
-    Vice - #Ray * wad
-    Debt - #Ray * wad
+    Dai - wad * #Ray
+    Sin - wad * #Ray
+    Vice - wad * #Ray
+    Debt - wad * #Ray
 
 iff in range int256
 
-    #Ray * wad
+    wad * #Ray
 
 if
 

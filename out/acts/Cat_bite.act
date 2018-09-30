@@ -55,8 +55,11 @@ storage Vow
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: system is  `. ? : not` live
     Live == 1
+    // act: CDP is  `. ?  : not` vulnerable
     Ink_u * Spot_i < Art_u * Rate
 
 iff in range int256

@@ -334,50 +334,74 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^I
   andBool #rangeUInt(48, Y)
 syntax Int ::= "#Vat.wards" "[" Int "]" [function]
 // -----------------------------------------------
+// doc: authorisation to call
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Vat.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Vat.ilks" "[" Int "].take" [function]
 // ----------------------------------------------------
+// doc: collateral unit rate of ilk `$0`
+// act: ilk `$0` has collateral unit rate `.`
 rule #Vat.ilks[Ilk].take => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Vat.ilks" "[" Int "].rate" [function]
 // ----------------------------------------------------
+// doc: debt unit rate of ilk `$0`
+// act: ilk `$0` has debt unit rate `.`
 rule #Vat.ilks[Ilk].rate => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Vat.ilks" "[" Int "].Ink" [function]
 // -----------------------------------------------
+// doc: the total encumbered collateral for the ilk `$0`
+// act: ilk `$0` has encumbered collateral `.`
 rule #Vat.ilks[Ilk].Ink => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
 syntax Int ::= "#Vat.ilks" "[" Int "].Art" [function]
 // -----------------------------------------------
+// doc: the total debt issued from the ilk `$0`
+// act: ilk `$0` has debt issuance `.`
 rule #Vat.ilks[Ilk].Art => #hashedLocation("Solidity", 1, Ilk) +Int 3
 
 syntax Int ::= "#Vat.urns" "[" Int "][" Int "].ink" [function]
 // ----------------------------------------------------------
+// doc: the amount of encumbered collateral units assigned to `$1`
+// act: agent `$1` has `.` collateral units in ilk `$0`
 rule #Vat.urns[Ilk][Guy].ink => #hashedLocation("Solidity", 2, Ilk Guy)
 
 syntax Int ::= "#Vat.urns" "[" Int "][" Int "].art" [function]
 // ----------------------------------------------------------
+// doc: the amount of debt units assigned to `$1`
+// act: agent `$1` has `.` debt units in ilk `$0`
 rule #Vat.urns[Ilk][Guy].art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
 
 syntax Int ::= "#Vat.gem" "[" Int "][" Int "]" [function]
 // ---------------------------------------------
+// doc: the amount of unencumbered collateral assigned to `$1`
+// act: agent `$1` has `.` unencumbered collateral in ilk `$0`
 rule #Vat.gem[Ilk][Guy] => #hashedLocation("Solidity", 3, Ilk Guy)
 
 syntax Int ::= "#Vat.dai" "[" Int "]" [function]
 // ---------------------------------------------
+// doc: the amount of dai assigned to `$0`
+// act: agent `$0` has `.` dai
 rule #Vat.dai[A] => #hashedLocation("Solidity", 4, A)
 
 syntax Int ::= "#Vat.sin" "[" Int "]" [function]
 // ---------------------------------------------
+// doc: the amount of system debt assigned to `$0`
+// act: agent `$0` has `.` dai
 rule #Vat.sin[A] => #hashedLocation("Solidity", 5, A)
 
 syntax Int ::= "#Vat.debt" [function]
 // ---------------------------------
+// doc: the total debt issued from the system
+// act: system has `.` total debt
 rule #Vat.debt => 6
 
 syntax Int ::= "#Vat.vice" [function]
 // ----------------------------------
+// doc: the total system debt
+// act: there is `.` system debt
 rule #Vat.vice => 7
 syntax Int ::= "#Drip.wards" "[" Int "]" [function]
 // -----------------------------------------------
@@ -693,6 +717,18 @@ rule #unsigned(X) ==K 0 => X ==Int 0
 
 rule 0 <Int #unsigned(X) => 0 <Int X
 
+// uadd
+// lemmas for necessity
+rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+// usub
+// lemmas for necessity
+rule A -Word B <Int A => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
 // addui
 // lemmas for sufficiency
 rule chop(A +Int #unsigned(B)) => A +Int B
@@ -701,7 +737,12 @@ rule chop(A +Int #unsigned(B)) => A +Int B
   andBool #rangeUInt(256, A +Int B)
 
 // lemmas for necessity
-rule chop(A +Int #unsigned(B)) >Int A => (A +Int B <=Int maxUInt256)
+// rule chop(A +Int #unsigned(B)) >Int A => (A +Int B <=Int maxUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeSInt(256, B)
+//   andBool B >=Int 0
+
+rule (A +Int #unsigned(B) <=Int maxUInt256) => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B >=Int 0
@@ -719,7 +760,12 @@ rule A -Word #unsigned(B) => A -Int B
   andBool #rangeUInt(256, A -Int B)
 
 // lemmas for necessity
-rule A -Word #unsigned(B) <Int A => (A -Int B >=Int minUInt256)
+// rule A -Word #unsigned(B) <Int A => (A -Int B >=Int minUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeSInt(256, B)
+//   andBool B >=Int 0
+
+rule (A -Int #unsigned(B) >=Int minUInt256) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B >=Int 0
@@ -768,5 +814,9 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B <Int 0
+
+rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 
 endmodule

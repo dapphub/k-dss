@@ -29,6 +29,7 @@ storage
 
 iff
 
+    // doc: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256

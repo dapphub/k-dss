@@ -116,10 +116,10 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | deny      | x    | x    |      |      |
 | file-data | x    | x    |      |      |
 | file-addr | x    | x    |      |      |
-| heal      | x    | o    |      |      |
+| heal      | x    | x    |      |      |
 | kiss      | x    | o    |      |      |
 | fess      | x    | x    |      |      |
-| flog      | o    | o    |      |      |
+| flog      | x    | x    |      |      |
 | flop      | o    | o    |      |      |
 | flap      | o    | o    |      |      |
 | Cat       +------+------+------+------|
