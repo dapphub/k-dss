@@ -2,7 +2,7 @@
 
 ### string literal syntax
 
-```
+```k
 syntax Int ::= "#rightPadInt" "(" Int "," Int ")" [function]
 // ---------------------------------------------------------
 rule #rightPadInt(N, X) => X
@@ -17,7 +17,7 @@ rule #string2Word(S) => #rightPadInt(32, Bytes2Int(String2Bytes(S), bigEndianByt
 
 ### special fixed-point arithmetic
 
-```
+```k
 syntax Int ::= "#Wad" [function]
 // -----------------------------
 rule #Wad => 1000000000000000000
@@ -29,7 +29,7 @@ rule #Ray => 1000000000000000000000000000
 
 We leave these symbolic for now:
 
-```
+```k
 syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
 
 syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(smt_rpow)]
@@ -37,7 +37,7 @@ syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(sm
 
 ### hashed storage
 
-```
+```k
 // hashed storage offsets never overflow (probabilistic assumption):
 rule chop(keccakIntList(L) +Int N) => keccakIntList(L) +Int N
   requires N <=Int 100
@@ -51,7 +51,7 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
 
 ### miscellaneous
 
-```
+```k
 rule WS ++ .WordStack => WS
 
 rule #sizeWordStack ( #padToWidth ( 32 , #asByteStack ( #unsigned ( W ) ) ) , 0) => 32
@@ -72,7 +72,7 @@ rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 
 ### signed 256-bit integer arithmetic
 
-```
+```k
 rule #unsigned(X) ==K 0 => X ==Int 0
 
 rule 0 <Int #unsigned(X) => 0 <Int X

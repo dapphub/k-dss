@@ -4,7 +4,7 @@
 We will have to use some of these tricks when reasoning about solidity implementations of `Flip`, `Flap`, and `Flop`:
 
 **TODO** : unpacking these might require some easy lemmas about division
-```
+```k
 syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
 // ----------------------------------------------------------
 rule #WordPackUInt48UInt48(X, Y) => Y *Int (2 ^Int 48) +Int X
@@ -21,7 +21,7 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^I
 
 ### Vat
 
-```
+```k
 syntax Int ::= "#Vat.wards" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: authorisation to call
@@ -96,7 +96,8 @@ rule #Vat.vice => 7
 ```
 
 ### Drip
-```
+
+```k
 syntax Int ::= "#Drip.wards" "[" Int "]" [function]
 // -----------------------------------------------
 rule #Drip.wards[A] => #hashedLocation("Solidity", 0, A)
@@ -124,7 +125,7 @@ rule #Drip.repo => 4
 
 ### Pit
 
-```
+```k
 syntax Int ::= "#Pit.wards" "[" Int "]" [function]
 // ---------------------------------
 rule #Pit.wards[A] => #hashedLocation("Solidity", 0, A)
@@ -152,7 +153,7 @@ rule #Pit.vat => 4
 
 ### Vow
 
-```
+```k
 syntax Int ::= "#Vow.wards" "[" Int "]" [function]
 // ---------------------------------
 rule #Vow.wards[A] => #hashedLocation("Solidity", 0, A)
@@ -204,7 +205,7 @@ rule #Vow.hump => 11
 
 ### Cat
 
-```
+```k
 syntax Int ::= "#Cat.wards" "[" Int "]" [function]
 // ---------------------------------
 rule #Cat.wards[A] => #hashedLocation("Solidity", 0, A)
@@ -260,7 +261,7 @@ rule #Cat.vow => 7
 
 ### GemJoin
 
-```
+```k
 syntax Int ::= "#GemJoin.vat" [function]
 // -------------------------------------
 rule #GemJoin.vat => 0
@@ -276,7 +277,7 @@ rule #GemJoin.gem => 2
 
 ### ETHJoin
 
-```
+```k
 syntax Int ::= "#ETHJoin.vat" [function]
 // -------------------------------------
 rule #ETHJoin.vat => 0
@@ -288,7 +289,7 @@ rule #ETHJoin.ilk => 1
 
 ### DaiJoin
 
-```
+```k
 syntax Int ::= "#DaiJoin.vat" [function]
 // -------------------------------------
 rule #DaiJoin.vat => 0
@@ -300,7 +301,7 @@ rule #DaiJoin.dai => 1
 
 ### Flipper
 
-```
+```k
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flipper.ttl_tau" [function]
 // -----------------------------------------
@@ -404,7 +405,7 @@ rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 5, N) +Int 3
 
 A hypothetical token contract, based on `ds-token`:
 
-```
+```k
 syntax Int ::= "#GemLike.balances" "[" Int "]" [function]
 // --------------------------------------------------
 rule #GemLike.balances[A] => #hashedLocation("Solidity", 1, A)

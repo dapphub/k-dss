@@ -7,7 +7,8 @@ What follows is an executable K specification of the smart contracts of multicol
 ### Accessors
 
 #### owners
-```
+
+```act
 behaviour wards of Vat
 interface wards(address guy)
 
@@ -27,7 +28,8 @@ returns Can
 ```
 
 #### collateral type data
-```
+
+```act
 behaviour ilks of Vat
 interface ilks(bytes32 ilk)
 
@@ -53,29 +55,31 @@ returns Take : Rate : Ink_i : Art_i
 ```
 
 #### `urn` data
-```
+
+```act
 behaviour urns of Vat
 interface urns(bytes32 ilk, bytes32 urn)
 
 types
 
-    Ink_u : uint256
-    Art_u : uint256
+    Ink_iu : uint256
+    Art_iu : uint256
 
 storage
 
-    #Vat.urns[ilk][urn].ink |-> Ink_u
-    #Vat.urns[ilk][urn].art |-> Art_u
+    #Vat.urns[ilk][urn].ink |-> Ink_iu
+    #Vat.urns[ilk][urn].art |-> Art_iu
 
 if
 
     VGas > 300000
 
-returns Ink_u : Art_u
+returns Ink_iu : Art_iu
 ```
 
 #### internal unencumbered collateral balances
-```
+
+```act
 behaviour gem of Vat
 interface gem(bytes32 ilk, bytes32 urn)
 
@@ -95,7 +99,8 @@ returns Gem
 ```
 
 #### internal dai balances
-```
+
+```act
 behaviour dai of Vat
 interface dai(bytes32 lad)
 
@@ -115,7 +120,8 @@ returns Rad
 ```
 
 #### internal sin balances
-```
+
+```act
 behaviour sin of Vat
 interface sin(bytes32 lad)
 
@@ -135,7 +141,8 @@ returns Rad
 ```
 
 #### total debt
-```
+
+```act
 behaviour debt of Vat
 interface debt()
 
@@ -155,7 +162,8 @@ returns Debt
 ```
 
 #### total bad debt
-```
+
+```act
 behaviour vice of Vat
 interface vice()
 
@@ -176,7 +184,8 @@ returns Vice
 ### Mutators
 
 #### adding and removing owners
-```
+
+```act
 behaviour rely of Vat
 interface rely(address guy)
 
@@ -199,7 +208,8 @@ if
     VGas > 300000
 ```
 
-```
+
+```act
 behaviour deny of Vat
 interface deny(address guy)
 
@@ -223,7 +233,8 @@ if
 ```
 
 #### initialising an `ilk`
-```
+
+```act
 behaviour init of Vat
 interface init(bytes32 ilk)
 
@@ -251,7 +262,8 @@ if
 ```
 
 #### assigning unencumbered collateral
-```
+
+```act
 behaviour slip of Vat
 interface slip(bytes32 ilk, bytes32 guy, int256 wad)
 
@@ -279,7 +291,8 @@ if
 ```
 
 #### moving unencumbered collateral
-```
+
+```act
 behaviour flux of Vat
 interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
 
@@ -310,7 +323,8 @@ if
 ```
 
 #### transferring dai balances
-```
+
+```act
 behaviour move of Vat
 interface move(bytes32 src, bytes32 dst, int256 rad)
 
@@ -344,7 +358,8 @@ if
 
 This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the Ilk `i` to interact with, and agent identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
-```
+
+```act
 behaviour tune of Vat
 interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
@@ -403,7 +418,8 @@ if
 
 #### confiscating a position
 
-```
+
+```act
 behaviour grab of Vat
 interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
@@ -460,7 +476,8 @@ if
 ```
 
 #### creating/annihilating bad debt and surplus
-```
+
+```act
 behaviour heal of Vat
 interface heal(bytes32 u, bytes32 v, int256 rad)
 
@@ -497,7 +514,8 @@ if
 ```
 
 #### applying interest to an `ilk`
-```
+
+```act
 behaviour fold of Vat
 interface fold(bytes32 i, bytes32 u, int256 rate)
 
@@ -538,7 +556,8 @@ if
 ```
 
 #### applying collateral adjustment to an `ilk`
-```
+
+```act
 behaviour toll of Vat
 interface toll(bytes32 i, bytes32 u, int256 take) 
 
@@ -583,7 +602,8 @@ if
 
 #### owners
 
-```
+
+```act
 behaviour wards of Drip
 interface wards(address guy)
 
@@ -604,7 +624,8 @@ returns Can
 
 #### `ilk` data
 
-```
+
+```act
 behaviour ilks of Drip
 interface ilks(bytes32 ilk)
 
@@ -627,7 +648,8 @@ returns Tax : Rho
 ```
 
 #### `vat` address
-```
+
+```act
 behaviour vat of Drip
 interface vat()
 
@@ -647,7 +669,8 @@ returns Vat
 ```
 
 #### `vow` address
-```
+
+```act
 behaviour vow of Drip
 interface vow()
 
@@ -667,7 +690,8 @@ returns Vow
 ```
 
 #### global interest rate
-```
+
+```act
 behaviour repo of Drip
 interface repo()
 
@@ -687,7 +711,8 @@ returns Repo
 ```
 
 #### getting the time
-```
+
+```act
 behaviour era of Drip
 interface era()
     
@@ -702,7 +727,8 @@ returns TIME
 ### Mutators
 
 #### adding and removing owners
-```
+
+```act
 behaviour rely of Drip
 interface rely(address guy)
 
@@ -748,7 +774,8 @@ if
 
 #### initialising an `ilk`
 
-```
+
+```act
 behaviour init of Drip
 interface init(bytes32 ilk)
 
@@ -776,7 +803,8 @@ if
 
 #### setting `ilk` data
 
-```
+
+```act
 behaviour file of Drip
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
@@ -803,7 +831,8 @@ if
 ```
 
 #### setting the base rate
-```
+
+```act
 behaviour file-repo of Drip
 interface file(bytes32 what, uint256 data)
 
@@ -827,7 +856,8 @@ if
 ```
 
 #### setting the `vow`
-```
+
+```act
 behaviour file-vow of Drip
 interface file(bytes32 what, bytes32 data)
 
@@ -851,7 +881,8 @@ if
 ```
 
 #### updating the rates
-```
+
+```act
 behaviour drip of Drip
 interface drip(bytes32 ilk)
 
@@ -916,7 +947,8 @@ if
 ### Accessors
 
 #### owners
-```
+
+```act
 behaviour wards of Pit
 interface wards(address guy)
 
@@ -937,7 +969,8 @@ returns Can
 
 
 #### `ilk` data
-```
+
+```act
 behaviour ilks of Pit
 interface ilks(bytes32 ilk)
 
@@ -959,7 +992,8 @@ returns Spot_i : Line_i
 ```
 
 #### liveness
-```
+
+```act
 behaviour live of Pit
 interface live()
 
@@ -979,7 +1013,8 @@ returns Live
 ```
 
 #### `vat` address
-```
+
+```act
 behaviour vat of Pit
 interface vat()
 
@@ -999,7 +1034,8 @@ returns Vat
 ```
 
 #### global debt ceiling
-```
+
+```act
 behaviour Line of Pit
 interface Line()
 
@@ -1019,7 +1055,8 @@ returns Line
 ```
 
 #### `drip` address
-```
+
+```act
 behaviour drip of Pit
 interface drip()
 
@@ -1041,7 +1078,8 @@ returns Drip
 ### Mutators
 
 #### adding and removing owners
-```
+
+```act
 behaviour rely of Pit
 interface rely(address guy)
 
@@ -1086,7 +1124,8 @@ if
 ```
 
 #### setting `ilk` data
-```
+
+```act
 behaviour file-ilk of Pit
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
@@ -1112,7 +1151,8 @@ if
 ```
 
 #### setting the global debt ceiling
-```
+
+```act
 behaviour file-Line of Pit
 interface file(bytes32 what, uint256 data)
 
@@ -1137,7 +1177,8 @@ if
 
 #### manipulating a position
 
-```
+
+```act
 behaviour frob of Pit
 interface frob(bytes32 ilk, int256 dink, int256 dart)
 
@@ -1221,7 +1262,8 @@ if
 ### Accessors
 
 #### owners
-```
+
+```act
 behaviour wards of Vow
 interface wards(address guy)
 
@@ -1241,7 +1283,8 @@ returns Can
 ```
 
 #### getting the time
-```
+
+```act
 behaviour era of Vow
 interface era()
 
@@ -1253,7 +1296,8 @@ returns TIME
 ```
 
 #### getting a `sin` packet
-```
+
+```act
 behaviour sin of Vow
 interface sin(uint48 era)
 
@@ -1273,7 +1317,8 @@ returns Sin_era
 ```
 
 #### getting the `Sin`
-```
+
+```act
 behaviour Sin of Vow
 interface Sin()
 
@@ -1293,7 +1338,8 @@ returns Sin
 ```
 
 #### getting the `Woe`
-```
+
+```act
 behaviour Woe of Vow
 interface Woe()
 
@@ -1313,7 +1359,8 @@ returns Woe
 ```
 
 #### getting the `Ash`
-```
+
+```act
 behaviour Ash of Vow
 interface Ash()
 
@@ -1333,7 +1380,8 @@ returns Ash
 ```
 
 #### getting the `wait`
-```
+
+```act
 behaviour wait of Vow
 interface wait()
 
@@ -1353,7 +1401,8 @@ returns Wait
 ```
 
 #### getting the `sump`
-```
+
+```act
 behaviour sump of Vow
 interface sump()
 
@@ -1373,7 +1422,8 @@ returns Sump
 ```
 
 #### getting the `bump`
-```
+
+```act
 behaviour bump of Vow
 interface bump()
 
@@ -1393,7 +1443,8 @@ returns Bump
 ```
 
 #### getting the `hump`
-```
+
+```act
 behaviour hump of Vow
 interface hump()
 
@@ -1413,7 +1464,8 @@ returns Hump
 ```
 
 #### getting the `Awe`
-```
+
+```act
 behaviour Awe of Vow
 interface Awe()
 
@@ -1442,7 +1494,8 @@ returns Sin + Woe + Ash
 ```
 
 #### getting the `Joy`
-```
+
+```act
 behaviour Joy of Vow
 interface Joy()
 
@@ -1515,7 +1568,8 @@ if
 
 
 #### setting `Vow` parameters
-```
+
+```act
 behaviour file-data of Vow
 interface file(bytes32 what, uint256 data)
 
@@ -1545,7 +1599,8 @@ if
 ```
 
 #### setting vat and liquidators
-```
+
+```act
 behaviour file-addr of Vow
 interface file(bytes32 what, address addr)
 
@@ -1573,7 +1628,8 @@ if
 ```
 
 #### cancelling bad debt and surplus
-```
+
+```act
 behaviour heal of Vow
 interface heal(uint256 wad)
 
@@ -1619,9 +1675,7 @@ iff in range int256
 if
 
     VGas > 300000
-```
 
-```
 behaviour kiss of Vow
 interface kiss(uint256 wad)
 
@@ -1670,7 +1724,8 @@ if
 ```
 
 #### adding to the `sin` queue
-```
+
+```act
 behaviour fess of Vow
 interface fess(uint256 tab)
 
@@ -1701,7 +1756,8 @@ if
 ```
 
 #### processing `sin` queue
-```
+
+```act
 behaviour flog of Vow
 interface flog(uint48 t)
 
@@ -1735,7 +1791,8 @@ if
 ```
 
 #### starting a debt auction
-```
+
+```act
 behaviour flop of Vow
 interface flop()
 
@@ -1791,7 +1848,8 @@ returns Kicks + 1
 ```
 
 #### starting a surplus auction
-```
+
+```act
 behaviour flap of Vow
 interface flap()
 
@@ -1856,7 +1914,8 @@ returns Kicks + 1
 ### Accessors
 
 #### owners
-```
+
+```act
 behaviour wards of Cat
 interface wards(address guy)
 
@@ -1876,7 +1935,8 @@ returns Can
 ```
 
 #### `ilk` data
-```
+
+```act
 behaviour ilks of Cat
 interface ilks(bytes32 ilk)
 
@@ -1900,7 +1960,8 @@ returns Flip : Chop : Lump
 ```
 
 #### liquidation data
-```
+
+```act
 behaviour flips of Cat
 interface flips(uint256 n)
 
@@ -1926,7 +1987,8 @@ returns Ilk : Urn : Ink : Tab
 ```
 
 #### liquidation counter
-```
+
+```act
 behaviour nflip of Cat
 interface nflip()
 
@@ -1946,7 +2008,8 @@ returns Nflip
 ```
 
 #### liveness
-```
+
+```act
 behaviour live of Cat
 interface live()
 
@@ -1966,7 +2029,8 @@ returns Live
 ```
 
 #### `vat` address
-```
+
+```act
 behaviour vat of Cat
 interface vat()
 
@@ -1986,7 +2050,8 @@ returns Vat
 ```
 
 #### `pit` address
-```
+
+```act
 behaviour pit of Cat
 interface pit()
 
@@ -2006,7 +2071,8 @@ returns Pit
 ```
 
 #### `vow` address
-```
+
+```act
 behaviour vow of Cat
 interface vow()
 
@@ -2028,7 +2094,8 @@ returns Vow
 ### Mutators
 
 #### addingg and removing owners
-```
+
+```act
 behaviour rely of Cat
 interface rely(address guy)
 
@@ -2073,7 +2140,8 @@ if
 ```
 
 #### setting contract addresses
-```
+
+```act
 behaviour file-addr of Cat
 interface file(bytes32 what, address data)
 
@@ -2099,7 +2167,8 @@ if
 ```
 
 #### setting liquidation data
-```
+
+```act
 behaviour file of Cat
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
@@ -2125,7 +2194,8 @@ if
 ```
 
 #### setting liquidator address
-```
+
+```act
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
@@ -2149,7 +2219,8 @@ if
 ```
 
 #### marking a position for liquidation
-```
+
+```act
 behaviour bite of Cat
 interface bite(bytes32 ilk, address urn)
 
@@ -2238,7 +2309,8 @@ returns Nflip + 1
 ```
 
 #### starting a collateral auction
-```
+
+```act
 behaviour flip of Cat
 interface flip(uint256 n, uint256 wad)
 
@@ -2305,7 +2377,8 @@ returns Kicks + 1
 ### Accessors
 
 #### `vat` address
-```
+
+```act
 behaviour vat of GemJoin
 interface vat()
 
@@ -2325,7 +2398,8 @@ returns Vat
 ```
 
 #### the associated `ilk`
-```
+
+```act
 behaviour ilk of GemJoin
 interface ilk()
 
@@ -2345,7 +2419,8 @@ returns Ilk
 ```
 
 #### gem address
-```
+
+```act
 behaviour gem of GemJoin
 interface gem()
 
@@ -2367,7 +2442,8 @@ returns Gem
 ### Mutators
 
 #### depositing into the system
-```
+
+```act
 behaviour join of GemJoin
 interface join(bytes32 urn, uint256 wad)
 
@@ -2417,7 +2493,8 @@ if
 ```
 
 #### withdrawing from the system
-```
+
+```act
 behaviour exit of GemJoin
 interface exit(bytes32 urn, uint256 wad)
 
@@ -2473,7 +2550,8 @@ if
 ### Accessors
 
 #### `vat` address
-```
+
+```act
 behaviour vat of ETHJoin
 interface vat()
 
@@ -2493,7 +2571,8 @@ returns Vat
 ```
 
 #### the associated `ilk`
-```
+
+```act
 behaviour ilk of ETHJoin
 interface ilk()
 
@@ -2517,7 +2596,8 @@ returns Ilk
 #### depositing into the system
 
 *TODO* : add `balance ACCT_ID` block
-```
+
+```act
 behaviour join of ETHJoin
 interface join(bytes32 urn)
 
@@ -2560,7 +2640,8 @@ if
 #### withdrawing from the system
 
 *TODO* : add `balance ACCT_ID` block
-```
+
+```act
 behaviour exit of ETHJoin
 interface exit(bytes32, uint256 wad)
 
@@ -2607,7 +2688,8 @@ if
 ### Accessors
 
 #### `vat` address
-```
+
+```act
 behaviour vat of DaiJoin
 interface vat()
 
@@ -2627,7 +2709,8 @@ returns Vat
 ```
 
 #### dai address
-```
+
+```act
 behaviour dai of DaiJoin
 interface dai()
 
@@ -2649,7 +2732,8 @@ returns Dai
 ### Mutators
 
 #### depositing into the system
-```
+
+```act
 behaviour join of DaiJoin
 interface join(bytes32 urn, uint256 wad)
 
@@ -2697,7 +2781,8 @@ if
 ```
 
 #### withdrawing from the system
-```
+
+```act
 behaviour exit of DaiJoin
 interface exit(bytes32 urn, uint256 wad)
 
