@@ -6,6 +6,52 @@ The `Vat` stores the core dai, CDP, and collateral state, and tracks the system'
 
 ## Specification of behaviours
 
+### Arithmetic
+
+#### Overflow safe addition
+```
+behaviour add of Vat
+interface add(uint256 x, int256 y) internal
+
+stack
+   y : x : JUMPto : WS => JUMPto : x + y : WS
+
+gas
+   VGas => _
+
+iff in range uint256
+
+    x + y
+
+if
+
+    VGas > 1000
+    #sizeWordStack (WS) <= 1018
+
+```
+#### Overflow safe subtraction
+```
+behaviour sub of Vat
+interface sub(uint256 x, int256 y) internal
+
+stack
+   y : x : JUMPto : WS => JUMPto : x - y : WS
+
+gas
+   VGas => _
+
+iff in range uint256
+
+    x - y
+
+if
+
+    VGas > 1000
+    #sizeWordStack (WS) <= 1018
+
+```
+
+
 ### Accessors
 
 #### owners
