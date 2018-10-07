@@ -36,7 +36,7 @@ Specific behaviours can also be checked in this way, for example:
 make out/specs/proof-Vat_dai_succ.k.proof
 ```
 
-# progress
+### progress
 
 (proof CI running at [dapp.ci](https://dapp.ci) )
 
@@ -116,10 +116,10 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | file-data | x    | x    |      |      |
 | file-addr | x    | x    |      |      |
 | heal      | x    | x    |      |      |
-| kiss      | x    | o    |      |      |
+| kiss      | x    | x    |      |      |
 | fess      | x    | x    |      |      |
 | flog      | x    | x    |      |      |
-| flop      | o    | o    |      |      |
+| flop      | x    | x    |      |      |
 | flap      | o    | o    |      |      |
 | Cat       +------+------+------+------|
 | wards     | x    | -    |      | -    |
