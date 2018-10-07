@@ -5,15 +5,20 @@ We will have to use some of these tricks when reasoning about solidity implement
 
 **TODO** : unpacking these might require some easy lemmas about division
 ```k
+syntax Int ::= "pow48"  [function]
+syntax Int ::= "pow208" [function]
+rule pow48  => 281474976710656                                                 [macro]
+rule pow208 => 411376139330301510538742295639337626245683966408394965837152256 [macro]
+
 syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
 // ----------------------------------------------------------
-rule #WordPackUInt48UInt48(X, Y) => Y *Int (2 ^Int 48) +Int X
+rule #WordPackUInt48UInt48(X, Y) => Y *Int pow48 +Int X
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
 syntax Int ::= "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
 // ----------------------------------------------------------------------
-rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int (2 ^Int 208) +Int X *Int (2 ^Int 160) +Int A
+rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int pow208 +Int X *Int pow160 +Int A
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -337,69 +342,118 @@ syntax Int ::= "#Flipper.bids" "[" Int "].tab" [function]
 rule #Flipper.bids[N].tab => #hashedLocation("Solidity", 5, N) +Int 5
 ```
 
-### Flapper
-
-```
-// packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flapper.ttl_tau" [function]
-// -----------------------------------------
-rule #Flapper.ttl_tau => 3
-
-syntax Int ::= "#Flapper.kicks" [function]
-// ---------------------------------------
-rule #Flapper.kicks => 4
-
-syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
-// ------------------------------------------------------
-rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
-
-syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
-// ------------------------------------------------------
-rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
-
-// packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
-// --------------------------------------------------------------
-rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
-
-syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
-// ------------------------------------------------------
-rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 3
-```
 
 ### Flopper
 
-```
+```k
 syntax Int ::= "#Flopper.wards" "[" Int "]" [function]
 // ---------------------------------------
+// doc: authorisation to call
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Flopper.wards[A] => #hashedLocation("Solidity", 0, A)
 
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
-rule #Flopper.ttl_tau => 3
+// doc:
+// act:
+rule #Flopper.ttl_tau => 5
 
 syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------
-rule #Flopper.kicks => 4
+// doc:
+// act:
+rule #Flopper.kicks => 6
 
 syntax Int ::= "#Flopper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
-rule #Flopper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
+// doc:
+// act:
+rule #Flopper.bids[N].bid => #hashedLocation("Solidity", 1, N) +Int 0
 
 syntax Int ::= "#Flopper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
-rule #Flopper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
+// doc:
+// act:
+rule #Flopper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
-rule #Flopper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+// doc:
+// act:
+rule #Flopper.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
 syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
 // ------------------------------------------------------
-rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 5, N) +Int 3
+// doc:
+// act:
+rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
 ```
+
+### Flapper
+
+```k
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.ttl_tau" [function]
+// -----------------------------------------
+// doc:
+// act:
+rule #Flapper.ttl_tau => 4
+
+syntax Int ::= "#Flapper.kicks" [function]
+// ---------------------------------------
+// doc:
+// act:
+rule #Flapper.kicks => 5
+
+syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
+// ------------------------------------------------------
+// doc:
+// act:
+rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 0, N) +Int 0
+
+syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
+// ------------------------------------------------------
+// doc:
+// act:
+rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 0, N) +Int 1
+
+// packed, use #WordPackAddrUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
+// --------------------------------------------------------------
+// doc:
+// act:
+rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 0, N) +Int 2
+
+syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
+// ------------------------------------------------------
+// doc:
+// act:
+rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 0, N) +Int 3
+
+syntax Int ::= "#Flapper.dai" [function]
+// ---------------------------------------
+// doc:
+// act:
+rule #Flapper.dai => 1
+```
+
+### DaiMove
+```k
+syntax Int ::= "#DaiMove.vat" [function]
+// ---------------------------------------
+// doc:
+// act:
+rule #DaiMove.vat => 0
+
+syntax Int ::= "#DaiMove.can" "[" Int "]" [function]
+// ---------------------------------------
+// doc:
+// act:
+rule #DaiMove.can[A] => #hashedLocation("Solidity", 1, A)
+```
+
 
 ### GemLike
 

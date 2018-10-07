@@ -1682,7 +1682,7 @@ interface kiss(uint256 wad)
 types
 
     Vat  : address VatLike
-    Woe  : uint256
+    Ash  : uint256
     Can  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -1708,9 +1708,9 @@ iff
 
 iff in range uint256
 
-    Ash - wad
-    Dai - wad * #Ray
-    Sin - wad * #Ray
+    Ash  - wad
+    Dai  - wad * #Ray
+    Sin  - wad * #Ray
     Vice - wad * #Ray
     Debt - wad * #Ray
     
@@ -1798,34 +1798,41 @@ interface flop()
 
 types
 
-    Row   : address Floppy
-    Vat   : address VatLike
-    Sump  : uint256
-    Woe   : uint256
-    Ash   : uint256
-    Can   : uint256
-    Ttl   : uint48
-    Tau   : uint48
-    Kicks : uint256
-    Dai   : uint256
+    Row     : address Floppy
+    Vat     : address VatLike
+    Sump    : uint256
+    Woe     : uint256
+    Ash     : uint256
+    Can     : uint256
+    Kicks   : uint256
+    Vow_was : address
+    Lot_was : uint256
+    Bid_was : uint256
+    Guy_was : address
+    Tic_was : uint48
+    End_was : uint48
+    Ttl     : uint48
+    Tau     : uint48
+    Dai     : uint256
     
 storage
 
     #Vow.row  |-> Row
-    #Vow.lump |-> Sump
+    #Vow.vat  |-> Vat
+    #Vow.sump |-> Sump
     #Vow.Woe  |-> Woe => Woe - Sump
     #Vow.Ash  |-> Ash => Ash + Sump
     
 storage Row
 
     #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.kicks                       |-> Kicks => 1 + Kicks
+    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flopper.kicks                       |-> Kicks => Kicks + 1
-    #Flopper.bids[Kicks + 1].bid         |-> _ => Sump
-    #Flopper.bids[Kicks + 1].lot         |-> _ => pow256 - 1
-    #Flopper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flopper.bids[Kicks + 1].vow         |-> _ => ACCT_ID
-    
+
 storage Vat
 
     #Vat.dai[ACCT_ID] |-> Dai
@@ -1833,7 +1840,7 @@ storage Vat
 iff
 
     Can == 1
-    Dai == 0
+    Dai < #Ray
     
 iff in range uint256
 
@@ -1842,9 +1849,11 @@ iff in range uint256
 
 if
 
+    1 + Kicks  <= maxUInt256
+    TIME + Tau <= maxUInt48
     VGas > 300000
     
-returns Kicks + 1
+returns 1 + Kicks
 ```
 
 #### starting a surplus auction
@@ -1855,56 +1864,75 @@ interface flap()
 
 types
 
-    Cow   : address Flappy
-    Vat   : address VatLike
-    Bump  : uint256
-    Hump  : uint256
-    Woe   : uint256
-    Ash   : uint256
-    Ttl   : uint48
-    Tau   : uint48
-    Kicks : uint256
-    Dai   : uint256
+    Cow      : address Flappy
+    Vat      : address VatLike
+    Vat_move : address VatLike
+    Bump     : uint256
+    Hump     : uint256
+    Woe      : uint256
+    Ash      : uint256
+    DaiMove  : address DaiMoveLike
+    Can      : uint256
+    Bid_was  : uint256
+    Lot_was  : uint256
+    Guy_was  : address
+    Tic_was  : uint48
+    End_was  : uint48
+    Gal_was  : uint256
+    Ttl      : uint48
+    Tau      : uint48
+    Kicks    : uint256
+    Dai      : uint256
     
 storage
 
     #Vow.cow  |-> Cow
-    #Vow.lump |-> Bump
-    #Vow.hump  |-> Hump
+    #Vow.vat  |-> Vat
+    #Vow.bump |-> Bump
+    #Vow.hump |-> Hump
     #Vow.Sin  |-> Sin
     #Vow.Woe  |-> Woe
     #Vow.Ash  |-> Ash
-    
+
+storage DaiMove
+
+    #DaiMove.vat          |-> Vat_move
+    #DaiMove.can[ACCT_ID] |-> Can => Can
+
 storage Cow
 
+    #Flapper.dai                         |-> DaiMove
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flapper.kicks                       |-> Kicks => Kicks + 1
-    #Flapper.bids[Kicks + 1].bid         |-> _ => 0
-    #Flapper.bids[Kicks + 1].lot         |-> _ => Bump
-    #Flapper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids[Kicks + 1].gal         |-> _ => ACCT_ID
-    
+    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
+    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai
+    #Vat.dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
 
 iff
 
-    Dai / 1000000000000000000000000000 >= Sin + Woe + Ash + Bump + Hump
+    Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
     
 iff in range uint256
 
     Sin + Woe
-    Sin + Woe + Ash
-    Sin + Woe + Ash + Bump
-    Sin + Woe + Ash + Bump + Hump
+    (Sin + Woe) + Ash
+    ((Sin + Woe) + Ash) + Bump
+    (((Sin + Woe) + Ash) + Bump) + Hump
 
 if
 
+    Vat == Vat_move
+    1 + Kicks <= maxUInt256
+    TIME + Tau <= maxUInt48
     VGas > 300000
     
-returns Kicks + 1
+returns 1 + Kicks
 ```
 
 # Cat
@@ -2230,12 +2258,16 @@ types
     Pit     : address PitLike
     Vow     : address VowLike
     Nflip   : uint256
+    Ilk_was : uint256
+    Urn_was : uint256
+    Ink_was : uint256
+    Tab_was : uint256
     Take    : uint256
     Rate    : uint256
     Art_i   : uint256
-    Ink_u   : uint256
-    Art_u   : uint256
-    Gem_v   : uint256
+    Ink_iu  : uint256
+    Art_iu  : uint256
+    Gem_iv  : uint256
     Sin_w   : uint256
     Vice    : uint256
     Sin     : uint256
@@ -2244,37 +2276,37 @@ types
     
 storage
 
-    #Cat.vat              |-> Vat
-    #Cat.pit              |-> Pit
-    #Cat.vow              |-> Vow
-    #Cat.nflip            |-> Nflip => Nflip + 1
-    #Cat.flips[Nflip].ilk |-> 0     => ilk
-    #Cat.flips[Nflip].urn |-> 0     => urn
-    #Cat.flips[Nflip].ink |-> 0     => Ink_u
-    #Cat.flips[Nflip].tab |-> 0     => Rate * Art_u
-    #Cat.live             |-> Live
+    #Cat.vat                |-> Vat
+    #Cat.pit                |-> Pit
+    #Cat.vow                |-> Vow
+    #Cat.nflip              |-> Nflip   => Nflip + 1
+    #Cat.flips[Nflip].ilk   |-> Ilk_was => ilk
+    #Cat.flips[Nflip].urn   |-> Urn_was => urn
+    #Cat.flips[Nflip].ink   |-> Ink_was => Ink_iu
+    #Cat.flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
+    #Cat.live               |-> Live
 
 storage Vat
 
     #Vat.wards[ACCT_ID]     |-> Can
     #Vat.ilks[ilk].take     |-> Take
     #Vat.ilks[ilk].rate     |-> Rate
-    #Vat.urns[ilk][urn].ink |-> Ink_u => 0
-    #Vat.urns[ilk][urn].art |-> Art_u => 0
-    #Vat.ilks[ilk].Ink      |-> Ink_i => Ink_i - Ink_u
-    #Vat.ilks[ilk].Art      |-> Art_i => Art_i - Art_u
-    #Vat.gem[ilk][ACCT_ID]  |-> Gem_v => Gem_v + Take * Ink_u
-    #Vat.sin[Vow]           |-> Sin_w => Sin_w - Rate * Art_u
-    #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
+    #Vat.urns[ilk][urn].ink |-> Ink_iu => 0
+    #Vat.urns[ilk][urn].art |-> Art_iu => 0
+    #Vat.ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
+    #Vat.ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
+    #Vat.gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
+    #Vat.sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
+    #Vat.vice               |-> Vice   => Vice   - Rate_* Art_iu
 
 storage Pit
 
-    #Pit.ilks[ilk].spot |-> Spot_i
+    #Pit.ilks[ilk].spot     |-> Spot_i
     
 storage Vow
 
-    #Vow.sin[TIME] |-> Sin_era => Sin_era + Art_u * Rate
-    #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
+    #Vow.sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
+    #Vow.Sin                |-> Sin     => Sin     + Art_iu * Rate
     
 iff
 
@@ -2344,13 +2376,13 @@ storage
 storage Flip
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flipper.kicks                       |-> Kicks => Kicks + 1
-    #Flipper.bids[Kicks + 1].bid         |-> _ => 0
-    #Flipper.bids[Kicks + 1].lot         |-> _ => (Ink * wad) / Tab
-    #Flipper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flipper.bids[Kicks + 1].urn         |-> _ => Urn
-    #Flipper.bids[Kicks + 1].gal         |-> _ => Vow
-    #Flipper.bids[Kicks + 1].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.kicks                       |-> Kicks => 1 + Kicks
+    #Flipper.bids[1 + Kicks].bid         |-> _ => 0
+    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
+    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
+    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
@@ -2367,7 +2399,7 @@ if
 
     VGas > 300000
 
-returns Kicks + 1
+returns 1 + Kicks
 ```
 
 # GemJoin

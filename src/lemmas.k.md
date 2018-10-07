@@ -49,6 +49,63 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
   requires N <=Int 100
 ```
 
+### solidity masking
+
+**TODO**: refactor and tidy these.
+
+```k
+syntax Int ::= "MaskLast20" [function]
+syntax Int ::= "MaskFirst6" [function]
+// -----------------------------------
+// 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
+rule MaskLast20 => 115792089237316195423570985007226406215939081747436879206741300988257197096960 [macro]
+// 0x000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff
+rule MaskFirst6 => 411376139330301510538742295639337626245683966408394965837152255                [macro]
+
+rule MaskLast20 &Int A => 0
+  requires #rangeAddress(A)
+
+rule X |Int 0 => X
+
+rule chop(A &Int B) => A &Int B
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+rule chop(A |Int B) => A |Int B
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+// Masking for packed words
+rule MaskLast20 &Int (Y *Int pow208 +Int X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule B |Int (Y *Int pow208 +Int X *Int pow160) => Y *Int pow208 +Int X *Int pow160 +Int B
+  requires #rangeAddress(B)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule (Y *Int pow208 +Int X *Int pow160 +Int A) /Int pow208 => Y
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule (Y *Int pow48 +Int X) /Int pow48 => Y
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule MaskFirst6 &Int (X *Int pow208 +Int Y *Int pow160 +Int A) => Y *Int pow160 +Int A
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+  andBool #rangeAddress(A)
+
+rule (X *Int pow208) |Int (Y *Int pow160 +Int A) => (X *Int pow208 +Int Y *Int pow160 +Int A)
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+  andBool #rangeAddress(A)
+```
+
 ### miscellaneous
 
 ```k
