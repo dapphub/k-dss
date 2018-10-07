@@ -601,7 +601,6 @@
       "ACCT_ID": "Vow",
       "Cow": "Flappy",
       "Vat": "VatLike",
-      "Vat_move": "VatLike",
       "DaiMove": "DaiMoveLike"
     },
     "act": "Vow_flap.act"
@@ -611,7 +610,6 @@
       "ACCT_ID": "Vow",
       "Cow": "Flappy",
       "Vat": "VatLike",
-      "Vat_move": "VatLike",
       "DaiMove": "DaiMoveLike"
     },
     "act": "Vow_flap.act"
