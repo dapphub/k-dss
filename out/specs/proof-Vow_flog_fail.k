@@ -97,7 +97,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             ABI_t +Int Wait <=Int TIME
-    andBool #rangeUInt(256, ABI_t +Int Wait)
+    andBool #rangeUInt(256, ABI_t   +Int Wait)
     andBool #rangeUInt(256, Sin -Int Sin_t)
     andBool #rangeUInt(256, Woe +Int Sin_t)
   )

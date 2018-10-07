@@ -110,7 +110,7 @@ andBool VCallDepth <Int 1024
   andBool notBool (
             Can ==Int 1
     andBool #rangeSInt(256, #Ray *Int VALUE)
-    andBool #rangeUInt(256, Rad +Int #Ray *Int VALUE)
+    andBool #rangeUInt(256, Rad         +Int #Ray *Int VALUE)
     andBool #rangeUInt(256, Bal_adapter +Int VALUE)
   )
 

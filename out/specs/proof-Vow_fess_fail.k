@@ -96,7 +96,7 @@ andBool VCallDepth <Int 1024
   andBool notBool (
             Can ==Int 1
     andBool #rangeUInt(256, Sin_era +Int ABI_tab)
-    andBool #rangeUInt(256, Sin +Int ABI_tab)
+    andBool #rangeUInt(256, Sin     +Int ABI_tab)
   )
 
 endmodule

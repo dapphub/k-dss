@@ -70,7 +70,7 @@ rule
           <storage> #Vow.wards[CALLER_ID] |-> (Can)
                           #Vow.cow |-> (Cow => (#if ABI_what ==Int #string2Word("flap") #then ABI_addr #else Cow #fi))
                           #Vow.row |-> (Row => (#if ABI_what ==Int #string2Word("flop") #then ABI_addr #else Row #fi))
-                          #Vow.vat |-> (Vat => (#if ABI_what ==Int #string2Word("vat") #then ABI_addr #else Vat #fi))
+                          #Vow.vat |-> (Vat => (#if ABI_what ==Int #string2Word("vat")  #then ABI_addr #else Vat #fi))
                           _:Map
            </storage>
           <nonce> _ </nonce>

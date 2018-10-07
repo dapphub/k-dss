@@ -600,7 +600,9 @@
     "v2n": {
       "ACCT_ID": "Vow",
       "Cow": "Flappy",
-      "Vat": "VatLike"
+      "Vat": "VatLike",
+      "Vat_move": "VatLike",
+      "DaiMove": "DaiMoveLike"
     },
     "act": "Vow_flap.act"
   },
@@ -608,7 +610,9 @@
     "v2n": {
       "ACCT_ID": "Vow",
       "Cow": "Flappy",
-      "Vat": "VatLike"
+      "Vat": "VatLike",
+      "Vat_move": "VatLike",
+      "DaiMove": "DaiMoveLike"
     },
     "act": "Vow_flap.act"
   },

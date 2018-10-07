@@ -11,8 +11,8 @@ types
 
 storage
 
-    #ETHJoin.vat |-> Vat
-    #ETHJoin.ilk |-> Ilk
+    #ETHJoin.vat             |-> Vat
+    #ETHJoin.ilk             |-> Ilk
 
 storage Vat
 
@@ -29,7 +29,7 @@ iff in range int256
 
 iff in range uint256
 
-    Rad - #Ray * wad
+    Rad     - #Ray * wad
     Bal_guy + wad
 
 if

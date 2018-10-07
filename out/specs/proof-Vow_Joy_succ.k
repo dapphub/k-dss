@@ -14,7 +14,7 @@ rule
   <analysis> .Map </analysis>
   <ethereum>
     <evm>
-      <output> _ => #asByteStackInWidthaux(Dai /Int 1000000000000000000000000000, 31, 32, .WordStack) </output>
+      <output> _ => #asByteStackInWidthaux(Dai /Int #Ray, 31, 32, .WordStack) </output>
       <statusCode> _ => EVMC_SUCCESS </statusCode>
       <callStack> VCallStack </callStack>
       <interimStates> _ </interimStates>

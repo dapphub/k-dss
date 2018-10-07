@@ -114,9 +114,9 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             Can ==Int 1
-    andBool #rangeUInt(256, Woe -Int ABI_wad)
-    andBool #rangeUInt(256, Dai -Int ABI_wad *Int #Ray)
-    andBool #rangeUInt(256, Sin -Int ABI_wad *Int #Ray)
+    andBool #rangeUInt(256, Woe  -Int ABI_wad)
+    andBool #rangeUInt(256, Dai  -Int ABI_wad *Int #Ray)
+    andBool #rangeUInt(256, Sin  -Int ABI_wad *Int #Ray)
     andBool #rangeUInt(256, Vice -Int ABI_wad *Int #Ray)
     andBool #rangeUInt(256, Debt -Int ABI_wad *Int #Ray)
     andBool #rangeSInt(256, ABI_wad *Int #Ray)

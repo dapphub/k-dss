@@ -78,7 +78,7 @@ rule
           <acctID> Dai </acctID>
           <balance> Dai_balance </balance>
           <code> #parseByteStack("0x") </code>
-          <storage> #GemLike.balances[CALLER_ID] |-> (Bal_guy => Bal_guy +Int ABI_wad)
+          <storage> #GemLike.balances[CALLER_ID] |-> (Bal_guy => Bal_guy     +Int ABI_wad)
                       #GemLike.balances[ACCT_ID] |-> (Bal_adapter => Bal_adapter -Int ABI_wad)
                       _:Map </storage>
           <nonce> _ </nonce>
@@ -124,8 +124,8 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool Can ==Int 1
   andBool #rangeSInt(256, #Ray *Int ABI_wad)
-  andBool #rangeUInt(256, Rad -Int #Ray *Int ABI_wad)
-  andBool #rangeUInt(256, Bal_guy +Int ABI_wad)
+  andBool #rangeUInt(256, Rad         -Int #Ray *Int ABI_wad)
+  andBool #rangeUInt(256, Bal_guy     +Int ABI_wad)
   andBool #rangeUInt(256, Bal_adapter -Int ABI_wad)
 
 endmodule

@@ -89,7 +89,7 @@ rule #Vat.sin[A] => #hashedLocation("Solidity", 5, A)
 
 syntax Int ::= "#Vat.debt" [function]
 // ---------------------------------
-// doc: the total debt issued from the system
+// doc: the total dai issued from the system
 // act: system has `.` total debt
 rule #Vat.debt => 6
 
@@ -105,26 +105,38 @@ rule #Vat.vice => 7
 ```k
 syntax Int ::= "#Drip.wards" "[" Int "]" [function]
 // -----------------------------------------------
+// doc: authorisation to call
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Drip.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Drip.ilks" "[" Int "].tax" [function]
 // ----------------------------------------------------
+// doc: the stability fee of ilk `$0`
+// act: ilk `$0` has stability fee `.`
 rule #Drip.ilks[Ilk].tax => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Drip.ilks" "[" Int "].rho" [function]
 // ----------------------------------------------------
+// doc: the last drip time of ilk `$0`
+// act: ilk `$0` was dripped at `.`
 rule #Drip.ilks[Ilk].rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Drip.vat" [function]
 // ----------------------------------
+// doc: the Vat that this Drip points to
+// act: this Drip points to `.`
 rule #Drip.vat => 2
 
 syntax Int ::= "#Drip.vow" [function]
 // ----------------------------------
+// doc: the Vow that this Drip points to
+// act: this Drip points to `.`
 rule #Drip.vow => 3
 
 syntax Int ::= "#Drip.repo" [function]
 // -----------------------------------
+// doc: the base interest rate
+// act: the base interest rate is `.`
 rule #Drip.repo => 4
 ```
 
@@ -133,26 +145,38 @@ rule #Drip.repo => 4
 ```k
 syntax Int ::= "#Pit.wards" "[" Int "]" [function]
 // ---------------------------------
+// doc: authorisation to call
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Pit.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Pit.ilks" "[" Int "].spot" [function]
 // ---------------------------------------------------
+// doc: the collateral price in dai of ilk `$0` adjusted for liquidation ratio
+// act:
 rule #Pit.ilks[Ilk].spot => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Pit.ilks" "[" Int "].line" [function]
 // ---------------------------------------------------
+// doc: the debt ceiling for ilk `$0`
+// act: ilk `$0` has debt ceiling `.`
 rule #Pit.ilks[Ilk].line => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Pit.live" [function]
 // ----------------------------------
+// doc: system liveness
+// act: system is `. == 1 ? : not` live
 rule #Pit.live => 2
 
 syntax Int ::= "#Pit.Line" [function]
 // ----------------------------------
+// doc: global debt ceiling
+// act: system has global debt ceiling `.`
 rule #Pit.Line => 3
 
 syntax Int ::= "#Pit.vat" [function]
 // ---------------------------------
+// doc: the Vat that this Pit points to
+// act: this Pit points to `.`
 rule #Pit.vat => 4
 ```
 
@@ -161,50 +185,74 @@ rule #Pit.vat => 4
 ```k
 syntax Int ::= "#Vow.wards" "[" Int "]" [function]
 // ---------------------------------
+// doc: authorisation to call
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Vow.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Vow.vat" [function]
 // ---------------------------------
+// doc: the Vat that this Vow points to
+// act: this Vow points to `.`
 rule #Vow.vat => 1
 
 syntax Int ::= "#Vow.cow" [function]
 // ---------------------------------
+// doc: the Flapper that this Vow points to
+// act: this Vow points to `.`
 rule #Vow.cow => 2
 
 syntax Int ::= "#Vow.row" [function]
 // ---------------------------------
+// doc: the Flopper that this Vow points to
+// act: this Vow points to `.`
 rule #Vow.row => 3
 
 syntax Int ::= "#Vow.sin" "[" Int "]" [function]
 // ---------------------------------------------
+// doc: the sin queued at timestamp `$0`
+// act: `.` sin queued at timestamp `$0`
 rule #Vow.sin[A] => #hashedLocation("Solidity", 4, A)
 
 syntax Int ::= "#Vow.Sin" [function]
 // ---------------------------------
+// doc: the total queued sin
+// act: the total queued sin is `.`
 rule #Vow.Sin => 5
 
 syntax Int ::= "#Vow.Woe" [function]
 // ---------------------------------
+// doc: the total matured sin
+// act: the total matured sin is `.`
 rule #Vow.Woe => 6
 
 syntax Int ::= "#Vow.Ash" [function]
 // ---------------------------------
+// doc: the total sin in debt auctions
+// act: the total sin in debt auctions is `.`
 rule #Vow.Ash => 7
 
 syntax Int ::= "#Vow.wait" [function]
 // ----------------------------------
+// doc: the sin maturation time
+// act: the sin maturation time is `.`
 rule #Vow.wait => 8
 
 syntax Int ::= "#Vow.sump" [function]
 // ----------------------------------
+// doc: the debt auction lot size
+// act: the debt auction lot size is `.`
 rule #Vow.sump => 9
 
 syntax Int ::= "#Vow.bump" [function]
 // ----------------------------------
+// doc: the surplus auction lot size
+// act: the surplus auction lot size is `.`
 rule #Vow.bump => 10
 
 syntax Int ::= "#Vow.hump" [function]
 // ---------------------------------
+// doc: the surplus dai cushion
+// act: the surplus dai cushion is `.`
 rule #Vow.hump => 11
 ```
 
@@ -213,54 +261,80 @@ rule #Vow.hump => 11
 ```k
 syntax Int ::= "#Cat.wards" "[" Int "]" [function]
 // ---------------------------------
+// doc: authorisation to call
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Cat.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Cat.ilks" "[" Int "].flip" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.ilks[Ilk].flip => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
 syntax Int ::= "#Cat.ilks" "[" Int "].chop" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.ilks[Ilk].chop => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
 syntax Int ::= "#Cat.ilks" "[" Int "].lump" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.ilks[Ilk].lump => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
 syntax Int ::= "#Cat.flips" "[" Int "].ilk" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.flips[N].ilk => #hashedLocation("Solidity", 2, N) +Int 0
 
 syntax Int ::= "#Cat.flips" "[" Int "].urn" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.flips[N].urn => #hashedLocation("Solidity", 2, N) +Int 1
 
 syntax Int ::= "#Cat.flips" "[" Int "].ink" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.flips[N].ink => #hashedLocation("Solidity", 2, N) +Int 2
 
 syntax Int ::= "#Cat.flips" "[" Int "].tab" [function]
 // ---------------------------------------------------
+// doc:
+// act:
 rule #Cat.flips[N].tab => #hashedLocation("Solidity", 2, N) +Int 3
 
 syntax Int ::= "#Cat.nflip" [function]
 // -----------------------------------
+// doc:
+// act:
 rule #Cat.nflip => 3
 
 syntax Int ::= "#Cat.live" [function]
 // ----------------------------------
+// doc:
+// act:
 rule #Cat.live => 4
 
 syntax Int ::= "#Cat.vat" [function]
 // ---------------------------------
+// doc:
+// act:
 rule #Cat.vat => 5
 
 syntax Int ::= "#Cat.pit" [function]
 // ---------------------------------
+// doc:
+// act:
 rule #Cat.pit => 6
 
 syntax Int ::= "#Cat.vow" [function]
 // ---------------------------------
+// doc:
+// act:
 rule #Cat.vow => 7
 ```
 
@@ -269,14 +343,20 @@ rule #Cat.vow => 7
 ```k
 syntax Int ::= "#GemJoin.vat" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #GemJoin.vat => 0
 
 syntax Int ::= "#GemJoin.ilk" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #GemJoin.ilk => 1
 
 syntax Int ::= "#GemJoin.gem" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #GemJoin.gem => 2
 ```
 
@@ -285,10 +365,14 @@ rule #GemJoin.gem => 2
 ```k
 syntax Int ::= "#ETHJoin.vat" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #ETHJoin.vat => 0
 
 syntax Int ::= "#ETHJoin.ilk" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #ETHJoin.ilk => 1
 ```
 
@@ -297,10 +381,14 @@ rule #ETHJoin.ilk => 1
 ```k
 syntax Int ::= "#DaiJoin.vat" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #DaiJoin.vat => 0
 
 syntax Int ::= "#DaiJoin.dai" [function]
 // -------------------------------------
+// doc:
+// act:
 rule #DaiJoin.dai => 1
 ```
 
@@ -310,35 +398,51 @@ rule #DaiJoin.dai => 1
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flipper.ttl_tau" [function]
 // -----------------------------------------
+// doc:
+// act:
 rule #Flipper.ttl_tau => 3
 
 syntax Int ::= "#Flipper.kicks" [function]
 // ---------------------------------------
+// doc:
+// act:
 rule #Flipper.kicks => 4
 
 syntax Int ::= "#Flipper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
+// doc:
+// act:
 rule #Flipper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
 
 syntax Int ::= "#Flipper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
+// doc:
+// act:
 rule #Flipper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
 syntax Int ::= "#Flipper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
+// doc:
+// act:
 rule #Flipper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
 
 syntax Int ::= "#Flipper.bids" "[" Int "].urn" [function]
 // ------------------------------------------------------
+// doc:
+// act:
 rule #Flipper.bids[N].urn => #hashedLocation("Solidity", 5, N) +Int 3
 
 syntax Int ::= "#Flipper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
+// doc:
+// act:
 rule #Flipper.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 4
 
 syntax Int ::= "#Flipper.bids" "[" Int "].tab" [function]
 // ------------------------------------------------------
+// doc:
+// act:
 rule #Flipper.bids[N].tab => #hashedLocation("Solidity", 5, N) +Int 5
 ```
 
@@ -462,5 +566,7 @@ A hypothetical token contract, based on `ds-token`:
 ```k
 syntax Int ::= "#GemLike.balances" "[" Int "]" [function]
 // --------------------------------------------------
+// doc:
+// act:
 rule #GemLike.balances[A] => #hashedLocation("Solidity", 1, A)
 ```

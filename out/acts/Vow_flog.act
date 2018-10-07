@@ -21,7 +21,7 @@ iff
 
 iff in range uint256
 
-    t + Wait
+    t   + Wait
     Sin - Sin_t
     Woe + Sin_t
 

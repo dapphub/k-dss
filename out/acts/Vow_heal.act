@@ -19,8 +19,8 @@ storage
 storage Vat
 
     #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     #Vat.vice           |-> Vice => Vice - wad * #Ray
     #Vat.debt           |-> Debt => Debt - wad * #Ray
 
@@ -30,9 +30,9 @@ iff
 
 iff in range uint256
 
-    Woe - wad
-    Dai - wad * #Ray
-    Sin - wad * #Ray
+    Woe  - wad
+    Dai  - wad * #Ray
+    Sin  - wad * #Ray
     Vice - wad * #Ray
     Debt - wad * #Ray
 

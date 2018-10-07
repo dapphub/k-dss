@@ -356,7 +356,7 @@ if
 
 #### administering a position
 
-This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the Ilk `i` to interact with, and agent identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
+This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
 
 ```act
@@ -365,29 +365,29 @@ interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 d
 
 types
 
-    Can   : uint256
-    Take  : uint256
-    Rate  : uint256
-    Ink_u : uint256
-    Art_u : uint256
-    Ink_i : uint256
-    Art_i : uint256
-    Gem_v : uint256
-    Dai_w : uint256
-    Debt  : uint256
+    Can    : uint256
+    Take   : uint256
+    Rate   : uint256
+    Ink_iu : uint256
+    Art_iu : uint256
+    Ink_i  : uint256
+    Art_i  : uint256
+    Gem_iv : uint256
+    Dai_w  : uint256
+    Debt   : uint256
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[i].take     |-> Take
-    #Vat.ilks[i].rate     |-> Rate
-    #Vat.urns[i][u].ink   |-> Ink_u  => Ink_u + dink
-    #Vat.urns[i][u].art   |-> Art_u  => Art_u + dart
-    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i + dink
-    #Vat.ilks[i].Art      |-> Art_i  => Art_i + dart
-    #Vat.gem[i][v]        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.dai[w]           |-> Dai_w  => Dai_w + (Rate * dart)
-    #Vat.debt             |-> Debt   => Debt + (Rate * dart)
+    Vat.wards[CALLER_ID] |-> Can
+    Vat.ilks[i].take     |-> Take
+    Vat.ilks[i].rate     |-> Rate
+    Vat.urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
+    Vat.urns[i][u].art   |-> Art_iu => Art_iu + dart
+    Vat.ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
+    Vat.ilks[i].Art      |-> Art_i  => Art_i  + dart
+    Vat.gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    Vat.dai[w]           |-> Dai_w  => Dai_w  + (Rate * dart)
+    Vat.debt             |-> Debt   => Debt   + (Rate * dart)
 
 iff
 
@@ -396,19 +396,19 @@ iff
 
 iff in range uint256
 
-    Ink_u + dink
-    Art_u + dart
-    Ink_i + dink
-    Art_i + dart
-    Gem_v - (Take * dink)
-    Dai_w + (Rate * dart)
-    Debt + (Rate * dart)
+    Ink_iu + dink
+    Art_iu + dart
+    Ink_i  + dink
+    Art_i  + dart
+    Gem_iv - (Take * dink)
+    Dai_w  + (Rate * dart)
+    Debt   + (Rate * dart)
 
 iff in range int256
 
     Take
-    Take * dink
     Rate
+    Take * dink
     Rate * dart
 
 if
@@ -425,29 +425,29 @@ interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 d
 
 types
 
-    Can   : uint256
-    Take  : uint256
-    Rate  : uint256
-    Ink_u : uint256
-    Art_u : uint256
-    Ink_i : uint256
-    Art_i : uint256
-    Gem_v : uint256
-    Sin_w : uint256
-    Vice  : uint256
+    Can    : uint256
+    Take   : uint256
+    Rate   : uint256
+    Ink_iu : uint256
+    Art_iu : uint256
+    Ink_i  : uint256
+    Art_i  : uint256
+    Gem_iv : uint256
+    Sin_w  : uint256
+    Vice   : uint256
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[i].take     |-> Take
-    #Vat.ilks[i].rate     |-> Rate
-    #Vat.urns[i][u].ink   |-> Ink_u  => Ink_u + dink
-    #Vat.urns[i][u].art   |-> Art_u  => Art_u + dart
-    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i + dink
-    #Vat.ilks[i].Art      |-> Art_i  => Art_i + dart
-    #Vat.gem[i][v]        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.sin[w]           |-> Sin_w  => Sin_w - (Rate * dart)
-    #Vat.vice             |-> Vice   => Vice - (Rate * dart)
+    Vat.wards[CALLER_ID] |-> Can
+    Vat.ilks[i].take     |-> Take
+    Vat.ilks[i].rate     |-> Rate
+    Vat.urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
+    Vat.urns[i][u].art   |-> Art_iu => Art_iu + dart
+    Vat.ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
+    Vat.ilks[i].Art      |-> Art_i  => Art_i  + dart
+    Vat.gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    Vat.sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
+    Vat.vice             |-> Vice   => Vice   - (Rate * dart)
 
 iff
 
@@ -455,19 +455,19 @@ iff
 
 iff in range uint256
 
-    Ink_u + dink
-    Art_u + dart
-    Ink_i + dink
-    Art_i + dart
-    Gem_v - (Take * dink)
-    Sin_w - (Rate * dart)
-    Vice - (Rate * dart)
+    Ink_iu + dink
+    Art_iu + dart
+    Ink_i  + dink
+    Art_i  + dart
+    Gem_iv - (Take * dink)
+    Sin_w  - (Rate * dart)
+    Vice   - (Rate * dart)
     
 iff in range int256
 
     Take
-    Take * dink
     Rate
+    Take * dink
     Rate * dart
 
 if
@@ -494,8 +494,8 @@ storage
     #Vat.wards[CALLER_ID] |-> Can
     #Vat.dai[v]           |-> Dai_v => Dai_v - rad
     #Vat.sin[u]           |-> Sin_u => Sin_u - rad
-    #Vat.debt             |-> Debt  => Debt - rad
-    #Vat.vice             |-> Vice  => Vice - rad
+    #Vat.debt             |-> Debt  => Debt  - rad
+    #Vat.vice             |-> Vice  => Vice  - rad
 
 iff
 
@@ -505,8 +505,8 @@ iff in range uint256
 
     Dai_v - rad
     Sin_u - rad
-    Debt - rad
-    Vice - rad
+    Debt  - rad
+    Vice  - rad
 
 if
 
@@ -532,7 +532,7 @@ storage
     #Vat.wards[CALLER_ID] |-> Can
     #Vat.ilks[i].rate     |-> Rate => Rate + rate
     #Vat.ilks[i].Art      |-> Art_i
-    #Vat.dai[u]           |-> Dai  => Dai + Art_i * rate
+    #Vat.dai[u]           |-> Dai  => Dai  + Art_i * rate
     #Vat.debt             |-> Debt => Debt + Art_i * rate
 
 iff
@@ -542,7 +542,7 @@ iff
 iff in range uint256
 
     Rate + rate
-    Dai + Art_i * rate
+    Dai  + Art_i * rate
     Debt + Art_i * rate
     
 iff in range int256
@@ -573,7 +573,7 @@ storage
     #Vat.wards[CALLER_ID] |-> Can
     #Vat.ilks[i].take     |-> Take => Take + take
     #Vat.ilks[i].Ink      |-> Ink
-    #Vat.gem[i][u]        |-> Gem => Gem - (Ink * take)
+    #Vat.gem[i][u]        |-> Gem  => Gem  - Ink * take
 
 iff
 
@@ -582,7 +582,7 @@ iff
 iff in range uint256
 
     Take + take
-    Gem - (Ink * take)
+    Gem  - Ink * take
 
 iff in range int256
 
@@ -912,7 +912,7 @@ storage Vat
     #Vat.wards[ACCT_ID] |-> Can
     #Vat.ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.ilks[ilk].Art  |-> Art_i
-    #Vat.dai[Vow]       |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
@@ -926,7 +926,7 @@ iff in range uint256
     #rpow(Repo + Tax, TIME - Rho, #Ray) * #Ray
     #rpow(Repo + Tax, TIME - Rho, #Ray) * Rate
     Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff in range int256
@@ -1192,8 +1192,8 @@ types
     Line_i : uint256
     Ink_i  : uint256
     Art_i  : uint256
-    Ink_u  : uint256
-    Art_u  : uint256
+    Ink_iu  : uint256
+    Art_iu  : uint256
     Take   : uint256
     Rate   : uint256
     Gem_u  : uint256
@@ -1215,8 +1215,8 @@ storage Vat
     #Vat.ilks[ilk].take           |-> Take
     #Vat.ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
     #Vat.ilks[ilk].Art            |-> Art_i  => Art_i + dart
-    #Vat.urns[ilk][CALLER_ID].ink |-> Ink_u  => Ink_u + dink
-    #Vat.urns[ilk][CALLER_ID].art |-> Art_u  => Art_u + dart
+    #Vat.urns[ilk][CALLER_ID].ink |-> Ink_iu  => Ink_iu + dink
+    #Vat.urns[ilk][CALLER_ID].art |-> Art_iu  => Art_iu + dart
     #Vat.gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
     #Vat.dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
     #Vat.debt                     |-> Debt   => Debt + Rate * dart
@@ -1225,21 +1225,21 @@ iff
 
     Can == 1
     Rate =/= 0
-    (((((Art_u + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
-    (((dart <= 0) and (dink >= 0)) or (((Ink_u + dink) * Spot) >= ((Art_u + dart) * Rate)))
+    (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
     Live == 1
 
 iff in range uint256
 
     Ink_i + dink
     Art_i + dart
-    Ink_u + dink
-    Art_u + dart
+    Ink_iu + dink
+    Art_iu + dart
     Gem_u - Take * dink
     Dai + Rate * dart
     Debt + Rate * dart
-    (Art_u + dart) * Rate
-    (Ink_u + dink) * Spot
+    (Art_iu + dart) * Rate
+    (Ink_iu + dink) * Spot
     #Ray * Spot
     #Ray * Line
     
@@ -1516,13 +1516,14 @@ if
 
     VGas > 300000
     
-returns Dai / 1000000000000000000000000000
+returns Dai / #Ray
 ```
 
 ### Mutators
 
 #### adding and removing owners
-```
+
+```act
 behaviour rely of Vow
 interface rely(address guy)
 
@@ -1616,7 +1617,7 @@ storage
     #Vow.wards[CALLER_ID] |-> Can
     #Vow.cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
     #Vow.row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
-    #Vow.vat              |-> Vat => (#if what == #string2Word("vat") #then addr #else Vat #fi)
+    #Vow.vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
     
 iff
 
@@ -1651,8 +1652,8 @@ storage
 storage Vat
 
     #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     #Vat.vice           |-> Vice => Vice - wad * #Ray
     #Vat.debt           |-> Debt => Debt - wad * #Ray
 
@@ -1662,9 +1663,9 @@ iff
 
 iff in range uint256
 
-    Woe - wad
-    Dai - wad * #Ray
-    Sin - wad * #Ray
+    Woe  - wad
+    Dai  - wad * #Ray
+    Sin  - wad * #Ray
     Vice - wad * #Ray
     Debt - wad * #Ray
     
@@ -1697,8 +1698,8 @@ storage
 storage Vat
 
     #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai - wad * #Ray
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin - wad * #Ray
+    #Vat.dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    #Vat.sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     #Vat.vice           |-> Vice => Vice - wad * #Ray
     #Vat.debt           |-> Debt => Debt - wad * #Ray
 
@@ -1739,7 +1740,7 @@ storage
 
     #Vow.wards[CALLER_ID] |-> Can
     #Vow.sin[TIME]        |-> Sin_era => Sin_era + tab
-    #Vow.Sin              |-> Sin     => Sin + tab
+    #Vow.Sin              |-> Sin     => Sin     + tab
 
 iff
 
@@ -1748,7 +1749,7 @@ iff
 iff in range uint256
 
     Sin_era + tab
-    Sin + tab
+    Sin     + tab
 
 if
 
@@ -1781,7 +1782,7 @@ iff
 
 iff in range uint256
 
-    t + Wait
+    t   + Wait
     Sin - Sin_t
     Woe + Sin_t
 
@@ -2315,23 +2316,23 @@ iff
     // act: system is  `. ? : not` live
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
-    Ink_u * Spot_i < Art_u * Rate
+    Ink_iu * Spot_i < Art_iu * Rate
 
 iff in range int256
 
     Take
     Rate
-    Take * (0 - Ink_u)
-    Rate * (0 - Art_u)
+    Take * (0 - Ink_iu)
+    Rate * (0 - Art_iu)
 
 iff in range uint256
 
-    Art_i - Art_u
-    Sin_w - Rate * Art_u
-    Gem_v + Take * Ink_u
-    Vice - Rate * Art_u
-    Sin_era + Art_u * Rate
-    Sin + Art_u * Rate
+    Art_i   - Art_iu
+    Sin_w   - Rate   * Art_iu
+    Gem_iv  + Take   * Ink_iu
+    Vice    - Rate   * Art_iu
+    Sin_era + Art_iu * Rate
+    Sin     + Art_iu * Rate
 
 if
 
@@ -2497,12 +2498,12 @@ storage
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * wad
+    #Vat.wards[ACCT_ID]          |-> Can
+    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
     
 storage Gem
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
     #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
     
 iff
@@ -2516,7 +2517,7 @@ iff in range int256
 iff in range uint256
 
     Rad + #Ray * wad
-    Bal_guy - wad
+    Bal_guy     - wad
     Bal_adapter + wad
 
 if
@@ -2548,12 +2549,12 @@ storage
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]          |-> Can
+    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Gem
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy + wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
     #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
@@ -2566,8 +2567,8 @@ iff in range int256
 
 iff in range uint256
 
-    Rad - #Ray * wad
-    Bal_guy + wad
+    Rad         - #Ray * wad
+    Bal_guy     + wad
     Bal_adapter - wad
 
 if
@@ -2661,7 +2662,7 @@ iff in range int256
 
 iff in range uint256
 
-    Rad + #Ray * VALUE
+    Rad         + #Ray * VALUE
     Bal_adapter + VALUE
 
 if
@@ -2687,8 +2688,8 @@ types
 
 storage
 
-    #ETHJoin.vat |-> Vat
-    #ETHJoin.ilk |-> Ilk
+    #ETHJoin.vat             |-> Vat
+    #ETHJoin.ilk             |-> Ilk
 
 storage Vat
 
@@ -2705,7 +2706,7 @@ iff in range int256
 
 iff in range uint256
 
-    Rad - #Ray * wad
+    Rad     - #Ray * wad
     Bal_guy + wad
 
 if
@@ -2834,12 +2835,12 @@ storage
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
+    #Vat.wards[ACCT_ID]          |-> Can
+    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Dai
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy + wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
     #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
@@ -2852,8 +2853,8 @@ iff in range int256
 
 iff in range uint256
 
-    Rad - #Ray * wad
-    Bal_guy + wad
+    Rad         - #Ray * wad
+    Bal_guy     + wad
     Bal_adapter - wad
 
 if

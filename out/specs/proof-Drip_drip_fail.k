@@ -125,7 +125,7 @@ andBool VCallDepth <Int 1024
     andBool #rangeUInt(256, #rpow(Repo +Int Tax, TIME -Int Rho, #Ray) *Int #Ray)
     andBool #rangeUInt(256, #rpow(Repo +Int Tax, TIME -Int Rho, #Ray) *Int Rate)
     andBool #rangeUInt(256, Rate +Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
-    andBool #rangeUInt(256, Dai +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
+    andBool #rangeUInt(256, Dai  +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
     andBool #rangeUInt(256, Debt +Int Art_i *Int (#rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate))
     andBool #rangeSInt(256, Art_i)
     andBool #rangeSInt(256, #rmul(#rpow(Repo +Int Tax, TIME -Int Rho, #Ray), Rate) -Int Rate)

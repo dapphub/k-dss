@@ -102,7 +102,7 @@ andBool VCallDepth <Int 1024
   andBool notBool (
             Can ==Int 1
     andBool #rangeUInt(256, Rate +Int ABI_rate)
-    andBool #rangeUInt(256, Dai +Int Art_i *Int ABI_rate)
+    andBool #rangeUInt(256, Dai  +Int Art_i *Int ABI_rate)
     andBool #rangeUInt(256, Debt +Int Art_i *Int ABI_rate)
     andBool #rangeSInt(256, Art_i)
     andBool #rangeSInt(256, Art_i *Int ABI_rate)
