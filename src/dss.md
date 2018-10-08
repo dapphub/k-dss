@@ -715,7 +715,7 @@ returns Repo
 ```act
 behaviour era of Drip
 interface era()
-    
+
 if
 
     VGas > 300000
@@ -902,8 +902,8 @@ types
 storage
 
     #Drip.vat           |-> Vat
+    #Drip.vow           |-> Vow
     #Drip.repo          |-> Repo
-    #Drip.ilks[ilk].vow |-> Vow
     #Drip.ilks[ilk].tax |-> Tax
     #Drip.ilks[ilk].rho |-> Rho => TIME
 
@@ -1867,7 +1867,7 @@ types
 
     Cow      : address Flappy
     Vat      : address VatLike
-    Vat_move : address VatLike
+    Vat_move : address
     Bump     : uint256
     Hump     : uint256
     Woe      : uint256
