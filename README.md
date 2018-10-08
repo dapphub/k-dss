@@ -36,7 +36,7 @@ Specific behaviours can also be checked in this way, for example:
 make out/specs/proof-Vat_dai_succ.k.proof
 ```
 
-# progress
+### progress
 
 (proof CI running at [dapp.ci](https://dapp.ci) )
 
@@ -95,7 +95,6 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | drip      | x    | -    |      | -    |
 | rely      | x    | x    |      |      |
 | deny      | x    | x    |      |      |
-| file-drip | x    | x    |      |      |
 | file-ilk  | x    | x    |      |      |
 | file-Line | x    | x    |      |      |
 | frob      |      |      |      |      |
@@ -116,11 +115,11 @@ make out/specs/proof-Vat_dai_succ.k.proof
 | deny      | x    | x    |      |      |
 | file-data | x    | x    |      |      |
 | file-addr | x    | x    |      |      |
-| heal      | x    | o    |      |      |
-| kiss      | x    | o    |      |      |
+| heal      | x    | x    |      |      |
+| kiss      | x    | x    |      |      |
 | fess      | x    | x    |      |      |
-| flog      | o    | o    |      |      |
-| flop      | o    | o    |      |      |
+| flog      | x    | x    |      |      |
+| flop      | x    | x    |      |      |
 | flap      | o    | o    |      |      |
 | Cat       +------+------+------+------|
 | wards     | x    | -    |      | -    |
@@ -158,10 +157,10 @@ make out/specs/proof-Vat_dai_succ.k.proof
 ```
 
 ### specification format
-The format used in [dss.md](src/dss.md) provides a concise way of specifying the behavior of a contract method.
+The format used in [dss.md](src/dss.md) provides a concise way of specifying the behavior of a contract method (see [act-mode](https://github.com/livnev/act-mode) for a simple emacs major mode for `.act` specs).
 
 Let's break down the specification of the behavior of the function `heal` in the contract `Vat`:
-```
+```act
 behaviour heal of Vat
 interface heal(bytes32 u, bytes32 v, int256 rad)
 

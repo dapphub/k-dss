@@ -27,7 +27,7 @@ storage Vat
     #Vat.wards[ACCT_ID] |-> Can
     #Vat.ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.ilks[ilk].Art  |-> Art_i
-    #Vat.dai[Vow]       |-> Dai  => Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #Vat.dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     #Vat.debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
@@ -41,7 +41,7 @@ iff in range uint256
     #rpow(Repo + Tax, TIME - Rho, #Ray) * #Ray
     #rpow(Repo + Tax, TIME - Rho, #Ray) * Rate
     Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    Dai + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff in range int256

@@ -18,4 +18,4 @@ if
 
     VGas > 300000
 
-returns Dai / 1000000000000000000000000000
+returns Dai / #Ray

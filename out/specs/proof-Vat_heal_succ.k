@@ -70,8 +70,8 @@ rule
           <storage> #Vat.wards[CALLER_ID] |-> (Can)
                           #Vat.dai[ABI_v] |-> (Dai_v => Dai_v -Int ABI_rad)
                           #Vat.sin[ABI_u] |-> (Sin_u => Sin_u -Int ABI_rad)
-                          #Vat.debt |-> (Debt => Debt -Int ABI_rad)
-                          #Vat.vice |-> (Vice => Vice -Int ABI_rad)
+                          #Vat.debt |-> (Debt => Debt  -Int ABI_rad)
+                          #Vat.vice |-> (Vice => Vice  -Int ABI_rad)
                           _:Map
            </storage>
           <nonce> _ </nonce>
@@ -102,7 +102,7 @@ andBool VCallDepth <Int 1024
   andBool Can ==Int 1
   andBool #rangeUInt(256, Dai_v -Int ABI_rad)
   andBool #rangeUInt(256, Sin_u -Int ABI_rad)
-  andBool #rangeUInt(256, Debt -Int ABI_rad)
-  andBool #rangeUInt(256, Vice -Int ABI_rad)
+  andBool #rangeUInt(256, Debt  -Int ABI_rad)
+  andBool #rangeUInt(256, Vice  -Int ABI_rad)
 
 endmodule

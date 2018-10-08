@@ -19,12 +19,12 @@ storage
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * wad
+    #Vat.wards[ACCT_ID]          |-> Can
+    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
 
 storage Gem
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
     #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
@@ -38,7 +38,7 @@ iff in range int256
 iff in range uint256
 
     Rad + #Ray * wad
-    Bal_guy - wad
+    Bal_guy     - wad
     Bal_adapter + wad
 
 if

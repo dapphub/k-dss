@@ -70,7 +70,7 @@ rule
           <storage> #Vat.wards[CALLER_ID] |-> (Can)
                           #Vat.ilks[ABI_i].rate |-> (Rate => Rate +Int ABI_rate)
                           #Vat.ilks[ABI_i].Art |-> (Art_i)
-                          #Vat.dai[ABI_u] |-> (Dai => Dai +Int Art_i *Int ABI_rate)
+                          #Vat.dai[ABI_u] |-> (Dai => Dai  +Int Art_i *Int ABI_rate)
                           #Vat.debt |-> (Debt => Debt +Int Art_i *Int ABI_rate)
                           _:Map
            </storage>
@@ -101,7 +101,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool Can ==Int 1
   andBool #rangeUInt(256, Rate +Int ABI_rate)
-  andBool #rangeUInt(256, Dai +Int Art_i *Int ABI_rate)
+  andBool #rangeUInt(256, Dai  +Int Art_i *Int ABI_rate)
   andBool #rangeUInt(256, Debt +Int Art_i *Int ABI_rate)
   andBool #rangeSInt(256, Art_i)
   andBool #rangeSInt(256, Art_i *Int ABI_rate)

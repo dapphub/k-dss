@@ -3,16 +3,16 @@ interface urns(bytes32 ilk, bytes32 urn)
 
 types
 
-    Ink_u : uint256
-    Art_u : uint256
+    Ink_iu : uint256
+    Art_iu : uint256
 
 storage
 
-    #Vat.urns[ilk][urn].ink |-> Ink_u
-    #Vat.urns[ilk][urn].art |-> Art_u
+    #Vat.urns[ilk][urn].ink |-> Ink_iu
+    #Vat.urns[ilk][urn].art |-> Art_iu
 
 if
 
     VGas > 300000
 
-returns Ink_u : Art_u
+returns Ink_iu : Art_iu

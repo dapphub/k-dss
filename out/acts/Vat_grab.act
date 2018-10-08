@@ -3,29 +3,29 @@ interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 d
 
 types
 
-    Can   : uint256
-    Take  : uint256
-    Rate  : uint256
-    Ink_u : uint256
-    Art_u : uint256
-    Ink_i : uint256
-    Art_i : uint256
-    Gem_v : uint256
-    Sin_w : uint256
-    Vice  : uint256
+    Can    : uint256
+    Take   : uint256
+    Rate   : uint256
+    Ink_iu : uint256
+    Art_iu : uint256
+    Ink_i  : uint256
+    Art_i  : uint256
+    Gem_iv : uint256
+    Sin_w  : uint256
+    Vice   : uint256
 
 storage
 
     #Vat.wards[CALLER_ID] |-> Can
     #Vat.ilks[i].take     |-> Take
     #Vat.ilks[i].rate     |-> Rate
-    #Vat.urns[i][u].ink   |-> Ink_u  => Ink_u + dink
-    #Vat.urns[i][u].art   |-> Art_u  => Art_u + dart
-    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i + dink
-    #Vat.ilks[i].Art      |-> Art_i  => Art_i + dart
-    #Vat.gem[i][v]        |-> Gem_v  => Gem_v - (Take * dink)
-    #Vat.sin[w]           |-> Sin_w  => Sin_w - (Rate * dart)
-    #Vat.vice             |-> Vice   => Vice - (Rate * dart)
+    #Vat.urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
+    #Vat.urns[i][u].art   |-> Art_iu => Art_iu + dart
+    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
+    #Vat.ilks[i].Art      |-> Art_i  => Art_i  + dart
+    #Vat.gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    #Vat.sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
+    #Vat.vice             |-> Vice   => Vice   - (Rate * dart)
 
 iff
 
@@ -33,19 +33,19 @@ iff
 
 iff in range uint256
 
-    Ink_u + dink
-    Art_u + dart
-    Ink_i + dink
-    Art_i + dart
-    Gem_v - (Take * dink)
-    Sin_w - (Rate * dart)
-    Vice - (Rate * dart)
+    Ink_iu + dink
+    Art_iu + dart
+    Ink_i  + dink
+    Art_i  + dart
+    Gem_iv - (Take * dink)
+    Sin_w  - (Rate * dart)
+    Vice   - (Rate * dart)
 
 iff in range int256
 
     Take
-    Take * dink
     Rate
+    Take * dink
     Rate * dart
 
 if

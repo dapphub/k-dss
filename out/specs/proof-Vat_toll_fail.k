@@ -100,7 +100,7 @@ andBool VCallDepth <Int 1024
   andBool notBool (
             Can ==Int 1
     andBool #rangeUInt(256, Take +Int ABI_take)
-    andBool #rangeUInt(256, Gem -Int (Ink *Int ABI_take))
+    andBool #rangeUInt(256, Gem  -Int Ink *Int ABI_take)
     andBool #rangeSInt(256, Ink)
     andBool #rangeSInt(256, Ink *Int ABI_take)
   )

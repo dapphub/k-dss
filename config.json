@@ -59,6 +59,10 @@
     "Flappy": {
       "name" : "Flapper",
       "solc_output": "./dss/out/flap.sol.json"
+    },
+    "DaiMoveLike": {
+      "name" : "DaiMove",
+      "solc_output": "./dss/out/move.sol.json"
     }
   },
   "dapp_root": "./dss",

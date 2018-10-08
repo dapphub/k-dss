@@ -7,12 +7,16 @@ types
     Pit     : address PitLike
     Vow     : address VowLike
     Nflip   : uint256
+    Ilk_was : uint256
+    Urn_was : uint256
+    Ink_was : uint256
+    Tab_was : uint256
     Take    : uint256
     Rate    : uint256
     Art_i   : uint256
-    Ink_u   : uint256
-    Art_u   : uint256
-    Gem_v   : uint256
+    Ink_iu  : uint256
+    Art_iu  : uint256
+    Gem_iv  : uint256
     Sin_w   : uint256
     Vice    : uint256
     Sin     : uint256
@@ -21,59 +25,62 @@ types
 
 storage
 
-    #Cat.vat              |-> Vat
-    #Cat.pit              |-> Pit
-    #Cat.vow              |-> Vow
-    #Cat.nflip            |-> Nflip => Nflip + 1
-    #Cat.flips[Nflip].ilk |-> 0     => ilk
-    #Cat.flips[Nflip].urn |-> 0     => urn
-    #Cat.flips[Nflip].ink |-> 0     => Ink_u
-    #Cat.flips[Nflip].tab |-> 0     => Rate * Art_u
-    #Cat.live             |-> Live
+    #Cat.vat                |-> Vat
+    #Cat.pit                |-> Pit
+    #Cat.vow                |-> Vow
+    #Cat.nflip              |-> Nflip   => Nflip + 1
+    #Cat.flips[Nflip].ilk   |-> Ilk_was => ilk
+    #Cat.flips[Nflip].urn   |-> Urn_was => urn
+    #Cat.flips[Nflip].ink   |-> Ink_was => Ink_iu
+    #Cat.flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
+    #Cat.live               |-> Live
 
 storage Vat
 
     #Vat.wards[ACCT_ID]     |-> Can
     #Vat.ilks[ilk].take     |-> Take
     #Vat.ilks[ilk].rate     |-> Rate
-    #Vat.urns[ilk][urn].ink |-> Ink_u => 0
-    #Vat.urns[ilk][urn].art |-> Art_u => 0
-    #Vat.ilks[ilk].Ink      |-> Ink_i => Ink_i - Ink_u
-    #Vat.ilks[ilk].Art      |-> Art_i => Art_i - Art_u
-    #Vat.gem[ilk][ACCT_ID]  |-> Gem_v => Gem_v + Take * Ink_u
-    #Vat.sin[Vow]           |-> Sin_w => Sin_w - Rate * Art_u
-    #Vat.vice               |-> Vice  => Vice - Rate_* Art_u
+    #Vat.urns[ilk][urn].ink |-> Ink_iu => 0
+    #Vat.urns[ilk][urn].art |-> Art_iu => 0
+    #Vat.ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
+    #Vat.ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
+    #Vat.gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
+    #Vat.sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
+    #Vat.vice               |-> Vice   => Vice   - Rate_* Art_iu
 
 storage Pit
 
-    #Pit.ilks[ilk].spot |-> Spot_i
+    #Pit.ilks[ilk].spot     |-> Spot_i
 
 storage Vow
 
-    #Vow.sin[TIME] |-> Sin_era => Sin_era + Art_u * Rate
-    #Vow.Sin       |-> Sin     => Sin + Art_u * Rate
+    #Vow.sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
+    #Vow.Sin                |-> Sin     => Sin     + Art_iu * Rate
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: system is  `. ? : not` live
     Live == 1
-    Ink_u * Spot_i < Art_u * Rate
+    // act: CDP is  `. ?  : not` vulnerable
+    Ink_iu * Spot_i < Art_iu * Rate
 
 iff in range int256
 
     Take
     Rate
-    Take * (0 - Ink_u)
-    Rate * (0 - Art_u)
+    Take * (0 - Ink_iu)
+    Rate * (0 - Art_iu)
 
 iff in range uint256
 
-    Art_i - Art_u
-    Sin_w - Rate * Art_u
-    Gem_v + Take * Ink_u
-    Vice - Rate * Art_u
-    Sin_era + Art_u * Rate
-    Sin + Art_u * Rate
+    Art_i   - Art_iu
+    Sin_w   - Rate   * Art_iu
+    Gem_iv  + Take   * Ink_iu
+    Vice    - Rate   * Art_iu
+    Sin_era + Art_iu * Rate
+    Sin     + Art_iu * Rate
 
 if
 

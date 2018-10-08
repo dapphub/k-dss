@@ -103,8 +103,8 @@ andBool VCallDepth <Int 1024
             Can ==Int 1
     andBool #rangeUInt(256, Dai_v -Int ABI_rad)
     andBool #rangeUInt(256, Sin_u -Int ABI_rad)
-    andBool #rangeUInt(256, Debt -Int ABI_rad)
-    andBool #rangeUInt(256, Vice -Int ABI_rad)
+    andBool #rangeUInt(256, Debt  -Int ABI_rad)
+    andBool #rangeUInt(256, Vice  -Int ABI_rad)
   )
 
 endmodule

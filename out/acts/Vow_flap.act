@@ -3,53 +3,72 @@ interface flap()
 
 types
 
-    Cow   : address Flappy
-    Vat   : address VatLike
-    Bump  : uint256
-    Hump  : uint256
-    Woe   : uint256
-    Ash   : uint256
-    Ttl   : uint48
-    Tau   : uint48
-    Kicks : uint256
-    Dai   : uint256
+    Cow      : address Flappy
+    Vat      : address VatLike
+    Vat_move : address VatLike
+    Bump     : uint256
+    Hump     : uint256
+    Woe      : uint256
+    Ash      : uint256
+    DaiMove  : address DaiMoveLike
+    Can      : uint256
+    Bid_was  : uint256
+    Lot_was  : uint256
+    Guy_was  : address
+    Tic_was  : uint48
+    End_was  : uint48
+    Gal_was  : uint256
+    Ttl      : uint48
+    Tau      : uint48
+    Kicks    : uint256
+    Dai      : uint256
 
 storage
 
     #Vow.cow  |-> Cow
-    #Vow.lump |-> Bump
-    #Vow.hump  |-> Hump
+    #Vow.vat  |-> Vat
+    #Vow.bump |-> Bump
+    #Vow.hump |-> Hump
     #Vow.Sin  |-> Sin
     #Vow.Woe  |-> Woe
     #Vow.Ash  |-> Ash
 
+storage DaiMove
+
+    #DaiMove.vat          |-> Vat_move
+    #DaiMove.can[ACCT_ID] |-> Can => Can
+
 storage Cow
 
+    #Flapper.dai                         |-> DaiMove
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flapper.kicks                       |-> Kicks => Kicks + 1
-    #Flapper.bids[Kicks + 1].bid         |-> _ => 0
-    #Flapper.bids[Kicks + 1].lot         |-> _ => Bump
-    #Flapper.bids[Kicks + 1].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids[Kicks + 1].gal         |-> _ => ACCT_ID
+    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
+    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai
+    #Vat.dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
 
 iff
 
-    Dai / 1000000000000000000000000000 >= Sin + Woe + Ash + Bump + Hump
+    Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
 
 iff in range uint256
 
     Sin + Woe
-    Sin + Woe + Ash
-    Sin + Woe + Ash + Bump
-    Sin + Woe + Ash + Bump + Hump
+    (Sin + Woe) + Ash
+    ((Sin + Woe) + Ash) + Bump
+    (((Sin + Woe) + Ash) + Bump) + Hump
 
 if
 
+    Vat == Vat_move
+    1 + Kicks <= maxUInt256
+    TIME + Tau <= maxUInt48
     VGas > 300000
 
-returns Kicks + 1
+returns 1 + Kicks

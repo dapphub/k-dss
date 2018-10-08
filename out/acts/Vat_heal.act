@@ -14,8 +14,8 @@ storage
     #Vat.wards[CALLER_ID] |-> Can
     #Vat.dai[v]           |-> Dai_v => Dai_v - rad
     #Vat.sin[u]           |-> Sin_u => Sin_u - rad
-    #Vat.debt             |-> Debt  => Debt - rad
-    #Vat.vice             |-> Vice  => Vice - rad
+    #Vat.debt             |-> Debt  => Debt  - rad
+    #Vat.vice             |-> Vice  => Vice  - rad
 
 iff
 
@@ -25,8 +25,8 @@ iff in range uint256
 
     Dai_v - rad
     Sin_u - rad
-    Debt - rad
-    Vice - rad
+    Debt  - rad
+    Vice  - rad
 
 if
 
