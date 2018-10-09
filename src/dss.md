@@ -81,7 +81,7 @@ returns Ink_iu : Art_iu
 
 ```act
 behaviour gem of Vat
-interface gem(bytes32 ilk, bytes32 urn)
+interface gem(bytes32 ilk, bytes32 guy)
 
 types
 
@@ -89,7 +89,7 @@ types
 
 storage
 
-    #Vat.gem[ilk][urn] |-> Gem
+    #Vat.gem[ilk][guy] |-> Gem
 
 if
 
@@ -102,7 +102,7 @@ returns Gem
 
 ```act
 behaviour dai of Vat
-interface dai(bytes32 lad)
+interface dai(bytes32 guy)
 
 types
 
@@ -110,7 +110,7 @@ types
 
 storage
 
-    #Vat.dai[lad] |-> Rad
+    #Vat.dai[guy] |-> Rad
 
 if
 
@@ -123,7 +123,7 @@ returns Rad
 
 ```act
 behaviour sin of Vat
-interface sin(bytes32 lad)
+interface sin(bytes32 guy)
 
 types
 
@@ -131,7 +131,7 @@ types
 
 storage
 
-    #Vat.sin[lad] |-> Rad
+    #Vat.sin[guy] |-> Rad
 
 if
 
