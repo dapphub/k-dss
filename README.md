@@ -156,7 +156,11 @@ make out/specs/proof-Vat_dai_succ.k.proof
 -----------------------------------------
 ```
 
-### specification format
+### documentation
+
+To build the literate specification in HTML, run `make doc`.
+
+#### specification format
 The format used in [dss.md](src/dss.md) provides a concise way of specifying the behavior of a contract method (see [act-mode](https://github.com/livnev/act-mode) for a simple emacs major mode for `.act` specs).
 
 Let's break down the specification of the behavior of the function `heal` in the contract `Vat`:

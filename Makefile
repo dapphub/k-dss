@@ -2,6 +2,9 @@ DAPP_DIR = dss
 SRC_DIR = src
 SRCS = $(addprefix $(SRC_DIR)/, dss.md lemmas.k.md storage.k.md prelude.smt2.md)
 OUT_DIR = out
+SPECS_DIR = $(OUT_DIR)/specs
+ACTS_DIR = $(OUT_DIR)/acts
+DOC_DIR = $(OUT_DIR)/doc
 TMPDIR = $(CURDIR)/tmp
 
 # shell output colouring:
@@ -22,9 +25,6 @@ KPROVE_ARGS = --directory $(KLAB_EVMS_PATH)/.build/java/ --z3-executable --def-m
 
 DEBUG_ARGS = --debugg --debugg-path $(TMPDIR)/klab --debugg-id
 
-specs_dir = out/specs
-specs = $(wildcard $(specs_dir)/*)
-
 all: dapp spec
 
 dapp:
@@ -41,9 +41,19 @@ $(OUT_DIR)/spec.timestamp: $(SRCS)
 spec: $(OUT_DIR)/spec.timestamp
 
 spec-clean:
-	rm -rf $(OUT_DIR)/*
+	rm -rf $(SPECS_DIR)/* $(ACTS_DIR)/*
 
-clean: dapp-clean spec-clean
+$(DOC_DIR)/dss.html: $(SRCS)
+	$(info Generating html documentation: $@)
+	mkdir -p $(DOC_DIR)
+	klab report > $@
+
+doc: $(DOC_DIR)/dss.html
+
+doc-clean:
+	rm -rf $(DOC_DIR)/*
+
+clean: dapp-clean spec-clean doc-clean
 
 proofs: proofs-Vat
 
@@ -52,20 +62,35 @@ PERCENT := %
 
 .SECONDEXPANSION:
 
-proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof,$$(wildcard $(specs_dir)/proof-%*.k))
+proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.timestamp,$$(wildcard $(SPECS_DIR)/proof-%*.k))
 	$(info $(bold)CHECKED$(reset) all behaviours of contract $*.)
 
-debug-proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug,$$(wildcard $(specs_dir)/proof-%*.k))
-	$(info $(bold)CHECKED$(reset) all behaviours of contract $*.)
+debug-proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.timestamp,$$(wildcard $(SPECS_DIR)/proof-%*.k))
+	$(info $(bold)CHECKED$(reset) all behaviours of contract $* (in $(yellow)$(bold)debug mode$(reset)).)
 
-%.k.proof: %.k
+logs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.timestamp,$$(wildcard $(SPECS_DIR)/proof-%*.k))
+	$(info $(bold)COMPILED$(reset) logs for all behaviours of contract $*.)
+
+publish-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.publish,$$(wildcard $(SPECS_DIR)/proof-%*.k))
+	$(info $(bold)PUBLISHED$(reset) logs for all behaviours of contract $*.)
+
+%.k.proof.timestamp: %.k
 	$(info Proof $(bold)STARTING$(reset): $<)
-	@ $(KPROVE) $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<"
+	@ $(KPROVE) $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<" && touch $@
 
-%.k.proof.debug: %.k
+%.k.proof.debug.timestamp: %.k
 	$(info Proof $(bold)STARTING$(reset): $< (in $(yellow)$(bold)debug mode$(reset)))
-	@ $(KPROVE) $(DEBUG_ARGS) `klab hash --spec $<` $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<"
+	@ $(KPROVE) $(DEBUG_ARGS) `klab hash --spec $<` $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<" && touch $@
 
+%.k.proof.debug.log.timestamp: %.k %.k.proof.debug.timestamp
+	$(info $(bold)Compiling$(reset) proof logs for $<)
+	klab compile --spec $< && touch $@
 
+%.k.proof.debug.log.publish: %.k %.k.proof.debug.log.timestamp
+	$(info $(bold)Publishing$(reset) proof logs for $<)
+	test -n "$(KLAB_PUBLISH_ID)"  # $$KLAB_PUBLISH_ID must be set
+	test -n "$(KLAB_PUBLISH_SECRET)"  # $$KLAB_PUBLISH_SECRET must be set
+	klab publish --spec $<
 
-
+# needed to keep the dummy timestamp files from getting removed
+.SECONDARY:
