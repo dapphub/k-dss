@@ -5,9 +5,9 @@ module PROOF-CAT_FLIP_FAIL
   imports EVM
   imports RULES
 
-// flip
+// Cat_flip
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -62,7 +62,7 @@ rule
     </evm>
     <network>
       <activeAccounts> SetItem(ACCT_ID)
-      SetItem(Flip) </activeAccounts>
+      SetItem(Flip) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Flip </acctID>
@@ -109,7 +109,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeUInt(256, ABI_n)
   andBool #rangeUInt(256, ABI_wad)
   andBool #rangeBytes(32, Ilk)
@@ -136,6 +136,7 @@ andBool VCallDepth <Int 1024
             Live ==Int 1
     andBool ABI_wad <=Int Tab
     andBool (ABI_wad ==Int Lump) orBool ((ABI_wad <Int Lump) andBool (ABI_wad ==Int Tab))
+    andBool VCallDepth <Int 1023
     andBool #rangeUInt(256, Ink *Int ABI_wad)
     andBool #rangeUInt(256, ABI_wad *Int Chop)
   )

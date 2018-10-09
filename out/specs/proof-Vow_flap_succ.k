@@ -5,9 +5,9 @@ module PROOF-VOW_FLAP_SUCC
   imports EVM
   imports RULES
 
-// flap
+// Vow_flap
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -64,7 +64,7 @@ rule
       <activeAccounts> SetItem(ACCT_ID)
       SetItem(DaiMove)
       SetItem(Cow)
-      SetItem(Vat) </activeAccounts>
+      SetItem(Vat) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> DaiMove </acctID>
@@ -125,7 +125,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeAddress(Cow)
   andBool #rangeAddress(Vat)
   andBool #rangeAddress(Vat_move)
@@ -164,6 +164,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool Dai /Int #Ray >=Int (((Sin +Int Woe) +Int Ash) +Int Bump) +Int Hump
   andBool Woe ==Int 0
+  andBool VCallDepth <Int 1023
   andBool #rangeUInt(256, Sin +Int Woe)
   andBool #rangeUInt(256, (Sin +Int Woe) +Int Ash)
   andBool #rangeUInt(256, ((Sin +Int Woe) +Int Ash) +Int Bump)

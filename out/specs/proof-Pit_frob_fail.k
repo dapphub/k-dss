@@ -5,9 +5,9 @@ module PROOF-PIT_FROB_FAIL
   imports EVM
   imports RULES
 
-// frob
+// Pit_frob
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -62,7 +62,7 @@ rule
     </evm>
     <network>
       <activeAccounts> SetItem(ACCT_ID)
-      SetItem(Vat) </activeAccounts>
+      SetItem(Vat) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -107,7 +107,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeBytes(32, ABI_ilk)
   andBool #rangeSInt(256, ABI_dink)
   andBool #rangeSInt(256, ABI_dart)
@@ -136,6 +136,7 @@ andBool VCallDepth <Int 1024
     andBool (((((Art_iu +Int ABI_dart) *Int Rate) <=Int (#Ray *Int Spot)) andBool (((Debt +Int (Rate *Int ABI_dart))) <Int (#Ray *Int Line))) orBool (ABI_dart <=Int 0))
     andBool (((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink_iu +Int ABI_dink) *Int Spot) >=Int ((Art_iu +Int ABI_dart) *Int Rate)))
     andBool Live ==Int 1
+    andBool VCallDepth <Int 1024
     andBool #rangeUInt(256, Ink_i +Int ABI_dink)
     andBool #rangeUInt(256, Art_i +Int ABI_dart)
     andBool #rangeUInt(256, Ink_iu +Int ABI_dink)

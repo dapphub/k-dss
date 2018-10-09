@@ -5,9 +5,9 @@ module PROOF-DAIJOIN_EXIT_FAIL
   imports EVM
   imports RULES
 
-// exit
+// DaiJoin_exit
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -24,7 +24,7 @@ rule
         <programBytes> #parseByteStack("0x608060405234801561001057600080fd5b507c0100000000000000000000000000000000000000000000000000000000600035046336569e7781141561004b5760005460405260206040f35b63f4b9fa758114156100635760015460405260206040f35b63e5009bb6811415610119576100876b033b2e3c9fd0803ce80000006024356101d2565b7f78f1947000000000000000000000000000000000000000000000000000000000600052306004526004356024528060445260008060646000806000545af115156100d157600080fd5b7f9dc29fac000000000000000000000000000000000000000000000000000000006000523360045260243560245260008060446000806001545af1151561011757600080fd5b005b63ef693bed8114156101cd5761013d6b033b2e3c9fd0803ce80000006024356101d2565b7f78f194700000000000000000000000000000000000000000000000000000000060005233600452306024528060445260008060646000806000545af1151561018557600080fd5b7f40c10f19000000000000000000000000000000000000000000000000000000006000523360045260243560245260008060446000806001545af115156101cb57600080fd5b005b600080fd5b600082820290507f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8082111561020757600080fd5b82848304146000851417151561021c57600080fd5b50929150505600a165627a7a7230582020945abaed8cb4f5ac4924119d9c8e88892c8e1a7c8d4cfa572316898ef89c190029") </programBytes>
         <id> ACCT_ID </id>
         <caller> CALLER_ID </caller>
-        <callData> #abiCallData("exit", #bytes32(ABI_urn), #uint256(ABI_wad)) </callData>
+        <callData> #abiCallData("exit", #address(ABI_guy), #uint256(ABI_wad)) </callData>
         <callValue> 0 </callValue>
         <wordStack> .WordStack => _ </wordStack>
         <localMem> .Map => _ </localMem>
@@ -63,7 +63,7 @@ rule
     <network>
       <activeAccounts> SetItem(ACCT_ID)
       SetItem(Vat)
-      SetItem(Dai) </activeAccounts>
+      SetItem(Dai) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -106,8 +106,8 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
-  andBool #rangeBytes(32, ABI_urn)
+andBool VCallDepth <=Int 1024
+  andBool #rangeAddress(ABI_guy)
   andBool #rangeUInt(256, ABI_wad)
   andBool #rangeAddress(Vat)
   andBool #rangeAddress(Dai)
@@ -124,6 +124,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             Can ==Int 1
+    andBool VCallDepth <Int 1024
     andBool #rangeSInt(256, #Ray *Int ABI_wad)
     andBool #rangeUInt(256, Rad         -Int #Ray *Int ABI_wad)
     andBool #rangeUInt(256, Bal_guy     +Int ABI_wad)

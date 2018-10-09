@@ -5,9 +5,9 @@ module PROOF-ETHJOIN_JOIN_SUCC
   imports EVM
   imports RULES
 
-// join
+// ETHJoin_join
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -62,7 +62,7 @@ rule
     </evm>
     <network>
       <activeAccounts> SetItem(ACCT_ID)
-      SetItem(Vat) </activeAccounts>
+      SetItem(Vat) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -96,7 +96,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeBytes(32, ABI_urn)
   andBool #rangeAddress(Vat)
   andBool #rangeBytes(32, Ilk)

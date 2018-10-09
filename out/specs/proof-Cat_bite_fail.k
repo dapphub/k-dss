@@ -5,9 +5,9 @@ module PROOF-CAT_BITE_FAIL
   imports EVM
   imports RULES
 
-// bite
+// Cat_bite
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -64,7 +64,7 @@ rule
       <activeAccounts> SetItem(ACCT_ID)
       SetItem(Vat)
       SetItem(Pit)
-      SetItem(Vow) </activeAccounts>
+      SetItem(Vow) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -130,7 +130,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeBytes(32, ABI_ilk)
   andBool #rangeAddress(ABI_urn)
   andBool #rangeAddress(Vat)
@@ -166,6 +166,7 @@ andBool VCallDepth <Int 1024
             Can ==Int 1
     andBool Live ==Int 1
     andBool Ink_iu *Int Spot_i <Int Art_iu *Int Rate
+    andBool VCallDepth <Int 1024
     andBool #rangeSInt(256, Take)
     andBool #rangeSInt(256, Rate)
     andBool #rangeSInt(256, Take *Int (0 -Int Ink_iu))

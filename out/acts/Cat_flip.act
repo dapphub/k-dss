@@ -44,6 +44,7 @@ iff
     Live == 1
     wad <= Tab
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
+    VCallDepth < 1023
 
 iff in range uint256
 

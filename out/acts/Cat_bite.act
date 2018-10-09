@@ -65,6 +65,7 @@ iff
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
     Ink_iu * Spot_i < Art_iu * Rate
+    VCallDepth < 1024
 
 iff in range int256
 

@@ -5,9 +5,9 @@ module PROOF-GEMJOIN_JOIN_FAIL
   imports EVM
   imports RULES
 
-// join
+// GemJoin_join
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -63,7 +63,7 @@ rule
     <network>
       <activeAccounts> SetItem(ACCT_ID)
       SetItem(Vat)
-      SetItem(Gem) </activeAccounts>
+      SetItem(Gem) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -107,7 +107,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeBytes(32, ABI_urn)
   andBool #rangeUInt(256, ABI_wad)
   andBool #rangeAddress(Vat)
@@ -126,6 +126,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             Can ==Int 1
+    andBool VCallDepth <Int 1024
     andBool #rangeSInt(256, #Ray *Int ABI_wad)
     andBool #rangeUInt(256, Rad +Int #Ray *Int ABI_wad)
     andBool #rangeUInt(256, Bal_guy     -Int ABI_wad)

@@ -5,9 +5,9 @@ module PROOF-VOW_FLOP_SUCC
   imports EVM
   imports RULES
 
-// flop
+// Vow_flop
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -63,7 +63,7 @@ rule
     <network>
       <activeAccounts> SetItem(ACCT_ID)
       SetItem(Row)
-      SetItem(Vat) </activeAccounts>
+      SetItem(Vat) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Row </acctID>
@@ -113,7 +113,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeAddress(Row)
   andBool #rangeAddress(Vat)
   andBool #rangeUInt(256, Sump)
@@ -145,6 +145,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool Can ==Int 1
   andBool Dai <Int #Ray
+  andBool VCallDepth <Int 1024
   andBool #rangeUInt(256, Woe -Int Sump)
   andBool #rangeUInt(256, Ash +Int Sump)
 

@@ -9,7 +9,7 @@ module RULES
 
 // VERIFICATION.k
 
-    syntax Int ::= nthbyteof ( Int , Int , Int ) [function, smtlib(smt_nthbyteof)]
+    syntax Int ::= nthbyteof ( Int , Int , Int ) [function, smtlib(smt_nthbyteof), proj]
  // ------------------------------------------------------------------------------
     rule nthbyteof(V, I, N) => nthbyteof(V /Int 256, I, N -Int 1) when N  >Int (I +Int 1) [concrete]
     rule nthbyteof(V, I, N) =>           V modInt 256             when N ==Int (I +Int 1) [concrete]
@@ -429,13 +429,13 @@ rule #Drip.ilks[Ilk].rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
 syntax Int ::= "#Drip.vat" [function]
 // ----------------------------------
 // doc: the Vat that this Drip points to
-// act: this Drip points to `.`
+// act: this Drip points to Vat `.`
 rule #Drip.vat => 2
 
 syntax Int ::= "#Drip.vow" [function]
 // ----------------------------------
 // doc: the Vow that this Drip points to
-// act: this Drip points to `.`
+// act: this Drip points to Vow `.`
 rule #Drip.vow => 3
 
 syntax Int ::= "#Drip.repo" [function]
@@ -476,7 +476,13 @@ rule #Pit.Line => 3
 syntax Int ::= "#Pit.vat" [function]
 // ---------------------------------
 // doc: the Vat that this Pit points to
-// act: this Pit points to `.`
+// act: this Pit points to Vat `.`
+rule #Pit.vat => 4
+
+syntax Int ::= "#Pit.drip" [function]
+// ---------------------------------
+// doc: the Dripper that this Pit points to
+// act: this Pit points to Dripper `.`
 rule #Pit.vat => 4
 syntax Int ::= "#Vow.wards" "[" Int "]" [function]
 // ---------------------------------
@@ -487,19 +493,19 @@ rule #Vow.wards[A] => #hashedLocation("Solidity", 0, A)
 syntax Int ::= "#Vow.vat" [function]
 // ---------------------------------
 // doc: the Vat that this Vow points to
-// act: this Vow points to `.`
+// act: this Vow points to Vat `.`
 rule #Vow.vat => 1
 
 syntax Int ::= "#Vow.cow" [function]
 // ---------------------------------
 // doc: the Flapper that this Vow points to
-// act: this Vow points to `.`
+// act: this Vow points to Flapper `.`
 rule #Vow.cow => 2
 
 syntax Int ::= "#Vow.row" [function]
 // ---------------------------------
 // doc: the Flopper that this Vow points to
-// act: this Vow points to `.`
+// act: this Vow points to Flopper `.`
 rule #Vow.row => 3
 
 syntax Int ::= "#Vow.sin" "[" Int "]" [function]
