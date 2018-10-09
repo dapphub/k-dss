@@ -1929,8 +1929,8 @@ iff
 
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
-    VCallDepth < 1023
-    
+    VCallDepth < 1022
+
 iff in range uint256
 
     Sin + Woe
