@@ -46,6 +46,7 @@ iff
 
     Can == 1
     Dai < #Ray
+    VCallDepth < 1024
 
 iff in range uint256
 

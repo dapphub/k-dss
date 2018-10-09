@@ -1,5 +1,5 @@
 behaviour exit of ETHJoin
-interface exit(bytes32, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -22,6 +22,8 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
+    wad <= BAL
 
 iff in range int256
 

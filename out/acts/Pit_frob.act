@@ -47,6 +47,7 @@ iff
     (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
     (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
     Live == 1
+    VCallDepth < 1024
 
 iff in range uint256
 

@@ -5,9 +5,9 @@ module PROOF-VOW_FESS_SUCC
   imports EVM
   imports RULES
 
-// fess
+// Vow_fess
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -61,7 +61,7 @@ rule
       <blockhash> _ </blockhash>
     </evm>
     <network>
-      <activeAccounts> SetItem(ACCT_ID) </activeAccounts>
+      <activeAccounts> SetItem(ACCT_ID) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> ACCT_ID </acctID>
@@ -87,13 +87,14 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeUInt(256, ABI_tab)
   andBool #rangeUInt(256, Can)
   andBool #rangeUInt(256, Sin_era)
   andBool #rangeUInt(256, Sin)
   andBool VGas >Int 300000
   andBool Can ==Int 1
+  andBool VCallDepth <Int 1024
   andBool #rangeUInt(256, Sin_era +Int ABI_tab)
   andBool #rangeUInt(256, Sin     +Int ABI_tab)
 

@@ -343,7 +343,7 @@ storage
 iff
 
     Can == 1
-    
+
 iff in range uint256
 
     Dai_src - rad
@@ -462,7 +462,7 @@ iff in range uint256
     Gem_iv - (Take * dink)
     Sin_w  - (Rate * dart)
     Vice   - (Rate * dart)
-    
+
 iff in range int256
 
     Take
@@ -544,7 +544,7 @@ iff in range uint256
     Rate + rate
     Dai  + Art_i * rate
     Debt + Art_i * rate
-    
+
 iff in range int256
 
     Art_i
@@ -559,7 +559,7 @@ if
 
 ```act
 behaviour toll of Vat
-interface toll(bytes32 i, bytes32 u, int256 take) 
+interface toll(bytes32 i, bytes32 u, int256 take)
 
 types
 
@@ -567,7 +567,7 @@ types
     Take : uint256
     Ink  : uint256
     Gem  : uint256
-    
+
 storage
 
     #Vat.wards[CALLER_ID] |-> Can
@@ -919,6 +919,7 @@ iff
 
     Can == 1
     TIME >= Rho
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1228,6 +1229,7 @@ iff
     (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
     (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
     Live == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1242,7 +1244,7 @@ iff in range uint256
     (Ink_iu + dink) * Spot
     #Ray * Spot
     #Ray * Line
-    
+
 iff in range int256
 
     Take
@@ -1304,7 +1306,7 @@ interface sin(uint48 era)
 types
 
     Sin_era : uint256
-    
+
 storage
 
     #Vow.sin[era] |-> Sin_era
@@ -1325,7 +1327,7 @@ interface Sin()
 types
 
     Sin : uint256
-    
+
 storage
 
     #Vow.Sin |-> Sin
@@ -1333,7 +1335,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Sin
 ```
 
@@ -1346,7 +1348,7 @@ interface Woe()
 types
 
     Woe : uint256
-    
+
 storage
 
     #Vow.Woe |-> Woe
@@ -1354,7 +1356,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Woe
 ```
 
@@ -1367,7 +1369,7 @@ interface Ash()
 types
 
     Ash : uint256
-    
+
 storage
 
     #Vow.Ash |-> Ash
@@ -1375,7 +1377,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Ash
 ```
 
@@ -1388,7 +1390,7 @@ interface wait()
 types
 
     Wait : uint256
-    
+
 storage
 
     #Vow.wait |-> Wait
@@ -1396,7 +1398,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Wait
 ```
 
@@ -1409,7 +1411,7 @@ interface sump()
 types
 
     Sump : uint256
-    
+
 storage
 
     #Vow.sump |-> Sump
@@ -1430,7 +1432,7 @@ interface bump()
 types
 
     Bump : uint256
-    
+
 storage
 
     #Vow.bump |-> Bump
@@ -1438,7 +1440,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Bump
 ```
 
@@ -1451,7 +1453,7 @@ interface hump()
 types
 
     Hump : uint256
-    
+
 storage
 
     #Vow.hump |-> Hump
@@ -1459,7 +1461,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Hump
 ```
 
@@ -1474,13 +1476,13 @@ types
     Sin : uint256
     Woe : uint256
     Ash : uint256
-    
+
 storage
 
     #Vow.Sin |-> Sin
     #Vow.Woe |-> Woe
     #Vow.Ash |-> Ash
-    
+
 iff in range uint256
 
     Sin + Woe
@@ -1489,7 +1491,7 @@ iff in range uint256
 if
 
     VGas > 300000
-    
+
 returns Sin + Woe + Ash
 ```
 
@@ -1512,10 +1514,14 @@ storage Vat
 
     #Vat.dai[ACCT_ID] |-> Dai
 
+iff
+
+    VCallDepth < 1024
+
 if
 
     VGas > 300000
-    
+
 returns Dai / #Ray
 ```
 
@@ -1589,7 +1595,7 @@ storage
     #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
     #Vow.hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
-    
+
 iff
 
     Can == 1
@@ -1618,7 +1624,7 @@ storage
     #Vow.cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
     #Vow.row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
     #Vow.vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
-    
+
 iff
 
     Can == 1
@@ -1660,6 +1666,7 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1668,7 +1675,7 @@ iff in range uint256
     Sin  - wad * #Ray
     Vice - wad * #Ray
     Debt - wad * #Ray
-    
+
 iff in range int256
 
     wad * #Ray
@@ -1706,6 +1713,7 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1714,7 +1722,7 @@ iff in range uint256
     Sin  - wad * #Ray
     Vice - wad * #Ray
     Debt - wad * #Ray
-    
+
 iff in range int256
 
     wad * #Ray
@@ -1735,7 +1743,7 @@ types
     Can     : uint256
     Sin_era : uint256
     Sin     : uint256
-    
+
 storage
 
     #Vow.wards[CALLER_ID] |-> Can
@@ -1745,6 +1753,7 @@ storage
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1779,6 +1788,7 @@ storage
 iff
 
     t + Wait <= TIME
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1815,7 +1825,7 @@ types
     Ttl     : uint48
     Tau     : uint48
     Dai     : uint256
-    
+
 storage
 
     #Vow.row  |-> Row
@@ -1823,7 +1833,7 @@ storage
     #Vow.sump |-> Sump
     #Vow.Woe  |-> Woe => Woe - Sump
     #Vow.Ash  |-> Ash => Ash + Sump
-    
+
 storage Row
 
     #Flopper.wards[ACCT_ID]              |-> Can
@@ -1837,12 +1847,13 @@ storage Row
 storage Vat
 
     #Vat.dai[ACCT_ID] |-> Dai
-    
+
 iff
 
     Can == 1
     Dai < #Ray
-    
+    VCallDepth < 1024
+
 iff in range uint256
 
     Woe - Sump
@@ -1853,7 +1864,7 @@ if
     1 + Kicks  <= maxUInt256
     TIME + Tau <= maxUInt48
     VGas > 300000
-    
+
 returns 1 + Kicks
 ```
 
@@ -1884,7 +1895,7 @@ types
     Tau      : uint48
     Kicks    : uint256
     Dai      : uint256
-    
+
 storage
 
     #Vow.cow  |-> Cow
@@ -1918,7 +1929,8 @@ iff
 
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
-    
+    VCallDepth < 1022
+
 iff in range uint256
 
     Sin + Woe
@@ -1932,7 +1944,7 @@ if
     1 + Kicks <= maxUInt256
     TIME + Tau <= maxUInt48
     VGas > 300000
-    
+
 returns 1 + Kicks
 ```
 
@@ -1974,7 +1986,7 @@ types
     Chop : uint256
     Flip : address
     Lump : uint256
-    
+
 storage
 
     #Cat.ilks[ilk].flip |-> Flip
@@ -2000,7 +2012,7 @@ types
     Urn : bytes32
     Ink : uint256
     Tab : uint256
-    
+
 storage
 
     #Cat.flips[n].ilk |-> Ilk
@@ -2011,7 +2023,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Ilk : Urn : Ink : Tab
 ```
 
@@ -2024,7 +2036,7 @@ interface nflip()
 types
 
     Nflip : uint256
-    
+
 storage
 
     #Cat.nflip |-> Nflip
@@ -2032,7 +2044,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Nflip
 ```
 
@@ -2066,7 +2078,7 @@ interface vat()
 types
 
     Vat : address
-    
+
 storage
 
     #Cat.vat |-> Vat
@@ -2074,7 +2086,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Vat
 ```
 
@@ -2087,7 +2099,7 @@ interface pit()
 types
 
     Pit : address
-    
+
 storage
 
     #Cat.pit |-> Pit
@@ -2095,7 +2107,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Pit
 ```
 
@@ -2108,7 +2120,7 @@ interface vow()
 types
 
     Vow : address
-    
+
 storage
 
     #Cat.vow |-> Vow
@@ -2116,7 +2128,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Vow
 ```
 
@@ -2185,7 +2197,7 @@ storage
     #Cat.wards[CALLER_ID] |-> Can
     #Cat.pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
     #Cat.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
-    
+
 iff
 
     Can == 1
@@ -2212,7 +2224,7 @@ storage
     #Cat.wards[CALLER_ID] |-> Can
     #Cat.ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
     #Cat.ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
-    
+
 iff
 
     Can == 1
@@ -2237,7 +2249,7 @@ storage
 
     #Cat.wards[CALLER_ID] |-> Can
     #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
-    
+
 iff
 
     Can == 1
@@ -2274,7 +2286,7 @@ types
     Sin     : uint256
     Sin_era : uint256
     Live    : uint256
-    
+
 storage
 
     #Cat.vat                |-> Vat
@@ -2303,12 +2315,12 @@ storage Vat
 storage Pit
 
     #Pit.ilks[ilk].spot     |-> Spot_i
-    
+
 storage Vow
 
     #Vow.sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
     #Vow.Sin                |-> Sin     => Sin     + Art_iu * Rate
-    
+
 iff
 
     // act: caller is `. ? : not` authorised
@@ -2317,6 +2329,7 @@ iff
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
     Ink_iu * Spot_i < Art_iu * Rate
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2373,7 +2386,7 @@ storage
     #Cat.ilks[ilk].lump |-> Lump
     #Cat.vow            |-> Vow
     #Cat.live           |-> Live
-    
+
 storage Flip
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -2390,6 +2403,7 @@ iff
     Live == 1
     wad <= Tab
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
+    VCallDepth < 1023
 
 iff in range uint256
 
@@ -2439,7 +2453,7 @@ interface ilk()
 types
 
     Ilk : bytes32
-    
+
 storage
 
     #GemJoin.ilk |-> Ilk
@@ -2447,7 +2461,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Ilk
 ```
 
@@ -2460,7 +2474,7 @@ interface gem()
 types
 
     Gem : address
-    
+
 storage
 
     #GemJoin.gem |-> Gem
@@ -2468,7 +2482,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Gem
 ```
 
@@ -2489,7 +2503,7 @@ types
     Rad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
-    
+
 storage
 
     #GemJoin.vat |-> Vat
@@ -2500,15 +2514,16 @@ storage Vat
 
     #Vat.wards[ACCT_ID]          |-> Can
     #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
-    
+
 storage Gem
 
     #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
     #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
-    
+
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2529,7 +2544,7 @@ if
 
 ```act
 behaviour exit of GemJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2540,7 +2555,7 @@ types
     Rad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
-    
+
 storage
 
     #GemJoin.vat |-> Vat
@@ -2560,6 +2575,7 @@ storage Gem
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2612,7 +2628,7 @@ interface ilk()
 types
 
     Ilk : bytes32
-    
+
 storage
 
     #ETHJoin.ilk |-> Ilk
@@ -2620,7 +2636,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Ilk
 ```
 
@@ -2676,7 +2692,7 @@ if
 
 ```act
 behaviour exit of ETHJoin
-interface exit(bytes32, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2699,6 +2715,8 @@ storage Vat
 iff
 
     Can == 1
+    VCallDepth < 1024
+    wad <= BAL
 
 iff in range int256
 
@@ -2750,7 +2768,7 @@ interface dai()
 types
 
     Dai : address
-    
+
 storage
 
     #DaiJoin.dai |-> Dai
@@ -2758,7 +2776,7 @@ storage
 if
 
     VGas > 300000
-    
+
 returns Dai
 ```
 
@@ -2778,7 +2796,7 @@ types
     Rad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
-    
+
 storage
 
     #DaiJoin.vat |-> Vat
@@ -2788,15 +2806,16 @@ storage Vat
 
     #Vat.wards[ACCT_ID] |-> Can
     #Vat.dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
-    
+
 storage Dai
 
     #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
     #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
-    
+
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 
@@ -2817,7 +2836,7 @@ if
 
 ```act
 behaviour exit of DaiJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -2827,7 +2846,7 @@ types
     Rad         : uint256
     Bal_guy     : uint256
     Bal_adapter : uint256
-    
+
 storage
 
     #DaiJoin.vat |-> Vat
@@ -2846,6 +2865,7 @@ storage Dai
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 

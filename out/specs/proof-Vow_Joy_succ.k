@@ -5,9 +5,9 @@ module PROOF-VOW_JOY_SUCC
   imports EVM
   imports RULES
 
-// Joy
+// Vow_Joy
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -62,7 +62,7 @@ rule
     </evm>
     <network>
       <activeAccounts> SetItem(ACCT_ID)
-      SetItem(Vat) </activeAccounts>
+      SetItem(Vat) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -94,12 +94,13 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeAddress(Vat)
   andBool #rangeUInt(256, Dai)
   andBool #rangeUInt(256, Vat_balance)
   andBool #notPrecompileAddress(Vat)
   andBool ACCT_ID =/=Int Vat
   andBool VGas >Int 300000
+  andBool VCallDepth <Int 1024
 
 endmodule

@@ -5,9 +5,9 @@ module PROOF-CAT_LIVE_SUCC
   imports EVM
   imports RULES
 
-// live
+// Cat_live
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -61,7 +61,7 @@ rule
       <blockhash> _ </blockhash>
     </evm>
     <network>
-      <activeAccounts> SetItem(ACCT_ID) </activeAccounts>
+      <activeAccounts> SetItem(ACCT_ID) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> ACCT_ID </acctID>
@@ -85,7 +85,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeUInt(256, Live)
   andBool VGas >Int 300000
 

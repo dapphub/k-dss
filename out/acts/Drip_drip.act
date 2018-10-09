@@ -17,8 +17,8 @@ types
 storage
 
     #Drip.vat           |-> Vat
+    #Drip.vow           |-> Vow
     #Drip.repo          |-> Repo
-    #Drip.ilks[ilk].vow |-> Vow
     #Drip.ilks[ilk].tax |-> Tax
     #Drip.ilks[ilk].rho |-> Rho => TIME
 
@@ -34,6 +34,7 @@ iff
 
     Can == 1
     TIME >= Rho
+    VCallDepth < 1024
 
 iff in range uint256
 

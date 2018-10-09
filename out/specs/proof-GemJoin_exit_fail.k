@@ -5,9 +5,9 @@ module PROOF-GEMJOIN_EXIT_FAIL
   imports EVM
   imports RULES
 
-// exit
+// GemJoin_exit
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -24,7 +24,7 @@ rule
         <programBytes> #parseByteStack("0x608060405234801561001057600080fd5b507c0100000000000000000000000000000000000000000000000000000000600035046336569e7781141561004b5760005460405260206040f35b63c5ce281e8114156100635760015460405260206040f35b637bd2bea781141561007b5760025460405260206040f35b63e5009bb68114156101375761009f6b033b2e3c9fd0803ce80000006024356101fb565b7f42066cbb000000000000000000000000000000000000000000000000000000006000526001546004526004356024528060445260008060646000806000545af115156100eb57600080fd5b7f23b872dd00000000000000000000000000000000000000000000000000000000600052336004523060245260243560445260008060646000806002545af1151561013557600080fd5b005b63ef693bed8114156101f65761015b6b033b2e3c9fd0803ce80000006024356101fb565b7f42066cbb00000000000000000000000000000000000000000000000000000000600052600154600452336024528060000360445260008060646000806000545af115156101a857600080fd5b7f23b872dd000000000000000000000000000000000000000000000000000000006000523060045260043560245260243560445260008060646000806002545af115156101f457600080fd5b005b600080fd5b600082820290507f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8082111561023057600080fd5b82848304146000851417151561024557600080fd5b50929150505600a165627a7a723058201d7c0b1ac6ec117869f006d5b54908084f1eeb0a9bbf960a89db9876c338118d0029") </programBytes>
         <id> ACCT_ID </id>
         <caller> CALLER_ID </caller>
-        <callData> #abiCallData("exit", #bytes32(ABI_urn), #uint256(ABI_wad)) </callData>
+        <callData> #abiCallData("exit", #address(ABI_guy), #uint256(ABI_wad)) </callData>
         <callValue> 0 </callValue>
         <wordStack> .WordStack => _ </wordStack>
         <localMem> .Map => _ </localMem>
@@ -63,7 +63,7 @@ rule
     <network>
       <activeAccounts> SetItem(ACCT_ID)
       SetItem(Vat)
-      SetItem(Gem) </activeAccounts>
+      SetItem(Gem) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> Vat </acctID>
@@ -107,8 +107,8 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
-  andBool #rangeBytes(32, ABI_urn)
+andBool VCallDepth <=Int 1024
+  andBool #rangeAddress(ABI_guy)
   andBool #rangeUInt(256, ABI_wad)
   andBool #rangeAddress(Vat)
   andBool #rangeBytes(32, Ilk)
@@ -126,6 +126,7 @@ andBool VCallDepth <Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             Can ==Int 1
+    andBool VCallDepth <Int 1024
     andBool #rangeSInt(256, #Ray *Int ABI_wad)
     andBool #rangeUInt(256, Rad         -Int #Ray *Int ABI_wad)
     andBool #rangeUInt(256, Bal_guy     +Int ABI_wad)

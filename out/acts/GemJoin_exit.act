@@ -1,5 +1,5 @@
 behaviour exit of GemJoin
-interface exit(bytes32 urn, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -30,6 +30,7 @@ storage Gem
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range int256
 

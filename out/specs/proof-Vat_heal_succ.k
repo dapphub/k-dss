@@ -5,9 +5,9 @@ module PROOF-VAT_HEAL_SUCC
   imports EVM
   imports RULES
 
-// heal
+// Vat_heal
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -61,7 +61,7 @@ rule
       <blockhash> _ </blockhash>
     </evm>
     <network>
-      <activeAccounts> SetItem(ACCT_ID) </activeAccounts>
+      <activeAccounts> SetItem(ACCT_ID) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> ACCT_ID </acctID>
@@ -89,7 +89,7 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
+andBool VCallDepth <=Int 1024
   andBool #rangeBytes(32, ABI_u)
   andBool #rangeBytes(32, ABI_v)
   andBool #rangeSInt(256, ABI_rad)

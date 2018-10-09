@@ -16,6 +16,7 @@ storage
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
