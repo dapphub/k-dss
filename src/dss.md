@@ -1,5 +1,128 @@
 What follows is an executable K specification of the smart contracts of multicollateral dai.
 
+The system consists of the following functions:
+- [Vat](#vat)
+  - [accessors](#accessors)
+    * [wards](#owners)
+    * [ilks](#collateral-type-data)
+    * [urns](#cdp-data)
+    * [gem](#internal-unencumbered-collateral-balances)
+    * [dai](#internal-dai-balances)
+    * [sin](#system-debt-balances)
+    * [debt](#total-dai-supply)
+    * [vice](#total-system-debt)
+  - [mutators](#mutators)
+    * [rely](#adding-and-removing-owners)
+    * [deny](#adding-and-removing-owners)
+    * [init](#initializing-a-collateral-type)
+    * [slip](#assigning-unencumbered-collateral)
+    * [flux](#moving-unencumbered-collateral)
+    * [move](#moving-dai-balances)
+    * [tune](#administering-a-position)
+    * [grab](#confiscating-a-position)
+    * [heal](#-creating/annihilating-bad-debt-and-surplus)
+    * [fold](#-applying-interest-to-a-collateral-type)
+    * [toll](#-applying-collateral-adjustment-to-a-collateral-type)
+- [Drip](#drip)
+  - [accessors](#accessors-1)
+    * [wards](#owners-1)
+    * [ilks](#collateral-type-data-1)
+    * [vat](#vat-address)
+    * [vow](#vow-address)
+    * [repo](#global-interest-rate)
+    * [era](#getting-the-time)
+  - [mutators](#mutators-1)
+    * [rely](#adding-and-removing-owners-1)
+    * [deny](#adding-and-removing-owners-1)
+    * [init](#initializing-a-collateral-type)
+    * [file](#setting-collateral-type-data)
+    * [file-repo](#setting-the-base-rate)
+    * [file-vow](#setting-the-vow)
+    * [drip](#updating-the-rates)
+- [Pit](#pit)
+  - [accessors](#accessors-2)
+    * [wards](#owners-2)
+    * [ilks](#collateral-type-data-2)
+    * [live](#liveness)
+    * [vat](#vat-address-1)
+    * [line](#global-debt-ceiling)
+    * [drip](#drip-address)
+  - [mutators](#mutators)
+    * [rely](#adding-and-removing-owners-2)
+    * [deny](#adding-and-removing-owners-2)
+    * [file-ilk](#setting-ilk-data)
+    * [file-line](#-setting-the-global-debt-ceiling)
+    * [frob](#-manipulating-a-position)
+- [Vow](#vow)
+  - [accessors](#accessors-3)
+    * [wards](#owners-3)
+    * [era](#getting-the-time-1)
+    * [sin](#getting-a-sin-packet)
+    * [Sin](#getting-the-sin)
+    * [Woe](#getting-the-woe)
+    * [Ash](#getting-the-ash)
+    * [wait](#getting-the-wait)
+    * [sump](#getting-the-sump)
+    * [bump](#getting-the-bump)
+    * [hump](#getting-the-hump)
+    * [Awe](#getting-the-awe)
+    * [Joy](#getting-the-joy)
+  - [mutators](#mutators-3)
+    * [rely](#adding-and-removing-owners-3)
+    * [deny](#adding-and-removing-owners-3)
+    * [file-data](#setting-vow-parameters)
+    * [file-addr](#setting-vat-and-liquidators)
+    * [heal](#canceling-bad-debt-and-surplus)
+    * [fess](#adding-to-the-sin-queue)
+    * [flog](#processing-sin-queue)
+    * [flop](#starting-a-debt-auction)
+    * [flap](#starting-a-surplus-auction)
+- [Cat](#cat)
+  - [accessors](#accessors-4)
+    * [wards](#owners-4)
+    * [ilks](#collateral-type-data)
+    * [flips](#liquidation-data)
+    * [nflips](#liquidation-counter)
+    * [live](#liveness)
+    * [vat](#vat-address-2)
+    * [pit](#pit-address)
+    * [vow](#vow-address)
+  - [mutators](#mutators-4)
+    * [rely](#adding-and-removing-owners)
+    * [deny](#adding-and-removing-owners)
+    * [file-addr](#setting-contract-addresses)
+    * [file](#setting-liquidation-data)
+    * [file-flip](#setting-liquidator-address)
+    * [bite](#marking-a-position-for-liquidation)
+    * [flip](#starting-a-collateral-auction)
+- [GemJoin](#gemjoin)
+  - [accessors](#accessors-5)
+    * [vat](#vat-address-3)
+    * [ilk](#the-associated-ilk)
+    * [gem](#gem-address)
+  - [mutators](#mutators-5)
+    * [join](#depositing-into-the-system)
+    * [exit](#withdrawing-from-the-system)
+- [ETHJoin](#ethjoin)
+  - [accessors](#accessors-6)
+    * [vat](#vat-address-4)
+    * [ilk](#the-associated-ilk)
+  - [mutators](#mutators-6)
+    * [join](#depositing-into-the-system-1)
+    * [exit](#withdrawing-from-the-system-2)
+- [DaiJoin](#daijoin)
+  - [accessors](#accessors-7)
+    * [vat](#vat-address-5)
+    * [ilk](#the-associated-ilk)
+    * [dai](#dai-address)
+  - [mutators](#mutators-7)
+    * [join](#depositing-into-the-system-1)
+    * [exit](#withdrawing-from-the-system-2)
+
+
+
+
+
 # Vat
 
 ## Specification of behaviours
@@ -54,7 +177,7 @@ if
 returns Take : Rate : Ink_i : Art_i
 ```
 
-#### `urn` data
+#### CDP data
 
 ```act
 behaviour urns of Vat
@@ -119,7 +242,7 @@ if
 returns Rad
 ```
 
-#### internal sin balances
+#### system debt balances
 
 ```act
 behaviour sin of Vat
@@ -140,7 +263,7 @@ if
 returns Rad
 ```
 
-#### total debt
+#### total dai supply
 
 ```act
 behaviour debt of Vat
@@ -161,7 +284,7 @@ if
 returns Debt
 ```
 
-#### total bad debt
+#### total system debt
 
 ```act
 behaviour vice of Vat
@@ -232,7 +355,7 @@ if
     VGas > 300000
 ```
 
-#### initialising an `ilk`
+#### initialising a collateral type
 
 ```act
 behaviour init of Vat
@@ -322,7 +445,7 @@ if
     VGas > 300000
 ```
 
-#### transferring dai balances
+#### moving dai balances
 
 ```act
 behaviour move of Vat
@@ -513,7 +636,7 @@ if
     VGas > 300000
 ```
 
-#### applying interest to an `ilk`
+#### applying interest to a collateral type
 
 ```act
 behaviour fold of Vat
@@ -555,7 +678,7 @@ if
     VGas > 300000
 ```
 
-#### applying collateral adjustment to an `ilk`
+#### applying collateral adjustment to a collateral type
 
 ```act
 behaviour toll of Vat
@@ -622,7 +745,7 @@ if
 returns Can
 ```
 
-#### `ilk` data
+#### Collateral type data
 
 
 ```act
@@ -772,7 +895,7 @@ if
     VGas > 300000
 ```
 
-#### initialising an `ilk`
+#### initialising a collateral type
 
 
 ```act
@@ -801,7 +924,7 @@ if
     VGas > 300000
 ```
 
-#### setting `ilk` data
+#### setting collateral type data
 
 
 ```act
@@ -968,7 +1091,7 @@ returns Can
 ```
 
 
-#### `ilk` data
+#### collateral type data
 
 ```act
 behaviour ilks of Pit
@@ -1963,7 +2086,7 @@ if
 returns Can
 ```
 
-#### `ilk` data
+#### Collateral type data
 
 ```act
 behaviour ilks of Cat
