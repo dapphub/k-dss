@@ -95,6 +95,7 @@ andBool VCallDepth <=Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             Can ==Int 1
+    andBool VCallDepth <Int 1024
     andBool #rangeUInt(256, Sin_era +Int ABI_tab)
     andBool #rangeUInt(256, Sin     +Int ABI_tab)
   )

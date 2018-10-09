@@ -1753,6 +1753,7 @@ storage
 iff
 
     Can == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1787,6 +1788,7 @@ storage
 iff
 
     t + Wait <= TIME
+    VCallDepth < 1024
 
 iff in range uint256
 
