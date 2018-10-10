@@ -18,7 +18,7 @@
       "solc_output": "./dss/out/frob.2.sol.json"
     },
     "Vow": {
-      "solc_output": "./dss/out/heal.2.sol.json"
+      "solc_output": "./dss/out/heal.sol.json"
     },
     "Cat": {
       "solc_output": "./dss/out/bite.2.sol.json"

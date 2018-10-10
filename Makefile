@@ -55,7 +55,7 @@ doc-clean:
 
 clean: dapp-clean spec-clean doc-clean
 
-proofs: proofs-Vat
+proofs: proofs-Vow
 
 # workaround for patsubst in pattern matching target below
 PERCENT := %
