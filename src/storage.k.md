@@ -557,11 +557,11 @@ syntax Int ::= "#DaiMove.vat" [function]
 // act:
 rule #DaiMove.vat => 0
 
-syntax Int ::= "#DaiMove.can" "[" Int "]" [function]
+syntax Int ::= "#DaiMove.can" "[" Int "][" Int "]" [function]
 // ---------------------------------------
 // doc:
 // act:
-rule #DaiMove.can[A] => #hashedLocation("Solidity", 1, A)
+rule #DaiMove.can[A][B] => #hashedLocation("Solidity", 1, A B)
 ```
 
 

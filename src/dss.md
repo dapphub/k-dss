@@ -1852,6 +1852,8 @@ iff
 
     Can == 1
     Dai < #Ray
+    1 + Kicks  <= maxUInt256
+    TIME + Tau <= maxUInt48
     VCallDepth < 1024
 
 iff in range uint256
@@ -1861,8 +1863,6 @@ iff in range uint256
 
 if
 
-    1 + Kicks  <= maxUInt256
-    TIME + Tau <= maxUInt48
     VGas > 300000
 
 returns 1 + Kicks
@@ -1878,7 +1878,6 @@ types
 
     Cow      : address Flappy
     Vat      : address VatLike
-    Vat_move : address
     Bump     : uint256
     Hump     : uint256
     Woe      : uint256
@@ -1890,7 +1889,7 @@ types
     Guy_was  : address
     Tic_was  : uint48
     End_was  : uint48
-    Gal_was  : uint256
+    Gal_was  : address
     Ttl      : uint48
     Tau      : uint48
     Kicks    : uint256
@@ -1908,8 +1907,8 @@ storage
 
 storage DaiMove
 
-    #DaiMove.vat          |-> Vat_move
-    #DaiMove.can[ACCT_ID] |-> Can => Can
+    #DaiMove.vat                         |-> Vat
+    #DaiMove.can[ACCT_ID][Cow]           |-> Can => Can
 
 storage Cow
 
@@ -1929,6 +1928,8 @@ iff
 
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
+    1 + Kicks <= maxUInt256
+    TIME + Tau <= maxUInt48
     VCallDepth < 1022
 
 iff in range uint256
@@ -1940,9 +1941,6 @@ iff in range uint256
 
 if
 
-    Vat == Vat_move
-    1 + Kicks <= maxUInt256
-    TIME + Tau <= maxUInt48
     VGas > 300000
 
 returns 1 + Kicks
