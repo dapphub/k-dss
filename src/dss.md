@@ -2,11 +2,15 @@ What follows is an executable K specification of the smart contracts of multicol
 
 # Vat
 
+The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed.
+
 ## Specification of behaviours
 
 ### Accessors
 
 #### owners
+
+The contracts use a multi-owner only-owner authorisation scheme. In the case of the `Vat`, all mutating methods can only be called by owners.
 
 ```act
 behaviour wards of Vat
@@ -18,7 +22,7 @@ types
 
 storage
 
-    #Vat.wards[guy] |-> Can
+    wards[guy] |-> Can
 
 if
 
@@ -28,6 +32,8 @@ returns Can
 ```
 
 #### collateral type data
+
+An `ilk` is a collateral type.
 
 ```act
 behaviour ilks of Vat
@@ -42,10 +48,10 @@ types
 
 storage
 
-    #Vat.ilks[ilk].take |-> Take
-    #Vat.ilks[ilk].rate |-> Rate
-    #Vat.ilks[ilk].Ink  |-> Ink_i
-    #Vat.ilks[ilk].Art  |-> Art_i
+    ilks[ilk].take |-> Take
+    ilks[ilk].rate |-> Rate
+    ilks[ilk].Ink  |-> Ink_i
+    ilks[ilk].Art  |-> Art_i
 
 if
 
@@ -55,6 +61,8 @@ returns Take : Rate : Ink_i : Art_i
 ```
 
 #### `urn` data
+
+An `urn` is a collateralised debt position.
 
 ```act
 behaviour urns of Vat
@@ -67,8 +75,8 @@ types
 
 storage
 
-    #Vat.urns[ilk][urn].ink |-> Ink_iu
-    #Vat.urns[ilk][urn].art |-> Art_iu
+    urns[ilk][urn].ink |-> Ink_iu
+    urns[ilk][urn].art |-> Art_iu
 
 if
 
@@ -78,6 +86,8 @@ returns Ink_iu : Art_iu
 ```
 
 #### internal unencumbered collateral balances
+
+A `gem` is a token used as collateral in some `ilk`.
 
 ```act
 behaviour gem of Vat
@@ -89,7 +99,7 @@ types
 
 storage
 
-    #Vat.gem[ilk][urn] |-> Gem
+    gem[ilk][urn] |-> Gem
 
 if
 
@@ -99,6 +109,8 @@ returns Gem
 ```
 
 #### internal dai balances
+
+`dai` is a stablecoin.
 
 ```act
 behaviour dai of Vat
@@ -110,7 +122,7 @@ types
 
 storage
 
-    #Vat.dai[lad] |-> Rad
+    dai[lad] |-> Rad
 
 if
 
@@ -120,6 +132,8 @@ returns Rad
 ```
 
 #### internal sin balances
+
+`sin`, or "system debt", is used to track debt which is no longer assigned to a particular CDP, and is carried by the system during the liquidation process.
 
 ```act
 behaviour sin of Vat
@@ -131,7 +145,7 @@ types
 
 storage
 
-    #Vat.sin[lad] |-> Rad
+    sin[lad] |-> Rad
 
 if
 
@@ -152,7 +166,7 @@ types
 
 storage
 
-    #Vat.debt |-> Debt
+    debt |-> Debt
 
 if
 
@@ -173,7 +187,7 @@ types
 
 storage
 
-    #Vat.vice |-> Vice
+    vice |-> Vice
 
 if
 
@@ -184,6 +198,8 @@ returns Vice
 ### Mutators
 
 #### adding and removing owners
+
+Any owner can add and remove owners.
 
 ```act
 behaviour rely of Vat
@@ -196,20 +212,18 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 1
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
 
     VGas > 300000
-```
 
-
-```act
 behaviour deny of Vat
 interface deny(address guy)
 
@@ -220,11 +234,12 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 0
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -233,6 +248,8 @@ if
 ```
 
 #### initialising an `ilk`
+
+An `ilk` starts with `Rate` and `Take` set to (`ray` fixed-point) one.
 
 ```act
 behaviour init of Vat
@@ -246,14 +263,17 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
-    #Vat.ilks[ilk].take   |-> Take => 1000000000000000000000000000
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
+    ilks[ilk].take   |-> Take => 1000000000000000000000000000
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: `Rate` is `. ? : not` zero
     Rate == 0
+    // act: `Take` is `. ? : not` zero
     Take == 0
 
 if
@@ -262,6 +282,8 @@ if
 ```
 
 #### assigning unencumbered collateral
+
+Collateral coming from outside of the system must be assigned to a user before it can be locked in a CDP.
 
 ```act
 behaviour slip of Vat
@@ -274,11 +296,12 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.gem[ilk][guy]    |-> Gem => Gem + wad
+    wards[CALLER_ID] |-> Can
+    gem[ilk][guy]    |-> Gem => Gem + wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -304,12 +327,13 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.gem[ilk][src]    |-> Gem_src => Gem_src - wad
-    #Vat.gem[ilk][dst]    |-> Gem_dst => Gem_dst + wad
+    wards[CALLER_ID] |-> Can
+    gem[ilk][src]    |-> Gem_src => Gem_src - wad
+    gem[ilk][dst]    |-> Gem_dst => Gem_dst + wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -336,12 +360,13 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.dai[src]         |-> Dai_src => Dai_src - rad
-    #Vat.dai[dst]         |-> Dai_dst => Dai_dst + rad
+    wards[CALLER_ID] |-> Can
+    dai[src]         |-> Dai_src => Dai_src - rad
+    dai[dst]         |-> Dai_dst => Dai_dst + rad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -357,7 +382,6 @@ if
 #### administering a position
 
 This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
-
 
 ```act
 behaviour tune of Vat
@@ -378,20 +402,20 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[i].take     |-> Take
-    #Vat.ilks[i].rate     |-> Rate
-    #Vat.urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
-    #Vat.urns[i][u].art   |-> Art_iu => Art_iu + dart
-    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
-    #Vat.ilks[i].Art      |-> Art_i  => Art_i  + dart
-    #Vat.gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
-    #Vat.dai[w]           |-> Dai_w  => Dai_w  + (Rate * dart)
-    #Vat.debt             |-> Debt   => Debt   + (Rate * dart)
+    wards[CALLER_ID] |-> Can
+    ilks[i].take     |-> Take
+    ilks[i].rate     |-> Rate
+    urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
+    urns[i][u].art   |-> Art_iu => Art_iu + dart
+    ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
+    ilks[i].Art      |-> Art_i  => Art_i  + dart
+    gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    dai[w]           |-> Dai_w  => Dai_w  + (Rate * dart)
+    debt             |-> Debt   => Debt   + (Rate * dart)
 
 iff
 
-    // doc: caller is `. ? : not` authorised
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -418,6 +442,7 @@ if
 
 #### confiscating a position
 
+When a position of a user `u` is siezed, both the collateral and debt are deleted from the user's account and assigned to the system's balance sheet, with the debt reincarnated as `sin` and assigned to some agent of the system `w`, while collateral goes to `v`.
 
 ```act
 behaviour grab of Vat
@@ -438,19 +463,20 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[i].take     |-> Take
-    #Vat.ilks[i].rate     |-> Rate
-    #Vat.urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
-    #Vat.urns[i][u].art   |-> Art_iu => Art_iu + dart
-    #Vat.ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
-    #Vat.ilks[i].Art      |-> Art_i  => Art_i  + dart
-    #Vat.gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
-    #Vat.sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
-    #Vat.vice             |-> Vice   => Vice   - (Rate * dart)
+    wards[CALLER_ID] |-> Can
+    ilks[i].take     |-> Take
+    ilks[i].rate     |-> Rate
+    urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
+    urns[i][u].art   |-> Art_iu => Art_iu + dart
+    ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
+    ilks[i].Art      |-> Art_i  => Art_i  + dart
+    gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
+    vice             |-> Vice   => Vice   - (Rate * dart)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -475,7 +501,9 @@ if
     VGas > 300000
 ```
 
-#### creating/annihilating bad debt and surplus
+#### creating/annihilating system debt and surplus
+
+`dai` and `sin` are two sides of the same coin. When the system has surplus `dai`, it can be cancelled with `sin`. Dually, the system can bring `dai` into existence while creating offsetting `sin`.
 
 ```act
 behaviour heal of Vat
@@ -491,14 +519,15 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.dai[v]           |-> Dai_v => Dai_v - rad
-    #Vat.sin[u]           |-> Sin_u => Sin_u - rad
-    #Vat.debt             |-> Debt  => Debt  - rad
-    #Vat.vice             |-> Vice  => Vice  - rad
+    wards[CALLER_ID] |-> Can
+    dai[v]           |-> Dai_v => Dai_v - rad
+    sin[u]           |-> Sin_u => Sin_u - rad
+    debt             |-> Debt  => Debt  - rad
+    vice             |-> Vice  => Vice  - rad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -515,6 +544,8 @@ if
 
 #### applying interest to an `ilk`
 
+Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which says how many units of `dai` correspond to a unit of `art`. To preserve a key invariant, dai must be created or destroyed, depending on whether `Rate` is increasing or decreasing. The beneficiary/benefactor of the dai is `u`. 
+
 ```act
 behaviour fold of Vat
 interface fold(bytes32 i, bytes32 u, int256 rate)
@@ -529,14 +560,15 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[i].rate     |-> Rate => Rate + rate
-    #Vat.ilks[i].Art      |-> Art_i
-    #Vat.dai[u]           |-> Dai  => Dai  + Art_i * rate
-    #Vat.debt             |-> Debt => Debt + Art_i * rate
+    wards[CALLER_ID] |-> Can
+    ilks[i].rate     |-> Rate => Rate + rate
+    ilks[i].Art      |-> Art_i
+    dai[u]           |-> Dai  => Dai  + Art_i * rate
+    debt             |-> Debt => Debt + Art_i * rate
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -557,6 +589,9 @@ if
 
 #### applying collateral adjustment to an `ilk`
 
+
+Likewise, the collateral unit `Take` can be adjusted, with collateral going to/from `u`.
+
 ```act
 behaviour toll of Vat
 interface toll(bytes32 i, bytes32 u, int256 take)
@@ -570,13 +605,14 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[i].take     |-> Take => Take + take
-    #Vat.ilks[i].Ink      |-> Ink
-    #Vat.gem[i][u]        |-> Gem  => Gem  - Ink * take
+    wards[CALLER_ID] |-> Can
+    ilks[i].take     |-> Take => Take + take
+    ilks[i].Ink      |-> Ink
+    gem[i][u]        |-> Gem  => Gem  - Ink * take
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256
@@ -613,7 +649,7 @@ types
 
 storage
 
-    #Drip.wards[guy] |-> Can
+    wards[guy] |-> Can
 
 if
 
@@ -637,8 +673,8 @@ types
 
 storage
 
-    #Drip.ilks[ilk].tax |-> Tax
-    #Drip.ilks[ilk].rho |-> Rho
+    ilks[ilk].tax |-> Tax
+    ilks[ilk].rho |-> Rho
 
 if
 
@@ -659,7 +695,7 @@ types
 
 storage
 
-    #Drip.vat |-> Vat
+    vat |-> Vat
 
 if
 
@@ -680,7 +716,7 @@ types
 
 storage
 
-    #Drip.vow |-> Vow
+    vow |-> Vow
 
 if
 
@@ -701,7 +737,7 @@ types
 
 storage
 
-    #Drip.repo |-> Repo
+    repo |-> Repo
 
 if
 
@@ -739,11 +775,12 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 1
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -760,11 +797,12 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 0
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -787,13 +825,15 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.ilks[ilk].tax    |-> Tax => #Ray
-    #Drip.ilks[ilk].rho    |-> Rho => TIME
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].tax    |-> Tax => #Ray
+    ilks[ilk].rho    |-> Rho => TIME
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: `Tax` is `. ? : not` zero
     Tax == 0
 
 if
@@ -816,13 +856,15 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
-    #Drip.ilks[ilk].rho    |-> Rho
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    ilks[ilk].rho    |-> Rho
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: last drip was `. ? : not` just now
     Rho == TIME
 
 if
@@ -843,11 +885,12 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
+    wards[CALLER_ID] |-> Can
+    repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -868,11 +911,12 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    wards[CALLER_ID] |-> Can
+    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -901,29 +945,31 @@ types
 
 storage
 
-    #Drip.vat           |-> Vat
-    #Drip.vow           |-> Vow
-    #Drip.repo          |-> Repo
-    #Drip.ilks[ilk].tax |-> Tax
-    #Drip.ilks[ilk].rho |-> Rho => TIME
+    vat           |-> Vat
+    vow           |-> Vow
+    repo          |-> Repo
+    ilks[ilk].tax |-> Tax
+    ilks[ilk].rho |-> Rho => TIME
 
 storage Vat
 
-    #Vat.wards[ACCT_ID] |-> Can
-    #Vat.ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.ilks[ilk].Art  |-> Art_i
-    #Vat.dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    #Vat.debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    wards[ACCT_ID] |-> Can
+    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    ilks[ilk].Art  |-> Art_i
+    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
-    TIME >= Rho
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
 
     Repo + Tax
+    TIME - Rho
     #rpow(Repo + Tax, TIME - Rho, #Ray) * #Ray
     #rpow(Repo + Tax, TIME - Rho, #Ray) * Rate
     Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
@@ -959,7 +1005,7 @@ types
 
 storage
 
-    #Pit.wards[guy] |-> Can
+    wards[guy] |-> Can
 
 if
 
@@ -982,8 +1028,8 @@ types
 
 storage
 
-    #Pit.ilks[ilk].spot |-> Spot_i
-    #Pit.ilks[ilk].line |-> Line_i
+    ilks[ilk].spot |-> Spot_i
+    ilks[ilk].line |-> Line_i
 
 if
 
@@ -1004,7 +1050,7 @@ types
 
 storage
 
-    #Pit.live |-> Live
+    live |-> Live
 
 if
 
@@ -1025,7 +1071,7 @@ types
 
 storage
 
-    #Pit.vat |-> Vat
+    vat |-> Vat
 
 if
 
@@ -1046,7 +1092,7 @@ types
 
 storage
 
-    #Pit.Line |-> Line
+    Line |-> Line
 
 if
 
@@ -1067,7 +1113,7 @@ types
 
 storage
 
-    #Pit.drip |-> Drip
+    drip |-> Drip
 
 if
 
@@ -1091,11 +1137,12 @@ types
 
 storage
 
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 1
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1112,11 +1159,12 @@ types
 
 storage
 
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 0
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1138,12 +1186,13 @@ types
 
 storage
 
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.ilks[ilk].spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
-    #Pit.ilks[ilk].line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
+    ilks[ilk].line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1164,11 +1213,12 @@ types
 
 storage
 
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
+    wards[CALLER_ID] |-> Can
+    Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1203,32 +1253,38 @@ types
 
 storage
 
-    #Pit.live           |-> Live
-    #Pit.Line           |-> Line
-    #Pit.vat            |-> Vat
-    #Pit.ilks[ilk].line |-> Line_i
-    #Pit.ilks[ilk].spot |-> Spot
+    live           |-> Live
+    Line           |-> Line
+    vat            |-> Vat
+    ilks[ilk].line |-> Line_i
+    ilks[ilk].spot |-> Spot
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]           |-> Can
-    #Vat.ilks[ilk].rate           |-> Rate
-    #Vat.ilks[ilk].take           |-> Take
-    #Vat.ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
-    #Vat.ilks[ilk].Art            |-> Art_i  => Art_i + dart
-    #Vat.urns[ilk][CALLER_ID].ink |-> Ink_iu  => Ink_iu + dink
-    #Vat.urns[ilk][CALLER_ID].art |-> Art_iu  => Art_iu + dart
-    #Vat.gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
-    #Vat.dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
-    #Vat.debt                     |-> Debt   => Debt + Rate * dart
+    wards[ACCT_ID]           |-> Can
+    ilks[ilk].rate           |-> Rate
+    ilks[ilk].take           |-> Take
+    ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
+    ilks[ilk].Art            |-> Art_i  => Art_i + dart
+    urns[ilk][CALLER_ID].ink |-> Ink_iu  => Ink_iu + dink
+    urns[ilk][CALLER_ID].art |-> Art_iu  => Art_iu + dart
+    gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
+    dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
+    debt                     |-> Debt   => Debt + Rate * dart
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: `Rate` is `. ? : not` non-zero
     Rate =/= 0
+    // act: position is `. ? : not` either below collateral and global ceiling or is dai-decreasing
     (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    // act: position is `. ? : not` either safe or risk-decreasing
     (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
+    // act: system is `. ? : not` live
     Live == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
@@ -1275,7 +1331,7 @@ types
 
 storage
 
-    #Vow.wards[guy] |-> Can
+    wards[guy] |-> Can
 
 if
 
@@ -1309,7 +1365,7 @@ types
 
 storage
 
-    #Vow.sin[era] |-> Sin_era
+    sin[era] |-> Sin_era
 
 if
 
@@ -1330,7 +1386,7 @@ types
 
 storage
 
-    #Vow.Sin |-> Sin
+    Sin |-> Sin
 
 if
 
@@ -1351,7 +1407,7 @@ types
 
 storage
 
-    #Vow.Woe |-> Woe
+    Woe |-> Woe
 
 if
 
@@ -1372,7 +1428,7 @@ types
 
 storage
 
-    #Vow.Ash |-> Ash
+    Ash |-> Ash
 
 if
 
@@ -1393,7 +1449,7 @@ types
 
 storage
 
-    #Vow.wait |-> Wait
+    wait |-> Wait
 
 if
 
@@ -1414,7 +1470,7 @@ types
 
 storage
 
-    #Vow.sump |-> Sump
+    sump |-> Sump
 
 if
 
@@ -1435,7 +1491,7 @@ types
 
 storage
 
-    #Vow.bump |-> Bump
+    bump |-> Bump
 
 if
 
@@ -1456,7 +1512,7 @@ types
 
 storage
 
-    #Vow.hump |-> Hump
+    hump |-> Hump
 
 if
 
@@ -1479,9 +1535,9 @@ types
 
 storage
 
-    #Vow.Sin |-> Sin
-    #Vow.Woe |-> Woe
-    #Vow.Ash |-> Ash
+    Sin |-> Sin
+    Woe |-> Woe
+    Ash |-> Ash
 
 iff in range uint256
 
@@ -1508,14 +1564,15 @@ types
 
 storage
 
-    #Vow.vat |-> Vat
+    vat |-> Vat
 
 storage Vat
 
-    #Vat.dai[ACCT_ID] |-> Dai
+    dai[ACCT_ID] |-> Dai
 
 iff
 
+    // act: call stack is not too big
     VCallDepth < 1024
 
 if
@@ -1540,11 +1597,12 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 1
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1561,11 +1619,12 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 0
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1590,14 +1649,15 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
-    #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
-    #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
-    #Vow.hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
+    wards[CALLER_ID] |-> Can
+    wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
+    bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
+    hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1620,13 +1680,14 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
-    #Vow.row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
-    #Vow.vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
+    wards[CALLER_ID] |-> Can
+    cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
+    row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
+    vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -1652,20 +1713,22 @@ types
 
 storage
 
-    #Vow.vat |-> Vat
-    #Vow.Woe |-> Woe => Woe - wad
+    vat |-> Vat
+    Woe |-> Woe => Woe - wad
 
 storage Vat
 
-    #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
-    #Vat.vice           |-> Vice => Vice - wad * #Ray
-    #Vat.debt           |-> Debt => Debt - wad * #Ray
+    wards[ACCT_ID] |-> Can
+    dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
+    vice           |-> Vice => Vice - wad * #Ray
+    debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
@@ -1699,20 +1762,22 @@ types
 
 storage
 
-    #Vow.vat |-> Vat
-    #Vow.Ash |-> Ash => Ash - wad
+    vat |-> Vat
+    Ash |-> Ash => Ash - wad
 
 storage Vat
 
-    #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
-    #Vat.vice           |-> Vice => Vice - wad * #Ray
-    #Vat.debt           |-> Debt => Debt - wad * #Ray
+    wards[ACCT_ID] |-> Can
+    dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
+    vice           |-> Vice => Vice - wad * #Ray
+    debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
@@ -1746,13 +1811,15 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.sin[TIME]        |-> Sin_era => Sin_era + tab
-    #Vow.Sin              |-> Sin     => Sin     + tab
+    wards[CALLER_ID] |-> Can
+    sin[TIME]        |-> Sin_era => Sin_era + tab
+    Sin              |-> Sin     => Sin     + tab
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
@@ -1780,14 +1847,16 @@ types
 
 storage
 
-    #Vow.wait   |-> Wait
-    #Vow.Sin    |-> Sin   => Sin - Sin_t
-    #Vow.Woe    |-> Woe   => Woe + Sin_t
-    #Vow.sin[t] |-> Sin_t => 0
+    wait   |-> Wait
+    Sin    |-> Sin   => Sin - Sin_t
+    Woe    |-> Woe   => Woe + Sin_t
+    sin[t] |-> Sin_t => 0
 
 iff
 
+    // act: `sin` has `. ? : not` matured
     t + Wait <= TIME
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
@@ -1828,32 +1897,35 @@ types
 
 storage
 
-    #Vow.row  |-> Row
-    #Vow.vat  |-> Vat
-    #Vow.sump |-> Sump
-    #Vow.Woe  |-> Woe => Woe - Sump
-    #Vow.Ash  |-> Ash => Ash + Sump
+    row  |-> Row
+    vat  |-> Vat
+    sump |-> Sump
+    Woe  |-> Woe => Woe - Sump
+    Ash  |-> Ash => Ash + Sump
 
 storage Row
 
-    #Flopper.wards[ACCT_ID]              |-> Can
-    #Flopper.kicks                       |-> Kicks => 1 + Kicks
-    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    wards[ACCT_ID]              |-> Can
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    bids[1 + Kicks].bid         |-> Bid_was => Sump
+    bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
-    #Vat.dai[ACCT_ID] |-> Dai
+    dai[ACCT_ID] |-> Dai
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // doc: there is at most dust Joy
     Dai < #Ray
     1 + Kicks  <= maxUInt256
     TIME + Tau <= maxUInt48
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256
@@ -1897,36 +1969,39 @@ types
 
 storage
 
-    #Vow.cow  |-> Cow
-    #Vow.vat  |-> Vat
-    #Vow.bump |-> Bump
-    #Vow.hump |-> Hump
-    #Vow.Sin  |-> Sin
-    #Vow.Woe  |-> Woe
-    #Vow.Ash  |-> Ash
+    cow  |-> Cow
+    vat  |-> Vat
+    bump |-> Bump
+    hump |-> Hump
+    Sin  |-> Sin
+    Woe  |-> Woe
+    Ash  |-> Ash
 
 storage DaiMove
 
-    #DaiMove.vat                         |-> Vat
-    #DaiMove.can[ACCT_ID][Cow]           |-> Can => Can
+    vat                         |-> Vat
+    can[ACCT_ID][Cow]           |-> Can => Can
 
 storage Cow
 
-    #Flapper.dai                         |-> DaiMove
-    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
-    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
-    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    dai                         |-> DaiMove
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
+    bids[1 + Kicks].bid         |-> Bid_was => 0
+    bids[1 + Kicks].lot         |-> Lot_was => Bump
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
-    #Vat.dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
+    wards[DaiMove] |-> Can_move
+    dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
 
 iff
 
+    // doc: there is enough `Joy`
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
+    // doc: there is no `Woe`
     Woe == 0
     1 + Kicks <= maxUInt256
     TIME + Tau <= maxUInt48
@@ -1964,7 +2039,7 @@ types
 
 storage
 
-    #Cat.wards[guy] |-> Can
+    wards[guy] |-> Can
 
 if
 
@@ -1987,9 +2062,9 @@ types
 
 storage
 
-    #Cat.ilks[ilk].flip |-> Flip
-    #Cat.ilks[ilk].chop |-> Chop
-    #Cat.ilks[ilk].lump |-> Lump
+    ilks[ilk].flip |-> Flip
+    ilks[ilk].chop |-> Chop
+    ilks[ilk].lump |-> Lump
 
 if
 
@@ -2013,10 +2088,10 @@ types
 
 storage
 
-    #Cat.flips[n].ilk |-> Ilk
-    #Cat.flips[n].urn |-> Urn
-    #Cat.flips[n].ink |-> Ink
-    #Cat.flips[n].tab |-> Tab
+    flips[n].ilk |-> Ilk
+    flips[n].urn |-> Urn
+    flips[n].ink |-> Ink
+    flips[n].tab |-> Tab
 
 if
 
@@ -2037,7 +2112,7 @@ types
 
 storage
 
-    #Cat.nflip |-> Nflip
+    nflip |-> Nflip
 
 if
 
@@ -2058,7 +2133,7 @@ types
 
 storage
 
-    #Cat.live |-> Live
+    live |-> Live
 
 if
 
@@ -2079,7 +2154,7 @@ types
 
 storage
 
-    #Cat.vat |-> Vat
+    vat |-> Vat
 
 if
 
@@ -2100,7 +2175,7 @@ types
 
 storage
 
-    #Cat.pit |-> Pit
+    pit |-> Pit
 
 if
 
@@ -2121,7 +2196,7 @@ types
 
 storage
 
-    #Cat.vow |-> Vow
+    vow |-> Vow
 
 if
 
@@ -2145,11 +2220,12 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 1
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -2166,11 +2242,12 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 0
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -2192,12 +2269,13 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
-    #Cat.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    wards[CALLER_ID] |-> Can
+    pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
+    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -2219,12 +2297,13 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
-    #Cat.ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
+    ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -2245,11 +2324,12 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if
@@ -2287,37 +2367,37 @@ types
 
 storage
 
-    #Cat.vat                |-> Vat
-    #Cat.pit                |-> Pit
-    #Cat.vow                |-> Vow
-    #Cat.nflip              |-> Nflip   => Nflip + 1
-    #Cat.flips[Nflip].ilk   |-> Ilk_was => ilk
-    #Cat.flips[Nflip].urn   |-> Urn_was => urn
-    #Cat.flips[Nflip].ink   |-> Ink_was => Ink_iu
-    #Cat.flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
-    #Cat.live               |-> Live
+    vat                |-> Vat
+    pit                |-> Pit
+    vow                |-> Vow
+    nflip              |-> Nflip   => Nflip + 1
+    flips[Nflip].ilk   |-> Ilk_was => ilk
+    flips[Nflip].urn   |-> Urn_was => urn
+    flips[Nflip].ink   |-> Ink_was => Ink_iu
+    flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
+    live               |-> Live
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]     |-> Can
-    #Vat.ilks[ilk].take     |-> Take
-    #Vat.ilks[ilk].rate     |-> Rate
-    #Vat.urns[ilk][urn].ink |-> Ink_iu => 0
-    #Vat.urns[ilk][urn].art |-> Art_iu => 0
-    #Vat.ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
-    #Vat.ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
-    #Vat.gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
-    #Vat.sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
-    #Vat.vice               |-> Vice   => Vice   - Rate_* Art_iu
+    wards[ACCT_ID]     |-> Can
+    ilks[ilk].take     |-> Take
+    ilks[ilk].rate     |-> Rate
+    urns[ilk][urn].ink |-> Ink_iu => 0
+    urns[ilk][urn].art |-> Art_iu => 0
+    ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
+    ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
+    gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
+    sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
+    vice               |-> Vice   => Vice   - Rate_* Art_iu
 
 storage Pit
 
-    #Pit.ilks[ilk].spot     |-> Spot_i
+    ilks[ilk].spot     |-> Spot_i
 
 storage Vow
 
-    #Vow.sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
-    #Vow.Sin                |-> Sin     => Sin     + Art_iu * Rate
+    sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
+    Sin                |-> Sin     => Sin     + Art_iu * Rate
 
 iff
 
@@ -2327,6 +2407,7 @@ iff
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
     Ink_iu * Spot_i < Art_iu * Rate
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256
@@ -2375,32 +2456,36 @@ types
 
 storage
 
-    #Cat.flips[n].ilk   |-> Ilk
-    #Cat.flips[n].urn   |-> Urn
-    #Cat.flips[n].ink   |-> Ink => Ink - (Ink * wad) / Tab
-    #Cat.flips[n].tab   |-> Tab => Tab - wad
-    #Cat.ilks[ilk].flip |-> Flip
-    #Cat.ilks[ilk].chop |-> Chop
-    #Cat.ilks[ilk].lump |-> Lump
-    #Cat.vow            |-> Vow
-    #Cat.live           |-> Live
+    flips[n].ilk   |-> Ilk
+    flips[n].urn   |-> Urn
+    flips[n].ink   |-> Ink => Ink - (Ink * wad) / Tab
+    flips[n].tab   |-> Tab => Tab - wad
+    ilks[ilk].flip |-> Flip
+    ilks[ilk].chop |-> Chop
+    ilks[ilk].lump |-> Lump
+    vow            |-> Vow
+    live           |-> Live
 
 storage Flip
 
-    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flipper.kicks                       |-> Kicks => 1 + Kicks
-    #Flipper.bids[1 + Kicks].bid         |-> _ => 0
-    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
-    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
-    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].bid         |-> _ => 0
+    bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    bids[1 + Kicks].urn         |-> _ => Urn
+    bids[1 + Kicks].gal         |-> _ => Vow
+    bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
+    // act: system is  `. ? : not` live
     Live == 1
+    // doc: flipping no more than the available debt
     wad <= Tab
+    // doc: flipping the lot size or the remainder
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
+    // act: call stack is not too big
     VCallDepth < 1023
 
 iff in range uint256
@@ -2433,7 +2518,7 @@ types
 
 storage
 
-    #GemJoin.vat |-> Vat
+    vat |-> Vat
 
 if
 
@@ -2454,7 +2539,7 @@ types
 
 storage
 
-    #GemJoin.ilk |-> Ilk
+    ilk |-> Ilk
 
 if
 
@@ -2475,7 +2560,7 @@ types
 
 storage
 
-    #GemJoin.gem |-> Gem
+    gem |-> Gem
 
 if
 
@@ -2504,23 +2589,25 @@ types
 
 storage
 
-    #GemJoin.vat |-> Vat
-    #GemJoin.ilk |-> Ilk
-    #GemJoin.gem |-> Gem
+    vat |-> Vat
+    ilk |-> Ilk
+    gem |-> Gem
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]          |-> Can
-    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
+    wards[ACCT_ID]          |-> Can
+    gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
 
 storage Gem
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
-    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
+    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256
@@ -2556,23 +2643,25 @@ types
 
 storage
 
-    #GemJoin.vat |-> Vat
-    #GemJoin.ilk |-> Ilk
-    #GemJoin.gem |-> Gem
+    vat |-> Vat
+    ilk |-> Ilk
+    gem |-> Gem
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]          |-> Can
-    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
+    wards[ACCT_ID]          |-> Can
+    gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Gem
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
-    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256
@@ -2608,7 +2697,7 @@ types
 
 storage
 
-    #ETHJoin.vat |-> Vat
+    vat |-> Vat
 
 if
 
@@ -2629,7 +2718,7 @@ types
 
 storage
 
-    #ETHJoin.ilk |-> Ilk
+    ilk |-> Ilk
 
 if
 
@@ -2658,16 +2747,17 @@ types
 
 storage
 
-    #ETHJoin.vat |-> Vat
-    #ETHJoin.ilk |-> Ilk
+    vat |-> Vat
+    ilk |-> Ilk
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
+    wards[ACCT_ID]      |-> Can
+    gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range int256
@@ -2702,18 +2792,21 @@ types
 
 storage
 
-    #ETHJoin.vat             |-> Vat
-    #ETHJoin.ilk             |-> Ilk
+    vat             |-> Vat
+    ilk             |-> Ilk
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
+    wards[ACCT_ID]      |-> Can
+    gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
+    // act: there is `. ? : not` enough ETH in the adapter
     wad <= BAL
 
 iff in range int256
@@ -2748,7 +2841,7 @@ types
 
 storage
 
-    #DaiJoin.vat |-> Vat
+    vat |-> Vat
 
 if
 
@@ -2769,7 +2862,7 @@ types
 
 storage
 
-    #DaiJoin.dai |-> Dai
+    dai |-> Dai
 
 if
 
@@ -2797,22 +2890,24 @@ types
 
 storage
 
-    #DaiJoin.vat |-> Vat
-    #DaiJoin.dai |-> Dai
+    vat |-> Vat
+    dai |-> Dai
 
 storage Vat
 
-    #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
+    wards[ACCT_ID] |-> Can
+    dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
 
 storage Dai
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
-    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256
@@ -2847,22 +2942,24 @@ types
 
 storage
 
-    #DaiJoin.vat |-> Vat
-    #DaiJoin.dai |-> Dai
+    vat |-> Vat
+    dai |-> Dai
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]          |-> Can
-    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
+    wards[ACCT_ID]          |-> Can
+    gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Dai
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
-    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256
