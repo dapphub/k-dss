@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Drip.wards[guy] |-> Can
+    wards[guy] |-> Can
 
 if
 

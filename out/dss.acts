@@ -472,7 +472,7 @@ if
     VGas > 300000
 
 behaviour toll of Vat
-interface toll(bytes32 i, bytes32 u, int256 take) 
+interface toll(bytes32 i, bytes32 u, int256 take)
 
 types
 
@@ -1642,7 +1642,7 @@ iff
 
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     Woe == 0
-    VCallDepth < 1023
+    VCallDepth < 1022
 
 iff in range uint256
 

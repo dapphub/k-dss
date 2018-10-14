@@ -7,7 +7,7 @@ types
 
 storage
 
-    #GemJoin.vat |-> Vat
+    vat |-> Vat
 
 if
 

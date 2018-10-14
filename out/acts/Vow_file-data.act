@@ -11,14 +11,15 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
-    #Vow.sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
-    #Vow.bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
-    #Vow.hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
+    wards[CALLER_ID] |-> Can
+    wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
+    bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
+    hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

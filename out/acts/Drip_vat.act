@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Drip.vat |-> Vat
+    vat |-> Vat
 
 if
 

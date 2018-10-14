@@ -9,9 +9,9 @@ types
 
 storage
 
-    #Vow.Sin |-> Sin
-    #Vow.Woe |-> Woe
-    #Vow.Ash |-> Ash
+    Sin |-> Sin
+    Woe |-> Woe
+    Ash |-> Ash
 
 iff in range uint256
 

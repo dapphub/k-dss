@@ -8,11 +8,12 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    wards[CALLER_ID] |-> Can
+    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

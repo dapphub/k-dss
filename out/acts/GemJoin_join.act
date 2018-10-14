@@ -13,23 +13,25 @@ types
 
 storage
 
-    #GemJoin.vat |-> Vat
-    #GemJoin.ilk |-> Ilk
-    #GemJoin.gem |-> Gem
+    vat |-> Vat
+    ilk |-> Ilk
+    gem |-> Gem
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]          |-> Can
-    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
+    wards[ACCT_ID]          |-> Can
+    gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
 
 storage Gem
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
-    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
+    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256

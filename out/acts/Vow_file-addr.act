@@ -10,13 +10,14 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
-    #Vow.row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
-    #Vow.vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
+    wards[CALLER_ID] |-> Can
+    cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
+    row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
+    vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

@@ -7,7 +7,7 @@ types
 
 storage
 
-    #GemJoin.gem |-> Gem
+    gem |-> Gem
 
 if
 

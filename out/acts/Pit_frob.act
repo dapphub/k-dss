@@ -21,32 +21,38 @@ types
 
 storage
 
-    #Pit.live           |-> Live
-    #Pit.Line           |-> Line
-    #Pit.vat            |-> Vat
-    #Pit.ilks[ilk].line |-> Line_i
-    #Pit.ilks[ilk].spot |-> Spot
+    live           |-> Live
+    Line           |-> Line
+    vat            |-> Vat
+    ilks[ilk].line |-> Line_i
+    ilks[ilk].spot |-> Spot
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]           |-> Can
-    #Vat.ilks[ilk].rate           |-> Rate
-    #Vat.ilks[ilk].take           |-> Take
-    #Vat.ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
-    #Vat.ilks[ilk].Art            |-> Art_i  => Art_i + dart
-    #Vat.urns[ilk][CALLER_ID].ink |-> Ink_iu  => Ink_iu + dink
-    #Vat.urns[ilk][CALLER_ID].art |-> Art_iu  => Art_iu + dart
-    #Vat.gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
-    #Vat.dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
-    #Vat.debt                     |-> Debt   => Debt + Rate * dart
+    wards[ACCT_ID]           |-> Can
+    ilks[ilk].rate           |-> Rate
+    ilks[ilk].take           |-> Take
+    ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
+    ilks[ilk].Art            |-> Art_i  => Art_i + dart
+    urns[ilk][CALLER_ID].ink |-> Ink_iu  => Ink_iu + dink
+    urns[ilk][CALLER_ID].art |-> Art_iu  => Art_iu + dart
+    gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
+    dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
+    debt                     |-> Debt   => Debt + Rate * dart
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: `Rate` is `. ? : not` non-zero
     Rate =/= 0
+    // act: position is `. ? : not` either below collateral and global ceiling or is dai-decreasing
     (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    // act: position is `. ? : not` either safe or risk-decreasing
     (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
+    // act: system is `. ? : not` live
     Live == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range uint256

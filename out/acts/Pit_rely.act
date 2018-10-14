@@ -8,11 +8,12 @@ types
 
 storage
 
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 1
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

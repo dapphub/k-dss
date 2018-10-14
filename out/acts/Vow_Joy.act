@@ -8,14 +8,15 @@ types
 
 storage
 
-    #Vow.vat |-> Vat
+    vat |-> Vat
 
 storage Vat
 
-    #Vat.dai[ACCT_ID] |-> Dai
+    dai[ACCT_ID] |-> Dai
 
 iff
 
+    // act: call stack is not too big
     VCallDepth < 1024
 
 if

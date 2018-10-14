@@ -12,22 +12,24 @@ types
 
 storage
 
-    #DaiJoin.vat |-> Vat
-    #DaiJoin.dai |-> Dai
+    vat |-> Vat
+    dai |-> Dai
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]          |-> Can
-    #Vat.gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
+    wards[ACCT_ID]          |-> Can
+    gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Dai
 
-    #GemLike.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
-    #GemLike.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
     VCallDepth < 1024
 
 iff in range int256

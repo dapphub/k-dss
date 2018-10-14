@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Vow.bump |-> Bump
+    bump |-> Bump
 
 if
 

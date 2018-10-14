@@ -11,14 +11,15 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.dai[v]           |-> Dai_v => Dai_v - rad
-    #Vat.sin[u]           |-> Sin_u => Sin_u - rad
-    #Vat.debt             |-> Debt  => Debt  - rad
-    #Vat.vice             |-> Vice  => Vice  - rad
+    wards[CALLER_ID] |-> Can
+    dai[v]           |-> Dai_v => Dai_v - rad
+    sin[u]           |-> Sin_u => Sin_u - rad
+    debt             |-> Debt  => Debt  - rad
+    vice             |-> Vice  => Vice  - rad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256

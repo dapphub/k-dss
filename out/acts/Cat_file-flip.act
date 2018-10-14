@@ -8,11 +8,12 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

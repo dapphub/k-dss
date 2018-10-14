@@ -8,11 +8,12 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.gem[ilk][guy]    |-> Gem => Gem + wad
+    wards[CALLER_ID] |-> Can
+    gem[ilk][guy]    |-> Gem => Gem + wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256

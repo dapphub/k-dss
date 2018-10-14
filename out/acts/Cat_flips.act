@@ -10,10 +10,10 @@ types
 
 storage
 
-    #Cat.flips[n].ilk |-> Ilk
-    #Cat.flips[n].urn |-> Urn
-    #Cat.flips[n].ink |-> Ink
-    #Cat.flips[n].tab |-> Tab
+    flips[n].ilk |-> Ilk
+    flips[n].urn |-> Urn
+    flips[n].ink |-> Ink
+    flips[n].tab |-> Tab
 
 if
 
