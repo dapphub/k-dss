@@ -93,7 +93,7 @@ publish-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.publish,$$(wildca
 
 %.k.proof.debug.timestamp: %.k $(SMT_PRELUDE) $(RULES)
 	$(info Proof $(bold)STARTING$(reset): $< (in $(yellow)$(bold)debug mode$(reset)))
-	@ $(KPROVE) $(DEBUG_ARGS) `klab hash --spec $<` $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<" && touch $@
+	@ $(KPROVE) $(DEBUG_ARGS) `$(KLAB_FLAGS) klab hash --spec $<` $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<" && touch $@
 
 %.k.proof.debug.log.timestamp: %.k %.k.proof.debug.timestamp
 	$(info $(bold)Compiling$(reset) proof logs for $<)
