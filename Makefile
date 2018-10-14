@@ -61,6 +61,9 @@ $(DOC_DIR)/dss.html: $(SRCS)
 
 doc: $(DOC_DIR)/dss.html
 
+doc-publish: $(DOC_DIR)/dss.html
+	scp $< root@stablecoin.technology:/var/www/html/index.html
+
 doc-clean:
 	rm -rf $(DOC_DIR)/*
 
