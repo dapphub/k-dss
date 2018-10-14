@@ -1923,15 +1923,18 @@ iff
     Can == 1
     // doc: there is at most dust Joy
     Dai < #Ray
-    1 + Kicks  <= maxUInt256
-    TIME + Tau <= maxUInt48
     // act: call stack is not too big
     VCallDepth < 1024
+
+iff in range uint48
+
+    TIME + Tau
 
 iff in range uint256
 
     Woe - Sump
     Ash + Sump
+    1 + Kicks
 
 if
 
@@ -1965,6 +1968,7 @@ types
     Ttl      : uint48
     Tau      : uint48
     Kicks    : uint256
+    Can_move : uint256
     Dai      : uint256
 
 storage
@@ -2003,9 +2007,12 @@ iff
     Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
     // doc: there is no `Woe`
     Woe == 0
-    1 + Kicks <= maxUInt256
-    TIME + Tau <= maxUInt48
+    // act: call stack is not too big
     VCallDepth < 1022
+
+iff in range uint48
+
+    TIME + Tau
 
 iff in range uint256
 
@@ -2013,9 +2020,18 @@ iff in range uint256
     (Sin + Woe) + Ash
     ((Sin + Woe) + Ash) + Bump
     (((Sin + Woe) + Ash) + Bump) + Hump
+    1 + Kicks
+    Dai - #Ray * Bump
+
+iff in range int256
+
+     #Ray * Bump
 
 if
 
+    Cow =/= DaiMove
+    Cow =/= Vat
+    Vat =/= DaiMove
     VGas > 300000
 
 returns 1 + Kicks
