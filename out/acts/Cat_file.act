@@ -9,12 +9,13 @@ types
 
 storage
 
-    #Cat.wards[CALLER_ID] |-> Can
-    #Cat.ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
-    #Cat.ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
+    ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

@@ -1,5 +1,5 @@
 behaviour exit of ETHJoin
-interface exit(bytes32, uint256 wad)
+interface exit(address guy, uint256 wad)
 
 types
 
@@ -11,17 +11,22 @@ types
 
 storage
 
-    #ETHJoin.vat             |-> Vat
-    #ETHJoin.ilk             |-> Ilk
+    vat             |-> Vat
+    ilk             |-> Ilk
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
+    wards[ACCT_ID]      |-> Can
+    gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
+    VCallDepth < 1024
+    // act: there is `. ? : not` enough ETH in the adapter
+    wad <= BAL
 
 iff in range int256
 

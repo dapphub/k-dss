@@ -25,37 +25,37 @@ types
 
 storage
 
-    #Cat.vat                |-> Vat
-    #Cat.pit                |-> Pit
-    #Cat.vow                |-> Vow
-    #Cat.nflip              |-> Nflip   => Nflip + 1
-    #Cat.flips[Nflip].ilk   |-> Ilk_was => ilk
-    #Cat.flips[Nflip].urn   |-> Urn_was => urn
-    #Cat.flips[Nflip].ink   |-> Ink_was => Ink_iu
-    #Cat.flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
-    #Cat.live               |-> Live
+    vat                |-> Vat
+    pit                |-> Pit
+    vow                |-> Vow
+    nflip              |-> Nflip   => Nflip + 1
+    flips[Nflip].ilk   |-> Ilk_was => ilk
+    flips[Nflip].urn   |-> Urn_was => urn
+    flips[Nflip].ink   |-> Ink_was => Ink_iu
+    flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
+    live               |-> Live
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]     |-> Can
-    #Vat.ilks[ilk].take     |-> Take
-    #Vat.ilks[ilk].rate     |-> Rate
-    #Vat.urns[ilk][urn].ink |-> Ink_iu => 0
-    #Vat.urns[ilk][urn].art |-> Art_iu => 0
-    #Vat.ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
-    #Vat.ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
-    #Vat.gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
-    #Vat.sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
-    #Vat.vice               |-> Vice   => Vice   - Rate_* Art_iu
+    wards[ACCT_ID]     |-> Can
+    ilks[ilk].take     |-> Take
+    ilks[ilk].rate     |-> Rate
+    urns[ilk][urn].ink |-> Ink_iu => 0
+    urns[ilk][urn].art |-> Art_iu => 0
+    ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
+    ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
+    gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
+    sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
+    vice               |-> Vice   => Vice   - Rate_* Art_iu
 
 storage Pit
 
-    #Pit.ilks[ilk].spot     |-> Spot_i
+    ilks[ilk].spot     |-> Spot_i
 
 storage Vow
 
-    #Vow.sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
-    #Vow.Sin                |-> Sin     => Sin     + Art_iu * Rate
+    sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
+    Sin                |-> Sin     => Sin     + Art_iu * Rate
 
 iff
 
@@ -65,6 +65,8 @@ iff
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
     Ink_iu * Spot_i < Art_iu * Rate
+    // act: call stack is not too big
+    VCallDepth < 1024
 
 iff in range int256
 

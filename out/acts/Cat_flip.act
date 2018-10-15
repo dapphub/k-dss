@@ -18,32 +18,37 @@ types
 
 storage
 
-    #Cat.flips[n].ilk   |-> Ilk
-    #Cat.flips[n].urn   |-> Urn
-    #Cat.flips[n].ink   |-> Ink => Ink - (Ink * wad) / Tab
-    #Cat.flips[n].tab   |-> Tab => Tab - wad
-    #Cat.ilks[ilk].flip |-> Flip
-    #Cat.ilks[ilk].chop |-> Chop
-    #Cat.ilks[ilk].lump |-> Lump
-    #Cat.vow            |-> Vow
-    #Cat.live           |-> Live
+    flips[n].ilk   |-> Ilk
+    flips[n].urn   |-> Urn
+    flips[n].ink   |-> Ink => Ink - (Ink * wad) / Tab
+    flips[n].tab   |-> Tab => Tab - wad
+    ilks[ilk].flip |-> Flip
+    ilks[ilk].chop |-> Chop
+    ilks[ilk].lump |-> Lump
+    vow            |-> Vow
+    live           |-> Live
 
 storage Flip
 
-    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flipper.kicks                       |-> Kicks => 1 + Kicks
-    #Flipper.bids[1 + Kicks].bid         |-> _ => 0
-    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
-    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
-    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].bid         |-> _ => 0
+    bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    bids[1 + Kicks].urn         |-> _ => Urn
+    bids[1 + Kicks].gal         |-> _ => Vow
+    bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
+    // act: system is  `. ? : not` live
     Live == 1
+    // doc: flipping no more than the available debt
     wad <= Tab
+    // doc: flipping the lot size or the remainder
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
+    // act: call stack is not too big
+    VCallDepth < 1023
 
 iff in range uint256
 

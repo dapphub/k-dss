@@ -22,40 +22,47 @@ types
 
 storage
 
-    #Vow.row  |-> Row
-    #Vow.vat  |-> Vat
-    #Vow.sump |-> Sump
-    #Vow.Woe  |-> Woe => Woe - Sump
-    #Vow.Ash  |-> Ash => Ash + Sump
+    row  |-> Row
+    vat  |-> Vat
+    sump |-> Sump
+    Woe  |-> Woe => Woe - Sump
+    Ash  |-> Ash => Ash + Sump
 
 storage Row
 
-    #Flopper.wards[ACCT_ID]              |-> Can
-    #Flopper.kicks                       |-> Kicks => 1 + Kicks
-    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flop.wards[ACCT_ID]              |-> Can
+    #Flop.kicks                       |-> Kicks => 1 + Kicks
+    #Flop.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flop.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flop.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flop.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flop.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
-    #Vat.dai[ACCT_ID] |-> Dai
+    dai[ACCT_ID] |-> Dai
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // doc: there is at most dust Joy
     Dai < #Ray
+    // act: call stack is not too big
+    VCallDepth < 1024
+
+iff in range uint48
+
+    TIME + Tau
 
 iff in range uint256
 
     Woe - Sump
     Ash + Sump
+    1 + Kicks
 
 if
 
-    1 + Kicks  <= maxUInt256
-    TIME + Tau <= maxUInt48
     VGas > 300000
 
 returns 1 + Kicks

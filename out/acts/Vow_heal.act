@@ -13,24 +13,76 @@ types
 
 storage
 
-    #Vow.vat |-> Vat
-    #Vow.Woe |-> Woe => Woe - wad
+    vat |-> Vat
+    Woe |-> Woe => Woe - wad
 
 storage Vat
 
-    #Vat.wards[ACCT_ID] |-> Can
-    #Vat.dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
-    #Vat.sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
-    #Vat.vice           |-> Vice => Vice - wad * #Ray
-    #Vat.debt           |-> Debt => Debt - wad * #Ray
+    wards[ACCT_ID] |-> Can
+    dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
+    vice           |-> Vice => Vice - wad * #Ray
+    debt           |-> Debt => Debt - wad * #Ray
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
+    VCallDepth < 1024
 
 iff in range uint256
 
     Woe  - wad
+    Dai  - wad * #Ray
+    Sin  - wad * #Ray
+    Vice - wad * #Ray
+    Debt - wad * #Ray
+
+iff in range int256
+
+    wad * #Ray
+
+if
+
+    VGas > 300000
+
+behaviour kiss of Vow
+interface kiss(uint256 wad)
+
+types
+
+    Vat  : address VatLike
+    Ash  : uint256
+    Can  : uint256
+    Dai  : uint256
+    Sin  : uint256
+    Vice : uint256
+    Debt : uint256
+
+storage
+
+    vat |-> Vat
+    Ash |-> Ash => Ash - wad
+
+storage Vat
+
+    wards[ACCT_ID] |-> Can
+    dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
+    sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
+    vice           |-> Vice => Vice - wad * #Ray
+    debt           |-> Debt => Debt - wad * #Ray
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+    // act: call stack is not too big
+    VCallDepth < 1024
+
+iff in range uint256
+
+    Ash  - wad
     Dai  - wad * #Ray
     Sin  - wad * #Ray
     Vice - wad * #Ray

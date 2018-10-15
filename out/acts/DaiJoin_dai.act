@@ -7,7 +7,7 @@ types
 
 storage
 
-    #DaiJoin.dai |-> Dai
+    dai |-> Dai
 
 if
 

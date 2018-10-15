@@ -8,11 +8,12 @@ types
 
 storage
 
-    #Pit.wards[CALLER_ID] |-> Can
-    #Pit.Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
+    wards[CALLER_ID] |-> Can
+    Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 if

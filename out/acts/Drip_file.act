@@ -9,13 +9,15 @@ types
 
 storage
 
-    #Drip.wards[CALLER_ID] |-> Can
-    #Drip.ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
-    #Drip.ilks[ilk].rho    |-> Rho
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    ilks[ilk].rho    |-> Rho
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: last drip was `. ? : not` just now
     Rho == TIME
 
 if

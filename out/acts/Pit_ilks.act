@@ -8,8 +8,8 @@ types
 
 storage
 
-    #Pit.ilks[ilk].spot |-> Spot_i
-    #Pit.ilks[ilk].line |-> Line_i
+    ilks[ilk].spot |-> Spot_i
+    ilks[ilk].line |-> Line_i
 
 if
 

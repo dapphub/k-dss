@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Pit.drip |-> Drip
+    drip |-> Drip
 
 if
 

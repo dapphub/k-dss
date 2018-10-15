@@ -480,6 +480,13 @@
     },
     "act": "Vow_Joy.act"
   },
+  "Vow_Joy_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    },
+    "act": "Vow_Joy.act"
+  },
   "Vow_rely_succ": {
     "v2n": {
       "ACCT_ID": "Vow"

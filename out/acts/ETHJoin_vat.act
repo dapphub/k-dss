@@ -7,7 +7,7 @@ types
 
 storage
 
-    #ETHJoin.vat |-> Vat
+    vat |-> Vat
 
 if
 

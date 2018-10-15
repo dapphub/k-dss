@@ -5,9 +5,9 @@ module PROOF-ETHJOIN_VAT_SUCC
   imports EVM
   imports RULES
 
-// vat
+// ETHJoin_vat
 rule
-  <k> #execute => #halt </k>
+  <k> #execute ~> CONTINUATION => #halt ~> CONTINUATION </k>
   <exit-code> 1 </exit-code>
   <mode> NORMAL </mode>
   <schedule> BYZANTIUM </schedule>
@@ -61,14 +61,14 @@ rule
       <blockhash> _ </blockhash>
     </evm>
     <network>
-      <activeAccounts> SetItem(ACCT_ID) </activeAccounts>
+      <activeAccounts> SetItem(ACCT_ID) _ </activeAccounts>
       <accounts>
         <account>
           <acctID> ACCT_ID </acctID>
           <balance> BAL </balance>
           <code> #parseByteStack("0x60806040527c0100000000000000000000000000000000000000000000000000000000600035046336569e7781141561003e5760005460405260206040f35b63c5ce281e8114156100565760015460405260206040f35b63ad677d0b8114156100c6576100786b033b2e3c9fd0803ce80000003461015f565b7f42066cbb000000000000000000000000000000000000000000000000000000006000526001546004526004356024528060445260008060646000806000545af115156100c457600080fd5b005b63ef693bed81141561015a576100ea6b033b2e3c9fd0803ce800000060243561015f565b7f42066cbb00000000000000000000000000000000000000000000000000000000600052600154600452336024528060000360445260008060646000806000545af1151561013757600080fd5b6108fc602435150260008060008060243560043586f1151561015857600080fd5b005b600080fd5b600082820290507f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8082111561019457600080fd5b8284830414600085141715156101a957600080fd5b50929150505600a165627a7a723058208d3d580103caa38e0c3c90a2e6c4b2ad604a3ed0e4c45761cb0d02e2d51257f40029") </code>
-          <storage> #ETHJoin.vat |-> (Vat)
-                          _:Map
+          <storage> (_:Map
+                      (#ETHJoin.vat |-> (Vat)))
            </storage>
           <nonce> _ </nonce>
         </account>
@@ -85,10 +85,11 @@ andBool #rangeAddress(CALLER_ID)
 andBool #rangeAddress(ORIGIN_ID)
 andBool #rangeUInt(48, TIME)
 andBool #rangeUInt(256, BAL)
-andBool VCallDepth <Int 1024
-  andBool #rangeAddress(Vat)
-  andBool #notPrecompileAddress(Vat)
-  andBool ACCT_ID =/=Int Vat
-  andBool VGas >Int 300000
+andBool VCallDepth <=Int 1024
+
+    andBool (#rangeAddress(Vat)
+    andBool (#notPrecompileAddress(Vat)
+    andBool (ACCT_ID =/=Int Vat
+    andBool (VGas >Int 300000))))
 
 endmodule

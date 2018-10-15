@@ -9,12 +9,13 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.dai[src]         |-> Dai_src => Dai_src - rad
-    #Vat.dai[dst]         |-> Dai_dst => Dai_dst + rad
+    wards[CALLER_ID] |-> Can
+    dai[src]         |-> Dai_src => Dai_src - rad
+    dai[dst]         |-> Dai_dst => Dai_dst + rad
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range uint256

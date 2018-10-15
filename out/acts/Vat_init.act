@@ -9,14 +9,17 @@ types
 
 storage
 
-    #Vat.wards[CALLER_ID] |-> Can
-    #Vat.ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
-    #Vat.ilks[ilk].take   |-> Take => 1000000000000000000000000000
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
+    ilks[ilk].take   |-> Take => 1000000000000000000000000000
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: `Rate` is `. ? : not` zero
     Rate == 0
+    // act: `Take` is `. ? : not` zero
     Take == 0
 
 if

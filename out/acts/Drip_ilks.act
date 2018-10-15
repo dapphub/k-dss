@@ -9,8 +9,8 @@ types
 
 storage
 
-    #Drip.ilks[ilk].tax |-> Tax
-    #Drip.ilks[ilk].rho |-> Rho
+    ilks[ilk].tax |-> Tax
+    ilks[ilk].rho |-> Rho
 
 if
 

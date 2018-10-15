@@ -7,7 +7,7 @@ types
 
 storage
 
-    #Vat.debt |-> Debt
+    debt |-> Debt
 
 if
 

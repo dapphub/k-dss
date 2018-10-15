@@ -9,13 +9,16 @@ types
 
 storage
 
-    #Vow.wards[CALLER_ID] |-> Can
-    #Vow.sin[TIME]        |-> Sin_era => Sin_era + tab
-    #Vow.Sin              |-> Sin     => Sin     + tab
+    wards[CALLER_ID] |-> Can
+    sin[TIME]        |-> Sin_era => Sin_era + tab
+    Sin              |-> Sin     => Sin     + tab
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
+    // act: call stack is not too big
+    VCallDepth < 1024
 
 iff in range uint256
 

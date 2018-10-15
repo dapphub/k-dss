@@ -11,16 +11,17 @@ types
 
 storage
 
-    #ETHJoin.vat |-> Vat
-    #ETHJoin.ilk |-> Ilk
+    vat |-> Vat
+    ilk |-> Ilk
 
 storage Vat
 
-    #Vat.wards[ACCT_ID]      |-> Can
-    #Vat.gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
+    wards[ACCT_ID]      |-> Can
+    gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
 
 iff
 
+    // act: caller is `. ? : not` authorised
     Can == 1
 
 iff in range int256
