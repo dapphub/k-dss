@@ -40,13 +40,13 @@ storage DaiMove
 
 storage Cow
 
-    dai                         |-> DaiMove
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    kicks                       |-> Kicks   => 1 + Kicks
-    bids[1 + Kicks].bid         |-> Bid_was => 0
-    bids[1 + Kicks].lot         |-> Lot_was => Bump
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    #Flap.dai                         |-> DaiMove
+    #Flap.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flap.kicks                       |-> Kicks   => 1 + Kicks
+    #Flap.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flap.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flap.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flap.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 

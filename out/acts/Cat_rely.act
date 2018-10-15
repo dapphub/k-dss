@@ -19,3 +19,25 @@ iff
 if
 
     VGas > 300000
+
+behaviour deny of Cat
+interface deny(address guy)
+
+types
+
+    Can : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can
+    wards[guy]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+
+    VGas > 300000

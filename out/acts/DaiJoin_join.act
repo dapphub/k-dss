@@ -22,8 +22,8 @@ storage Vat
 
 storage Dai
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
-    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 

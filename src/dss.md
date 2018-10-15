@@ -1905,13 +1905,13 @@ storage
 
 storage Row
 
-    wards[ACCT_ID]              |-> Can
-    kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    bids[1 + Kicks].bid         |-> Bid_was => Sump
-    bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flop.wards[ACCT_ID]              |-> Can
+    #Flop.kicks                       |-> Kicks => 1 + Kicks
+    #Flop.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flop.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flop.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flop.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flop.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
@@ -1988,13 +1988,13 @@ storage DaiMove
 
 storage Cow
 
-    dai                         |-> DaiMove
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    kicks                       |-> Kicks   => 1 + Kicks
-    bids[1 + Kicks].bid         |-> Bid_was => 0
-    bids[1 + Kicks].lot         |-> Lot_was => Bump
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    #Flap.dai                         |-> DaiMove
+    #Flap.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flap.kicks                       |-> Kicks   => 1 + Kicks
+    #Flap.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flap.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flap.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flap.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
@@ -2916,8 +2916,8 @@ storage Vat
 
 storage Dai
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
-    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
@@ -2968,8 +2968,8 @@ storage Vat
 
 storage Dai
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
-    balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
