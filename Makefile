@@ -46,7 +46,7 @@ dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../
 
 $(SPECS_DIR)/spec.timestamp: $(SRCS) $(DAPP_SRCS)
-	mkdir -p $(OUT_DIR) && touch $@
+	mkdir -p $(SPECS_DIR) && touch $@
 	$(KLAB_FLAGS) klab build
 
 spec: $(SPECS_DIR)/spec.timestamp
