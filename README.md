@@ -31,9 +31,9 @@ It's also possible to check the behaviours non-interactively, directly using `kp
 make proofs-Vat -j4
 ```
 
-Specific behaviours can also be checked in this way, for example:
+Specific behaviours can also be checked, for example:
 ```sh
-make out/specs/proof-Vat_dai_succ.k.proof
+make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 ```
 
 ### progress
