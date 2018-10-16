@@ -102,8 +102,6 @@ publish-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.publish,$$(wildca
 
 %.k.proof.debug.log.publish: %.k %.k.proof.debug.log.timestamp
 	$(info $(bold)Publishing$(reset) proof logs for $<)
-	test -n "$(KLAB_PUBLISH_ID)"  # $$KLAB_PUBLISH_ID must be set
-	test -n "$(KLAB_PUBLISH_SECRET)"  # $$KLAB_PUBLISH_SECRET must be set
 	$(KLAB_FLAGS) klab publish --spec $<
 
 # needed to keep the dummy timestamp files from getting removed
