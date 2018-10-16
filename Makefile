@@ -14,9 +14,7 @@ OUT_DIR = $(KLAB_OUT)
 else
 OUT_DIR = $(CURDIR)/out
 endif
-ifndef TMPDIR
-TMPDIR = $(CURDIR)/tmp
-endif
+TMPDIR ?= $(CURDIR)/tmp
 ifndef KLAB_EVMS_PATH
 $(error $(red)Error$(reset): KLAB_EVMS_PATH must be defined and point to evm-semantics!)
 endif
@@ -60,6 +58,7 @@ $(DOC_DIR)/dss.html: $(SRCS)
 doc: $(DOC_DIR)/dss.html
 
 doc-publish: $(DOC_DIR)/dss.html
+	$(info $(bold)Publishing$(reset) html docs to stablecoin.technology $<)
 	scp $< root@stablecoin.technology:/var/www/html/index.html
 
 doc-clean:

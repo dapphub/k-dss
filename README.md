@@ -4,7 +4,9 @@ This repo contains the formal verification of [multicollateral dai](https://gith
 
 The behavior of the contracts is specified in a literate format at [dss.md](src/dss.md), which generates a series of reachability claims, defining `succeeding` and `reverting` behavior for each function of each contract. These reachability claims are then tested against the [formal semantics of the EVM](https://github.com/kframework/evm-semantics) using the [klab](https://github.com/dapphub/klab) tool for interactive proof inspection and debugging.
 
-More information about the specification format can be found under [Specification format](###Specification-format)
+More information about the specification format can be found under [Specification format](###Specification-format).
+
+An html version of the specification, together with links to in-browser symbolic execution previews, is available at stablecoin.technology
 
 ### dependencies
 * klab. Installation instructions can be found at [klab](https://github.com/dapphub/klab).
