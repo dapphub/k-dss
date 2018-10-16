@@ -14,17 +14,15 @@ OUT_DIR = $(KLAB_OUT)
 else
 OUT_DIR = $(CURDIR)/out
 endif
-
-SPECS_DIR = $(OUT_DIR)/specs
-ACTS_DIR = $(OUT_DIR)/acts
-DOC_DIR = $(OUT_DIR)/doc
 ifndef TMPDIR
 TMPDIR = $(CURDIR)/tmp
 endif
-
 ifndef KLAB_EVMS_PATH
 $(error $(red)Error$(reset): KLAB_EVMS_PATH must be defined and point to evm-semantics!)
 endif
+SPECS_DIR = $(OUT_DIR)/specs
+ACTS_DIR = $(OUT_DIR)/acts
+DOC_DIR = $(OUT_DIR)/doc
 
 KLAB_FLAGS = KLAB_OUT=$(OUT_DIR)
 
