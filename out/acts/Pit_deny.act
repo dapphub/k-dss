@@ -1,25 +1,3 @@
-behaviour rely of Pit
-interface rely(address guy)
-
-types
-
-    Can   : uint256
-    Could : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
-
 behaviour deny of Pit
 interface deny(address guy)
 

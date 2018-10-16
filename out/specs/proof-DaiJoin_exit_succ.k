@@ -79,8 +79,8 @@ rule
           <balance> Dai_balance </balance>
           <code> #parseByteStack("0x") </code>
           <storage> (_:Map
-                      (#Dai.balances[ACCT_ID] |-> (Bal_adapter => Bal_adapter -Int ABI_wad)
-                      (#Dai.balances[CALLER_ID] |-> (Bal_guy => Bal_guy     +Int ABI_wad)))) </storage>
+                      (#Gem.balances[ACCT_ID] |-> (Bal_adapter => Bal_adapter -Int ABI_wad)
+                      (#Gem.balances[CALLER_ID] |-> (Bal_guy => Bal_guy     +Int ABI_wad)))) </storage>
           <nonce> _ </nonce>
         </account>
         <account>
