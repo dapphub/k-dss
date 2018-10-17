@@ -7,10 +7,9 @@ types
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
-    Woe      : uint256
     Ash      : uint256
     DaiMove  : address DaiMoveLike
-    Can      : uint256
+    Could    : uint256
     Bid_was  : uint256
     Lot_was  : uint256
     Guy_was  : address
@@ -21,7 +20,9 @@ types
     Tau      : uint48
     Kicks    : uint256
     Can_move : uint256
-    Dai      : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_c    : uint256
 
 storage
 
@@ -29,14 +30,13 @@ storage
     vat  |-> Vat
     bump |-> Bump
     hump |-> Hump
-    Sin  |-> Sin
-    Woe  |-> Woe
+    Sin  |-> Ssin
     Ash  |-> Ash
 
 storage DaiMove
 
     vat                         |-> Vat
-    can[ACCT_ID][Cow]           |-> Can => Can
+    can[ACCT_ID][Cow]           |-> Could => 0
 
 storage Cow
 
@@ -51,14 +51,18 @@ storage Cow
 storage Vat
 
     wards[DaiMove] |-> Can_move
-    dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
+    dai[ACCT_ID]   |-> Dai_v => Dai_v - #Ray * Bump
+    sin[ACCT_ID]   |-> Sin_v
+    dai[Cow]       |-> Dai_c => Dai_c + #Ray * Bump
 
 iff
 
     // doc: there is enough `Joy`
-    Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
+    Dai_v / #Ray >= (Sin_v + Bump) + Hump
     // doc: there is no `Woe`
-    Woe == 0
+    (Sin_v / #Ray - Ssin) - Ash == 0
+    // doc: DaiMove is authorised to call Vat
+    Can_move == 1
     // act: call stack is not too big
     VCallDepth < 1022
 
@@ -68,12 +72,12 @@ iff in range uint48
 
 iff in range uint256
 
-    Sin + Woe
-    (Sin + Woe) + Ash
-    ((Sin + Woe) + Ash) + Bump
-    (((Sin + Woe) + Ash) + Bump) + Hump
+    Sin_v + Bump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
-    Dai - #Ray * Bump
+    Dai_v - #Ray * Bump
+    Dai_c + #Ray * Bump
 
 iff in range int256
 
@@ -84,6 +88,6 @@ if
     Cow =/= DaiMove
     Cow =/= Vat
     Vat =/= DaiMove
-    VGas > 300000
+    VGas > 600000
 
 returns 1 + Kicks

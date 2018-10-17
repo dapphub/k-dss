@@ -133,8 +133,8 @@ andBool VCallDepth <=Int 1024
     andBool (VGas >Int 300000
     andBool (Can ==Int 1
     andBool (Rate =/=Int 0
-    andBool ((((((Art_iu +Int ABI_dart) *Int Rate) <=Int (#Ray *Int Spot)) andBool (((Debt +Int (Rate *Int ABI_dart))) <Int (#Ray *Int Line))) orBool (ABI_dart <=Int 0))
-    andBool ((((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool (((Ink_iu +Int ABI_dink) *Int Spot) >=Int ((Art_iu +Int ABI_dart) *Int Rate)))
+    andBool ((((Art_iu +Int ABI_dart) *Int Rate <=Int #Ray *Int Spot) andBool (Debt +Int (Rate *Int ABI_dart) <Int #Ray *Int Line)) orBool (ABI_dart <=Int 0)
+    andBool (((ABI_dart <=Int 0) andBool (ABI_dink >=Int 0)) orBool ((Ink_iu +Int ABI_dink) *Int Spot >=Int (Art_iu +Int ABI_dart) *Int Rate)
     andBool (Live ==Int 1
     andBool (VCallDepth <Int 1024
     andBool (#rangeUInt(256, Ink_i +Int ABI_dink)

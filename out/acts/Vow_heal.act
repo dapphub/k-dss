@@ -4,7 +4,6 @@ interface heal(uint256 wad)
 types
 
     Vat  : address VatLike
-    Woe  : uint256
     Can  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -14,7 +13,6 @@ types
 storage
 
     vat |-> Vat
-    Woe |-> Woe => Woe - wad
 
 storage Vat
 
@@ -33,7 +31,6 @@ iff
 
 iff in range uint256
 
-    Woe  - wad
     Dai  - wad * #Ray
     Sin  - wad * #Ray
     Vice - wad * #Ray

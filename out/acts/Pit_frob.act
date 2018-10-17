@@ -47,9 +47,9 @@ iff
     // act: `Rate` is `. ? : not` non-zero
     Rate =/= 0
     // act: position is `. ? : not` either below collateral and global ceiling or is dai-decreasing
-    (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    (((Art_iu + dart) * Rate <= #Ray * Spot) and (Debt + (Rate * dart) < #Ray * Line)) or (dart <= 0)
     // act: position is `. ? : not` either safe or risk-decreasing
-    (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
+    ((dart <= 0) and (dink >= 0)) or ((Ink_iu + dink) * Spot >= (Art_iu + dart) * Rate)
     // act: system is `. ? : not` live
     Live == 1
     // act: call stack is not too big

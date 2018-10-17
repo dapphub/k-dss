@@ -209,12 +209,6 @@
     },
     "act": "Drip_repo.act"
   },
-  "Drip_era_succ": {
-    "v2n": {
-      "ACCT_ID": "Drip"
-    },
-    "act": "Drip_era.act"
-  },
   "Drip_rely_succ": {
     "v2n": {
       "ACCT_ID": "Drip"
@@ -332,13 +326,6 @@
     },
     "act": "Pit_Line.act"
   },
-  "Pit_drip_succ": {
-    "v2n": {
-      "ACCT_ID": "Pit",
-      "Drip": "Dripper"
-    },
-    "act": "Pit_drip.act"
-  },
   "Pit_rely_succ": {
     "v2n": {
       "ACCT_ID": "Pit"
@@ -407,12 +394,6 @@
     },
     "act": "Vow_wards.act"
   },
-  "Vow_era_succ": {
-    "v2n": {
-      "ACCT_ID": "Vow"
-    },
-    "act": "Vow_era.act"
-  },
   "Vow_sin_succ": {
     "v2n": {
       "ACCT_ID": "Vow"
@@ -424,12 +405,6 @@
       "ACCT_ID": "Vow"
     },
     "act": "Vow_Sin.act"
-  },
-  "Vow_Woe_succ": {
-    "v2n": {
-      "ACCT_ID": "Vow"
-    },
-    "act": "Vow_Woe.act"
   },
   "Vow_Ash_succ": {
     "v2n": {
@@ -463,13 +438,15 @@
   },
   "Vow_Awe_succ": {
     "v2n": {
-      "ACCT_ID": "Vow"
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
     },
     "act": "Vow_Awe.act"
   },
   "Vow_Awe_fail": {
     "v2n": {
-      "ACCT_ID": "Vow"
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
     },
     "act": "Vow_Awe.act"
   },
@@ -486,6 +463,20 @@
       "Vat": "VatLike"
     },
     "act": "Vow_Joy.act"
+  },
+  "Vow_Woe_succ": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    },
+    "act": "Vow_Woe.act"
+  },
+  "Vow_Woe_fail": {
+    "v2n": {
+      "ACCT_ID": "Vow",
+      "Vat": "VatLike"
+    },
+    "act": "Vow_Woe.act"
   },
   "Vow_rely_succ": {
     "v2n": {

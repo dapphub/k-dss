@@ -5,9 +5,9 @@ types
 
     Row     : address Floppy
     Vat     : address VatLike
-    Sump    : uint256
-    Woe     : uint256
+    Ssin    : uint256
     Ash     : uint256
+    Sump    : uint256
     Can     : uint256
     Kicks   : uint256
     Vow_was : address
@@ -19,14 +19,15 @@ types
     Ttl     : uint48
     Tau     : uint48
     Dai     : uint256
+    Sin_v   : uint256
 
 storage
 
     row  |-> Row
     vat  |-> Vat
-    sump |-> Sump
-    Woe  |-> Woe => Woe - Sump
+    Sin  |-> Ssin
     Ash  |-> Ash => Ash + Sump
+    sump |-> Sump
 
 storage Row
 
@@ -41,11 +42,14 @@ storage Row
 storage Vat
 
     dai[ACCT_ID] |-> Dai
+    sin[ACT_ID]  |-> Sin_v
 
 iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
+    // doc:
+    (Sin_v / #Ray - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
     Dai < #Ray
     // act: call stack is not too big
@@ -57,7 +61,6 @@ iff in range uint48
 
 iff in range uint256
 
-    Woe - Sump
     Ash + Sump
     1 + Kicks
 
