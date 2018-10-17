@@ -224,12 +224,6 @@ syntax Int ::= "#Vow.Sin" [function]
 // act: the total queued sin is `.`
 rule #Vow.Sin => 5
 
-syntax Int ::= "#Vow.Woe" [function]
-// ---------------------------------
-// doc: total matured sin
-// act: the total matured sin is `.`
-rule #Vow.Woe => 6
-
 syntax Int ::= "#Vow.Ash" [function]
 // ---------------------------------
 // doc: total sin in debt auctions

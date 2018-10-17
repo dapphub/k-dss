@@ -249,7 +249,7 @@ if
 
 #### initialising an `ilk`
 
-An `ilk` starts with `Rate` and `Take` set to (`ray` fixed-point) one.
+An `ilk` starts with `Rate` and `Take` set to (fixed-point) one.
 
 ```act
 behaviour init of Vat
@@ -746,19 +746,6 @@ if
 returns Repo
 ```
 
-#### getting the time
-
-```act
-behaviour era of Drip
-interface era()
-
-if
-
-    VGas > 300000
-
-returns TIME
-```
-
 
 ### Mutators
 
@@ -852,20 +839,16 @@ types
 
     Can : uint256
     Tax : uint256
-    Rho : uint48
 
 storage
 
     wards[CALLER_ID] |-> Can
     ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
-    ilks[ilk].rho    |-> Rho
 
 iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-    // act: last drip was `. ? : not` just now
-    Rho == TIME
 
 if
 
@@ -1101,27 +1084,6 @@ if
 returns Line
 ```
 
-#### `drip` address
-
-```act
-behaviour drip of Pit
-interface drip()
-
-types
-
-    Drip : address Dripper
-
-storage
-
-    drip |-> Drip
-
-if
-
-    VGas > 300000
-
-returns Drip
-```
-
 ### Mutators
 
 #### adding and removing owners
@@ -1279,9 +1241,9 @@ iff
     // act: `Rate` is `. ? : not` non-zero
     Rate =/= 0
     // act: position is `. ? : not` either below collateral and global ceiling or is dai-decreasing
-    (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    (((Art_iu + dart) * Rate <= #Ray * Spot) and (Debt + (Rate * dart) < #Ray * Line)) or (dart <= 0)
     // act: position is `. ? : not` either safe or risk-decreasing
-    (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
+    ((dart <= 0) and (dink >= 0)) or ((Ink_iu + dink) * Spot >= (Art_iu + dart) * Rate)
     // act: system is `. ? : not` live
     Live == 1
     // act: call stack is not too big
@@ -1340,19 +1302,6 @@ if
 returns Can
 ```
 
-#### getting the time
-
-```act
-behaviour era of Vow
-interface era()
-
-if
-
-    VGas > 300000
-
-returns TIME
-```
-
 #### getting a `sin` packet
 
 ```act
@@ -1393,27 +1342,6 @@ if
     VGas > 300000
 
 returns Sin
-```
-
-#### getting the `Woe`
-
-```act
-behaviour Woe of Vow
-interface Woe()
-
-types
-
-    Woe : uint256
-
-storage
-
-    Woe |-> Woe
-
-if
-
-    VGas > 300000
-
-returns Woe
 ```
 
 #### getting the `Ash`
@@ -1529,26 +1457,27 @@ interface Awe()
 
 types
 
+    Vat : address VatLike
     Sin : uint256
-    Woe : uint256
-    Ash : uint256
 
 storage
 
-    Sin |-> Sin
-    Woe |-> Woe
-    Ash |-> Ash
+    vat |-> Vat
 
-iff in range uint256
+storage Vat
 
-    Sin + Woe
-    Sin + Woe + Ash
+    sin[ACCT_ID] |-> Sin
+
+iff
+
+    // act: call stack is not too big
+    VCallDepth < 1024
 
 if
 
     VGas > 300000
 
-returns Sin + Woe + Ash
+returns Sin / #Ray
 ```
 
 #### getting the `Joy`
@@ -1580,6 +1509,41 @@ if
     VGas > 300000
 
 returns Dai / #Ray
+```
+
+#### getting the `Woe`
+
+```act
+behaviour Woe of Vow
+interface Woe()
+
+types
+
+    Vat  : address VatLike
+    Ssin : uint256
+    Sin  : uint256
+    Ash  : uint256
+
+storage
+
+    vat |-> Vat
+    Sin |-> Ssin
+    Ash |-> Ash
+
+storage Vat
+
+    sin[ACCT_ID] |-> Sin
+
+iff in range uint256
+
+    Sin / #Ray - Ssin
+    (Sin / #Ray - Ssin) - Ash
+
+if
+
+    VGas > 300000
+
+returns (Sin / #Ray - Ssin) - Ash
 ```
 
 ### Mutators
@@ -1704,7 +1668,6 @@ interface heal(uint256 wad)
 types
 
     Vat  : address VatLike
-    Woe  : uint256
     Can  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -1714,7 +1677,6 @@ types
 storage
 
     vat |-> Vat
-    Woe |-> Woe => Woe - wad
 
 storage Vat
 
@@ -1733,7 +1695,6 @@ iff
 
 iff in range uint256
 
-    Woe  - wad
     Dai  - wad * #Ray
     Sin  - wad * #Ray
     Vice - wad * #Ray
@@ -1819,8 +1780,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1843,27 +1802,22 @@ types
     Wait  : uint256
     Sin_t : uint256
     Sin   : uint256
-    Woe   : uint256
 
 storage
 
     wait   |-> Wait
     Sin    |-> Sin   => Sin - Sin_t
-    Woe    |-> Woe   => Woe + Sin_t
     sin[t] |-> Sin_t => 0
 
 iff
 
     // act: `sin` has `. ? : not` matured
     t + Wait <= TIME
-    // act: call stack is not too big
-    VCallDepth < 1024
 
 iff in range uint256
 
     t   + Wait
     Sin - Sin_t
-    Woe + Sin_t
 
 if
 
@@ -1880,9 +1834,9 @@ types
 
     Row     : address Floppy
     Vat     : address VatLike
-    Sump    : uint256
-    Woe     : uint256
+    Ssin    : uint256
     Ash     : uint256
+    Sump    : uint256
     Can     : uint256
     Kicks   : uint256
     Vow_was : address
@@ -1894,14 +1848,15 @@ types
     Ttl     : uint48
     Tau     : uint48
     Dai     : uint256
+    Sin_v   : uint256
 
 storage
 
     row  |-> Row
     vat  |-> Vat
-    sump |-> Sump
-    Woe  |-> Woe => Woe - Sump
+    Sin  |-> Ssin
     Ash  |-> Ash => Ash + Sump
+    sump |-> Sump
 
 storage Row
 
@@ -1916,11 +1871,14 @@ storage Row
 storage Vat
 
     dai[ACCT_ID] |-> Dai
+    sin[ACT_ID]  |-> Sin_v
 
 iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
+    // doc:
+    (Sin_v / #Ray - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
     Dai < #Ray
     // act: call stack is not too big
@@ -1932,7 +1890,6 @@ iff in range uint48
 
 iff in range uint256
 
-    Woe - Sump
     Ash + Sump
     1 + Kicks
 
@@ -1955,10 +1912,9 @@ types
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
-    Woe      : uint256
     Ash      : uint256
     DaiMove  : address DaiMoveLike
-    Can      : uint256
+    Could    : uint256
     Bid_was  : uint256
     Lot_was  : uint256
     Guy_was  : address
@@ -1969,7 +1925,9 @@ types
     Tau      : uint48
     Kicks    : uint256
     Can_move : uint256
-    Dai      : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_c    : uint256
 
 storage
 
@@ -1977,14 +1935,13 @@ storage
     vat  |-> Vat
     bump |-> Bump
     hump |-> Hump
-    Sin  |-> Sin
-    Woe  |-> Woe
+    Sin  |-> Ssin
     Ash  |-> Ash
 
 storage DaiMove
 
     vat                         |-> Vat
-    can[ACCT_ID][Cow]           |-> Can => Can
+    can[ACCT_ID][Cow]           |-> Could => 0
 
 storage Cow
 
@@ -1999,14 +1956,18 @@ storage Cow
 storage Vat
 
     wards[DaiMove] |-> Can_move
-    dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
+    dai[ACCT_ID]   |-> Dai_v => Dai_v - #Ray * Bump
+    sin[ACCT_ID]   |-> Sin_v
+    dai[Cow]       |-> Dai_c => Dai_c + #Ray * Bump
 
 iff
 
     // doc: there is enough `Joy`
-    Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
+    Dai_v / #Ray >= (Sin_v + Bump) + Hump
     // doc: there is no `Woe`
-    Woe == 0
+    (Sin_v / #Ray - Ssin) - Ash == 0
+    // doc: DaiMove is authorised to call Vat
+    Can_move == 1
     // act: call stack is not too big
     VCallDepth < 1022
 
@@ -2016,12 +1977,12 @@ iff in range uint48
 
 iff in range uint256
 
-    Sin + Woe
-    (Sin + Woe) + Ash
-    ((Sin + Woe) + Ash) + Bump
-    (((Sin + Woe) + Ash) + Bump) + Hump
+    Sin_v + Bump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
-    Dai - #Ray * Bump
+    Dai_v - #Ray * Bump
+    Dai_c + #Ray * Bump
 
 iff in range int256
 
