@@ -624,6 +624,10 @@ iff in range uint256
 if
 
     VGas > 300000
+
+calls
+    
+    Vat.sub
 ```
 
 #### applying interest to an `ilk`
@@ -669,6 +673,11 @@ iff in range int256
 if
 
     VGas > 300000
+    
+calls
+    
+    Vat.add
+    Vat.sub
 ```
 
 #### applying collateral adjustment to an `ilk`
@@ -712,6 +721,11 @@ iff in range int256
 if
 
     VGas > 300000
+    
+calls
+
+    Vat.add
+    Vat.sub
 ```
 
 # Drip
