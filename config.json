@@ -9,7 +9,7 @@
   },
   "implementations": {
     "Vat": {
-      "solc_output": "./dss/out/tune.2.sol.json"
+      "solc_output": "./dss/out/tune.sol.json"
     },
     "Drip": {
       "solc_output": "./dss/out/drip.2.sol.json"

@@ -14,10 +14,17 @@ behaviour add of Vat
 interface add(uint256 x, int256 y) internal
 
 stack
-   y : x : JUMPto : WS => JUMPto : x + y : WS
+
+   #unsigned(y) : x : JUMPto : WS => JUMPto : x + y : WS
 
 gas
-   VGas => _
+
+   VGas => YGas
+
+such that
+
+   VGas - 109 <= YGas
+   YGas <= VGas - 80
 
 iff in range uint256
 
@@ -25,7 +32,7 @@ iff in range uint256
 
 if
 
-    VGas > 1000
+    VGas > 109
     #sizeWordStack (WS) <= 1018
 
 ```
@@ -35,18 +42,25 @@ behaviour sub of Vat
 interface sub(uint256 x, int256 y) internal
 
 stack
-   y : x : JUMPto : WS => JUMPto : x - y : WS
+
+   #unsigned(y) : x : JUMPto : WS => JUMPto : x - y : WS
 
 gas
-   VGas => _
 
+   VGas => YGas
+   
+such that
+    
+   VGas - 109 <= YGas
+   YGas <= VGas - 80
+    
 iff in range uint256
 
     x - y
 
 if
 
-    VGas > 1000
+    VGas > 109
     #sizeWordStack (WS) <= 1018
 
 ```
@@ -357,6 +371,10 @@ iff in range uint256
 if
 
     VGas > 300000
+    
+calls
+    
+    Vat.add
 ```
 
 #### moving unencumbered collateral
@@ -390,6 +408,11 @@ iff in range uint256
 if
 
     VGas > 300000
+
+calls
+    
+    Vat.sub
+    Vat.add
 ```
 
 #### transferring dai balances
@@ -423,6 +446,11 @@ iff in range uint256
 if
 
     VGas > 300000
+    
+calls
+    
+    Vat.add
+    Vat.sub
 ```
 
 #### administering a position
@@ -484,6 +512,11 @@ iff in range int256
 if
 
     VGas > 300000
+    
+calls
+    
+    Vat.add
+    Vat.sub
 ```
 
 #### confiscating a position
@@ -545,6 +578,11 @@ iff in range int256
 if
 
     VGas > 300000
+
+calls
+    
+    Vat.add
+    Vat.sub
 ```
 
 #### creating/annihilating system debt and surplus
