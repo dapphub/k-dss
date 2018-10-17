@@ -60,7 +60,7 @@ dapp-clean:
 
 $(SPEC_MANIFEST): $(SRCS) $(DAPP_SRCS)
 	mkdir -p $(SPECS_DIR)
-	$(KLAB_FLAGS) klab build
+	$(KLAB_FLAGS) klab build --trust
 
 spec: $(SPEC_MANIFEST)
 
