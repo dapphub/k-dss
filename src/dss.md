@@ -1993,7 +1993,7 @@ if
     Cow =/= DaiMove
     Cow =/= Vat
     Vat =/= DaiMove
-    VGas > 300000
+    VGas > 600000
 
 returns 1 + Kicks
 ```
