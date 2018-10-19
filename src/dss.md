@@ -237,7 +237,7 @@ returns Gem
 
 ```act
 behaviour dai of Vat
-interface dai(bytes32 lad)
+interface dai(bytes32 guy)
 
 types
 
@@ -245,7 +245,7 @@ types
 
 storage
 
-    dai[lad] |-> Rad
+    dai[guy] |-> Rad
 
 if
 
@@ -260,7 +260,7 @@ returns Rad
 
 ```act
 behaviour sin of Vat
-interface sin(bytes32 lad)
+interface sin(bytes32 guy)
 
 types
 
@@ -268,7 +268,7 @@ types
 
 storage
 
-    sin[lad] |-> Rad
+    sin[guy] |-> Rad
 
 if
 
