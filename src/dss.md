@@ -755,6 +755,8 @@ if
 
 # Drip
 
+The main function of `Drip` is to calculate the stability fee of CDPs. Each time a user interacts with a CDP via [Pit.frob](#manipulating-a-position), its corresponding stability fee is updated through the methods of this contract.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -1112,6 +1114,8 @@ if
 
 # Pit
 
+The `Pit` acts as the user interface to CDPs. It allows users to manipulate their positions under a certain set conditions limiting the risk of the system.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -1437,6 +1441,9 @@ if
 ```
 
 # Vow
+
+The `Vow` is the settlement module for CDPs, managing system debt or excess Dai.
+If CDP are liquidated, their debt is taken over by the `Vow`, which tries to raise dai to cancel it through a [debt auction](#starting-a-debt-auction). The `Vow` also receives Dai as stability fees are accumulated.
 
 ## Specification of behaviours
 
@@ -2162,6 +2169,9 @@ returns 1 + Kicks
 
 # Cat
 
+The `Cat` handles liquidation of unsafe CDPs. If a CDP gets [bitten](#marking-a-position-for-liquidation), its corresponding collateral is transferred to the `Cat`. The `Cat` dispatches the collateral into a `Flip` auction contract, trying to raise Dai for the `Vow`, returning excess collateral to the CDP.
+
+
 ## Specification of behaviours
 
 ### Accessors
@@ -2346,7 +2356,7 @@ returns Vow
 
 ### Mutators
 
-#### addingg and removing owners
+#### adding and removing owners
 
 ```act
 behaviour rely of Cat
@@ -2640,6 +2650,8 @@ returns 1 + Kicks
 ```
 
 # GemJoin
+
+For each asset accepted as collateral in the system, there will be a `GemJoin` an adapter contract, allowing users to deposit or withdraw tokens using the ERC20 `transferFrom` function to modify their internal `gem` balance. 
 
 ## Specification of behaviours
 
@@ -2963,6 +2975,8 @@ if
 ```
 
 # DaiJoin
+
+The `DaiJoin` contract is a simple adapter contract, allowing users to export their internal `dai` balances to be able to transact with it.
 
 ## Specification of behaviours
 
