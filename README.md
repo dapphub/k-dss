@@ -1,27 +1,26 @@
-# k-dss
+Table of Contents
+=================
+
+   * [Installation](#installation)
+      * [dependencies](#dependencies)
+      * [build](#build)
+   * [Usage](#usage)
+   * [Progress](#progress)
+   * [Documentation](#documentation)
+      * [specification format](#specification-format)
+   * [License](#license)
 
 This repo contains the formal specification and verification of [multicollateral dai](https://github.com/makerdao/dss).
 
 The behavior of the contracts is specified in a literate format at [dss.md](src/dss.md), which generates a series of reachability claims, defining `succeeding` and `reverting` behavior for each function of each contract. These reachability claims are then tested against the [formal semantics of the EVM](https://github.com/kframework/evm-semantics) using the [klab](https://github.com/dapphub/klab) tool for interactive proof inspection and debugging.
 
-Table of Contents
-=================
-
-   * [k-dss](#k-dss)
-         * [dependencies](#dependencies)
-         * [build](#build)
-         * [usage](#usage)
-         * [progress](#progress)
-         * [documentation](#documentation)
-            * [specification format](#specification-format)
-         * [license](#license)
-
 An html version of the specification, together with links to in-browser symbolic execution previews, is available at [stablecoin.technology](http://stablecoin.technology/)
 
-### dependencies
+# Installation
+## dependencies
 * klab. Installation instructions can be found at [klab](https://github.com/dapphub/klab).
 
-### build
+## build
 ```sh
 git clone git@github.com:dapphub/k-dss.git
 make
@@ -29,7 +28,7 @@ make
 
 This will download and build the target contracts in `dss/`, and compile the literate specifications in `src/` to K specifications, saving the results in `out/specs`.
 
-### usage
+# Usage
 
 To run a proof with [klab](https://github.com/dapphub/klab), you'll need to have a `klab server` running. Then try:
 ```sh
@@ -48,7 +47,7 @@ Specific behaviours can also be checked, for example:
 make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 ```
 
-### progress
+# Progress
 
 (proof CI running at [dapp.ci](https://dapp.ci) )
 
@@ -179,11 +178,11 @@ make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 -----------------------------------------
 ```
 
-### documentation
+# Documentation
 
-To build the literate specification in HTML, run `make doc`.
+To build the literate specification in HTML, run `make doc`. The output of this process is available at [stablecoin.technology](http://stablecoin.technology/)
 
-#### specification format
+## specification format
 The format used in [dss.md](src/dss.md) provides a concise way of specifying the behavior of a contract method (see [act-mode](https://github.com/livnev/act-mode) for a simple emacs major mode for `.act` specs).
 
 Let's break down the specification of the behavior of the function `heal` in the contract `Vat`:
@@ -228,7 +227,7 @@ To prove this reachability claim, the k prover explores all possible execution p
 
 More information about how the K prover and the K Framework in general works can be found at [Semantics-Based Program Verifiers for All Languages](http://fsl.cs.illinois.edu/FSL/papers/2016/stefanescu-park-yuwen-li-rosu-2016-oopsla/stefanescu-park-yuwen-li-rosu-2016-oopsla-public.pdf) and a detailed description of the semantics of EVM defined in K is given in [KEVM: A Complete Semantics of the Ethereum Virtual Machine](https://www.ideals.illinois.edu/handle/2142/97207).
 
-### license
+# License
 All applicable work in this repository is licensed under AGPL-3.0. Authors:
 * Lev Livnev
 * Denis Erfurt
