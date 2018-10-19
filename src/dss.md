@@ -64,6 +64,34 @@ if
     #sizeWordStack (WS) <= 1018
 
 ```
+#### Overflow safe multiplication
+```
+behaviour mul of Vat
+interface mul(uint256 x, int256 y) internal
+
+stack
+
+   #unsigned(y) : x : JUMPto : WS => JUMPto : #unsigned(x * y) : WS
+
+gas
+
+   VGas => YGas
+   
+such that
+    
+   VGas - 122 <= YGas
+   YGas <= VGas - 85
+    
+iff in range int256
+
+    x * y
+    x
+if
+
+    VGas > 122
+    #sizeWordStack (WS) <= 1016
+
+```
 
 
 ### Accessors
@@ -517,6 +545,7 @@ calls
     
     Vat.add
     Vat.sub
+    Vat.mul
 ```
 
 #### confiscating a position
@@ -723,9 +752,9 @@ if
     VGas > 300000
     
 calls
-
     Vat.add
     Vat.sub
+    Vat.mul
 ```
 
 # Drip

@@ -223,6 +223,11 @@ rule A *Int #unsigned(B) => #unsigned(A *Int B)
   andBool #rangeSInt(256, B)
   andBool #rangeSInt(256, A *Int B)
 
+rule #unsigned(A) *Int B => #unsigned(A *Int B)
+  requires #rangeSInt(256, A)
+  andBool #rangeUInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+
 rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
