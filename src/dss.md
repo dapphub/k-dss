@@ -214,7 +214,7 @@ A `gem` is a token used as collateral in some `ilk`.
 
 ```act
 behaviour gem of Vat
-interface gem(bytes32 ilk, bytes32 urn)
+interface gem(bytes32 ilk, bytes32 guy)
 
 types
 
@@ -222,7 +222,7 @@ types
 
 storage
 
-    gem[ilk][urn] |-> Gem
+    gem[ilk][guy] |-> Gem
 
 if
 
