@@ -1,12 +1,22 @@
 # k-dss
 
-This repo contains the formal verification of [multicollateral dai](https://github.com/makerdao/dss).
+This repo contains the formal specification and verification of [multicollateral dai](https://github.com/makerdao/dss).
 
 The behavior of the contracts is specified in a literate format at [dss.md](src/dss.md), which generates a series of reachability claims, defining `succeeding` and `reverting` behavior for each function of each contract. These reachability claims are then tested against the [formal semantics of the EVM](https://github.com/kframework/evm-semantics) using the [klab](https://github.com/dapphub/klab) tool for interactive proof inspection and debugging.
 
-More information about the specification format can be found under [Specification format](###Specification-format).
+Table of Contents
+=================
 
-An html version of the specification, together with links to in-browser symbolic execution previews, is available at stablecoin.technology
+   * [k-dss](#k-dss)
+         * [dependencies](#dependencies)
+         * [build](#build)
+         * [usage](#usage)
+         * [progress](#progress)
+         * [documentation](#documentation)
+            * [specification format](#specification-format)
+         * [license](#license)
+
+An html version of the specification, together with links to in-browser symbolic execution previews, is available at [stablecoin.technology](http://stablecoin.technology/)
 
 ### dependencies
 * klab. Installation instructions can be found at [klab](https://github.com/dapphub/klab).
