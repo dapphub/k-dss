@@ -56,11 +56,14 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
 ```k
 syntax Int ::= "MaskLast20" [function]
 syntax Int ::= "MaskFirst6" [function]
+syntax Int ::= "MaskFirst26" [function]
 // -----------------------------------
 // 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
 rule MaskLast20 => 115792089237316195423570985007226406215939081747436879206741300988257197096960 [macro]
 // 0x000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff
 rule MaskFirst6 => 411376139330301510538742295639337626245683966408394965837152255                [macro]
+// 0x0000000000000000000000000000000000000000000000000000ffffffffffff
+rule MaskFirst26 => 281474976710655                                                               [macro]
 
 rule MaskLast20 &Int A => 0
   requires #rangeAddress(A)
@@ -104,6 +107,9 @@ rule (X *Int pow208) |Int (Y *Int pow160 +Int A) => (X *Int pow208 +Int Y *Int p
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
+
+// rule MaskFirst26 &Int X => X
+//   requires #rangeUInt(48, X)
 ```
 
 ### miscellaneous
@@ -127,6 +133,14 @@ rule #asWord(#padToWidth(32, #asByteStack(#unsigned(X)))) => #unsigned(X)
 rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 ```
 
+### 48-bit integer arithmetic
+
+```k
+rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
+  requires #rangeUInt(48, A)
+  andBool #rangeUInt(48, B)
+```
+
 ### signed 256-bit integer arithmetic
 
 ```k
@@ -136,13 +150,13 @@ rule 0 <Int #unsigned(X) => 0 <Int X
 
 // uadd
 // lemmas for necessity
-rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+rule notBool(chop(A +Int B) <Int A) => A +Int B <=Int maxUInt256
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
 // usub
 // lemmas for necessity
-rule A -Word B <Int A => (A -Int B >=Int minUInt256)
+rule notBool(A -Word B >Int A) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
@@ -158,6 +172,10 @@ rule chop(A +Int #unsigned(B)) => A +Int B
 //   requires #rangeUInt(256, A)
 //   andBool #rangeSInt(256, B)
 //   andBool B >=Int 0
+
+rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 
 rule (A +Int #unsigned(B) <=Int maxUInt256) => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
@@ -181,6 +199,10 @@ rule A -Word #unsigned(B) => A -Int B
 //   requires #rangeUInt(256, A)
 //   andBool #rangeSInt(256, B)
 //   andBool B >=Int 0
+
+rule A -Word B <Int A => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 
 rule (A -Int #unsigned(B) >=Int minUInt256) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
