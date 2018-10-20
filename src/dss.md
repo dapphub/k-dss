@@ -2962,3 +2962,356 @@ if
 
     VGas > 300000
 ```
+
+# DaiMove
+
+## Specification of behaviours
+
+### Accessors
+
+#### the Vat
+
+```act
+behaviour vat of DaiMove
+interface vat()
+types
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+if
+
+    VGas > 300000
+
+returns Vat
+```
+
+### Mutators
+
+#### approve or unapprove an address
+
+```act
+behaviour hope of DaiMove
+interface hope(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    can[CALLER_ID][guy] |-> Could => 1
+
+if
+
+    VGas > 300000
+
+behaviour nope of DaiMove
+interface nope(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    can[CALLER_ID][guy] |-> Could => 0
+
+if
+
+    VGas > 300000
+```
+
+#### move tokens
+
+```act
+behaviour move of DaiMove
+interface move(address src, address dst, uint256 wad)
+
+types
+
+     Can      : uint256
+     Vat      : address VatLike
+     Can_move : uint256
+     Dai_src  : uint256
+     Dai_dst  : uint256
+
+storage
+
+     can[src][CALLER_ID] |-> Can
+     vat                 |-> Vat
+
+storage Vat
+
+     wards[ACCT_ID]      |-> Can_move
+     dai[src]            |-> Dai_src => Dai_src - #Ray * wad
+     dai[dst]            |-> Dai_dst => Dai_dst + #Ray * wad
+
+iff
+
+     // doc: caller is approved to move tokens
+     ((src == CALLER_ID) or (Can == 1))
+     // doc: call stack not too big
+     VCallDepth < 1024
+     // doc: DaiMove authorised to call Cat
+     Can_move == 1
+
+iff in range uint256
+
+     Dai_src - #Ray * wad
+     Dai_dst + #Ray * wad
+
+iff in range int256
+
+     #Ray * wad
+
+if
+
+     VGas > 300000
+```
+
+# Flapper
+
+## Specification of behaviours
+
+### Accessors
+
+#### bid data
+
+```act
+behaviour bids of Flapper
+interface bids(uint256 n)
+
+types
+
+    Bid : uint256
+    Lot : uint256
+    Guy : address
+    Tic : uint48
+    End : uint48
+    Gal : address
+
+storage
+
+    bids[n].bid         |-> Bid
+    bids[n].lot         |-> Lot
+    bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
+    bids[n].gal         |-> Gal
+
+if
+
+    VGas > 300000
+
+returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal
+```
+
+#### sell token
+
+```act
+behaviour dai of Flapper
+interface dai()
+
+types
+
+    Dai : address
+
+storage
+
+    dai |-> Dai
+
+if
+
+    VGas > 300000
+
+returns Dai
+```
+
+#### buy token
+
+```act
+behaviour gem of Flapper
+interface gem()
+
+types
+
+    Gem : address
+
+storage
+
+    gem |-> Gem
+
+if
+
+    VGas > 300000
+
+returns Gem
+```
+
+#### minimum bid increment
+
+```act
+behaviour beg of Flapper
+interface beg()
+
+types
+
+    Beg : uint256
+
+storage
+
+    beg |-> Beg
+
+if
+
+    VGas > 300000
+
+returns Beg
+```
+
+#### auction time-to-live
+
+```act
+behaviour ttl of Flapper
+interface ttl()
+
+types
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+if
+
+    VGas > 300000
+
+returns Ttl
+```
+
+#### maximum auction duration
+
+```act
+behaviour tau of Flapper
+interface tau()
+
+types
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+if
+
+    VGas > 300000
+
+returns Tau
+```
+
+#### kick counter
+
+```act
+behaviour kicks of Flapper
+interface kicks()
+
+types
+
+    Kicks : uint256
+
+storage
+
+    kicks |-> Kicks
+
+if
+
+    VGas > 300000
+
+returns Kicks
+```
+
+### Mutators
+
+
+#### starting an auction
+
+```act
+behaviour kick of Flapper
+interface kick(address gal, uint256 lot, uint256 bid)
+
+types
+
+    Kicks    : uint256
+    DaiMove  : address DaiMoveLike
+    Ttl      : uint48
+    Tau      : uint48
+    Bid_was  : uint256
+    Lot_was  : uint256
+    Guy_was  : address
+    Tic_was  : uint48
+    End_was  : uint48
+    Gal_was  : address
+    Vat      : address VatLike
+    Can      : uint256
+    Can_move : uint256
+    Dai_v    : uint256
+    Dai_c    : uint256
+
+storage
+
+    dai                         |-> DaiMove
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
+    bids[1 + Kicks].bid         |-> Bid_was => bid
+    bids[1 + Kicks].lot         |-> Lot_was => lot
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].gal         |-> Gal_was => gal
+
+storage DaiMove
+
+    vat                     |-> Vat
+    can[CALLER_ID][ACCT_ID] |-> Can
+
+storage Vat
+
+    wards[DaiMove] |-> Can_move
+    dai[CALLER_ID] |-> Dai_v => Dai_v - #Ray * lot
+    dai[ACCT_ID]   |-> Dai_c => Dai_c + #Ray * lot
+
+iff
+
+    // doc: call stack is not too big
+    VCallDepth < 1023
+    // doc: Flap is authorised to move for the caller
+    Can      == 1
+    // doc: DaiMove is authorised to call Vat
+    Can_move == 1
+
+iff in range uint256
+
+    1 + Kicks
+    Dai_v - #Ray * lot
+    Dai_c + #Ray * lot
+
+iff in range uint48
+
+    TIME + Tau
+
+iff in range int256
+
+    #Ray * lot
+
+if
+
+   CALLER_ID =/= ACCT_ID
+   VGas > 300000
+
+returns 1 + Kicks
+```
+
