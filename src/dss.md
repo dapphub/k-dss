@@ -1534,6 +1534,11 @@ storage Vat
 
     sin[ACCT_ID] |-> Sin
 
+iff
+
+    // act: call stack is not too big
+    VCallDepth < 1024
+
 iff in range uint256
 
     Sin / #Ray - Ssin
@@ -1871,7 +1876,7 @@ storage Row
 storage Vat
 
     dai[ACCT_ID] |-> Dai
-    sin[ACT_ID]  |-> Sin_v
+    sin[ACCT_ID] |-> Sin_v
 
 iff
 
@@ -1891,6 +1896,8 @@ iff in range uint48
 iff in range uint256
 
     Ash + Sump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
 
 if
@@ -1912,6 +1919,7 @@ types
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
+    Ssin     : uint256
     Ash      : uint256
     DaiMove  : address DaiMoveLike
     Could    : uint256
@@ -1978,6 +1986,7 @@ iff in range uint48
 iff in range uint256
 
     Sin_v + Bump
+    (Sin_v + Bump) + Hump
     Sin_v / #Ray - Ssin
     (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
