@@ -1,0 +1,16 @@
+behaviour dai of Flapper
+interface dai()
+
+types
+
+    Dai : address
+
+storage
+
+    dai |-> Dai
+
+if
+
+    VGas > 300000
+
+returns Dai

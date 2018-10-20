@@ -18,10 +18,15 @@ storage Vat
 
     sin[ACCT_ID] |-> Sin
 
+iff
+
+    VCallDepth < 1024
+
 iff in range uint256
 
     Sin / #Ray - Ssin
     (Sin / #Ray - Ssin) - Ash
+    // act: call stack is not too big
 
 if
 

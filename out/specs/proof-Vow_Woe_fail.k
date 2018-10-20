@@ -107,7 +107,8 @@ andBool VCallDepth <=Int 1024
   andBool VGas >Int 300000
   andBool notBool (
             (#rangeUInt(256, (Sin /Int #Ray -Int Ssin) -Int Ash)
-    andBool (#rangeUInt(256, Sin /Int #Ray -Int Ssin)))
+    andBool (#rangeUInt(256, Sin /Int #Ray -Int Ssin)
+    andBool (VCallDepth <Int 1024)))
   )
 
 endmodule

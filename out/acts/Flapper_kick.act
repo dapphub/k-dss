@@ -1,0 +1,71 @@
+behaviour kick of Flapper
+interface kick(address gal, uint256 lot, uint256 bid)
+
+types
+
+    Kicks    : uint256
+    DaiMove  : address DaiMoveLike
+    Ttl      : uint48
+    Tau      : uint48
+    Bid_was  : uint256
+    Lot_was  : uint256
+    Guy_was  : address
+    Tic_was  : uint48
+    End_was  : uint48
+    Gal_was  : address
+    Vat      : address VatLike
+    Can      : uint256
+    Can_move : uint256
+    Dai_v    : uint256
+    Dai_c    : uint256
+
+storage
+
+    dai                         |-> DaiMove
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
+    bids[1 + Kicks].bid         |-> Bid_was => bid
+    bids[1 + Kicks].lot         |-> Lot_was => lot
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].gal         |-> Gal_was => gal
+
+storage DaiMove
+
+    vat                     |-> Vat
+    can[CALLER_ID][ACCT_ID] |-> Can
+
+storage Vat
+
+    wards[DaiMove] |-> Can_move
+    dai[CALLER_ID] |-> Dai_v => Dai_v - #Ray * lot
+    dai[ACCT_ID]   |-> Dai_c => Dai_c + #Ray * lot
+
+iff
+
+    // doc: call stack is not too big
+    VCallDepth < 1023
+    // doc: Flap is authorised to move for the caller
+    Can      == 1
+    // doc: DaiMove is authorised to call Vat
+    Can_move == 1
+
+iff in range uint256
+
+    1 + Kicks
+    Dai_v - #Ray * lot
+    Dai_c + #Ray * lot
+
+iff in range uint48
+
+    TIME + Tau
+
+iff in range int256
+
+    #Ray * lot
+
+if
+
+   CALLER_ID =/= ACCT_ID
+   VGas > 300000
+
+returns 1 + Kicks

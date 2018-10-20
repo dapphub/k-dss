@@ -1,0 +1,14 @@
+behaviour nope of DaiMove
+interface nope(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    can[CALLER_ID][guy] |-> Could => 0
+
+if
+
+    VGas > 300000

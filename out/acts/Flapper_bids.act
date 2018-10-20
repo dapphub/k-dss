@@ -1,0 +1,24 @@
+behaviour bids of Flapper
+interface bids(uint256 n)
+
+types
+
+    Bid : uint256
+    Lot : uint256
+    Guy : address
+    Tic : uint48
+    End : uint48
+    Gal : address
+
+storage
+
+    bids[n].bid         |-> Bid
+    bids[n].lot         |-> Lot
+    bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
+    bids[n].gal         |-> Gal
+
+if
+
+    VGas > 300000
+
+returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal

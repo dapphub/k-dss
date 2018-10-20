@@ -106,7 +106,8 @@ andBool VCallDepth <=Int 1024
     andBool (#notPrecompileAddress(Vat)
     andBool (ACCT_ID =/=Int Vat
     andBool (VGas >Int 300000
+    andBool (VCallDepth <Int 1024
     andBool (#rangeUInt(256, Sin /Int #Ray -Int Ssin)
-    andBool (#rangeUInt(256, (Sin /Int #Ray -Int Ssin) -Int Ash)))))))))))
+    andBool (#rangeUInt(256, (Sin /Int #Ray -Int Ssin) -Int Ash))))))))))))
 
 endmodule

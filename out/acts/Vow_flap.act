@@ -3,10 +3,11 @@ interface flap()
 
 types
 
-    Cow      : address Flappy
+    Cow      : address Flapper
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
+    Ssin     : uint256
     Ash      : uint256
     DaiMove  : address DaiMoveLike
     Could    : uint256
@@ -40,13 +41,13 @@ storage DaiMove
 
 storage Cow
 
-    #Flap.dai                         |-> DaiMove
-    #Flap.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flap.kicks                       |-> Kicks   => 1 + Kicks
-    #Flap.bids[1 + Kicks].bid         |-> Bid_was => 0
-    #Flap.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flap.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flap.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    #Flapper.dai                         |-> DaiMove
+    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
+    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
@@ -73,6 +74,7 @@ iff in range uint48
 iff in range uint256
 
     Sin_v + Bump
+    (Sin_v + Bump) + Hump
     Sin_v / #Ray - Ssin
     (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks

@@ -1,0 +1,15 @@
+behaviour vat of DaiMove
+interface vat()
+types
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+if
+
+    VGas > 300000
+
+returns Vat

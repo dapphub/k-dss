@@ -581,7 +581,7 @@
   "Vow_flop_succ": {
     "v2n": {
       "ACCT_ID": "Vow",
-      "Row": "Floppy",
+      "Row": "Flopper",
       "Vat": "VatLike"
     },
     "act": "Vow_flop.act"
@@ -589,7 +589,7 @@
   "Vow_flop_fail": {
     "v2n": {
       "ACCT_ID": "Vow",
-      "Row": "Floppy",
+      "Row": "Flopper",
       "Vat": "VatLike"
     },
     "act": "Vow_flop.act"
@@ -597,7 +597,7 @@
   "Vow_flap_succ": {
     "v2n": {
       "ACCT_ID": "Vow",
-      "Cow": "Flappy",
+      "Cow": "Flapper",
       "Vat": "VatLike",
       "DaiMove": "DaiMoveLike"
     },
@@ -606,7 +606,7 @@
   "Vow_flap_fail": {
     "v2n": {
       "ACCT_ID": "Vow",
-      "Cow": "Flappy",
+      "Cow": "Flapper",
       "Vat": "VatLike",
       "DaiMove": "DaiMoveLike"
     },
@@ -741,14 +741,14 @@
   "Cat_flip_succ": {
     "v2n": {
       "ACCT_ID": "Cat",
-      "Flip": "Flippy"
+      "Flip": "Flipper"
     },
     "act": "Cat_flip.act"
   },
   "Cat_flip_fail": {
     "v2n": {
       "ACCT_ID": "Cat",
-      "Flip": "Flippy"
+      "Flip": "Flipper"
     },
     "act": "Cat_flip.act"
   },
@@ -888,5 +888,95 @@
       "Dai": "GemLike"
     },
     "act": "DaiJoin_exit.act"
+  },
+  "DaiMove_vat_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiMove"
+    },
+    "act": "DaiMove_vat.act"
+  },
+  "DaiMove_hope_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiMove"
+    },
+    "act": "DaiMove_hope.act"
+  },
+  "DaiMove_nope_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiMove"
+    },
+    "act": "DaiMove_nope.act"
+  },
+  "DaiMove_move_succ": {
+    "v2n": {
+      "ACCT_ID": "DaiMove",
+      "Vat": "VatLike"
+    },
+    "act": "DaiMove_move.act"
+  },
+  "DaiMove_move_fail": {
+    "v2n": {
+      "ACCT_ID": "DaiMove",
+      "Vat": "VatLike"
+    },
+    "act": "DaiMove_move.act"
+  },
+  "Flapper_bids_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_bids.act"
+  },
+  "Flapper_dai_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_dai.act"
+  },
+  "Flapper_gem_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_gem.act"
+  },
+  "Flapper_beg_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_beg.act"
+  },
+  "Flapper_ttl_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_ttl.act"
+  },
+  "Flapper_tau_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_tau.act"
+  },
+  "Flapper_kicks_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper"
+    },
+    "act": "Flapper_kicks.act"
+  },
+  "Flapper_kick_succ": {
+    "v2n": {
+      "ACCT_ID": "Flapper",
+      "DaiMove": "DaiMoveLike",
+      "Vat": "VatLike"
+    },
+    "act": "Flapper_kick.act"
+  },
+  "Flapper_kick_fail": {
+    "v2n": {
+      "ACCT_ID": "Flapper",
+      "DaiMove": "DaiMoveLike",
+      "Vat": "VatLike"
+    },
+    "act": "Flapper_kick.act"
   }
 }

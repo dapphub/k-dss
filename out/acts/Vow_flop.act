@@ -3,7 +3,7 @@ interface flop()
 
 types
 
-    Row     : address Floppy
+    Row     : address Flopper
     Vat     : address VatLike
     Ssin    : uint256
     Ash     : uint256
@@ -31,18 +31,18 @@ storage
 
 storage Row
 
-    #Flop.wards[ACCT_ID]              |-> Can
-    #Flop.kicks                       |-> Kicks => 1 + Kicks
-    #Flop.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flop.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flop.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flop.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flop.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.kicks                       |-> Kicks => 1 + Kicks
+    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
     dai[ACCT_ID] |-> Dai
-    sin[ACT_ID]  |-> Sin_v
+    sin[ACCT_ID] |-> Sin_v
 
 iff
 
@@ -62,6 +62,8 @@ iff in range uint48
 iff in range uint256
 
     Ash + Sump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
 
 if

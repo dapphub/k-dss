@@ -7,7 +7,7 @@ types
     Urn   : address
     Ink   : uint256
     Tab   : uint256
-    Flip  : address Flippy
+    Flip  : address Flipper
     Chop  : uint256
     Lump  : uint256
     Vow   : address
@@ -30,14 +30,14 @@ storage
 
 storage Flip
 
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].bid         |-> _ => 0
-    bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    bids[1 + Kicks].urn         |-> _ => Urn
-    bids[1 + Kicks].gal         |-> _ => Vow
-    bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flipper.kicks                       |-> Kicks => 1 + Kicks
+    #Flipper.bids[1 + Kicks].bid         |-> _ => 0
+    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
+    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
+    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
