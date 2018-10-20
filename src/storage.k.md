@@ -395,154 +395,167 @@ rule #DaiJoin.dai => 1
 
 ```k
 // packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flip.ttl_tau" [function]
+syntax Int ::= "#Flipper.ttl_tau" [function]
 // -----------------------------------------
 // doc:
 // act:
-rule #Flip.ttl_tau => 3
+rule #Flipper.ttl_tau => 3
 
-syntax Int ::= "#Flip.kicks" [function]
+syntax Int ::= "#Flipper.kicks" [function]
 // ---------------------------------------
 // doc: auction counter
 // act:
-rule #Flip.kicks => 4
+rule #Flipper.kicks => 4
 
-syntax Int ::= "#Flip.bids" "[" Int "].bid" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
 // act:
-rule #Flip.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
+rule #Flipper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
 
-syntax Int ::= "#Flip.bids" "[" Int "].lot" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
 // doc: current lot (gem)
 // act:
-rule #Flip.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
+rule #Flipper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flip.bids" "[" Int "].guy_tic_end" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flip.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+rule #Flipper.bids[N].guy_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
 
-syntax Int ::= "#Flip.bids" "[" Int "].urn" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].urn" [function]
 // ------------------------------------------------------
 // doc: beneficiary of remaining gems
 // act:
-rule #Flip.bids[N].urn => #hashedLocation("Solidity", 5, N) +Int 3
+rule #Flipper.bids[N].urn => #hashedLocation("Solidity", 5, N) +Int 3
 
-syntax Int ::= "#Flip.bids" "[" Int "].gal" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
 // doc: beneficiary of dai
 // act:
-rule #Flip.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 4
+rule #Flipper.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 4
 
-syntax Int ::= "#Flip.bids" "[" Int "].tab" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].tab" [function]
 // ------------------------------------------------------
 // doc: debt to cover
 // act:
-rule #Flip.bids[N].tab => #hashedLocation("Solidity", 5, N) +Int 5
+rule #Flipper.bids[N].tab => #hashedLocation("Solidity", 5, N) +Int 5
 ```
 
 
 ### Flop
 
 ```k
-syntax Int ::= "#Flop.wards" "[" Int "]" [function]
+syntax Int ::= "#Flopper.wards" "[" Int "]" [function]
 // ---------------------------------------
 // doc: whether `$0` is an owner of `Flop`
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
-rule #Flop.wards[A] => #hashedLocation("Solidity", 0, A)
+rule #Flopper.wards[A] => #hashedLocation("Solidity", 0, A)
 
 // packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flop.ttl_tau" [function]
+syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
 // doc:
 // act:
-rule #Flop.ttl_tau => 5
+rule #Flopper.ttl_tau => 5
 
-syntax Int ::= "#Flop.kicks" [function]
+syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------
 // doc: auction counter
 // act:
-rule #Flop.kicks => 6
+rule #Flopper.kicks => 6
 
-syntax Int ::= "#Flop.bids" "[" Int "].bid" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
 // act:
-rule #Flop.bids[N].bid => #hashedLocation("Solidity", 1, N) +Int 0
+rule #Flopper.bids[N].bid => #hashedLocation("Solidity", 1, N) +Int 0
 
-syntax Int ::= "#Flop.bids" "[" Int "].lot" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
 // doc: current lot (gem)
 // act:
-rule #Flop.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
+rule #Flopper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flop.bids" "[" Int "].guy_tic_end" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flop.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
+rule #Flopper.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
-syntax Int ::= "#Flop.bids" "[" Int "].vow" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
 // ------------------------------------------------------
 // doc: beneficiary of the auction
 // act:
-rule #Flop.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
+rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
 ```
 
 ### Flap
 
 ```k
-// packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flap.ttl_tau" [function]
-// -----------------------------------------
-// doc:
-// act:
-rule #Flap.ttl_tau => 4
-
-syntax Int ::= "#Flap.kicks" [function]
-// ---------------------------------------
-// doc: auction counter
-// act:
-rule #Flap.kicks => 5
-
-syntax Int ::= "#Flap.bids" "[" Int "].bid" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
 // act:
-rule #Flap.bids[N].bid => #hashedLocation("Solidity", 0, N) +Int 0
+rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 0, N) +Int 0
 
-syntax Int ::= "#Flap.bids" "[" Int "].lot" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
 // doc: current lot (gem)
 // act:
-rule #Flap.bids[N].lot => #hashedLocation("Solidity", 0, N) +Int 1
+rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 0, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flap.bids" "[" Int "].guy_tic_end" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flap.bids[N].guy_tic_end => #hashedLocation("Solidity", 0, N) +Int 2
+rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 0, N) +Int 2
 
-syntax Int ::= "#Flap.bids" "[" Int "].gal" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
 // doc: beneficiary of the auction
 // act:
-rule #Flap.bids[N].gal => #hashedLocation("Solidity", 0, N) +Int 3
+rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 0, N) +Int 3
 
-syntax Int ::= "#Flap.dai" [function]
+syntax Int ::= "#Flapper.dai" [function]
 // ---------------------------------------
 // doc: dai token
 // act:
-rule #Flap.dai => 1
+rule #Flapper.dai => 1
+
+syntax Int ::= "#Flapper.gem" [function]
+// ---------------------------------------
+// doc: mkr token
+// act:
+rule #Flapper.gem => 2
+
+syntax Int ::= "#Flapper.beg" [function]
+// ---------------------------------------
+// doc: minimum bid increment
+// act:
+rule #Flapper.gem => 3
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.ttl_tau" [function]
+// -----------------------------------------
+// doc:
+// act:
+rule #Flapper.ttl_tau => 4
+
+syntax Int ::= "#Flapper.kicks" [function]
+// ---------------------------------------
+// doc: auction counter
+// act:
+rule #Flapper.kicks => 5
 ```
 
 ### DaiMove
+
 ```k
 syntax Int ::= "#DaiMove.vat" [function]
 // ---------------------------------------

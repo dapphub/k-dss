@@ -1837,7 +1837,7 @@ interface flop()
 
 types
 
-    Row     : address Floppy
+    Row     : address Flopper
     Vat     : address VatLike
     Ssin    : uint256
     Ash     : uint256
@@ -1865,13 +1865,13 @@ storage
 
 storage Row
 
-    #Flop.wards[ACCT_ID]              |-> Can
-    #Flop.kicks                       |-> Kicks => 1 + Kicks
-    #Flop.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flop.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flop.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flop.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flop.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.kicks                       |-> Kicks => 1 + Kicks
+    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
@@ -1915,7 +1915,7 @@ interface flap()
 
 types
 
-    Cow      : address Flappy
+    Cow      : address Flapper
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
@@ -1953,13 +1953,13 @@ storage DaiMove
 
 storage Cow
 
-    #Flap.dai                         |-> DaiMove
-    #Flap.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flap.kicks                       |-> Kicks   => 1 + Kicks
-    #Flap.bids[1 + Kicks].bid         |-> Bid_was => 0
-    #Flap.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flap.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flap.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    #Flapper.dai                         |-> DaiMove
+    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
+    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
@@ -2431,7 +2431,7 @@ types
     Urn   : address
     Ink   : uint256
     Tab   : uint256
-    Flip  : address Flippy
+    Flip  : address Flipper
     Chop  : uint256
     Lump  : uint256
     Vow   : address
@@ -2454,14 +2454,14 @@ storage
 
 storage Flip
 
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].bid         |-> _ => 0
-    bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    bids[1 + Kicks].urn         |-> _ => Urn
-    bids[1 + Kicks].gal         |-> _ => Vow
-    bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flipper.kicks                       |-> Kicks => 1 + Kicks
+    #Flipper.bids[1 + Kicks].bid         |-> _ => 0
+    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
+    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
+    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 

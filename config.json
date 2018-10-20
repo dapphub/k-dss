@@ -32,6 +32,10 @@
     "DaiJoin": {
       "solc_output": "./dss/out/join.2.sol.json"
     },
+    "DaiMove": {
+      "name" : "DaiMove",
+      "solc_output": "./dss/out/move.sol.json"
+    },
     "VatLike": {
       "name" : "Vat",
       "solc_output": "./dss/out/tune.2.sol.json"
@@ -48,15 +52,15 @@
       "name" : "Vow",
       "solc_output": "./dss/out/heal.2.sol.json"
     },
-    "Flippy": {
+    "Flipper": {
       "name" : "Flipper",
       "solc_output": "./dss/out/flip.sol.json"
     },
-    "Floppy": {
+    "Flopper": {
       "name" : "Flopper",
       "solc_output": "./dss/out/flop.sol.json"
     },
-    "Flappy": {
+    "Flapper": {
       "name" : "Flapper",
       "solc_output": "./dss/out/flap.sol.json"
     },
