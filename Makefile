@@ -45,7 +45,7 @@ endif
 # check if there is a passing manifest
 ifneq ("$(wildcard $(PASSING_SPEC_MANIFEST))","")
 passing_spec_names != cat $(PASSING_SPEC_MANIFEST)
-passing_specs = $(addsuffix .k,$(addprefix $(SPEC_DIR)/proof-,$(passing_spec_names)))
+passing_specs = $(addsuffix .k,$(addprefix $(SPECS_DIR)/proof-,$(passing_spec_names)))
 num_passing = cat $(PASSING_SPEC_MANIFEST) | wc -l
 endif
 
