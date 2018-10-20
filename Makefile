@@ -9,6 +9,7 @@ DAPP_DIR = $(CURDIR)/dss
 SRC_DIR = $(CURDIR)/src
 SRCS = $(addprefix $(SRC_DIR)/, dss.md lemmas.k.md storage.k.md prelude.smt2.md)
 DAPP_SRCS = $(wildcard $(DAPP_DIR)/src/*)
+# if KLAB_OUT isn't defined, default is to use out/
 ifdef KLAB_OUT
 OUT_DIR = $(KLAB_OUT)
 else
@@ -32,6 +33,22 @@ KPROVE_ARGS = --directory $(KLAB_EVMS_PATH)/.build/java/ --z3-executable --def-m
 
 DEBUG_ARGS = --debugg --debugg-path $(TMPDIR)/klab --debugg-id
 
+SPEC_MANIFEST = $(SPECS_DIR)/specs.manifest
+PASSING_SPEC_MANIFEST = passing.manifest
+
+# check if spec manifest already exists
+ifneq ("$(wildcard $(SPEC_MANIFEST))","")
+spec_names != cat $(SPEC_MANIFEST)
+specs = $(addsuffix .k,$(addprefix $(SPEC_DIR)/proof-,$(spec_names)))
+endif
+
+# check if there is a passing manifest
+ifneq ("$(wildcard $(PASSING_SPEC_MANIFEST))","")
+passing_spec_names != cat $(PASSING_SPEC_MANIFEST)
+passing_specs = $(addsuffix .k,$(addprefix $(SPEC_DIR)/proof-,$(passing_spec_names)))
+num_passing = cat $(PASSING_SPEC_MANIFEST) | wc -l
+endif
+
 all: dapp spec
 
 dapp:
@@ -41,14 +58,14 @@ dapp:
 dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../
 
-$(SPECS_DIR)/spec.timestamp: $(SRCS) $(DAPP_SRCS)
-	mkdir -p $(SPECS_DIR) && touch $@
+$(SPEC_MANIFEST): $(SRCS) $(DAPP_SRCS)
+	mkdir -p $(SPECS_DIR)
 	$(KLAB_FLAGS) klab build
 
-spec: $(SPECS_DIR)/spec.timestamp
+spec: $(SPEC_MANIFEST)
 
 spec-clean:
-	rm -f $(SPECS_DIR)/* $(ACTS_DIR)/*
+	rm -f $(SPECS_DIR)/* $(ACTS_DIR)/* $(SPEC_MANIFEST)
 
 $(DOC_DIR)/dss.html: $(SRCS)
 	$(info Generating html documentation: $@)
@@ -66,15 +83,29 @@ doc-clean:
 
 clean: dapp-clean spec-clean doc-clean
 
-proofs: proofs-Vat
+proofs: passing-proofs
 
-publish: publish-Vat
+publish: passing-publish
 
 # workaround for patsubst in pattern matching target below
 PERCENT := %
 
 .SECONDEXPANSION:
 
+# targets for passing behaviours
+passing-proofs: $$(patsubst %,%.proof.timestamp,$$(passing_specs))
+	$(info $(bold)CHECKED$(reset) all $(num_passing) passing behaviours.)
+
+passing-debug-proofs: $$(patsubst %,%.proof.debug.timestamp,$$(passing_specs))
+	$(info $(bold)CHECKED$(reset) all $(num_passing) passing behaviours (in $(yellow)$(bold)debug mode$(reset)).)
+
+passing-logs: $$(patsubst %,%.proof.debug.log.timestamp,$$(passing_specs))
+	$(info $(bold)COMPILED$(reset) logs for all $(num_passing) passing behaviours.)
+
+passing-publish: $$(patsubst %,%.proof.debug.log.publish,$$(passing_specs))
+	$(info $(bold)PUBLISHED$(reset) logs for all $(num_passing) passing behaviours.)
+
+# targets per-contract (unused)
 proofs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.timestamp,$$(wildcard $(SPECS_DIR)/proof-%*.k))
 	$(info $(bold)CHECKED$(reset) all behaviours of contract $*.)
 
@@ -87,6 +118,7 @@ logs-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.timestamp,$$(wildcar
 publish-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.publish,$$(wildcard $(SPECS_DIR)/proof-%*.k))
 	$(info $(bold)PUBLISHED$(reset) logs for all behaviours of contract $*.)
 
+# targets per-spec
 %.k.proof.timestamp: %.k $(SMT_PRELUDE) $(RULES)
 	$(info Proof $(bold)STARTING$(reset): $<)
 	@ $(KPROVE) $(KPROVE_ARGS) $< && echo "$(green)Proof $(bold)SUCCESS$(reset): $<" && touch $@
