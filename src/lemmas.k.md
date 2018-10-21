@@ -147,8 +147,6 @@ rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
 rule #unsigned(X) ==K 0 => X ==Int 0
   requires #rangeSInt(256, X)
 
-rule 0 <Int #unsigned(X) => 0 <Int X
-  requires #rangeSInt(256, X)
 
 // uadd
 // lemmas for necessity
@@ -202,10 +200,15 @@ rule A -Word #unsigned(B) => A -Int B
 //   andBool #rangeSInt(256, B)
 //   andBool B >=Int 0
 
+<<<<<<< HEAD
 rule A -Word B <Int A => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
+=======
+
+//#unsigned(B) should reduce to B if 0 <= B <= maxSInt256 anyway
+>>>>>>> d2d1109... lemmas: more SDIV lemmas, fix some other lemmas
 rule (A -Int #unsigned(B) >=Int minUInt256) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
@@ -222,6 +225,11 @@ rule A *Int #unsigned(B) => #unsigned(A *Int B)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool #rangeSInt(256, A *Int B)
+
+rule sgn(#unsigned(A *Int B)) => sgn(#unsigned(A)) *Int sgn(#unsigned(B))
+
+rule sgn(#unsigned(A)) => 1
+    requires 0 <=Int A andBool A <=Int maxSInt256
 
 rule #unsigned(A) *Int B => #unsigned(A *Int B)
   requires #rangeSInt(256, A)
@@ -260,6 +268,14 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B <Int 0
+
+//combining the two above
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int sgn (#unsigned ( B ) ), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => #rangeSInt(256, A *Int B)
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B =/=Int 0
+
+
 
 rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
   requires #rangeUInt(256, A)
