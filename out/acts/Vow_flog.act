@@ -6,27 +6,22 @@ types
     Wait  : uint256
     Sin_t : uint256
     Sin   : uint256
-    Woe   : uint256
 
 storage
 
     wait   |-> Wait
     Sin    |-> Sin   => Sin - Sin_t
-    Woe    |-> Woe   => Woe + Sin_t
     sin[t] |-> Sin_t => 0
 
 iff
 
     // act: `sin` has `. ? : not` matured
     t + Wait <= TIME
-    // act: call stack is not too big
-    VCallDepth < 1024
 
 iff in range uint256
 
     t   + Wait
     Sin - Sin_t
-    Woe + Sin_t
 
 if
 

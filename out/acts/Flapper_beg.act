@@ -1,0 +1,16 @@
+behaviour beg of Flapper
+interface beg()
+
+types
+
+    Beg : uint256
+
+storage
+
+    beg |-> Beg
+
+if
+
+    VGas > 300000
+
+returns Beg

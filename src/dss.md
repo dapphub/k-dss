@@ -249,7 +249,7 @@ if
 
 #### initialising an `ilk`
 
-An `ilk` starts with `Rate` and `Take` set to (`ray` fixed-point) one.
+An `ilk` starts with `Rate` and `Take` set to (fixed-point) one.
 
 ```act
 behaviour init of Vat
@@ -746,19 +746,6 @@ if
 returns Repo
 ```
 
-#### getting the time
-
-```act
-behaviour era of Drip
-interface era()
-
-if
-
-    VGas > 300000
-
-returns TIME
-```
-
 
 ### Mutators
 
@@ -852,20 +839,16 @@ types
 
     Can : uint256
     Tax : uint256
-    Rho : uint48
 
 storage
 
     wards[CALLER_ID] |-> Can
     ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
-    ilks[ilk].rho    |-> Rho
 
 iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-    // act: last drip was `. ? : not` just now
-    Rho == TIME
 
 if
 
@@ -1101,27 +1084,6 @@ if
 returns Line
 ```
 
-#### `drip` address
-
-```act
-behaviour drip of Pit
-interface drip()
-
-types
-
-    Drip : address Dripper
-
-storage
-
-    drip |-> Drip
-
-if
-
-    VGas > 300000
-
-returns Drip
-```
-
 ### Mutators
 
 #### adding and removing owners
@@ -1279,9 +1241,9 @@ iff
     // act: `Rate` is `. ? : not` non-zero
     Rate =/= 0
     // act: position is `. ? : not` either below collateral and global ceiling or is dai-decreasing
-    (((((Art_iu + dart) * Rate) <= (#Ray * Spot)) and (((Debt + (Rate * dart))) < (#Ray * Line))) or (dart <= 0))
+    (((Art_iu + dart) * Rate <= #Ray * Spot) and (Debt + (Rate * dart) < #Ray * Line)) or (dart <= 0)
     // act: position is `. ? : not` either safe or risk-decreasing
-    (((dart <= 0) and (dink >= 0)) or (((Ink_iu + dink) * Spot) >= ((Art_iu + dart) * Rate)))
+    ((dart <= 0) and (dink >= 0)) or ((Ink_iu + dink) * Spot >= (Art_iu + dart) * Rate)
     // act: system is `. ? : not` live
     Live == 1
     // act: call stack is not too big
@@ -1340,19 +1302,6 @@ if
 returns Can
 ```
 
-#### getting the time
-
-```act
-behaviour era of Vow
-interface era()
-
-if
-
-    VGas > 300000
-
-returns TIME
-```
-
 #### getting a `sin` packet
 
 ```act
@@ -1393,27 +1342,6 @@ if
     VGas > 300000
 
 returns Sin
-```
-
-#### getting the `Woe`
-
-```act
-behaviour Woe of Vow
-interface Woe()
-
-types
-
-    Woe : uint256
-
-storage
-
-    Woe |-> Woe
-
-if
-
-    VGas > 300000
-
-returns Woe
 ```
 
 #### getting the `Ash`
@@ -1529,26 +1457,27 @@ interface Awe()
 
 types
 
+    Vat : address VatLike
     Sin : uint256
-    Woe : uint256
-    Ash : uint256
 
 storage
 
-    Sin |-> Sin
-    Woe |-> Woe
-    Ash |-> Ash
+    vat |-> Vat
 
-iff in range uint256
+storage Vat
 
-    Sin + Woe
-    Sin + Woe + Ash
+    sin[ACCT_ID] |-> Sin
+
+iff
+
+    // act: call stack is not too big
+    VCallDepth < 1024
 
 if
 
     VGas > 300000
 
-returns Sin + Woe + Ash
+returns Sin / #Ray
 ```
 
 #### getting the `Joy`
@@ -1580,6 +1509,46 @@ if
     VGas > 300000
 
 returns Dai / #Ray
+```
+
+#### getting the `Woe`
+
+```act
+behaviour Woe of Vow
+interface Woe()
+
+types
+
+    Vat  : address VatLike
+    Ssin : uint256
+    Sin  : uint256
+    Ash  : uint256
+
+storage
+
+    vat |-> Vat
+    Sin |-> Ssin
+    Ash |-> Ash
+
+storage Vat
+
+    sin[ACCT_ID] |-> Sin
+
+iff
+
+    // act: call stack is not too big
+    VCallDepth < 1024
+
+iff in range uint256
+
+    Sin / #Ray - Ssin
+    (Sin / #Ray - Ssin) - Ash
+
+if
+
+    VGas > 300000
+
+returns (Sin / #Ray - Ssin) - Ash
 ```
 
 ### Mutators
@@ -1704,7 +1673,6 @@ interface heal(uint256 wad)
 types
 
     Vat  : address VatLike
-    Woe  : uint256
     Can  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -1714,7 +1682,6 @@ types
 storage
 
     vat |-> Vat
-    Woe |-> Woe => Woe - wad
 
 storage Vat
 
@@ -1733,7 +1700,6 @@ iff
 
 iff in range uint256
 
-    Woe  - wad
     Dai  - wad * #Ray
     Sin  - wad * #Ray
     Vice - wad * #Ray
@@ -1819,8 +1785,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
 
 iff in range uint256
 
@@ -1843,27 +1807,22 @@ types
     Wait  : uint256
     Sin_t : uint256
     Sin   : uint256
-    Woe   : uint256
 
 storage
 
     wait   |-> Wait
     Sin    |-> Sin   => Sin - Sin_t
-    Woe    |-> Woe   => Woe + Sin_t
     sin[t] |-> Sin_t => 0
 
 iff
 
     // act: `sin` has `. ? : not` matured
     t + Wait <= TIME
-    // act: call stack is not too big
-    VCallDepth < 1024
 
 iff in range uint256
 
     t   + Wait
     Sin - Sin_t
-    Woe + Sin_t
 
 if
 
@@ -1878,11 +1837,11 @@ interface flop()
 
 types
 
-    Row     : address Floppy
+    Row     : address Flopper
     Vat     : address VatLike
-    Sump    : uint256
-    Woe     : uint256
+    Ssin    : uint256
     Ash     : uint256
+    Sump    : uint256
     Can     : uint256
     Kicks   : uint256
     Vow_was : address
@@ -1894,33 +1853,37 @@ types
     Ttl     : uint48
     Tau     : uint48
     Dai     : uint256
+    Sin_v   : uint256
 
 storage
 
     row  |-> Row
     vat  |-> Vat
-    sump |-> Sump
-    Woe  |-> Woe => Woe - Sump
+    Sin  |-> Ssin
     Ash  |-> Ash => Ash + Sump
+    sump |-> Sump
 
 storage Row
 
-    #Flop.wards[ACCT_ID]              |-> Can
-    #Flop.kicks                       |-> Kicks => 1 + Kicks
-    #Flop.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flop.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flop.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flop.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flop.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.kicks                       |-> Kicks => 1 + Kicks
+    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
     dai[ACCT_ID] |-> Dai
+    sin[ACCT_ID] |-> Sin_v
 
 iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
+    // doc:
+    (Sin_v / #Ray - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
     Dai < #Ray
     // act: call stack is not too big
@@ -1932,8 +1895,9 @@ iff in range uint48
 
 iff in range uint256
 
-    Woe - Sump
     Ash + Sump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
 
 if
@@ -1951,14 +1915,14 @@ interface flap()
 
 types
 
-    Cow      : address Flappy
+    Cow      : address Flapper
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
-    Woe      : uint256
+    Ssin     : uint256
     Ash      : uint256
     DaiMove  : address DaiMoveLike
-    Can      : uint256
+    Could    : uint256
     Bid_was  : uint256
     Lot_was  : uint256
     Guy_was  : address
@@ -1969,7 +1933,9 @@ types
     Tau      : uint48
     Kicks    : uint256
     Can_move : uint256
-    Dai      : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_c    : uint256
 
 storage
 
@@ -1977,36 +1943,39 @@ storage
     vat  |-> Vat
     bump |-> Bump
     hump |-> Hump
-    Sin  |-> Sin
-    Woe  |-> Woe
+    Sin  |-> Ssin
     Ash  |-> Ash
 
 storage DaiMove
 
     vat                         |-> Vat
-    can[ACCT_ID][Cow]           |-> Can => Can
+    can[ACCT_ID][Cow]           |-> Could => 0
 
 storage Cow
 
-    #Flap.dai                         |-> DaiMove
-    #Flap.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flap.kicks                       |-> Kicks   => 1 + Kicks
-    #Flap.bids[1 + Kicks].bid         |-> Bid_was => 0
-    #Flap.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flap.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flap.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    #Flapper.dai                         |-> DaiMove
+    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
+    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
+    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
+    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
     wards[DaiMove] |-> Can_move
-    dai[ACCT_ID]   |-> Dai => Dai - #Ray * Bump
+    dai[ACCT_ID]   |-> Dai_v => Dai_v - #Ray * Bump
+    sin[ACCT_ID]   |-> Sin_v
+    dai[Cow]       |-> Dai_c => Dai_c + #Ray * Bump
 
 iff
 
     // doc: there is enough `Joy`
-    Dai / #Ray >= (((Sin + Woe) + Ash) + Bump) + Hump
+    Dai_v / #Ray >= (Sin_v + Bump) + Hump
     // doc: there is no `Woe`
-    Woe == 0
+    (Sin_v / #Ray - Ssin) - Ash == 0
+    // doc: DaiMove is authorised to call Vat
+    Can_move == 1
     // act: call stack is not too big
     VCallDepth < 1022
 
@@ -2016,12 +1985,13 @@ iff in range uint48
 
 iff in range uint256
 
-    Sin + Woe
-    (Sin + Woe) + Ash
-    ((Sin + Woe) + Ash) + Bump
-    (((Sin + Woe) + Ash) + Bump) + Hump
+    Sin_v + Bump
+    (Sin_v + Bump) + Hump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
-    Dai - #Ray * Bump
+    Dai_v - #Ray * Bump
+    Dai_c + #Ray * Bump
 
 iff in range int256
 
@@ -2032,7 +2002,7 @@ if
     Cow =/= DaiMove
     Cow =/= Vat
     Vat =/= DaiMove
-    VGas > 300000
+    VGas > 600000
 
 returns 1 + Kicks
 ```
@@ -2461,7 +2431,7 @@ types
     Urn   : address
     Ink   : uint256
     Tab   : uint256
-    Flip  : address Flippy
+    Flip  : address Flipper
     Chop  : uint256
     Lump  : uint256
     Vow   : address
@@ -2484,14 +2454,14 @@ storage
 
 storage Flip
 
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].bid         |-> _ => 0
-    bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    bids[1 + Kicks].urn         |-> _ => Urn
-    bids[1 + Kicks].gal         |-> _ => Vow
-    bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flipper.kicks                       |-> Kicks => 1 + Kicks
+    #Flipper.bids[1 + Kicks].bid         |-> _ => 0
+    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
+    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
+    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
 
 iff
 
@@ -2992,3 +2962,356 @@ if
 
     VGas > 300000
 ```
+
+# DaiMove
+
+## Specification of behaviours
+
+### Accessors
+
+#### the Vat
+
+```act
+behaviour vat of DaiMove
+interface vat()
+types
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+if
+
+    VGas > 300000
+
+returns Vat
+```
+
+### Mutators
+
+#### approve or unapprove an address
+
+```act
+behaviour hope of DaiMove
+interface hope(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    can[CALLER_ID][guy] |-> Could => 1
+
+if
+
+    VGas > 300000
+
+behaviour nope of DaiMove
+interface nope(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    can[CALLER_ID][guy] |-> Could => 0
+
+if
+
+    VGas > 300000
+```
+
+#### move tokens
+
+```act
+behaviour move of DaiMove
+interface move(address src, address dst, uint256 wad)
+
+types
+
+     Can      : uint256
+     Vat      : address VatLike
+     Can_move : uint256
+     Dai_src  : uint256
+     Dai_dst  : uint256
+
+storage
+
+     can[src][CALLER_ID] |-> Can
+     vat                 |-> Vat
+
+storage Vat
+
+     wards[ACCT_ID]      |-> Can_move
+     dai[src]            |-> Dai_src => Dai_src - #Ray * wad
+     dai[dst]            |-> Dai_dst => Dai_dst + #Ray * wad
+
+iff
+
+     // doc: caller is approved to move tokens
+     ((src == CALLER_ID) or (Can == 1))
+     // doc: call stack not too big
+     VCallDepth < 1024
+     // doc: DaiMove authorised to call Cat
+     Can_move == 1
+
+iff in range uint256
+
+     Dai_src - #Ray * wad
+     Dai_dst + #Ray * wad
+
+iff in range int256
+
+     #Ray * wad
+
+if
+
+     VGas > 300000
+```
+
+# Flapper
+
+## Specification of behaviours
+
+### Accessors
+
+#### bid data
+
+```act
+behaviour bids of Flapper
+interface bids(uint256 n)
+
+types
+
+    Bid : uint256
+    Lot : uint256
+    Guy : address
+    Tic : uint48
+    End : uint48
+    Gal : address
+
+storage
+
+    bids[n].bid         |-> Bid
+    bids[n].lot         |-> Lot
+    bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
+    bids[n].gal         |-> Gal
+
+if
+
+    VGas > 300000
+
+returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal
+```
+
+#### sell token
+
+```act
+behaviour dai of Flapper
+interface dai()
+
+types
+
+    Dai : address
+
+storage
+
+    dai |-> Dai
+
+if
+
+    VGas > 300000
+
+returns Dai
+```
+
+#### buy token
+
+```act
+behaviour gem of Flapper
+interface gem()
+
+types
+
+    Gem : address
+
+storage
+
+    gem |-> Gem
+
+if
+
+    VGas > 300000
+
+returns Gem
+```
+
+#### minimum bid increment
+
+```act
+behaviour beg of Flapper
+interface beg()
+
+types
+
+    Beg : uint256
+
+storage
+
+    beg |-> Beg
+
+if
+
+    VGas > 300000
+
+returns Beg
+```
+
+#### auction time-to-live
+
+```act
+behaviour ttl of Flapper
+interface ttl()
+
+types
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+if
+
+    VGas > 300000
+
+returns Ttl
+```
+
+#### maximum auction duration
+
+```act
+behaviour tau of Flapper
+interface tau()
+
+types
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+if
+
+    VGas > 300000
+
+returns Tau
+```
+
+#### kick counter
+
+```act
+behaviour kicks of Flapper
+interface kicks()
+
+types
+
+    Kicks : uint256
+
+storage
+
+    kicks |-> Kicks
+
+if
+
+    VGas > 300000
+
+returns Kicks
+```
+
+### Mutators
+
+
+#### starting an auction
+
+```act
+behaviour kick of Flapper
+interface kick(address gal, uint256 lot, uint256 bid)
+
+types
+
+    Kicks    : uint256
+    DaiMove  : address DaiMoveLike
+    Ttl      : uint48
+    Tau      : uint48
+    Bid_was  : uint256
+    Lot_was  : uint256
+    Guy_was  : address
+    Tic_was  : uint48
+    End_was  : uint48
+    Gal_was  : address
+    Vat      : address VatLike
+    Can      : uint256
+    Can_move : uint256
+    Dai_v    : uint256
+    Dai_c    : uint256
+
+storage
+
+    dai                         |-> DaiMove
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
+    bids[1 + Kicks].bid         |-> Bid_was => bid
+    bids[1 + Kicks].lot         |-> Lot_was => lot
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].gal         |-> Gal_was => gal
+
+storage DaiMove
+
+    vat                     |-> Vat
+    can[CALLER_ID][ACCT_ID] |-> Can
+
+storage Vat
+
+    wards[DaiMove] |-> Can_move
+    dai[CALLER_ID] |-> Dai_v => Dai_v - #Ray * lot
+    dai[ACCT_ID]   |-> Dai_c => Dai_c + #Ray * lot
+
+iff
+
+    // doc: call stack is not too big
+    VCallDepth < 1023
+    // doc: Flap is authorised to move for the caller
+    Can      == 1
+    // doc: DaiMove is authorised to call Vat
+    Can_move == 1
+
+iff in range uint256
+
+    1 + Kicks
+    Dai_v - #Ray * lot
+    Dai_c + #Ray * lot
+
+iff in range uint48
+
+    TIME + Tau
+
+iff in range int256
+
+    #Ray * lot
+
+if
+
+   CALLER_ID =/= ACCT_ID
+   VGas > 300000
+
+returns 1 + Kicks
+```
+

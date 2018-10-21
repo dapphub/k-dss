@@ -3,23 +3,24 @@ interface Awe()
 
 types
 
+    Vat : address VatLike
     Sin : uint256
-    Woe : uint256
-    Ash : uint256
 
 storage
 
-    Sin |-> Sin
-    Woe |-> Woe
-    Ash |-> Ash
+    vat |-> Vat
 
-iff in range uint256
+storage Vat
 
-    Sin + Woe
-    Sin + Woe + Ash
+    sin[ACCT_ID] |-> Sin
+
+iff
+
+    // act: call stack is not too big
+    VCallDepth < 1024
 
 if
 
     VGas > 300000
 
-returns Sin + Woe + Ash
+returns Sin / #Ray

@@ -1,0 +1,17 @@
+behaviour tau of Flapper
+interface tau()
+
+types
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+if
+
+    VGas > 300000
+
+returns Tau

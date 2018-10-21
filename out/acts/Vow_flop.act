@@ -3,11 +3,11 @@ interface flop()
 
 types
 
-    Row     : address Floppy
+    Row     : address Flopper
     Vat     : address VatLike
-    Sump    : uint256
-    Woe     : uint256
+    Ssin    : uint256
     Ash     : uint256
+    Sump    : uint256
     Can     : uint256
     Kicks   : uint256
     Vow_was : address
@@ -19,33 +19,37 @@ types
     Ttl     : uint48
     Tau     : uint48
     Dai     : uint256
+    Sin_v   : uint256
 
 storage
 
     row  |-> Row
     vat  |-> Vat
-    sump |-> Sump
-    Woe  |-> Woe => Woe - Sump
+    Sin  |-> Ssin
     Ash  |-> Ash => Ash + Sump
+    sump |-> Sump
 
 storage Row
 
-    #Flop.wards[ACCT_ID]              |-> Can
-    #Flop.kicks                       |-> Kicks => 1 + Kicks
-    #Flop.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flop.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flop.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flop.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flop.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.kicks                       |-> Kicks => 1 + Kicks
+    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
+    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
     dai[ACCT_ID] |-> Dai
+    sin[ACCT_ID] |-> Sin_v
 
 iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
+    // doc:
+    (Sin_v / #Ray - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
     Dai < #Ray
     // act: call stack is not too big
@@ -57,8 +61,9 @@ iff in range uint48
 
 iff in range uint256
 
-    Woe - Sump
     Ash + Sump
+    Sin_v / #Ray - Ssin
+    (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
 
 if

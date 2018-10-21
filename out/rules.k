@@ -520,12 +520,6 @@ syntax Int ::= "#Vow.Sin" [function]
 // act: the total queued sin is `.`
 rule #Vow.Sin => 5
 
-syntax Int ::= "#Vow.Woe" [function]
-// ---------------------------------
-// doc: total matured sin
-// act: the total matured sin is `.`
-rule #Vow.Woe => 6
-
 syntax Int ::= "#Vow.Ash" [function]
 // ---------------------------------
 // doc: total sin in debt auctions
@@ -763,49 +757,61 @@ syntax Int ::= "#Flop.bids" "[" Int "].vow" [function]
 // doc: beneficiary of the auction
 // act:
 rule #Flop.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
-// packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flap.ttl_tau" [function]
-// -----------------------------------------
-// doc:
-// act:
-rule #Flap.ttl_tau => 4
-
-syntax Int ::= "#Flap.kicks" [function]
-// ---------------------------------------
-// doc: auction counter
-// act:
-rule #Flap.kicks => 5
-
-syntax Int ::= "#Flap.bids" "[" Int "].bid" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
 // act:
-rule #Flap.bids[N].bid => #hashedLocation("Solidity", 0, N) +Int 0
+rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 0, N) +Int 0
 
-syntax Int ::= "#Flap.bids" "[" Int "].lot" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
 // doc: current lot (gem)
 // act:
-rule #Flap.bids[N].lot => #hashedLocation("Solidity", 0, N) +Int 1
+rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 0, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flap.bids" "[" Int "].guy_tic_end" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flap.bids[N].guy_tic_end => #hashedLocation("Solidity", 0, N) +Int 2
+rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 0, N) +Int 2
 
-syntax Int ::= "#Flap.bids" "[" Int "].gal" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
 // doc: beneficiary of the auction
 // act:
-rule #Flap.bids[N].gal => #hashedLocation("Solidity", 0, N) +Int 3
+rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 0, N) +Int 3
 
-syntax Int ::= "#Flap.dai" [function]
+syntax Int ::= "#Flapper.dai" [function]
 // ---------------------------------------
 // doc: dai token
 // act:
-rule #Flap.dai => 1
+rule #Flapper.dai => 1
+
+syntax Int ::= "#Flapper.gem" [function]
+// ---------------------------------------
+// doc: mkr token
+// act:
+rule #Flapper.gem => 2
+
+syntax Int ::= "#Flapper.beg" [function]
+// ---------------------------------------
+// doc: minimum bid increment
+// act:
+rule #Flapper.gem => 3
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flapper.ttl_tau" [function]
+// -----------------------------------------
+// doc:
+// act:
+rule #Flapper.ttl_tau => 4
+
+syntax Int ::= "#Flapper.kicks" [function]
+// ---------------------------------------
+// doc: auction counter
+// act:
+rule #Flapper.kicks => 5
 syntax Int ::= "#DaiMove.vat" [function]
 // ---------------------------------------
 // doc: `Vat` that this `DaiMove` points to
@@ -855,11 +861,14 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
   requires N <=Int 100
 syntax Int ::= "MaskLast20" [function]
 syntax Int ::= "MaskFirst6" [function]
+syntax Int ::= "MaskFirst26" [function]
 // -----------------------------------
 // 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
 rule MaskLast20 => 115792089237316195423570985007226406215939081747436879206741300988257197096960 [macro]
 // 0x000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff
 rule MaskFirst6 => 411376139330301510538742295639337626245683966408394965837152255                [macro]
+// 0x0000000000000000000000000000000000000000000000000000ffffffffffff
+rule MaskFirst26 => 281474976710655                                                               [macro]
 
 rule MaskLast20 &Int A => 0
   requires #rangeAddress(A)
@@ -903,6 +912,9 @@ rule (X *Int pow208) |Int (Y *Int pow160 +Int A) => (X *Int pow208 +Int Y *Int p
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
+
+// rule MaskFirst26 &Int X => X
+//   requires #rangeUInt(48, X)
 rule WS ++ .WordStack => WS
 
 rule #sizeWordStack ( #padToWidth ( 32 , #asByteStack ( #unsigned ( W ) ) ) , 0) => 32
@@ -919,19 +931,22 @@ rule #asWord(#padToWidth(32, #asByteStack(#unsigned(X)))) => #unsigned(X)
 // and the N, M versions
 
 rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
+rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
+  requires #rangeUInt(48, A)
+  andBool #rangeUInt(48, B)
 rule #unsigned(X) ==K 0 => X ==Int 0
 
 rule 0 <Int #unsigned(X) => 0 <Int X
 
 // uadd
 // lemmas for necessity
-rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+rule notBool(chop(A +Int B) <Int A) => A +Int B <=Int maxUInt256
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
 // usub
 // lemmas for necessity
-rule A -Word B <Int A => (A -Int B >=Int minUInt256)
+rule notBool(A -Word B >Int A) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
@@ -947,6 +962,10 @@ rule chop(A +Int #unsigned(B)) => A +Int B
 //   requires #rangeUInt(256, A)
 //   andBool #rangeSInt(256, B)
 //   andBool B >=Int 0
+
+rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 
 rule (A +Int #unsigned(B) <=Int maxUInt256) => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
@@ -970,6 +989,10 @@ rule A -Word #unsigned(B) => A -Int B
 //   requires #rangeUInt(256, A)
 //   andBool #rangeSInt(256, B)
 //   andBool B >=Int 0
+
+rule A -Word B <Int A => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 
 rule (A -Int #unsigned(B) >=Int minUInt256) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)

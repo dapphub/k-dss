@@ -3,14 +3,33 @@ interface Woe()
 
 types
 
-    Woe : uint256
+    Vat  : address VatLike
+    Ssin : uint256
+    Sin  : uint256
+    Ash  : uint256
 
 storage
 
-    Woe |-> Woe
+    vat |-> Vat
+    Sin |-> Ssin
+    Ash |-> Ash
+
+storage Vat
+
+    sin[ACCT_ID] |-> Sin
+
+iff
+
+    VCallDepth < 1024
+
+iff in range uint256
+
+    Sin / #Ray - Ssin
+    (Sin / #Ray - Ssin) - Ash
+    // act: call stack is not too big
 
 if
 
     VGas > 300000
 
-returns Woe
+returns (Sin / #Ray - Ssin) - Ash

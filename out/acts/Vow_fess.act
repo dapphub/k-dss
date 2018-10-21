@@ -17,8 +17,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
 
 iff in range uint256
 

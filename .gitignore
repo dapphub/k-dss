@@ -2,3 +2,4 @@
 *.timestamp
 tmp/
 out/log/
+out/specs.manifest
