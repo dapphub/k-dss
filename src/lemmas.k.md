@@ -145,8 +145,10 @@ rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
 
 ```k
 rule #unsigned(X) ==K 0 => X ==Int 0
+  requires #rangeSInt(256, X)
 
 rule 0 <Int #unsigned(X) => 0 <Int X
+  requires #rangeSInt(256, X)
 
 // uadd
 // lemmas for necessity

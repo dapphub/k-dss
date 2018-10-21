@@ -1,8 +1,0 @@
-behaviour era of Drip
-interface era()
-
-if
-
-    VGas > 300000
-
-returns TIME
