@@ -226,8 +226,6 @@ rule A *Int #unsigned(B) => #unsigned(A *Int B)
   andBool #rangeSInt(256, B)
   andBool #rangeSInt(256, A *Int B)
 
-rule sgn(#unsigned(A *Int B)) => sgn(#unsigned(A)) *Int sgn(#unsigned(B))
-
 rule sgn(#unsigned(A)) => 1
     requires 0 <=Int A andBool A <=Int maxSInt256
 
@@ -236,11 +234,18 @@ rule #unsigned(A) *Int B => #unsigned(A *Int B)
   andBool #rangeUInt(256, B)
   andBool #rangeSInt(256, A *Int B)
 
-rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
-  requires #rangeUInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A *Int B)
-  andBool notBool (#unsigned(B) ==Int 0)
+rule A *Int B /Int B => A
+    requires B =/=Int 0
+
+rule abs(#unsigned(A)) => A
+    requires #rangeSInt(256, A)
+
+//Replaced in favor of the two simpler lemmas above
+//rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
+//  requires #rangeUInt(256, A)
+//  andBool #rangeSInt(256, B)
+//  andBool #rangeSInt(256, A *Int B)
+//  andBool notBool (#unsigned(B) ==Int 0)
 
 // possibly get rid of
 rule #sgnInterp(sgn(W), abs(W)) => W
@@ -258,6 +263,13 @@ rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int (-1), A) => A
   andBool #rangeSInt(256, A *Int B)
   andBool B <Int 0
 
+//Combining the two above
+rule sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)) => 1
+    requires #rangeSInt(256, A *Int B)
+    andBool #rangeUInt(256, A)
+    andBool #rangeSInt(256, B)
+
+
 // lemmas for necessity
 rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B <=Int maxSInt256
   requires #rangeUInt(256, A)
@@ -270,6 +282,6 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   andBool B <Int 0
 
 rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
-  requires #rangeUInt(256, A)
+  requires #rangeUIndt(256, A)
   andBool #rangeUInt(256, B)
 ```
