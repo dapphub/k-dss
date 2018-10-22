@@ -200,15 +200,10 @@ rule A -Word #unsigned(B) => A -Int B
 //   andBool #rangeSInt(256, B)
 //   andBool B >=Int 0
 
-<<<<<<< HEAD
 rule A -Word B <Int A => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
-=======
-
-//#unsigned(B) should reduce to B if 0 <= B <= maxSInt256 anyway
->>>>>>> d2d1109... lemmas: more SDIV lemmas, fix some other lemmas
 rule (A -Int #unsigned(B) >=Int minUInt256) => (A -Int B >=Int minUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
@@ -282,6 +277,6 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsi
   andBool B <Int 0
 
 rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
-  requires #rangeUIndt(256, A)
+  requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 ```
