@@ -266,12 +266,12 @@ rule sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)) => 1
 
 
 // lemmas for necessity
-rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B <=Int maxSInt256
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int B) ==K A) => A *Int B <=Int maxSInt256
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B >Int 0
 
-rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B >=Int minSInt256
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsigned(B))) /Int B) ==K A) => A *Int B >=Int minSInt256
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B <Int 0
