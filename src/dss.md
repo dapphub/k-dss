@@ -3,6 +3,7 @@ What follows is an executable K specification of the smart contracts of multicol
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [Vat](#vat)
       * [Specification of behaviours](#specification-of-behaviours)
          * [Accessors](#accessors)
@@ -33,7 +34,6 @@ Table of Contents
             * [vat address](#vat-address)
             * [vow address](#vow-address)
             * [global interest rate](#global-interest-rate)
-            * [getting the time](#getting-the-time)
          * [Mutators](#mutators-1)
             * [adding and removing owners](#adding-and-removing-owners-1)
             * [initialising an ilk](#initialising-an-ilk-1)
@@ -49,7 +49,6 @@ Table of Contents
             * [liveness](#liveness)
             * [vat address](#vat-address-1)
             * [global debt ceiling](#global-debt-ceiling)
-            * [drip address](#drip-address)
          * [Mutators](#mutators-2)
             * [adding and removing owners](#adding-and-removing-owners-2)
             * [setting ilk data](#setting-ilk-data-1)
@@ -59,10 +58,8 @@ Table of Contents
       * [Specification of behaviours](#specification-of-behaviours-3)
          * [Accessors](#accessors-3)
             * [owners](#owners-3)
-            * [getting the time](#getting-the-time-1)
             * [getting a sin packet](#getting-a-sin-packet)
             * [getting the Sin](#getting-the-sin)
-            * [getting the Woe](#getting-the-woe)
             * [getting the Ash](#getting-the-ash)
             * [getting the wait](#getting-the-wait)
             * [getting the sump](#getting-the-sump)
@@ -70,6 +67,7 @@ Table of Contents
             * [getting the hump](#getting-the-hump)
             * [getting the Awe](#getting-the-awe)
             * [getting the Joy](#getting-the-joy)
+            * [getting the Woe](#getting-the-woe)
          * [Mutators](#mutators-3)
             * [adding and removing owners](#adding-and-removing-owners-3)
             * [setting Vow parameters](#setting-vow-parameters)
@@ -91,7 +89,7 @@ Table of Contents
             * [pit address](#pit-address)
             * [vow address](#vow-address-1)
          * [Mutators](#mutators-4)
-            * [addingg and removing owners](#addingg-and-removing-owners)
+            * [adding and removing owners](#adding-and-removing-owners-4)
             * [setting contract addresses](#setting-contract-addresses)
             * [setting liquidation data](#setting-liquidation-data)
             * [setting liquidator address](#setting-liquidator-address)
@@ -122,10 +120,29 @@ Table of Contents
          * [Mutators](#mutators-7)
             * [depositing into the system](#depositing-into-the-system-2)
             * [withdrawing from the system](#withdrawing-from-the-system-2)
+   * [DaiMove](#daimove)
+      * [Specification of behaviours](#specification-of-behaviours-8)
+         * [Accessors](#accessors-8)
+            * [the Vat](#the-vat)
+         * [Mutators](#mutators-8)
+            * [approve or unapprove an address](#approve-or-unapprove-an-address)
+            * [move tokens](#move-tokens)
+   * [Flapper](#flapper)
+      * [Specification of behaviours](#specification-of-behaviours-9)
+         * [Accessors](#accessors-9)
+            * [bid data](#bid-data)
+            * [sell token](#sell-token)
+            * [buy token](#buy-token)
+            * [minimum bid increment](#minimum-bid-increment)
+            * [auction time-to-live](#auction-time-to-live)
+            * [maximum auction duration](#maximum-auction-duration)
+            * [kick counter](#kick-counter)
+         * [Mutators](#mutators-9)
+            * [starting an auction](#starting-an-auction)
 
 # Vat
 
-The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. Its functions performs internal, operational changes and cannot be called directly, but only through interfaces such as [Pit](#pit) or [Vow](#vow).
+The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. Its methods cannot be called directly, but only through interfaces like [Pit](#pit) and [Vow](#vow).
 
 ## Specification of behaviours
 
@@ -504,7 +521,7 @@ if
 
 #### administering a position
 
-This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` (delta ink) and `dart` (delta art) are specified incrementally.
+This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
 ```act
 behaviour tune of Vat
@@ -755,7 +772,7 @@ if
 
 # Drip
 
-The main function of `Drip` is to calculate the stability fee of CDPs. Each time a user interacts with a CDP via [Pit.frob](#manipulating-a-position), its corresponding stability fee is updated through the methods of this contract.
+`Drip` updates each collateral type's debt unit `rate` while the offsetting dai is supplied to/by a `vow`. The effect of this is to apply interest to outstanding positions.
 
 ## Specification of behaviours
 
@@ -1097,7 +1114,7 @@ if
 
 # Pit
 
-The `Pit` acts as the user interface to CDPs. It allows users to manipulate their positions under a certain set conditions limiting the risk of the system.
+The `Pit` is the user's interface to CDPs. It allows users to manipulate their positions subject to certain set conditions intended to limit the system's risk.
 
 ## Specification of behaviours
 
@@ -1404,8 +1421,7 @@ if
 
 # Vow
 
-The `Vow` is the settlement module for CDPs, managing system debt or excess Dai.
-If CDP are liquidated, their debt is taken over by the `Vow`, which tries to raise dai to cancel it through a [debt auction](#starting-a-debt-auction). The `Vow` also receives Dai as stability fees are accumulated.
+The `Vow` is the system's fiscal organ, the recipient of both system surplus and system debt. Its function is to cover deficits via [debt auctions](#starting-a-debt-auction) and discharge surpluses via [surplus auctions](#starting-a-surplus-auction).
 
 ## Specification of behaviours
 
@@ -2139,8 +2155,7 @@ returns 1 + Kicks
 
 # Cat
 
-The `Cat` handles liquidation of unsafe CDPs. If a CDP gets [bitten](#marking-a-position-for-liquidation), its corresponding collateral is transferred to the `Cat`. The `Cat` dispatches the collateral into a `Flip` auction contract, trying to raise Dai for the `Vow`, returning excess collateral to the CDP.
-
+The `Cat` is the system's liquidation agent: it decides when a position is unsafe and allows it to be seized and sent off to auction.
 
 ## Specification of behaviours
 
@@ -2621,7 +2636,7 @@ returns 1 + Kicks
 
 # GemJoin
 
-For each asset accepted as collateral in the system, there will be a `GemJoin` an adapter contract, allowing users to deposit or withdraw tokens using the ERC20 `transferFrom` function to modify their internal `gem` balance. 
+The `GemJoin` adapter allows standard ERC20 tokens to be deposited for use with the system.
 
 ## Specification of behaviours
 
@@ -2946,7 +2961,7 @@ if
 
 # DaiJoin
 
-The `DaiJoin` contract is a simple adapter contract, allowing users to export their internal `dai` balances to be able to transact with it.
+The `DaiJoin` adapter allows users to withdraw their dai from the system into a standard ERC20 token.
 
 ## Specification of behaviours
 
@@ -3102,6 +3117,8 @@ if
 
 # DaiMove
 
+The `DaiMove` provides a minimal interface for transferring internal dai balances and granting transfer approval to other accounts.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -3211,6 +3228,8 @@ if
 ```
 
 # Flapper
+
+The `Flapper` is an auction contract that receives `dai` tokens and starts an auction, accepts bids of `gem` (with `tend`), and after completion settles with the winner.
 
 ## Specification of behaviours
 
