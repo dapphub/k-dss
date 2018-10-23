@@ -612,6 +612,7 @@ calls
     
     Vat.add
     Vat.sub
+    Vat.mul
 ```
 
 #### creating/annihilating system debt and surplus
@@ -707,6 +708,7 @@ calls
     
     Vat.add
     Vat.sub
+    Vat.mul
 ```
 
 #### applying collateral adjustment to an `ilk`
