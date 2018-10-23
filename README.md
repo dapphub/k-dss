@@ -80,7 +80,6 @@ make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 | vat       | x    | -    |      | -    |
 | vow       | x    | -    |      | -    |
 | repo      | x    | -    |      | -    |
-| era       | x    | -    |      | -    |
 | rely      | x    | x    |      |      |
 | deny      | x    | x    |      |      |
 | init      | x    | x    |      |      |
@@ -94,7 +93,6 @@ make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 | live      | x    | -    |      | -    |
 | Line      | x    | -    |      | -    |
 | vat       | x    | -    |      | -    |
-| drip      | x    | -    |      | -    |
 | rely      | x    | x    |      |      |
 | deny      | x    | x    |      |      |
 | file-ilk  | x    | x    |      |      |
@@ -104,15 +102,14 @@ make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 | wards     | x    | -    |      | -    |
 | sin       | x    | -    |      | -    |
 | Sin       | x    | -    |      | -    |
-| Woe       | x    | -    |      | -    |
 | Ash       | x    | -    |      | -    |
 | wait      | x    | -    |      | -    |
 | sump      | x    | -    |      | -    |
 | bump      | x    | -    |      | -    |
 | hump      | x    | -    |      | -    |
-| era       | x    | -    |      | -    |
-| Awe       | x    | x    |      |      |
-| Joy       | x    | -    |      |      |
+| Awe       | x    | -    |      | -    |
+| Joy       | x    | -    |      | -    |
+| Woe       | x    | x    |      |      |
 | rely      | x    | x    |      |      |
 | deny      | x    | x    |      |      |
 | file-data | x    | x    |      |      |
@@ -155,6 +152,20 @@ make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 | dai       |      | -    |      | -    |
 | join      |      |      |      |      |
 | exit      |      |      |      |      |
+| DaiMove   +------+------+------+------|
+| vat       |      | -    |      | -    |
+| hope      |      |      |      |      |
+| nope      |      |      |      |      |
+| move      |      |      |      |      |
+| Flapper   +------+------+------+------|
+| bids      |      | -    |      | -    |
+| dai       |      | -    |      | -    |
+| gem       |      | -    |      | -    |
+| beg       |      | -    |      | -    |
+| ttl       |      | -    |      | -    |
+| tau       |      | -    |      | -    |
+| kicks     |      | -    |      | -    |
+| kick      |      |      |      |      |
 -----------------------------------------
 ```
 
