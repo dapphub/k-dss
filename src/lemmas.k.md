@@ -136,14 +136,6 @@ rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 ### 48-bit integer arithmetic
 
 ```k
-rule 0 <= abs(X) => true
-    requires 0 <=Int X
-    andBool  X <Int pow256
-
-rule abs(X) <Int pow256 => true
-    requires 0 <=Int X
-    andBool  X <Int pow256
-
 rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
   requires #rangeUInt(48, A)
   andBool #rangeUInt(48, B)
@@ -236,19 +228,16 @@ rule #unsigned(A) *Int B => #unsigned(A *Int B)
   requires #rangeSInt(256, A)
   andBool #rangeUInt(256, B)
   andBool #rangeSInt(256, A *Int B)
-
+  andBool B =/=Int 0
+  
 rule A *Int B /Int B => A
     requires B =/=Int 0
 
-rule abs(#unsigned(A)) => A
-    requires #rangeSInt(256, A)
-
-//Replaced in favor of the two simpler lemmas above
-//rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
-//  requires #rangeUInt(256, A)
-//  andBool #rangeSInt(256, B)
-//  andBool #rangeSInt(256, A *Int B)
-//  andBool notBool (#unsigned(B) ==Int 0)
+rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A *Int B)
+  andBool notBool (#unsigned(B) ==Int 0)
 
 // possibly get rid of
 rule #sgnInterp(sgn(W), abs(W)) => W
@@ -274,15 +263,21 @@ rule sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)) => 1
 
 
 // lemmas for necessity
-rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int B) ==K A) => A *Int B <=Int maxSInt256
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B <=Int maxSInt256
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B >Int 0
 
-rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsigned(B))) /Int B) ==K A) => A *Int B >=Int minSInt256
+rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int (-1), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A) => A *Int B >=Int minSInt256
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool B <Int 0
+
+//Todo: why is this true?
+rule #sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int sgn(#unsigned(B)), abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B))) ==K A => #rangeSInt(256, A *Int B)
+    requires #rangeUInt(256, A)
+    andBool #rangeSInt(256, B)
+    andBool B =/=Int 0
 
 rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
   requires #rangeUInt(256, A)
