@@ -136,6 +136,14 @@ rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 ### 48-bit integer arithmetic
 
 ```k
+rule 0 <= abs(X) => true
+    requires 0 <=Int X
+    andBool  X <Int pow256
+
+rule abs(X) <Int pow256 => true
+    requires 0 <=Int X
+    andBool  X <Int pow256
+
 rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
   requires #rangeUInt(48, A)
   andBool #rangeUInt(48, B)
