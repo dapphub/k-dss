@@ -1,8 +1,148 @@
 What follows is an executable K specification of the smart contracts of multicollateral dai.
 
+Table of Contents
+=================
+
+   * [Table of Contents](#table-of-contents)
+   * [Vat](#vat)
+      * [Specification of behaviours](#specification-of-behaviours)
+         * [Accessors](#accessors)
+            * [owners](#owners)
+            * [collateral type data](#collateral-type-data)
+            * [urn data](#urn-data)
+            * [internal unencumbered collateral balances](#internal-unencumbered-collateral-balances)
+            * [internal dai balances](#internal-dai-balances)
+            * [internal sin balances](#internal-sin-balances)
+            * [total debt](#total-debt)
+            * [total bad debt](#total-bad-debt)
+         * [Mutators](#mutators)
+            * [adding and removing owners](#adding-and-removing-owners)
+            * [initialising an ilk](#initialising-an-ilk)
+            * [assigning unencumbered collateral](#assigning-unencumbered-collateral)
+            * [moving unencumbered collateral](#moving-unencumbered-collateral)
+            * [transferring dai balances](#transferring-dai-balances)
+            * [administering a position](#administering-a-position)
+            * [confiscating a position](#confiscating-a-position)
+            * [creating/annihilating system debt and surplus](#creatingannihilating-system-debt-and-surplus)
+            * [applying interest to an ilk](#applying-interest-to-an-ilk)
+            * [applying collateral adjustment to an ilk](#applying-collateral-adjustment-to-an-ilk)
+   * [Drip](#drip)
+      * [Specification of behaviours](#specification-of-behaviours-1)
+         * [Accessors](#accessors-1)
+            * [owners](#owners-1)
+            * [ilk data](#ilk-data)
+            * [vat address](#vat-address)
+            * [vow address](#vow-address)
+            * [global interest rate](#global-interest-rate)
+         * [Mutators](#mutators-1)
+            * [adding and removing owners](#adding-and-removing-owners-1)
+            * [initialising an ilk](#initialising-an-ilk-1)
+            * [setting ilk data](#setting-ilk-data)
+            * [setting the base rate](#setting-the-base-rate)
+            * [setting the vow](#setting-the-vow)
+            * [updating the rates](#updating-the-rates)
+   * [Pit](#pit)
+      * [Specification of behaviours](#specification-of-behaviours-2)
+         * [Accessors](#accessors-2)
+            * [owners](#owners-2)
+            * [ilk data](#ilk-data-1)
+            * [liveness](#liveness)
+            * [vat address](#vat-address-1)
+            * [global debt ceiling](#global-debt-ceiling)
+         * [Mutators](#mutators-2)
+            * [adding and removing owners](#adding-and-removing-owners-2)
+            * [setting ilk data](#setting-ilk-data-1)
+            * [setting the global debt ceiling](#setting-the-global-debt-ceiling)
+            * [manipulating a position](#manipulating-a-position)
+   * [Vow](#vow)
+      * [Specification of behaviours](#specification-of-behaviours-3)
+         * [Accessors](#accessors-3)
+            * [owners](#owners-3)
+            * [getting a sin packet](#getting-a-sin-packet)
+            * [getting the Sin](#getting-the-sin)
+            * [getting the Ash](#getting-the-ash)
+            * [getting the wait](#getting-the-wait)
+            * [getting the sump](#getting-the-sump)
+            * [getting the bump](#getting-the-bump)
+            * [getting the hump](#getting-the-hump)
+            * [getting the Awe](#getting-the-awe)
+            * [getting the Joy](#getting-the-joy)
+            * [getting the Woe](#getting-the-woe)
+         * [Mutators](#mutators-3)
+            * [adding and removing owners](#adding-and-removing-owners-3)
+            * [setting Vow parameters](#setting-vow-parameters)
+            * [setting vat and liquidators](#setting-vat-and-liquidators)
+            * [cancelling bad debt and surplus](#cancelling-bad-debt-and-surplus)
+            * [adding to the sin queue](#adding-to-the-sin-queue)
+            * [processing sin queue](#processing-sin-queue)
+            * [starting a debt auction](#starting-a-debt-auction)
+            * [starting a surplus auction](#starting-a-surplus-auction)
+   * [Cat](#cat)
+      * [Specification of behaviours](#specification-of-behaviours-4)
+         * [Accessors](#accessors-4)
+            * [owners](#owners-4)
+            * [ilk data](#ilk-data-2)
+            * [liquidation data](#liquidation-data)
+            * [liquidation counter](#liquidation-counter)
+            * [liveness](#liveness-1)
+            * [vat address](#vat-address-2)
+            * [pit address](#pit-address)
+            * [vow address](#vow-address-1)
+         * [Mutators](#mutators-4)
+            * [adding and removing owners](#adding-and-removing-owners-4)
+            * [setting contract addresses](#setting-contract-addresses)
+            * [setting liquidation data](#setting-liquidation-data)
+            * [setting liquidator address](#setting-liquidator-address)
+            * [marking a position for liquidation](#marking-a-position-for-liquidation)
+            * [starting a collateral auction](#starting-a-collateral-auction)
+   * [GemJoin](#gemjoin)
+      * [Specification of behaviours](#specification-of-behaviours-5)
+         * [Accessors](#accessors-5)
+            * [vat address](#vat-address-3)
+            * [the associated ilk](#the-associated-ilk)
+            * [gem address](#gem-address)
+         * [Mutators](#mutators-5)
+            * [depositing into the system](#depositing-into-the-system)
+            * [withdrawing from the system](#withdrawing-from-the-system)
+   * [ETHJoin](#ethjoin)
+      * [Specification of behaviours](#specification-of-behaviours-6)
+         * [Accessors](#accessors-6)
+            * [vat address](#vat-address-4)
+            * [the associated ilk](#the-associated-ilk-1)
+         * [Mutators](#mutators-6)
+            * [depositing into the system](#depositing-into-the-system-1)
+            * [withdrawing from the system](#withdrawing-from-the-system-1)
+   * [DaiJoin](#daijoin)
+      * [Specification of behaviours](#specification-of-behaviours-7)
+         * [Accessors](#accessors-7)
+            * [vat address](#vat-address-5)
+            * [dai address](#dai-address)
+         * [Mutators](#mutators-7)
+            * [depositing into the system](#depositing-into-the-system-2)
+            * [withdrawing from the system](#withdrawing-from-the-system-2)
+   * [DaiMove](#daimove)
+      * [Specification of behaviours](#specification-of-behaviours-8)
+         * [Accessors](#accessors-8)
+            * [the Vat](#the-vat)
+         * [Mutators](#mutators-8)
+            * [approve or unapprove an address](#approve-or-unapprove-an-address)
+            * [move tokens](#move-tokens)
+   * [Flapper](#flapper)
+      * [Specification of behaviours](#specification-of-behaviours-9)
+         * [Accessors](#accessors-9)
+            * [bid data](#bid-data)
+            * [sell token](#sell-token)
+            * [buy token](#buy-token)
+            * [minimum bid increment](#minimum-bid-increment)
+            * [auction time-to-live](#auction-time-to-live)
+            * [maximum auction duration](#maximum-auction-duration)
+            * [kick counter](#kick-counter)
+         * [Mutators](#mutators-9)
+            * [starting an auction](#starting-an-auction)
+
 # Vat
 
-The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed.
+The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. Its methods cannot be called directly, but only through interfaces like [Pit](#pit) and [Vow](#vow).
 
 ## Specification of behaviours
 
@@ -91,7 +231,7 @@ A `gem` is a token used as collateral in some `ilk`.
 
 ```act
 behaviour gem of Vat
-interface gem(bytes32 ilk, bytes32 urn)
+interface gem(bytes32 ilk, bytes32 guy)
 
 types
 
@@ -99,7 +239,7 @@ types
 
 storage
 
-    gem[ilk][urn] |-> Gem
+    gem[ilk][guy] |-> Gem
 
 if
 
@@ -114,7 +254,7 @@ returns Gem
 
 ```act
 behaviour dai of Vat
-interface dai(bytes32 lad)
+interface dai(bytes32 guy)
 
 types
 
@@ -122,7 +262,7 @@ types
 
 storage
 
-    dai[lad] |-> Rad
+    dai[guy] |-> Rad
 
 if
 
@@ -137,7 +277,7 @@ returns Rad
 
 ```act
 behaviour sin of Vat
-interface sin(bytes32 lad)
+interface sin(bytes32 guy)
 
 types
 
@@ -145,7 +285,7 @@ types
 
 storage
 
-    sin[lad] |-> Rad
+    sin[guy] |-> Rad
 
 if
 
@@ -442,7 +582,7 @@ if
 
 #### confiscating a position
 
-When a position of a user `u` is siezed, both the collateral and debt are deleted from the user's account and assigned to the system's balance sheet, with the debt reincarnated as `sin` and assigned to some agent of the system `w`, while collateral goes to `v`.
+When a position of a user `u` is seized, both the collateral and debt are deleted from the user's account and assigned to the system's balance sheet, with the debt reincarnated as `sin` and assigned to some agent of the system `w`, while collateral goes to `v`.
 
 ```act
 behaviour grab of Vat
@@ -631,6 +771,8 @@ if
 ```
 
 # Drip
+
+`Drip` updates each collateral type's debt unit `rate` while the offsetting dai is supplied to/by a `vow`. The effect of this is to apply interest to outstanding positions.
 
 ## Specification of behaviours
 
@@ -972,6 +1114,8 @@ if
 
 # Pit
 
+The `Pit` is the user's interface to CDPs. It allows users to manipulate their positions subject to certain set conditions intended to limit the system's risk.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -1276,6 +1420,8 @@ if
 ```
 
 # Vow
+
+The `Vow` is the system's fiscal organ, the recipient of both system surplus and system debt. Its function is to cover deficits via [debt auctions](#starting-a-debt-auction) and discharge surpluses via [surplus auctions](#starting-a-surplus-auction).
 
 ## Specification of behaviours
 
@@ -2009,6 +2155,8 @@ returns 1 + Kicks
 
 # Cat
 
+The `Cat` is the system's liquidation agent: it decides when a position is unsafe and allows it to be seized and sent off to auction.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -2193,7 +2341,7 @@ returns Vow
 
 ### Mutators
 
-#### addingg and removing owners
+#### adding and removing owners
 
 ```act
 behaviour rely of Cat
@@ -2487,6 +2635,8 @@ returns 1 + Kicks
 ```
 
 # GemJoin
+
+The `GemJoin` adapter allows standard ERC20 tokens to be deposited for use with the system.
 
 ## Specification of behaviours
 
@@ -2811,6 +2961,8 @@ if
 
 # DaiJoin
 
+The `DaiJoin` adapter allows users to withdraw their dai from the system into a standard ERC20 token.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -2965,6 +3117,8 @@ if
 
 # DaiMove
 
+The `DaiMove` provides a minimal interface for transferring internal dai balances and granting transfer approval to other accounts.
+
 ## Specification of behaviours
 
 ### Accessors
@@ -3074,6 +3228,8 @@ if
 ```
 
 # Flapper
+
+The `Flapper` is an auction contract that receives `dai` tokens and starts an auction, accepts bids of `gem` (with `tend`), and after completion settles with the winner.
 
 ## Specification of behaviours
 

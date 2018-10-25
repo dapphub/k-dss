@@ -81,6 +81,9 @@ doc-publish: $(DOC_DIR)/dss.html
 doc-clean:
 	rm -rf $(DOC_DIR)/*
 
+log-clean:
+	rm -rf $(TMPDIR)/klab
+
 clean: dapp-clean spec-clean doc-clean
 
 proofs: passing-proofs
@@ -129,7 +132,7 @@ publish-%: $$(patsubst $$(PERCENT),$$(PERCENT).proof.debug.log.publish,$$(wildca
 
 %.k.proof.debug.log.timestamp: %.k %.k.proof.debug.timestamp
 	$(info $(bold)Compiling$(reset) proof logs for $<)
-	klab compile --spec $< && touch $@
+	klab compile --spec $< && touch $@ && rm -rf $(TMPDIR)/`$(KLAB_FLAGS) klab hash --spec $<`
 
 %.k.proof.debug.log.publish: %.k %.k.proof.debug.log.timestamp
 	$(info $(bold)Publishing$(reset) proof logs for $<)
