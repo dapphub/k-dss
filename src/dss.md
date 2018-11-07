@@ -23,7 +23,7 @@ Table of Contents
             * [transferring dai balances](#transferring-dai-balances)
             * [administering a position](#administering-a-position)
             * [confiscating a position](#confiscating-a-position)
-            * [creating/annihilating system debt and surplus](#creatingannihilating-system-debt-and-surplus)
+            * [creating/annihilating system debt and surplus](#creating-annihilating-system-debt-and-surplus)
             * [applying interest to an ilk](#applying-interest-to-an-ilk)
             * [applying collateral adjustment to an ilk](#applying-collateral-adjustment-to-an-ilk)
    * [Drip](#drip)
