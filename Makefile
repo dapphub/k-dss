@@ -46,7 +46,7 @@ endif
 ifneq ("$(wildcard $(PASSING_SPEC_MANIFEST))","")
 passing_spec_names != cat $(PASSING_SPEC_MANIFEST)
 passing_specs = $(addsuffix .k,$(addprefix $(SPECS_DIR)/proof-,$(passing_spec_names)))
-num_passing = cat $(PASSING_SPEC_MANIFEST) | wc -l
+num_passing = $(shell cat $(PASSING_SPEC_MANIFEST) | wc -l)
 endif
 
 all: dapp spec
