@@ -363,7 +363,9 @@ iff
 if
 
     VGas > 300000
+```
 
+```act
 behaviour deny of Vat
 interface deny(address guy)
 
@@ -915,7 +917,9 @@ iff
 if
 
     VGas > 300000
+```
 
+```act
 behaviour deny of Drip
 interface deny(address guy)
 
@@ -1254,7 +1258,9 @@ iff
 if
 
     VGas > 300000
+```
 
+```act
 behaviour deny of Pit
 interface deny(address guy)
 
@@ -1723,7 +1729,9 @@ iff
 if
 
     VGas > 300000
+```
 
+```act
 behaviour deny of Vow
 interface deny(address guy)
 
@@ -1858,7 +1866,9 @@ iff in range int256
 if
 
     VGas > 300000
+```
 
+```act
 behaviour kiss of Vow
 interface kiss(uint256 wad)
 
@@ -2365,7 +2375,9 @@ iff
 if
 
     VGas > 300000
+```
 
+```act
 behaviour deny of Cat
 interface deny(address guy)
 
