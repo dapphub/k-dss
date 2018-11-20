@@ -114,3 +114,6 @@ DaiMove_nope_succ
 DaiMove_move_succ
 DaiMove_move_fail
 Flapper_dai_succ
+Flapper_gem_succ
+Flapper_tau_succ
+Flapper_kicks_succ
