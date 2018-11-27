@@ -342,7 +342,7 @@ returns Vice
 Any owner can add and remove owners.
 
 ```act
-behaviour rely of Vat
+behaviour rely-diff of Vat
 interface rely(address guy)
 
 types
@@ -367,7 +367,29 @@ if
 ```
 
 ```act
-behaviour deny of Vat
+behaviour rely-same of Vat
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+    guy == CALLER_ID
+    VGas > 300000
+```
+
+```act
+behaviour deny-diff of Vat
 interface deny(address guy)
 
 types
@@ -389,6 +411,29 @@ if
 
     VGas > 300000
     CALLER_ID =/= guy
+```
+
+```act
+behaviour deny-same of Vat
+interface deny(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+
+    VGas > 300000
+    CALLER_ID == guy
 ```
 
 #### initialising an `ilk`
@@ -900,7 +945,7 @@ returns Repo
 #### adding and removing owners
 
 ```act
-behaviour rely of Drip
+behaviour rely-diff of Drip
 interface rely(address guy)
 
 types
@@ -925,7 +970,29 @@ if
 ```
 
 ```act
-behaviour deny of Drip
+behaviour rely-same of Drip
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+    guy == CALLER_ID
+    VGas > 300000
+```
+
+```act
+behaviour deny-diff of Drip
 interface deny(address guy)
 
 types
@@ -947,6 +1014,29 @@ if
 
     VGas > 300000
     CALLER_ID =/= guy
+```
+
+```act
+behaviour deny-same of Drip
+interface deny(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+
+    VGas > 300000
+    CALLER_ID == guy
 ```
 
 #### initialising an `ilk`
@@ -1243,7 +1333,7 @@ returns Line
 #### adding and removing owners
 
 ```act
-behaviour rely of Pit
+behaviour rely-diff of Pit
 interface rely(address guy)
 
 types
@@ -1268,7 +1358,29 @@ if
 ```
 
 ```act
-behaviour deny of Pit
+behaviour rely-same of Pit
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+    guy == CALLER_ID
+    VGas > 300000
+```
+
+```act
+behaviour deny-diff of Pit
 interface deny(address guy)
 
 types
@@ -1290,6 +1402,29 @@ if
 
     VGas > 300000
     CALLER_ID =/= guy
+```
+
+```act
+behaviour deny-same of Pit
+interface deny(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+
+    VGas > 300000
+    CALLER_ID == guy
 ```
 
 #### setting `ilk` data
@@ -1716,7 +1851,7 @@ returns (Sin / #Ray - Ssin) - Ash
 #### adding and removing owners
 
 ```act
-behaviour rely of Vow
+behaviour rely-diff of Vow
 interface rely(address guy)
 
 types
@@ -1741,7 +1876,29 @@ if
 ```
 
 ```act
-behaviour deny of Vow
+behaviour rely-same of Vow
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+    guy == CALLER_ID
+    VGas > 300000
+```
+
+```act
+behaviour deny-diff of Vow
 interface deny(address guy)
 
 types
@@ -1765,6 +1922,28 @@ if
     CALLER_ID =/= guy
 ```
 
+```act
+behaviour deny-same of Vow
+interface deny(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+
+    VGas > 300000
+    CALLER_ID == guy
+```
 
 #### setting `Vow` parameters
 
@@ -2364,7 +2543,7 @@ returns Vow
 #### adding and removing owners
 
 ```act
-behaviour rely of Cat
+behaviour rely-diff of Cat
 interface rely(address guy)
 
 types
@@ -2389,12 +2568,34 @@ if
 ```
 
 ```act
-behaviour deny of Cat
+behaviour rely-same of Cat
+interface rely(address guy)
+
+types
+
+    Can   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+    guy == CALLER_ID
+    VGas > 300000
+```
+
+```act
+behaviour deny-diff of Cat
 interface deny(address guy)
 
 types
 
-    Can : uint256
+    Can   : uint256
     Could : uint256
 
 storage
@@ -2411,6 +2612,29 @@ if
 
     VGas > 300000
     CALLER_ID =/= guy
+```
+
+```act
+behaviour deny-same of Cat
+interface deny(address guy)
+
+types
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+if
+
+    VGas > 300000
+    CALLER_ID == guy
 ```
 
 #### setting contract addresses
