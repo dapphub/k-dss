@@ -363,6 +363,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 ```act
@@ -387,6 +388,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 #### initialising an `ilk`
@@ -486,6 +488,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    src =/= dst
 ```
 
 #### transferring dai balances
@@ -519,6 +522,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    src =/= dst
 ```
 
 #### administering a position
@@ -917,6 +921,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 ```act
@@ -941,6 +946,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 #### initialising an `ilk`
@@ -1258,6 +1264,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 ```act
@@ -1282,6 +1289,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 #### setting `ilk` data
@@ -1729,6 +1737,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 ```act
@@ -1753,6 +1762,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 
@@ -2375,6 +2385,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 ```act
@@ -2399,6 +2410,7 @@ iff
 if
 
     VGas > 300000
+    CALLER_ID =/= guy
 ```
 
 #### setting contract addresses
@@ -2771,6 +2783,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 #### withdrawing from the system
@@ -2825,6 +2838,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 # ETHJoin
@@ -2920,6 +2934,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 #### withdrawing from the system
@@ -2969,6 +2984,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 # DaiJoin
@@ -3073,6 +3089,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 #### withdrawing from the system
@@ -3125,6 +3142,7 @@ iff in range uint256
 if
 
     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 # DaiMove
@@ -3237,6 +3255,7 @@ iff in range int256
 if
 
      VGas > 300000
+     src =/= dst
 ```
 
 # Flapper
