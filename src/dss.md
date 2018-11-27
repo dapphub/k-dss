@@ -505,7 +505,7 @@ if
 #### moving unencumbered collateral
 
 ```act
-behaviour flux of Vat
+behaviour flux-diff of Vat
 interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
 
 types
@@ -536,10 +536,39 @@ if
     src =/= dst
 ```
 
+```act
+behaviour flux-same of Vat
+interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
+
+types
+
+    Can     : uint256
+    Gem_src : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can
+    gem[ilk][src]    |-> Gem_src => Gem_src
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+iff in range uint256
+
+    Gem_src - wad
+
+if
+
+    VGas > 300000
+    src == dst
+```
+
 #### transferring dai balances
 
 ```act
-behaviour move of Vat
+behaviour move-diff of Vat
 interface move(bytes32 src, bytes32 dst, int256 rad)
 
 types
@@ -568,6 +597,35 @@ if
 
     VGas > 300000
     src =/= dst
+```
+
+```act
+behaviour move-same of Vat
+interface move(bytes32 src, bytes32 dst, int256 rad)
+
+types
+
+    Can     : uint256
+    Dai_src : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can
+    dai[src]         |-> Dai_src => Dai_src
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+
+iff in range uint256
+
+    Dai_src - rad
+
+if
+
+    VGas > 300000
+    src == dst
 ```
 
 #### administering a position
@@ -3436,7 +3494,7 @@ if
 #### move tokens
 
 ```act
-behaviour move of DaiMove
+behaviour move-diff of DaiMove
 interface move(address src, address dst, uint256 wad)
 
 types
@@ -3480,6 +3538,50 @@ if
 
      VGas > 300000
      src =/= dst
+```
+
+```act
+behaviour move-same of DaiMove
+interface move(address src, address dst, uint256 wad)
+
+types
+
+     Can      : uint256
+     Vat      : address VatLike
+     Can_move : uint256
+     Dai_src  : uint256
+
+storage
+
+     can[src][CALLER_ID] |-> Can
+     vat                 |-> Vat
+
+storage Vat
+
+     wards[ACCT_ID]      |-> Can_move
+     dai[src]            |-> Dai_src => Dai_src
+
+iff
+
+     // doc: caller is approved to move tokens
+     ((src == CALLER_ID) or (Can == 1))
+     // doc: call stack not too big
+     VCallDepth < 1024
+     // doc: DaiMove authorised to call Cat
+     Can_move == 1
+
+iff in range uint256
+
+     Dai_src - #Ray * wad
+
+iff in range int256
+
+     #Ray * wad
+
+if
+
+     VGas > 300000
+     src == dst
 ```
 
 # Flapper
