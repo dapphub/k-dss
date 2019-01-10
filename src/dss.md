@@ -164,10 +164,6 @@ storage
 
     wards[guy] |-> Can
 
-if
-
-    VGas > 300000
-
 returns Can
 ```
 
@@ -193,10 +189,6 @@ storage
     ilks[ilk].Ink  |-> Ink_i
     ilks[ilk].Art  |-> Art_i
 
-if
-
-    VGas > 300000
-
 returns Take : Rate : Ink_i : Art_i
 ```
 
@@ -218,10 +210,6 @@ storage
     urns[ilk][urn].ink |-> Ink_iu
     urns[ilk][urn].art |-> Art_iu
 
-if
-
-    VGas > 300000
-
 returns Ink_iu : Art_iu
 ```
 
@@ -240,10 +228,6 @@ types
 storage
 
     gem[ilk][guy] |-> Gem
-
-if
-
-    VGas > 300000
 
 returns Gem
 ```
@@ -264,10 +248,6 @@ storage
 
     dai[guy] |-> Rad
 
-if
-
-    VGas > 300000
-
 returns Rad
 ```
 
@@ -287,10 +267,6 @@ storage
 
     sin[guy] |-> Rad
 
-if
-
-    VGas > 300000
-
 returns Rad
 ```
 
@@ -308,10 +284,6 @@ storage
 
     debt |-> Debt
 
-if
-
-    VGas > 300000
-
 returns Debt
 ```
 
@@ -328,10 +300,6 @@ types
 storage
 
     vice |-> Vice
-
-if
-
-    VGas > 300000
 
 returns Vice
 ```
@@ -362,7 +330,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -385,7 +352,6 @@ iff
 
 if
     guy == CALLER_ID
-    VGas > 300000
 ```
 
 ```act
@@ -409,7 +375,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -432,7 +397,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID == guy
 ```
 
@@ -465,9 +429,6 @@ iff
     // act: `Take` is `. ? : not` zero
     Take == 0
 
-if
-
-    VGas > 300000
 ```
 
 #### assigning unencumbered collateral
@@ -497,9 +458,6 @@ iff in range uint256
 
     Gem + wad
 
-if
-
-    VGas > 300000
 ```
 
 #### moving unencumbered collateral
@@ -532,7 +490,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     src =/= dst
 ```
 
@@ -561,7 +518,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     src == dst
 ```
 
@@ -595,7 +551,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     src =/= dst
 ```
 
@@ -624,7 +579,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     src == dst
 ```
 
@@ -684,9 +638,6 @@ iff in range int256
     Take * dink
     Rate * dart
 
-if
-
-    VGas > 300000
 ```
 
 #### confiscating a position
@@ -744,10 +695,6 @@ iff in range int256
     Rate
     Take * dink
     Rate * dart
-
-if
-
-    VGas > 300000
 ```
 
 #### creating/annihilating system debt and surplus
@@ -785,10 +732,6 @@ iff in range uint256
     Sin_u - rad
     Debt  - rad
     Vice  - rad
-
-if
-
-    VGas > 300000
 ```
 
 #### applying interest to an `ilk`
@@ -830,10 +773,6 @@ iff in range int256
 
     Art_i
     Art_i * rate
-
-if
-
-    VGas > 300000
 ```
 
 #### applying collateral adjustment to an `ilk`
@@ -873,10 +812,6 @@ iff in range int256
 
     Ink
     Ink * take
-
-if
-
-    VGas > 300000
 ```
 
 # Drip
@@ -902,10 +837,6 @@ storage
 
     wards[guy] |-> Can
 
-if
-
-    VGas > 300000
-
 returns Can
 ```
 
@@ -927,10 +858,6 @@ storage
     ilks[ilk].tax |-> Tax
     ilks[ilk].rho |-> Rho
 
-if
-
-    VGas > 300000
-
 returns Tax : Rho
 ```
 
@@ -947,10 +874,6 @@ types
 storage
 
     vat |-> Vat
-
-if
-
-    VGas > 300000
 
 returns Vat
 ```
@@ -969,10 +892,6 @@ storage
 
     vow |-> Vow
 
-if
-
-    VGas > 300000
-
 returns Vow
 ```
 
@@ -989,10 +908,6 @@ types
 storage
 
     repo |-> Repo
-
-if
-
-    VGas > 300000
 
 returns Repo
 ```
@@ -1023,7 +938,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -1046,7 +960,6 @@ iff
 
 if
     guy == CALLER_ID
-    VGas > 300000
 ```
 
 ```act
@@ -1070,7 +983,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -1093,7 +1005,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID == guy
 ```
 
@@ -1123,9 +1034,6 @@ iff
     // act: `Tax` is `. ? : not` zero
     Tax == 0
 
-if
-
-    VGas > 300000
 ```
 
 #### setting `ilk` data
@@ -1149,10 +1057,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### setting the base rate
@@ -1176,9 +1080,6 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
 
-if
-
-    VGas > 300000
 ```
 
 #### setting the `vow`
@@ -1202,9 +1103,6 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
 
-if
-
-    VGas > 300000
 ```
 
 #### updating the rates
@@ -1264,10 +1162,6 @@ iff in range int256
     Art_i
     #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-
-if
-
-    VGas > 300000
 ```
 
 # Pit
@@ -1292,10 +1186,6 @@ storage
 
     wards[guy] |-> Can
 
-if
-
-    VGas > 300000
-
 returns Can
 ```
 
@@ -1316,10 +1206,6 @@ storage
     ilks[ilk].spot |-> Spot_i
     ilks[ilk].line |-> Line_i
 
-if
-
-    VGas > 300000
-
 returns Spot_i : Line_i
 ```
 
@@ -1336,10 +1222,6 @@ types
 storage
 
     live |-> Live
-
-if
-
-    VGas > 300000
 
 returns Live
 ```
@@ -1358,10 +1240,6 @@ storage
 
     vat |-> Vat
 
-if
-
-    VGas > 300000
-
 returns Vat
 ```
 
@@ -1378,10 +1256,6 @@ types
 storage
 
     Line |-> Line
-
-if
-
-    VGas > 300000
 
 returns Line
 ```
@@ -1411,7 +1285,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -1431,10 +1304,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-    guy == CALLER_ID
-    VGas > 300000
 ```
 
 ```act
@@ -1458,7 +1327,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -1481,7 +1349,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID == guy
 ```
 
@@ -1507,10 +1374,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### setting the global debt ceiling
@@ -1533,10 +1396,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### manipulating a position
@@ -1620,10 +1479,6 @@ iff in range int256
     Take * dink
     Rate
     Rate * dart
-
-if
-
-    VGas > 300000
 ```
 
 # Vow
@@ -1648,10 +1503,6 @@ storage
 
     wards[guy] |-> Can
 
-if
-
-    VGas > 300000
-
 returns Can
 ```
 
@@ -1668,10 +1519,6 @@ types
 storage
 
     sin[era] |-> Sin_era
-
-if
-
-    VGas > 300000
 
 returns Sin_era
 ```
@@ -1690,10 +1537,6 @@ storage
 
     Sin |-> Sin
 
-if
-
-    VGas > 300000
-
 returns Sin
 ```
 
@@ -1710,10 +1553,6 @@ types
 storage
 
     Ash |-> Ash
-
-if
-
-    VGas > 300000
 
 returns Ash
 ```
@@ -1732,10 +1571,6 @@ storage
 
     wait |-> Wait
 
-if
-
-    VGas > 300000
-
 returns Wait
 ```
 
@@ -1752,10 +1587,6 @@ types
 storage
 
     sump |-> Sump
-
-if
-
-    VGas > 300000
 
 returns Sump
 ```
@@ -1774,10 +1605,6 @@ storage
 
     bump |-> Bump
 
-if
-
-    VGas > 300000
-
 returns Bump
 ```
 
@@ -1794,10 +1621,6 @@ types
 storage
 
     hump |-> Hump
-
-if
-
-    VGas > 300000
 
 returns Hump
 ```
@@ -1826,10 +1649,6 @@ iff
     // act: call stack is not too big
     VCallDepth < 1024
 
-if
-
-    VGas > 300000
-
 returns Sin / #Ray
 ```
 
@@ -1856,10 +1675,6 @@ iff
 
     // act: call stack is not too big
     VCallDepth < 1024
-
-if
-
-    VGas > 300000
 
 returns Dai / #Ray
 ```
@@ -1897,10 +1712,6 @@ iff in range uint256
     Sin / #Ray - Ssin
     (Sin / #Ray - Ssin) - Ash
 
-if
-
-    VGas > 300000
-
 returns (Sin / #Ray - Ssin) - Ash
 ```
 
@@ -1929,7 +1740,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -1952,7 +1762,6 @@ iff
 
 if
     guy == CALLER_ID
-    VGas > 300000
 ```
 
 ```act
@@ -1976,7 +1785,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -1999,7 +1807,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID == guy
 ```
 
@@ -2029,10 +1836,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### setting vat and liquidators
@@ -2059,10 +1862,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### cancelling bad debt and surplus
@@ -2109,10 +1908,6 @@ iff in range uint256
 iff in range int256
 
     wad * #Ray
-
-if
-
-    VGas > 300000
 ```
 
 ```act
@@ -2160,10 +1955,6 @@ iff in range uint256
 iff in range int256
 
     wad * #Ray
-
-if
-
-    VGas > 300000
 ```
 
 #### adding to the `sin` queue
@@ -2193,10 +1984,6 @@ iff in range uint256
 
     Sin_era + tab
     Sin     + tab
-
-if
-
-    VGas > 300000
 ```
 
 #### processing `sin` queue
@@ -2226,10 +2013,6 @@ iff in range uint256
 
     t   + Wait
     Sin - Sin_t
-
-if
-
-    VGas > 300000
 ```
 
 #### starting a debt auction
@@ -2302,10 +2085,6 @@ iff in range uint256
     Sin_v / #Ray - Ssin
     (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
-
-if
-
-    VGas > 300000
 
 returns 1 + Kicks
 ```
@@ -2405,7 +2184,6 @@ if
     Cow =/= DaiMove
     Cow =/= Vat
     Vat =/= DaiMove
-    VGas > 600000
 
 returns 1 + Kicks
 ```
@@ -2432,10 +2210,6 @@ storage
 
     wards[guy] |-> Can
 
-if
-
-    VGas > 300000
-
 returns Can
 ```
 
@@ -2456,10 +2230,6 @@ storage
     ilks[ilk].flip |-> Flip
     ilks[ilk].chop |-> Chop
     ilks[ilk].lump |-> Lump
-
-if
-
-    VGas > 300000
 
 returns Flip : Chop : Lump
 ```
@@ -2484,10 +2254,6 @@ storage
     flips[n].ink |-> Ink
     flips[n].tab |-> Tab
 
-if
-
-    VGas > 300000
-
 returns Ilk : Urn : Ink : Tab
 ```
 
@@ -2504,10 +2270,6 @@ types
 storage
 
     nflip |-> Nflip
-
-if
-
-    VGas > 300000
 
 returns Nflip
 ```
@@ -2526,10 +2288,6 @@ storage
 
     live |-> Live
 
-if
-
-    VGas > 300000
-
 returns Live
 ```
 
@@ -2546,10 +2304,6 @@ types
 storage
 
     vat |-> Vat
-
-if
-
-    VGas > 300000
 
 returns Vat
 ```
@@ -2568,10 +2322,6 @@ storage
 
     pit |-> Pit
 
-if
-
-    VGas > 300000
-
 returns Pit
 ```
 
@@ -2588,10 +2338,6 @@ types
 storage
 
     vow |-> Vow
-
-if
-
-    VGas > 300000
 
 returns Vow
 ```
@@ -2621,7 +2367,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -2644,7 +2389,6 @@ iff
 
 if
     guy == CALLER_ID
-    VGas > 300000
 ```
 
 ```act
@@ -2668,7 +2412,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID =/= guy
 ```
 
@@ -2691,7 +2434,6 @@ iff
 
 if
 
-    VGas > 300000
     CALLER_ID == guy
 ```
 
@@ -2717,10 +2459,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### setting liquidation data
@@ -2745,10 +2483,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### setting liquidator address
@@ -2771,10 +2505,6 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
-if
-
-    VGas > 300000
 ```
 
 #### marking a position for liquidation
@@ -2866,10 +2596,6 @@ iff in range uint256
     Sin_era + Art_iu * Rate
     Sin     + Art_iu * Rate
 
-if
-
-    VGas > 300000
-
 returns Nflip + 1
 ```
 
@@ -2933,10 +2659,6 @@ iff in range uint256
     Ink * wad
     wad * Chop
 
-if
-
-    VGas > 300000
-
 returns 1 + Kicks
 ```
 
@@ -2962,10 +2684,6 @@ storage
 
     vat |-> Vat
 
-if
-
-    VGas > 300000
-
 returns Vat
 ```
 
@@ -2983,10 +2701,6 @@ storage
 
     ilk |-> Ilk
 
-if
-
-    VGas > 300000
-
 returns Ilk
 ```
 
@@ -3003,10 +2717,6 @@ types
 storage
 
     gem |-> Gem
-
-if
-
-    VGas > 300000
 
 returns Gem
 ```
@@ -3064,7 +2774,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     CALLER_ID =/= ACCT_ID
 ```
 
@@ -3119,7 +2828,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     CALLER_ID =/= ACCT_ID
 ```
 
@@ -3143,10 +2851,6 @@ storage
 
     vat |-> Vat
 
-if
-
-    VGas > 300000
-
 returns Vat
 ```
 
@@ -3163,10 +2867,6 @@ types
 storage
 
     ilk |-> Ilk
-
-if
-
-    VGas > 300000
 
 returns Ilk
 ```
@@ -3215,7 +2915,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     CALLER_ID =/= ACCT_ID
 ```
 
@@ -3265,7 +2964,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     CALLER_ID =/= ACCT_ID
 ```
 
@@ -3291,10 +2989,6 @@ storage
 
     vat |-> Vat
 
-if
-
-    VGas > 300000
-
 returns Vat
 ```
 
@@ -3311,10 +3005,6 @@ types
 storage
 
     dai |-> Dai
-
-if
-
-    VGas > 300000
 
 returns Dai
 ```
@@ -3370,7 +3060,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     CALLER_ID =/= ACCT_ID
 ```
 
@@ -3423,7 +3112,6 @@ iff in range uint256
 
 if
 
-    VGas > 300000
     CALLER_ID =/= ACCT_ID
 ```
 
@@ -3448,10 +3136,6 @@ storage
 
     vat |-> Vat
 
-if
-
-    VGas > 300000
-
 returns Vat
 ```
 
@@ -3470,11 +3154,8 @@ types
 storage
 
     can[CALLER_ID][guy] |-> Could => 1
-
-if
-
-    VGas > 300000
-
+```
+```act
 behaviour nope of DaiMove
 interface nope(address guy)
 
@@ -3485,10 +3166,6 @@ types
 storage
 
     can[CALLER_ID][guy] |-> Could => 0
-
-if
-
-    VGas > 300000
 ```
 
 #### move tokens
@@ -3522,7 +3199,7 @@ iff
      ((src == CALLER_ID) or (Can == 1))
      // doc: call stack not too big
      VCallDepth < 1024
-     // doc: DaiMove authorised to call Cat
+     // doc: DaiMove authorised to call Vat
      Can_move == 1
 
 iff in range uint256
@@ -3536,7 +3213,6 @@ iff in range int256
 
 if
 
-     VGas > 300000
      src =/= dst
 ```
 
@@ -3567,7 +3243,7 @@ iff
      ((src == CALLER_ID) or (Can == 1))
      // doc: call stack not too big
      VCallDepth < 1024
-     // doc: DaiMove authorised to call Cat
+     // doc: DaiMove authorised to call Vat
      Can_move == 1
 
 iff in range uint256
@@ -3580,7 +3256,6 @@ iff in range int256
 
 if
 
-     VGas > 300000
      src == dst
 ```
 
@@ -3614,10 +3289,6 @@ storage
     bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
     bids[n].gal         |-> Gal
 
-if
-
-    VGas > 300000
-
 returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal
 ```
 
@@ -3634,10 +3305,6 @@ types
 storage
 
     dai |-> Dai
-
-if
-
-    VGas > 300000
 
 returns Dai
 ```
@@ -3656,10 +3323,6 @@ storage
 
     gem |-> Gem
 
-if
-
-    VGas > 300000
-
 returns Gem
 ```
 
@@ -3676,10 +3339,6 @@ types
 storage
 
     beg |-> Beg
-
-if
-
-    VGas > 300000
 
 returns Beg
 ```
@@ -3699,10 +3358,6 @@ storage
 
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
 
-if
-
-    VGas > 300000
-
 returns Ttl
 ```
 
@@ -3721,10 +3376,6 @@ storage
 
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
 
-if
-
-    VGas > 300000
-
 returns Tau
 ```
 
@@ -3741,10 +3392,6 @@ types
 storage
 
     kicks |-> Kicks
-
-if
-
-    VGas > 300000
 
 returns Kicks
 ```
@@ -3823,7 +3470,6 @@ iff in range int256
 if
 
    CALLER_ID =/= ACCT_ID
-   VGas > 300000
 
 returns 1 + Kicks
 ```
