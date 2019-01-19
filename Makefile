@@ -38,15 +38,15 @@ PASSING_SPEC_MANIFEST = passing.manifest
 
 # check if spec manifest already exists
 ifneq ("$(wildcard $(SPEC_MANIFEST))","")
-spec_names != cat $(SPEC_MANIFEST)
-specs = $(addsuffix .k,$(addprefix $(SPEC_DIR)/proof-,$(spec_names)))
+	spec_names != cat $(SPEC_MANIFEST) #TODO: fix this one as well
+	specs = $(addsuffix .k,$(addprefix $(SPEC_DIR)/proof-,$(spec_names)))
 endif
 
 # check if there is a passing manifest
 ifneq ("$(wildcard $(PASSING_SPEC_MANIFEST))","")
-passing_spec_names != cat $(PASSING_SPEC_MANIFEST)
-passing_specs = $(addsuffix .k,$(addprefix $(SPECS_DIR)/proof-,$(passing_spec_names)))
-num_passing = $(shell cat $(PASSING_SPEC_MANIFEST) | wc -l)
+	passing_spec_names := $(shell cat $(PASSING_SPEC_MANIFEST))
+  passing_specs = $(addsuffix .k,$(addprefix $(SPECS_DIR)/, $(passing_spec_names)))
+	num_passing = $(shell cat $(PASSING_SPEC_MANIFEST) | wc -l)
 endif
 
 all: dapp spec
