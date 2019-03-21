@@ -32,71 +32,90 @@ syntax Int ::= "#Vat.wards" "[" Int "]" [function]
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Vat.wards[A] => #hashedLocation("Solidity", 0, A)
 
+syntax Int ::= "#Vat.can" "[" Int "][" Int "]" [function]
+// -----------------------------------------------
+// doc: whether `$1` can spend the resources of `$0`
+// act: address `$0` has authorized `$1`
+rule #Vat.can[A][B] => #hashedLocation("Solidity", 1, A B)
+
+
 syntax Int ::= "#Vat.ilks" "[" Int "].take" [function]
 // ----------------------------------------------------
 // doc: collateral unit rate of `$0`
 // act: `$0` has collateral unit rate `.`
-rule #Vat.ilks[Ilk].take => #hashedLocation("Solidity", 1, Ilk) +Int 0
+rule #Vat.ilks[Ilk].take => #hashedLocation("Solidity", 2, Ilk) +Int 0
 
 syntax Int ::= "#Vat.ilks" "[" Int "].rate" [function]
 // ----------------------------------------------------
 // doc: debt unit rate of `$0`
 // act: `$0` has debt unit rate `.`
-rule #Vat.ilks[Ilk].rate => #hashedLocation("Solidity", 1, Ilk) +Int 1
+rule #Vat.ilks[Ilk].rate => #hashedLocation("Solidity", 2, Ilk) +Int 1
 
 syntax Int ::= "#Vat.ilks" "[" Int "].Ink" [function]
 // -----------------------------------------------
 // doc: total locked collateral for `$0`
 // act: `$0` has locked collateral `.`
-rule #Vat.ilks[Ilk].Ink => #hashedLocation("Solidity", 1, Ilk) +Int 2
+rule #Vat.ilks[Ilk].Ink => #hashedLocation("Solidity", 2, Ilk) +Int 2
 
 syntax Int ::= "#Vat.ilks" "[" Int "].Art" [function]
 // -----------------------------------------------
 // doc: total debt units issued from `$0`
 // act: `$0` has debt issuance `.`
-rule #Vat.ilks[Ilk].Art => #hashedLocation("Solidity", 1, Ilk) +Int 3
+rule #Vat.ilks[Ilk].Art => #hashedLocation("Solidity", 2, Ilk) +Int 3
 
 syntax Int ::= "#Vat.urns" "[" Int "][" Int "].ink" [function]
 // ----------------------------------------------------------
 // doc: locked collateral units in `$0` assigned to `$1`
 // act: agent `$1` has `.` collateral units in `$0`
-rule #Vat.urns[Ilk][Guy].ink => #hashedLocation("Solidity", 2, Ilk Guy)
+rule #Vat.urns[Ilk][Guy].ink => #hashedLocation("Solidity", 3, Ilk Guy)
 
 syntax Int ::= "#Vat.urns" "[" Int "][" Int "].art" [function]
 // ----------------------------------------------------------
 // doc: debt units in `$0` assigned to `$1`
 // act: agent `$1` has `.` debt units in `$0`
-rule #Vat.urns[Ilk][Guy].art => #hashedLocation("Solidity", 2, Ilk Guy) +Int 1
+rule #Vat.urns[Ilk][Guy].art => #hashedLocation("Solidity", 3, Ilk Guy) +Int 1
 
 syntax Int ::= "#Vat.gem" "[" Int "][" Int "]" [function]
 // ---------------------------------------------
 // doc: unlocked collateral in `$0` assigned to `$1`
 // act: agent `$1` has `.` unlocked collateral in `$0`
-rule #Vat.gem[Ilk][Guy] => #hashedLocation("Solidity", 3, Ilk Guy)
+rule #Vat.gem[Ilk][Guy] => #hashedLocation("Solidity", 4, Ilk Guy)
 
 syntax Int ::= "#Vat.dai" "[" Int "]" [function]
 // ---------------------------------------------
 // doc: dai assigned to `$0`
 // act: agent `$0` has `.` dai
-rule #Vat.dai[A] => #hashedLocation("Solidity", 4, A)
+rule #Vat.dai[A] => #hashedLocation("Solidity", 5, A)
 
 syntax Int ::= "#Vat.sin" "[" Int "]" [function]
 // ---------------------------------------------
 // doc: system debt assigned to `$0`
 // act: agent `$0` has `.` dai
-rule #Vat.sin[A] => #hashedLocation("Solidity", 5, A)
+rule #Vat.sin[A] => #hashedLocation("Solidity", 6, A)
 
 syntax Int ::= "#Vat.debt" [function]
 // ---------------------------------
 // doc: total dai issued from the system
 // act: there is `.` dai in total
-rule #Vat.debt => 6
+rule #Vat.debt => 7
 
 syntax Int ::= "#Vat.vice" [function]
 // ----------------------------------
 // doc: total system debt
 // act: there is `.` system debt
-rule #Vat.vice => 7
+rule #Vat.vice => 8
+
+syntax Int ::= "#Vat.Line" [function]
+// ----------------------------------
+// doc: global debt ceiling
+// act: the global debt ceiling is `.`
+rule #Vat.Line => 9
+
+syntax Int ::= "#Vat.live" [function]
+// ----------------------------------
+// doc: system status
+// act: the system is `. == 1 ? : not` live
+rule #Vat.live => 10
 ```
 
 ### Drip
