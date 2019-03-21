@@ -164,6 +164,10 @@ storage
 
     wards[guy] |-> Can
 
+iff
+
+    VCallValue == 0
+
 returns Can
 ```
 
@@ -189,6 +193,10 @@ storage
     ilks[ilk].Ink  |-> Ink_i
     ilks[ilk].Art  |-> Art_i
 
+iff
+
+    VCallValue == 0
+
 returns Take : Rate : Ink_i : Art_i
 ```
 
@@ -210,6 +218,10 @@ storage
     urns[ilk][urn].ink |-> Ink_iu
     urns[ilk][urn].art |-> Art_iu
 
+iff
+
+    VCallValue == 0
+
 returns Ink_iu : Art_iu
 ```
 
@@ -228,6 +240,10 @@ types
 storage
 
     gem[ilk][guy] |-> Gem
+
+iff
+
+    VCallValue == 0
 
 returns Gem
 ```
@@ -271,6 +287,10 @@ storage
 
     sin[guy] |-> Rad
 
+iff
+
+    VCallValue == 0
+
 returns Rad
 ```
 
@@ -288,6 +308,10 @@ storage
 
     debt |-> Debt
 
+iff
+
+    VCallValue == 0
+
 returns Debt
 ```
 
@@ -304,6 +328,10 @@ types
 storage
 
     vice |-> Vice
+
+iff
+
+    VCallValue == 0
 
 returns Vice
 ```
@@ -331,6 +359,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
+    VCallValue == 0
 
 if
 
@@ -353,7 +382,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 if
     guy == CALLER_ID
 ```
@@ -376,7 +406,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 if
 
     CALLER_ID =/= guy
@@ -398,7 +429,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 if
 
     CALLER_ID == guy
@@ -432,7 +464,8 @@ iff
     Rate == 0
     // act: `Take` is `. ? : not` zero
     Take == 0
-
+    VCallValue == 0
+    
 ```
 
 #### assigning unencumbered collateral
@@ -457,7 +490,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Gem + wad
@@ -486,7 +520,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Gem_src - wad
@@ -515,7 +550,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Gem_src - wad
@@ -547,7 +583,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Dai_src - rad
@@ -576,7 +613,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Dai_src - rad
@@ -624,7 +662,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Ink_iu + dink
@@ -682,7 +721,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Ink_iu + dink
@@ -729,7 +769,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Dai_v - rad
@@ -766,7 +807,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Rate + rate
@@ -806,7 +848,8 @@ iff
 
     // act: caller is `. ? : not` authorised
     Can == 1
-
+    VCallValue == 0
+    
 iff in range uint256
 
     Take + take
