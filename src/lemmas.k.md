@@ -32,7 +32,7 @@ We leave these symbolic for now:
 ```k
 syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
 
-syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(smt_rpow)]
+syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function]
 ```
 
 ### hashed storage
