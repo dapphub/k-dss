@@ -181,23 +181,25 @@ interface ilks(bytes32 ilk)
 
 types
 
-    Take  : uint256
-    Rate  : uint256
-    Ink_i : uint256
-    Art_i : uint256
+    Ilk_Art  : uint256
+    Ilk_rate : uint256
+    Ilk_spot : uint256
+    Ilk_line : uint256
+    Ilk_dust : uint256
 
 storage
 
-    ilks[ilk].take |-> Take
-    ilks[ilk].rate |-> Rate
-    ilks[ilk].Ink  |-> Ink_i
-    ilks[ilk].Art  |-> Art_i
+    ilks[ilk].Art  |-> Ilk_Art
+    ilks[ilk].rate |-> Ilk_rate
+    ilks[ilk].spot |-> Ilk_spot
+    ilks[ilk].line |-> Ilk_line
+    ilks[ilk].dust |-> Ilk_dust
 
 iff
 
     VCallValue == 0
 
-returns Take : Rate : Ink_i : Art_i
+returns Ilk_Art : Ilk_rate : Ilk_spot : Ilk_line : Ilk_dust
 ```
 
 #### `urn` data
@@ -383,7 +385,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 if
     guy == CALLER_ID
 ```
@@ -407,7 +409,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 if
 
     CALLER_ID =/= guy
@@ -430,7 +432,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 if
 
     CALLER_ID == guy
@@ -465,7 +467,6 @@ iff
     // act: `Take` is `. ? : not` zero
     Take == 0
     VCallValue == 0
-    
 ```
 
 #### assigning unencumbered collateral
@@ -491,7 +492,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Gem + wad
@@ -521,7 +522,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Gem_src - wad
@@ -584,7 +585,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Dai_src - rad
@@ -614,7 +615,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Dai_src - rad
@@ -663,7 +664,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Ink_iu + dink
@@ -722,7 +723,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Ink_iu + dink
@@ -770,7 +771,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Dai_v - rad
@@ -808,7 +809,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Rate + rate
@@ -849,7 +850,7 @@ iff
     // act: caller is `. ? : not` authorised
     Can == 1
     VCallValue == 0
-    
+
 iff in range uint256
 
     Take + take

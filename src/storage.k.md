@@ -26,6 +26,7 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int pow208 +Int X *Int pow160 +Int
 ### Vat
 
 ```k
+// act: public
 syntax Int ::= "#Vat.wards" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: whether `$0` is an owner of `Vat`
@@ -39,11 +40,11 @@ syntax Int ::= "#Vat.can" "[" Int "][" Int "]" [function]
 rule #Vat.can[A][B] => #hashedLocation("Solidity", 1, A B)
 
 
-syntax Int ::= "#Vat.ilks" "[" Int "].take" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].Art" [function]
 // ----------------------------------------------------
-// doc: collateral unit rate of `$0`
-// act: `$0` has collateral unit rate `.`
-rule #Vat.ilks[Ilk].take => #hashedLocation("Solidity", 2, Ilk) +Int 0
+// doc: total debt units issued from `$0`
+// act: `$0` has debt issuance `.`
+rule #Vat.ilks[Ilk].Art => #hashedLocation("Solidity", 2, Ilk) +Int 0
 
 syntax Int ::= "#Vat.ilks" "[" Int "].rate" [function]
 // ----------------------------------------------------
@@ -51,17 +52,23 @@ syntax Int ::= "#Vat.ilks" "[" Int "].rate" [function]
 // act: `$0` has debt unit rate `.`
 rule #Vat.ilks[Ilk].rate => #hashedLocation("Solidity", 2, Ilk) +Int 1
 
-syntax Int ::= "#Vat.ilks" "[" Int "].Ink" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].spot" [function]
 // -----------------------------------------------
-// doc: total locked collateral for `$0`
-// act: `$0` has locked collateral `.`
-rule #Vat.ilks[Ilk].Ink => #hashedLocation("Solidity", 2, Ilk) +Int 2
+// doc: price with safety margin for `$0`
+// act: `$0` has safety margin `.`
+rule #Vat.ilks[Ilk].spot => #hashedLocation("Solidity", 2, Ilk) +Int 2
 
-syntax Int ::= "#Vat.ilks" "[" Int "].Art" [function]
+syntax Int ::= "#Vat.ilks" "[" Int "].line" [function]
 // -----------------------------------------------
-// doc: total debt units issued from `$0`
-// act: `$0` has debt issuance `.`
-rule #Vat.ilks[Ilk].Art => #hashedLocation("Solidity", 2, Ilk) +Int 3
+// doc: debt ceiling for `$0`
+// act: `$0` has debt ceiling `.`
+rule #Vat.ilks[Ilk].line => #hashedLocation("Solidity", 2, Ilk) +Int 3
+
+syntax Int ::= "#Vat.ilks" "[" Int "].dust" [function]
+// -----------------------------------------------
+// doc: urn debt floor for `$0`
+// act: `$0` has debt floor `.`
+rule #Vat.ilks[Ilk].dust => #hashedLocation("Solidity", 2, Ilk) +Int 4
 
 syntax Int ::= "#Vat.urns" "[" Int "][" Int "].ink" [function]
 // ----------------------------------------------------------
