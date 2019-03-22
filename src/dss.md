@@ -154,7 +154,7 @@ The contracts use a multi-owner only-owner authorisation scheme. In the case of 
 
 ```act
 behaviour wards of Vat
-interface wards(address guy)
+interface wards(address usr)
 
 types
 
@@ -162,7 +162,7 @@ types
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> Can
 
 iff
 
@@ -233,7 +233,7 @@ A `gem` is a token used as collateral in some `ilk`.
 
 ```act
 behaviour gem of Vat
-interface gem(bytes32 ilk, bytes32 guy)
+interface gem(bytes32 ilk, bytes32 usr)
 
 types
 
@@ -241,7 +241,7 @@ types
 
 storage
 
-    gem[ilk][guy] |-> Gem
+    gem[ilk][usr] |-> Gem
 
 iff
 
@@ -256,7 +256,7 @@ returns Gem
 
 ```act
 behaviour dai of Vat
-interface dai(bytes32 guy)
+interface dai(bytes32 usr)
 
 types
 
@@ -264,7 +264,7 @@ types
 
 storage
 
-    dai[guy] |-> Rad
+    dai[usr] |-> Rad
 
 iff
 
@@ -279,7 +279,7 @@ returns Rad
 
 ```act
 behaviour sin of Vat
-interface sin(bytes32 guy)
+interface sin(bytes32 usr)
 
 types
 
@@ -287,7 +287,7 @@ types
 
 storage
 
-    sin[guy] |-> Rad
+    sin[usr] |-> Rad
 
 iff
 
@@ -345,7 +345,7 @@ Any owner can add and remove owners.
 
 ```act
 behaviour rely-diff of Vat
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -355,7 +355,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[usr]       |-> Could => 1
 
 iff
 
@@ -365,12 +365,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour rely-same of Vat
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -387,12 +387,12 @@ iff
     VCallValue == 0
 
 if
-    guy == CALLER_ID
+    usr == CALLER_ID
 ```
 
 ```act
 behaviour deny-diff of Vat
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -402,7 +402,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[usr]       |-> Could => 0
 
 iff
 
@@ -412,12 +412,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour deny-same of Vat
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -435,7 +435,7 @@ iff
 
 if
 
-    CALLER_ID == guy
+    CALLER_ID == usr
 ```
 
 #### initialising an `ilk`
@@ -475,7 +475,7 @@ Collateral coming from outside of the system must be assigned to a user before i
 
 ```act
 behaviour slip of Vat
-interface slip(bytes32 ilk, bytes32 guy, int256 wad)
+interface slip(bytes32 ilk, bytes32 usr, int256 wad)
 
 types
 
@@ -485,7 +485,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    gem[ilk][guy]    |-> Gem => Gem + wad
+    gem[ilk][usr]    |-> Gem => Gem + wad
 
 iff
 
@@ -566,7 +566,7 @@ if
 
 ```act
 behaviour move-diff of Vat
-interface move(bytes32 src, bytes32 dst, int256 rad)
+interface move(bytes32 src, bytes32 dst, uint256 rad)
 
 types
 
@@ -576,14 +576,14 @@ types
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    dai[src]         |-> Dai_src => Dai_src - rad
-    dai[dst]         |-> Dai_dst => Dai_dst + rad
+    Can[CALLER_ID][src] |-> May
+    dai[src]            |-> Dai_src => Dai_src - rad
+    dai[dst]            |-> Dai_dst => Dai_dst + rad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1 or src == CALLER_ID
     VCallValue == 0
 
 iff in range uint256
@@ -598,7 +598,7 @@ if
 
 ```act
 behaviour move-same of Vat
-interface move(bytes32 src, bytes32 dst, int256 rad)
+interface move(bytes32 src, bytes32 dst, uint256 rad)
 
 types
 
@@ -607,13 +607,13 @@ types
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    dai[src]         |-> Dai_src => Dai_src
+    Can[CALLER_ID][src] |-> May
+    dai[src]            |-> Dai_src => Dai_src
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1 or src == CALLER_ID
     VCallValue == 0
 
 iff in range uint256
@@ -875,7 +875,7 @@ iff in range int256
 
 ```act
 behaviour wards of Jug
-interface wards(address guy)
+interface wards(address usr)
 
 types
 
@@ -883,7 +883,7 @@ types
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> Can
 
 returns Can
 ```
@@ -967,7 +967,7 @@ returns Repo
 
 ```act
 behaviour rely-diff of Jug
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -977,7 +977,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[usr]       |-> Could => 1
 
 iff
 
@@ -986,12 +986,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour rely-same of Jug
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -1007,12 +1007,12 @@ iff
     Can == 1
 
 if
-    guy == CALLER_ID
+    usr == CALLER_ID
 ```
 
 ```act
 behaviour deny-diff of Jug
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -1022,7 +1022,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[usr]       |-> Could => 0
 
 iff
 
@@ -1031,12 +1031,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour deny-same of Jug
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -1053,7 +1053,7 @@ iff
 
 if
 
-    CALLER_ID == guy
+    CALLER_ID == usr
 ```
 
 #### initialising an `ilk`
@@ -1224,7 +1224,7 @@ The `Vow` is the system's fiscal organ, the recipient of both system surplus and
 
 ```act
 behaviour wards of Vow
-interface wards(address guy)
+interface wards(address usr)
 
 types
 
@@ -1232,7 +1232,7 @@ types
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> Can
 
 returns Can
 ```
@@ -1452,7 +1452,7 @@ returns (Sin / #Ray - Ssin) - Ash
 
 ```act
 behaviour rely-diff of Vow
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -1462,7 +1462,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[usr]       |-> Could => 1
 
 iff
 
@@ -1471,12 +1471,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour rely-same of Vow
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -1492,12 +1492,12 @@ iff
     Can == 1
 
 if
-    guy == CALLER_ID
+    usr == CALLER_ID
 ```
 
 ```act
 behaviour deny-diff of Vow
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -1507,7 +1507,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[usr]       |-> Could => 0
 
 iff
 
@@ -1516,12 +1516,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour deny-same of Vow
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -1538,7 +1538,7 @@ iff
 
 if
 
-    CALLER_ID == guy
+    CALLER_ID == usr
 ```
 
 #### setting `Vow` parameters
@@ -1764,7 +1764,7 @@ types
     Vow_was : address
     Lot_was : uint256
     Bid_was : uint256
-    Guy_was : address
+    Usr_was : address
     Tic_was : uint48
     End_was : uint48
     Ttl     : uint48
@@ -1787,7 +1787,7 @@ storage Row
     #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
     #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
     #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flopper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
@@ -1838,7 +1838,7 @@ types
     Could    : uint256
     Bid_was  : uint256
     Lot_was  : uint256
-    Guy_was  : address
+    Usr_was  : address
     Tic_was  : uint48
     End_was  : uint48
     Gal_was  : address
@@ -1866,7 +1866,7 @@ storage Cow
     #Flapper.kicks                       |-> Kicks   => 1 + Kicks
     #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
     #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
     #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
@@ -1926,7 +1926,7 @@ The `Cat` is the system's liquidation agent: it decides when a position is unsaf
 
 ```act
 behaviour wards of Cat
-interface wards(address guy)
+interface wards(address usr)
 
 types
 
@@ -1934,7 +1934,7 @@ types
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> Can
 
 returns Can
 ```
@@ -2074,7 +2074,7 @@ returns Vow
 
 ```act
 behaviour rely-diff of Cat
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -2084,7 +2084,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[usr]       |-> Could => 1
 
 iff
 
@@ -2093,12 +2093,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour rely-same of Cat
-interface rely(address guy)
+interface rely(address usr)
 
 types
 
@@ -2114,12 +2114,12 @@ iff
     Can == 1
 
 if
-    guy == CALLER_ID
+    usr == CALLER_ID
 ```
 
 ```act
 behaviour deny-diff of Cat
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -2129,7 +2129,7 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[usr]       |-> Could => 0
 
 iff
 
@@ -2138,12 +2138,12 @@ iff
 
 if
 
-    CALLER_ID =/= guy
+    CALLER_ID =/= usr
 ```
 
 ```act
 behaviour deny-same of Cat
-interface deny(address guy)
+interface deny(address usr)
 
 types
 
@@ -2160,7 +2160,7 @@ iff
 
 if
 
-    CALLER_ID == guy
+    CALLER_ID == usr
 ```
 
 #### setting contract addresses
@@ -2360,7 +2360,7 @@ storage Flip
     #Flipper.kicks                       |-> Kicks => 1 + Kicks
     #Flipper.bids[1 + Kicks].bid         |-> _ => 0
     #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
     #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
     #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
@@ -2458,7 +2458,7 @@ types
     Gem         : address GemLike
     Can         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -2474,7 +2474,7 @@ storage Vat
 
 storage Gem
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
+    balances[CALLER_ID] |-> Bal_usr     => Bal_usr     - wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
@@ -2491,7 +2491,7 @@ iff in range int256
 iff in range uint256
 
     Rad + #Ray * wad
-    Bal_guy     - wad
+    Bal_usr     - wad
     Bal_adapter + wad
 
 if
@@ -2503,7 +2503,7 @@ if
 
 ```act
 behaviour exit of GemJoin
-interface exit(address guy, uint256 wad)
+interface exit(address usr, uint256 wad)
 
 types
 
@@ -2512,7 +2512,7 @@ types
     Gem         : address GemLike
     Can         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -2528,7 +2528,7 @@ storage Vat
 
 storage Gem
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
@@ -2545,7 +2545,7 @@ iff in range int256
 iff in range uint256
 
     Rad         - #Ray * wad
-    Bal_guy     + wad
+    Bal_usr     + wad
     Bal_adapter - wad
 
 if
@@ -2646,7 +2646,7 @@ if
 
 ```act
 behaviour exit of ETHJoin
-interface exit(address guy, uint256 wad)
+interface exit(address usr, uint256 wad)
 
 types
 
@@ -2654,7 +2654,7 @@ types
     Ilk         : bytes32
     Can         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
 
 storage
 
@@ -2682,7 +2682,7 @@ iff in range int256
 iff in range uint256
 
     Rad     - #Ray * wad
-    Bal_guy + wad
+    Bal_usr + wad
 
 if
 
@@ -2745,7 +2745,7 @@ types
     Dai         : address GemLike
     Can         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -2760,7 +2760,7 @@ storage Vat
 
 storage Dai
 
-    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
+    #Gem.balances[CALLER_ID] |-> Bal_usr     => Bal_usr - wad
     #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
@@ -2777,7 +2777,7 @@ iff in range int256
 iff in range uint256
 
     Rad + #Ray * wad
-    Bal_guy - wad
+    Bal_usr - wad
     Bal_adapter + wad
 
 if
@@ -2789,7 +2789,7 @@ if
 
 ```act
 behaviour exit of DaiJoin
-interface exit(address guy, uint256 wad)
+interface exit(address usr, uint256 wad)
 
 types
 
@@ -2797,7 +2797,7 @@ types
     Dai         : address GemLike
     Can         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -2812,7 +2812,7 @@ storage Vat
 
 storage Dai
 
-    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    #Gem.balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
     #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
@@ -2829,7 +2829,7 @@ iff in range int256
 iff in range uint256
 
     Rad         - #Ray * wad
-    Bal_guy     + wad
+    Bal_usr     + wad
     Bal_adapter - wad
 
 if
@@ -2855,7 +2855,7 @@ types
 
     Bid : uint256
     Lot : uint256
-    Guy : address
+    Usr : address
     Tic : uint48
     End : uint48
     Gal : address
@@ -2864,10 +2864,10 @@ storage
 
     bids[n].bid         |-> Bid
     bids[n].lot         |-> Lot
-    bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
+    bids[n].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End)
     bids[n].gal         |-> Gal
 
-returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal
+returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Gal
 ```
 
 #### sell token
@@ -2991,7 +2991,7 @@ types
     Tau      : uint48
     Bid_was  : uint256
     Lot_was  : uint256
-    Guy_was  : address
+    Usr_was  : address
     Tic_was  : uint48
     End_was  : uint48
     Gal_was  : address
@@ -3008,7 +3008,7 @@ storage
     kicks                       |-> Kicks   => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid_was => bid
     bids[1 + Kicks].lot         |-> Lot_was => lot
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
     bids[1 + Kicks].gal         |-> Gal_was => gal
 
 storage Vat
