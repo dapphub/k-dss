@@ -100,17 +100,18 @@ syntax Int ::= "#Vat.sin" "[" Int "]" [function]
 // act: agent `$0` has `.` dai
 rule #Vat.sin[A] => #hashedLocation("Solidity", 6, A)
 
-syntax Int ::= "#Vat.debt" [function]
-// ---------------------------------
-// doc: total dai issued from the system
-// act: there is `.` dai in total
-rule #Vat.debt => 7
-
 syntax Int ::= "#Vat.vice" [function]
 // ----------------------------------
 // doc: total system debt
 // act: there is `.` system debt
-rule #Vat.vice => 8
+rule #Vat.vice => 7
+
+
+syntax Int ::= "#Vat.debt" [function]
+// ---------------------------------
+// doc: total dai issued from the system
+// act: there is `.` dai in total
+rule #Vat.debt => 8
 
 syntax Int ::= "#Vat.Line" [function]
 // ----------------------------------
