@@ -165,52 +165,6 @@ syntax Int ::= "#Drip.repo" [function]
 rule #Drip.repo => 4
 ```
 
-### Pit
-
-```k
-syntax Int ::= "#Pit.wards" "[" Int "]" [function]
-// ---------------------------------
-// doc: whether `$0` is an owner of `Pit`
-// act: address `$0` is `. == 1 ? authorised : unauthorised`
-rule #Pit.wards[A] => #hashedLocation("Solidity", 0, A)
-
-syntax Int ::= "#Pit.ilks" "[" Int "].spot" [function]
-// ---------------------------------------------------
-// doc: collateral price in dai of `$0` adjusted for liquidation ratio
-// act:
-rule #Pit.ilks[Ilk].spot => #hashedLocation("Solidity", 1, Ilk) +Int 0
-
-syntax Int ::= "#Pit.ilks" "[" Int "].line" [function]
-// ---------------------------------------------------
-// doc: debt ceiling for `$0`
-// act: `$0` has debt ceiling `.`
-rule #Pit.ilks[Ilk].line => #hashedLocation("Solidity", 1, Ilk) +Int 1
-
-syntax Int ::= "#Pit.live" [function]
-// ----------------------------------
-// doc: system liveness
-// act: system is `. == 1 ? : not` live
-rule #Pit.live => 2
-
-syntax Int ::= "#Pit.Line" [function]
-// ----------------------------------
-// doc: global debt ceiling
-// act: system has global debt ceiling `.`
-rule #Pit.Line => 3
-
-syntax Int ::= "#Pit.vat" [function]
-// ---------------------------------
-// doc: `Vat` that this `Pit` points to
-// act: this Pit points to Vat `.`
-rule #Pit.vat => 4
-
-syntax Int ::= "#Pit.drip" [function]
-// ---------------------------------
-// doc: `Drip` that this `Pit` points to
-// act: this Pit points to Dripper `.`
-rule #Pit.vat => 4
-```
-
 ### Vow
 
 ```k
@@ -579,23 +533,6 @@ syntax Int ::= "#Flapper.kicks" [function]
 // act:
 rule #Flapper.kicks => 5
 ```
-
-### DaiMove
-
-```k
-syntax Int ::= "#DaiMove.vat" [function]
-// ---------------------------------------
-// doc: `Vat` that this `DaiMove` points to
-// act:
-rule #DaiMove.vat => 0
-
-syntax Int ::= "#DaiMove.can" "[" Int "][" Int "]" [function]
-// ---------------------------------------
-// doc: `$1` is authorised to move for `$0`
-// act:
-rule #DaiMove.can[A][B] => #hashedLocation("Solidity", 1, A B)
-```
-
 
 ### GemLike
 
