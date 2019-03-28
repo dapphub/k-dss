@@ -337,6 +337,39 @@ iff
 
 returns Vice
 ```
+### Lemmas 
+
+#### Arithmetic
+
+```act
+behaviour subuu of Math
+interface sub(uint256 x, uint256 y) internal
+
+stack
+  y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+  x - y
+
+if
+
+  #sizeWordStack(WS) <= 100 //TODO: strengthen
+```
+```act
+behaviour adduu of Math
+interface add(uint256 x, uint256 y) internal
+
+stack
+  y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+  x + y
+
+if
+
+  #sizeWordStack(WS) <= 100 //TODO: strengthen
+```
+
 ### Mutators
 
 #### adding and removing owners
@@ -503,24 +536,24 @@ iff in range uint256
 
 ```act
 behaviour flux-diff of Vat
-interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
+interface flux(bytes32 ilk, address src, address dst, uint256 wad)
 
-types
+for all
 
-    Can     : uint256
+    May     : uint256
     Gem_src : uint256
     Gem_dst : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    gem[ilk][src]    |-> Gem_src => Gem_src - wad
-    gem[ilk][dst]    |-> Gem_dst => Gem_dst + wad
+    can[src][CALLER_ID] |-> May
+    gem[ilk][src]       |-> Gem_src => Gem_src - wad
+    gem[ilk][dst]       |-> Gem_dst => Gem_dst + wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    (May == 1 or src == CALLER_ID)
     VCallValue == 0
 
 iff in range uint256
@@ -531,26 +564,31 @@ iff in range uint256
 if
 
     src =/= dst
+
+calls
+
+    Vat.subuu
+    Vat.adduu
 ```
 
 ```act
 behaviour flux-same of Vat
-interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
+interface flux(bytes32 ilk, address src, address dst, uint256 wad)
 
-types
+for all
 
-    Can     : uint256
+    May     : uint256
     Gem_src : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    gem[ilk][src]    |-> Gem_src => Gem_src
+    can[src][CALLER_ID] |-> May
+    gem[ilk][src]       |-> Gem_src => Gem_src
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    (May == 1 or src == CALLER_ID)
     VCallValue == 0
     
 iff in range uint256
@@ -560,30 +598,35 @@ iff in range uint256
 if
 
     src == dst
+
+calls
+
+    Vat.subuu
+    Vat.adduu
 ```
 
 #### transferring dai balances
 
 ```act
 behaviour move-diff of Vat
-interface move(bytes32 src, bytes32 dst, uint256 rad)
+interface move(address src, address dst, uint256 rad)
 
-types
+for all
 
-    Can     : uint256
-    Dai_src : uint256
-    Dai_dst : uint256
+  Dai_dst : uint256
+  Dai_src : uint256
+  May     : uint256
 
 storage
 
-    Can[CALLER_ID][src] |-> May
+    can[src][CALLER_ID] |-> May
     dai[src]            |-> Dai_src => Dai_src - rad
     dai[dst]            |-> Dai_dst => Dai_dst + rad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    May == 1 or src == CALLER_ID
+    (May == 1 or src == CALLER_ID)
     VCallValue == 0
 
 iff in range uint256
@@ -594,26 +637,31 @@ iff in range uint256
 if
 
     src =/= dst
+
+calls
+
+  Vat.subuu
+  Vat.adduu
 ```
 
 ```act
 behaviour move-same of Vat
-interface move(bytes32 src, bytes32 dst, uint256 rad)
+interface move(address src, address dst, uint256 rad)
 
-types
+for all
 
-    Can     : uint256
-    Dai_src : uint256
+  Dai_src : uint256
+  May     : uint256
 
 storage
 
-    Can[CALLER_ID][src] |-> May
+    can[src][CALLER_ID] |-> May
     dai[src]            |-> Dai_src => Dai_src
 
 iff
 
     // act: caller is `. ? : not` authorised
-    May == 1 or src == CALLER_ID
+    (May == 1 or src == CALLER_ID)
     VCallValue == 0
 
 iff in range uint256
@@ -623,6 +671,11 @@ iff in range uint256
 if
 
     src == dst
+
+calls
+
+  Vat.subuu
+  Vat.adduu
 ```
 
 #### administering a position
