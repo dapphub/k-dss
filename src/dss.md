@@ -342,7 +342,24 @@ returns Vice
 #### Arithmetic
 
 ```act
-behaviour subuu of Math
+behaviour addui of Vat
+interface add(uint256 x, int256 y) internal
+
+stack
+  #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+  x + y
+
+if
+
+  #sizeWordStack(WS) <= 1015
+```
+
+
+
+```act
+behaviour subuu of Vat
 interface sub(uint256 x, uint256 y) internal
 
 stack
@@ -356,7 +373,7 @@ if
   #sizeWordStack(WS) <= 100 //TODO: strengthen
 ```
 ```act
-behaviour adduu of Math
+behaviour adduu of Vat
 interface add(uint256 x, uint256 y) internal
 
 stack
