@@ -142,7 +142,7 @@ Table of Contents
 
 # Vat
 
-The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. Its methods cannot be called directly, but only through interfaces like [Pit](#pit) and [Vow](#vow).
+The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. The `Vat` provides `frob`: the core interface for interacting with CDPs.
 
 ## Specification of behaviours
 
@@ -490,7 +490,7 @@ if
 
 #### initialising an `ilk`
 
-An `ilk` starts with `Rate` and `Take` set to (fixed-point) one.
+An `ilk` starts with `Rate` set to (fixed-point) one.
 
 ```act
 behaviour init of Vat
@@ -500,13 +500,11 @@ types
 
     Can  : uint256
     Rate : uint256
-    Take : uint256
 
 storage
 
     wards[CALLER_ID] |-> Can
-    ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
-    ilks[ilk].take   |-> Take => 1000000000000000000000000000
+    ilks[ilk].rate   |-> Rate => #Ray
 
 iff
 
@@ -514,8 +512,6 @@ iff
     Can == 1
     // act: `Rate` is `. ? : not` zero
     Rate == 0
-    // act: `Take` is `. ? : not` zero
-    Take == 0
     VCallValue == 0
 ```
 
@@ -706,7 +702,6 @@ interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 d
 types
 
     Can    : uint256
-    Take   : uint256
     Rate   : uint256
     Ink_iu : uint256
     Art_iu : uint256
@@ -719,13 +714,12 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    ilks[i].take     |-> Take
     ilks[i].rate     |-> Rate
     urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
     urns[i][u].art   |-> Art_iu => Art_iu + dart
     ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
     ilks[i].Art      |-> Art_i  => Art_i  + dart
-    gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    gem[i][v]        |-> Gem_iv => Gem_iv - dink
     dai[w]           |-> Dai_w  => Dai_w  + (Rate * dart)
     debt             |-> Debt   => Debt   + (Rate * dart)
 
@@ -741,15 +735,13 @@ iff in range uint256
     Art_iu + dart
     Ink_i  + dink
     Art_i  + dart
-    Gem_iv - (Take * dink)
+    Gem_iv - dink
     Dai_w  + (Rate * dart)
     Debt   + (Rate * dart)
 
 iff in range int256
 
-    Take
     Rate
-    Take * dink
     Rate * dart
 
 ```
@@ -765,7 +757,6 @@ interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 d
 types
 
     Can    : uint256
-    Take   : uint256
     Rate   : uint256
     Ink_iu : uint256
     Art_iu : uint256
@@ -778,13 +769,12 @@ types
 storage
 
     wards[CALLER_ID] |-> Can
-    ilks[i].take     |-> Take
     ilks[i].rate     |-> Rate
     urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
     urns[i][u].art   |-> Art_iu => Art_iu + dart
     ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
     ilks[i].Art      |-> Art_i  => Art_i  + dart
-    gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    gem[i][v]        |-> Gem_iv => Gem_iv - dink
     sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
     vice             |-> Vice   => Vice   - (Rate * dart)
 
@@ -800,15 +790,13 @@ iff in range uint256
     Art_iu + dart
     Ink_i  + dink
     Art_i  + dart
-    Gem_iv - (Take * dink)
+    Gem_iv - dink
     Sin_w  - (Rate * dart)
     Vice   - (Rate * dart)
 
 iff in range int256
 
-    Take
     Rate
-    Take * dink
     Rate * dart
 ```
 
@@ -890,51 +878,15 @@ iff in range int256
 
     Art_i
     Art_i * rate
+
+calls
+
+    Vat.addui
 ```
 
-#### applying collateral adjustment to an `ilk`
+# Jug
 
-
-Likewise, the collateral unit `Take` can be adjusted, with collateral going to/from `u`.
-
-```act
-behaviour toll of Vat
-interface toll(bytes32 i, bytes32 u, int256 take)
-
-types
-
-    Can  : uint256
-    Take : uint256
-    Ink  : uint256
-    Gem  : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    ilks[i].take     |-> Take => Take + take
-    ilks[i].Ink      |-> Ink
-    gem[i][u]        |-> Gem  => Gem  - Ink * take
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-    VCallValue == 0
-
-iff in range uint256
-
-    Take + take
-    Gem  - Ink * take
-
-iff in range int256
-
-    Ink
-    Ink * take
-```
-
-# Drip
-
-`Drip` updates each collateral type's debt unit `rate` while the offsetting dai is supplied to/by a `vow`. The effect of this is to apply interest to outstanding positions.
+The `Jug` updates each collateral type's debt unit `rate` while the offsetting dai is supplied to/by a `vow`. The effect of this is to apply interest to outstanding positions.
 
 ## Specification of behaviours
 
