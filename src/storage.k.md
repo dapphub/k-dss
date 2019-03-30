@@ -39,7 +39,6 @@ syntax Int ::= "#Vat.can" "[" Int "][" Int "]" [function]
 // act: address `$0` has authorized `$1`
 rule #Vat.can[A][B] => #hashedLocation("Solidity", 1, A B)
 
-
 syntax Int ::= "#Vat.ilks" "[" Int "].Art" [function]
 // ----------------------------------------------------
 // doc: total debt units issued from `$0`

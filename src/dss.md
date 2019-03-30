@@ -356,8 +356,6 @@ if
   #sizeWordStack(WS) <= 1015
 ```
 
-
-
 ```act
 behaviour subuu of Vat
 interface sub(uint256 x, uint256 y) internal
@@ -626,9 +624,9 @@ interface move(address src, address dst, uint256 rad)
 
 for all
 
-  Dai_dst : uint256
-  Dai_src : uint256
-  May     : uint256
+    Dai_dst : uint256
+    Dai_src : uint256
+    May     : uint256
 
 storage
 
@@ -653,8 +651,8 @@ if
 
 calls
 
-  Vat.subuu
-  Vat.adduu
+    Vat.subuu
+    Vat.adduu
 ```
 
 ```act
@@ -663,8 +661,8 @@ interface move(address src, address dst, uint256 rad)
 
 for all
 
-  Dai_src : uint256
-  May     : uint256
+    Dai_src : uint256
+    May     : uint256
 
 storage
 
@@ -687,8 +685,8 @@ if
 
 calls
 
-  Vat.subuu
-  Vat.adduu
+    Vat.subuu
+    Vat.adduu
 ```
 
 #### administering a position
