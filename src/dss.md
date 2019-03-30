@@ -156,7 +156,7 @@ The contracts use a multi-owner only-owner authorisation scheme. In the case of 
 behaviour wards of Vat
 interface wards(address usr)
 
-types
+for all
 
     Can : uint256
 
@@ -179,7 +179,7 @@ An `ilk` is a collateral type.
 behaviour ilks of Vat
 interface ilks(bytes32 ilk)
 
-types
+for all
 
     Ilk_Art  : uint256
     Ilk_rate : uint256
@@ -210,7 +210,7 @@ An `urn` is a collateralised debt position.
 behaviour urns of Vat
 interface urns(bytes32 ilk, address urn)
 
-types
+for all
 
     Ink_iu : uint256
     Art_iu : uint256
@@ -235,7 +235,7 @@ A `gem` is a token used as collateral in some `ilk`.
 behaviour gem of Vat
 interface gem(bytes32 ilk, address usr)
 
-types
+for all
 
     Gem : uint256
 
@@ -258,7 +258,7 @@ returns Gem
 behaviour dai of Vat
 interface dai(address usr)
 
-types
+for all
 
     Rad : uint256
 
@@ -281,7 +281,7 @@ returns Rad
 behaviour sin of Vat
 interface sin(address usr)
 
-types
+for all
 
     Rad : uint256
 
@@ -302,7 +302,7 @@ returns Rad
 behaviour debt of Vat
 interface debt()
 
-types
+for all
 
     Debt : uint256
 
@@ -323,7 +323,7 @@ returns Debt
 behaviour vice of Vat
 interface vice()
 
-types
+for all
 
     Vice : uint256
 
@@ -344,7 +344,7 @@ returns Vice
 behaviour Line of Vat
 interface Line()
 
-types
+for all
 
     Line : uint256
 
@@ -365,7 +365,7 @@ returns Line
 behaviour live of Vat
 interface live()
 
-types
+for all
 
     Live : uint256
 
@@ -438,7 +438,7 @@ Any owner can add and remove owners.
 behaviour rely-diff of Vat
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -463,7 +463,7 @@ if
 behaviour rely-same of Vat
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
 
@@ -485,7 +485,7 @@ if
 behaviour deny-diff of Vat
 interface deny(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -510,7 +510,7 @@ if
 behaviour deny-same of Vat
 interface deny(address usr)
 
-types
+for all
 
     Could : uint256
 
@@ -563,7 +563,7 @@ An `ilk` starts with `Rate` set to (fixed-point) one.
 behaviour init of Vat
 interface init(bytes32 ilk)
 
-types
+for all
 
     Can  : uint256
     Rate : uint256
@@ -588,7 +588,7 @@ iff
 behaviour file of Vat
 interface file(bytes32 what, uint256 data)
 
-types
+for all
 
     Can  : uint256
     Line : uint256
@@ -610,7 +610,7 @@ iff
 behaviour file-ilk of Vat
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
-types
+for all
 
     Can  : uint256
     Spot : uint256
@@ -638,7 +638,7 @@ Collateral coming from outside of the system must be assigned to a user before i
 behaviour slip of Vat
 interface slip(bytes32 ilk, address usr, int256 wad)
 
-types
+for all
 
     Can : uint256
     Gem : uint256
@@ -817,7 +817,7 @@ This is the core method that opens, manages, and closes a collateralised debt po
 behaviour tune of Vat
 interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
 
-types
+for all
 
     Can    : uint256
     Rate   : uint256
@@ -876,7 +876,7 @@ When a position of a user `u` is seized, both the collateral and debt are delete
 behaviour grab of Vat
 interface grab(bytes32 i, address u, address v, address w, int256 dink, int256 dart)
 
-types
+for all
 
     Can    : uint256
     Rate   : uint256
@@ -930,7 +930,7 @@ iff in range int256
 behaviour heal of Vat
 interface heal(address u, address v, int256 rad)
 
-types
+for all
 
     Can   : uint256
     Dai_v : uint256
@@ -972,7 +972,7 @@ Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which say
 behaviour fold of Vat
 interface fold(bytes32 i, address u, int256 rate)
 
-types
+for all
 
     Can   : uint256
     Rate  : uint256
@@ -1025,7 +1025,7 @@ The `Jug` updates each collateral type's debt unit `rate` while the offsetting d
 behaviour wards of Jug
 interface wards(address usr)
 
-types
+for all
 
     Can : uint256
 
@@ -1043,7 +1043,7 @@ returns Can
 behaviour ilks of Jug
 interface ilks(bytes32 ilk)
 
-types
+for all
 
     Vow : bytes32
     Tax : uint256
@@ -1063,7 +1063,7 @@ returns Tax : Rho
 behaviour vat of Jug
 interface vat()
 
-types
+for all
 
     Vat : address
 
@@ -1080,7 +1080,7 @@ returns Vat
 behaviour vow of Jug
 interface vow()
 
-types
+for all
 
     Vow : address
 
@@ -1097,7 +1097,7 @@ returns Vow
 behaviour repo of Jug
 interface repo()
 
-types
+for all
 
     Repo : uint256
 
@@ -1117,7 +1117,7 @@ returns Repo
 behaviour rely-diff of Jug
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -1141,7 +1141,7 @@ if
 behaviour rely-same of Jug
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
 
@@ -1162,7 +1162,7 @@ if
 behaviour deny-diff of Jug
 interface deny(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -1186,7 +1186,7 @@ if
 behaviour deny-same of Jug
 interface deny(address usr)
 
-types
+for all
 
     Could : uint256
 
@@ -1211,7 +1211,7 @@ if
 behaviour init of Jug
 interface init(bytes32 ilk)
 
-types
+for all
 
     Can : uint256
     Tax : uint256
@@ -1239,7 +1239,7 @@ iff
 behaviour file of Jug
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
-types
+for all
 
     Can : uint256
     Tax : uint256
@@ -1261,7 +1261,7 @@ iff
 behaviour file-repo of Jug
 interface file(bytes32 what, uint256 data)
 
-types
+for all
 
     Can  : uint256
     Repo : uint256
@@ -1284,7 +1284,7 @@ iff
 behaviour file-vow of Jug
 interface file(bytes32 what, bytes32 data)
 
-types
+for all
 
     Can : uint256
     Vow : bytes32
@@ -1307,7 +1307,7 @@ iff
 behaviour drip of Jug
 interface drip(bytes32 ilk)
 
-types
+for all
 
     Vat   : address VatLike
     Repo  : uint256
@@ -1374,7 +1374,7 @@ The `Vow` is the system's fiscal organ, the recipient of both system surplus and
 behaviour wards of Vow
 interface wards(address usr)
 
-types
+for all
 
     Can : uint256
 
@@ -1391,7 +1391,7 @@ returns Can
 behaviour sin of Vow
 interface sin(uint48 era)
 
-types
+for all
 
     Sin_era : uint256
 
@@ -1408,7 +1408,7 @@ returns Sin_era
 behaviour Sin of Vow
 interface Sin()
 
-types
+for all
 
     Sin : uint256
 
@@ -1425,7 +1425,7 @@ returns Sin
 behaviour Ash of Vow
 interface Ash()
 
-types
+for all
 
     Ash : uint256
 
@@ -1442,7 +1442,7 @@ returns Ash
 behaviour wait of Vow
 interface wait()
 
-types
+for all
 
     Wait : uint256
 
@@ -1459,7 +1459,7 @@ returns Wait
 behaviour sump of Vow
 interface sump()
 
-types
+for all
 
     Sump : uint256
 
@@ -1476,7 +1476,7 @@ returns Sump
 behaviour bump of Vow
 interface bump()
 
-types
+for all
 
     Bump : uint256
 
@@ -1493,7 +1493,7 @@ returns Bump
 behaviour hump of Vow
 interface hump()
 
-types
+for all
 
     Hump : uint256
 
@@ -1510,7 +1510,7 @@ returns Hump
 behaviour Awe of Vow
 interface Awe()
 
-types
+for all
 
     Vat : address VatLike
     Sin : uint256
@@ -1537,7 +1537,7 @@ returns Sin / #Ray
 behaviour Joy of Vow
 interface Joy()
 
-types
+for all
 
     Vat : address VatLike
     Dai : uint256
@@ -1564,7 +1564,7 @@ returns Dai / #Ray
 behaviour Woe of Vow
 interface Woe()
 
-types
+for all
 
     Vat  : address VatLike
     Ssin : uint256
@@ -1602,7 +1602,7 @@ returns (Sin / #Ray - Ssin) - Ash
 behaviour rely-diff of Vow
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -1626,7 +1626,7 @@ if
 behaviour rely-same of Vow
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
 
@@ -1647,7 +1647,7 @@ if
 behaviour deny-diff of Vow
 interface deny(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -1671,7 +1671,7 @@ if
 behaviour deny-same of Vow
 interface deny(address usr)
 
-types
+for all
 
     Could : uint256
 
@@ -1695,7 +1695,7 @@ if
 behaviour file-data of Vow
 interface file(bytes32 what, uint256 data)
 
-types
+for all
 
     Can  : uint256
     Wait : uint256
@@ -1723,7 +1723,7 @@ iff
 behaviour file-addr of Vow
 interface file(bytes32 what, address addr)
 
-types
+for all
 
     Can : uint256
     Cow : address
@@ -1749,7 +1749,7 @@ iff
 behaviour heal of Vow
 interface heal(uint256 wad)
 
-types
+for all
 
     Vat  : address VatLike
     Can  : uint256
@@ -1793,7 +1793,7 @@ iff in range int256
 behaviour kiss of Vow
 interface kiss(uint256 wad)
 
-types
+for all
 
     Vat  : address VatLike
     Ash  : uint256
@@ -1842,7 +1842,7 @@ iff in range int256
 behaviour fess of Vow
 interface fess(uint256 tab)
 
-types
+for all
 
     Can     : uint256
     Sin_era : uint256
@@ -1871,7 +1871,7 @@ iff in range uint256
 behaviour flog of Vow
 interface flog(uint48 t)
 
-types
+for all
 
     Wait  : uint256
     Sin_t : uint256
@@ -1900,7 +1900,7 @@ iff in range uint256
 behaviour flop of Vow
 interface flop()
 
-types
+for all
 
     Row     : address Flopper
     Vat     : address VatLike
@@ -1974,7 +1974,7 @@ returns 1 + Kicks
 behaviour flap of Vow
 interface flap()
 
-types
+for all
 
     Cow      : address Flapper
     Vat      : address VatLike
@@ -2076,7 +2076,7 @@ The `Cat` is the system's liquidation agent: it decides when a position is unsaf
 behaviour wards of Cat
 interface wards(address usr)
 
-types
+for all
 
     Can : uint256
 
@@ -2093,7 +2093,7 @@ returns Can
 behaviour ilks of Cat
 interface ilks(bytes32 ilk)
 
-types
+for all
 
     Chop : uint256
     Flip : address
@@ -2114,7 +2114,7 @@ returns Flip : Chop : Lump
 behaviour flips of Cat
 interface flips(uint256 n)
 
-types
+for all
 
     Ilk : bytes32
     Urn : bytes32
@@ -2137,7 +2137,7 @@ returns Ilk : Urn : Ink : Tab
 behaviour nflip of Cat
 interface nflip()
 
-types
+for all
 
     Nflip : uint256
 
@@ -2154,7 +2154,7 @@ returns Nflip
 behaviour live of Cat
 interface live()
 
-types
+for all
 
     Live : uint256
 
@@ -2171,7 +2171,7 @@ returns Live
 behaviour vat of Cat
 interface vat()
 
-types
+for all
 
     Vat : address
 
@@ -2188,7 +2188,7 @@ returns Vat
 behaviour pit of Cat
 interface pit()
 
-types
+for all
 
     Pit : address
 
@@ -2205,7 +2205,7 @@ returns Pit
 behaviour vow of Cat
 interface vow()
 
-types
+for all
 
     Vow : address
 
@@ -2224,7 +2224,7 @@ returns Vow
 behaviour rely-diff of Cat
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -2248,7 +2248,7 @@ if
 behaviour rely-same of Cat
 interface rely(address usr)
 
-types
+for all
 
     Can   : uint256
 
@@ -2269,7 +2269,7 @@ if
 behaviour deny-diff of Cat
 interface deny(address usr)
 
-types
+for all
 
     Can   : uint256
     Could : uint256
@@ -2293,7 +2293,7 @@ if
 behaviour deny-same of Cat
 interface deny(address usr)
 
-types
+for all
 
     Could : uint256
 
@@ -2317,7 +2317,7 @@ if
 behaviour file-addr of Cat
 interface file(bytes32 what, address data)
 
-types
+for all
 
     Can : uint256
     Pit : address
@@ -2341,7 +2341,7 @@ iff
 behaviour file of Cat
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
-types
+for all
 
     Can  : uint256
     Chop : uint256
@@ -2365,7 +2365,7 @@ iff
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
-types
+for all
 
     Can  : uint256
     Flip : address
@@ -2387,7 +2387,7 @@ iff
 behaviour bite of Cat
 interface bite(bytes32 ilk, address urn)
 
-types
+for all
 
     Vat     : address VatLike
     Pit     : address
@@ -2475,7 +2475,7 @@ returns Nflip + 1
 behaviour flip of Cat
 interface flip(uint256 n, uint256 wad)
 
-types
+for all
 
     Ilk   : bytes32
     Urn   : address
@@ -2546,7 +2546,7 @@ The `GemJoin` adapter allows standard ERC20 tokens to be deposited for use with 
 behaviour vat of GemJoin
 interface vat()
 
-types
+for all
 
     Vat : address VatLike
 
@@ -2563,7 +2563,7 @@ returns Vat
 behaviour ilk of GemJoin
 interface ilk()
 
-types
+for all
 
     Ilk : bytes32
 
@@ -2580,7 +2580,7 @@ returns Ilk
 behaviour gem of GemJoin
 interface gem()
 
-types
+for all
 
     Gem : address
 
@@ -2599,7 +2599,7 @@ returns Gem
 behaviour join of GemJoin
 interface join(bytes32 urn, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
@@ -2653,7 +2653,7 @@ if
 behaviour exit of GemJoin
 interface exit(address usr, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
@@ -2713,7 +2713,7 @@ if
 behaviour vat of ETHJoin
 interface vat()
 
-types
+for all
 
     Vat : address VatLike
 
@@ -2730,7 +2730,7 @@ returns Vat
 behaviour ilk of ETHJoin
 interface ilk()
 
-types
+for all
 
     Ilk : bytes32
 
@@ -2751,7 +2751,7 @@ returns Ilk
 behaviour join of ETHJoin
 interface join(bytes32 urn)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
@@ -2796,7 +2796,7 @@ if
 behaviour exit of ETHJoin
 interface exit(address usr, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
@@ -2851,7 +2851,7 @@ The `DaiJoin` adapter allows users to withdraw their dai from the system into a 
 behaviour vat of DaiJoin
 interface vat()
 
-types
+for all
 
     Vat : address VatLike
 
@@ -2868,7 +2868,7 @@ returns Vat
 behaviour dai of DaiJoin
 interface dai()
 
-types
+for all
 
     Dai : address
 
@@ -2887,7 +2887,7 @@ returns Dai
 behaviour join of DaiJoin
 interface join(bytes32 urn, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Dai         : address GemLike
@@ -2939,7 +2939,7 @@ if
 behaviour exit of DaiJoin
 interface exit(address usr, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Dai         : address GemLike
@@ -2999,7 +2999,7 @@ The `Flapper` is an auction contract that receives `dai` tokens and starts an au
 behaviour bids of Flapper
 interface bids(uint256 n)
 
-types
+for all
 
     Bid : uint256
     Lot : uint256
@@ -3024,7 +3024,7 @@ returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Gal
 behaviour dai of Flapper
 interface dai()
 
-types
+for all
 
     Dai : address
 
@@ -3041,7 +3041,7 @@ returns Dai
 behaviour gem of Flapper
 interface gem()
 
-types
+for all
 
     Gem : address
 
@@ -3058,7 +3058,7 @@ returns Gem
 behaviour beg of Flapper
 interface beg()
 
-types
+for all
 
     Beg : uint256
 
@@ -3075,7 +3075,7 @@ returns Beg
 behaviour ttl of Flapper
 interface ttl()
 
-types
+for all
 
     Ttl : uint48
     Tau : uint48
@@ -3093,7 +3093,7 @@ returns Ttl
 behaviour tau of Flapper
 interface tau()
 
-types
+for all
 
     Ttl : uint48
     Tau : uint48
@@ -3111,7 +3111,7 @@ returns Tau
 behaviour kicks of Flapper
 interface kicks()
 
-types
+for all
 
     Kicks : uint256
 
@@ -3131,7 +3131,7 @@ returns Kicks
 behaviour kick of Flapper
 interface kick(address gal, uint256 lot, uint256 bid)
 
-types
+for all
 
     Kicks    : uint256
     DaiMove  : address
