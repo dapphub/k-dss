@@ -658,6 +658,9 @@ iff in range uint256
 
     Gem + wad
 
+calls
+
+    Vat.addui
 ```
 
 #### moving unencumbered collateral
@@ -859,6 +862,10 @@ iff in range int256
     Rate
     Rate * dart
 
+calls
+
+    Vat.addui
+    Vat.subui
 ```
 
 #### confiscating a position
@@ -951,6 +958,10 @@ iff in range uint256
     Sin_u - rad
     Debt  - rad
     Vice  - rad
+
+calls
+
+    Vat.subui
 ```
 
 #### applying interest to an `ilk`
