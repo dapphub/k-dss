@@ -859,6 +859,97 @@ This is the core method that opens, manages, and closes a collateralised debt po
 
 #### forking a position
 
+```act
+behaviour fork-diff of Vat
+interface fork(bytes32, address src, address dst, int256 dink, int256 dart)
+
+for all
+
+    Can_src : uint256
+    Can_dst : uint256
+    Rate    : uint256
+    Spot    : uint256
+    Dust    : uint256
+    Ink_u   : uint256
+    Art_u   : uint256
+    Ink_v   : uint256
+    Art_v   : uint256
+
+storage
+
+    can[src][CALLER_ID] |-> Can_src
+    can[dst][CALLER_ID] |-> Can_dst
+    ilks[ilk].rate      |-> Rate
+    ilks[ilk].spot      |-> Spot
+    ilks[ilk].dust      |-> Dust
+    urns[ilk][src].ink  |-> Ink_u => Ink_u - dink
+    urns[ilk][src].art  |-> Art_u => Art_u - dart
+    urns[ilk][dst].ink  |-> Ink_v => Ink_v + dink
+    urns[ilk][dst].art  |-> Art_v => Art_v + dart
+
+iff in range uint256
+
+    Ink_u - dink
+    Ink_v + dink
+    Art_u - dart
+    Art_v + dart
+    (Ink_u - dink) * Spot
+    (Ink_v + dink) * Spot
+    (Art_u - dart) * Rate
+    (Art_v + dart) * Rate
+
+iff
+
+    (src == CALLER_ID) or Can_src
+    (dst == CALLER_ID) or Can_dst
+    (Art_u - dart) * Rate <= (Ink_u - dink) * Spot
+    (Art_v + dart) * Rate <= (Ink_v + dink) * Spot
+    ((Art_u - dart) * Rate >= Dust) or (Art_u - dart == 0)
+    ((Art_v + dart) * Rate >= Dust) or (Art_v + dart == 0)
+
+if
+
+    src =/= dst
+```
+
+```act
+behaviour fork-same of Vat
+interface fork(bytes32, address src, address dst, int256 dink, int256 dart)
+
+for all
+
+    Can_src : uint256
+    Rate    : uint256
+    Spot    : uint256
+    Dust    : uint256
+    Ink_u   : uint256
+    Art_u   : uint256
+
+storage
+
+    can[src][CALLER_ID] |-> Can_src
+    ilks[ilk].rate      |-> Rate
+    ilks[ilk].spot      |-> Spot
+    ilks[ilk].dust      |-> Dust
+    urns[ilk][src].ink  |-> Ink_u => Ink_u
+    urns[ilk][src].art  |-> Art_u => Art_u
+
+iff in range uint256
+
+    Ink_u - dink
+    Art_u - dart
+
+iff
+
+    (src == CALLER_ID) or Can_src
+    Art_u * Rate <= Ink_u * Spot
+    (Art_u * Rate >= Dust) or (Art_u == 0)
+
+if
+
+    src == dst
+```
+
 #### confiscating a position
 
 When a position of a user `u` is seized, both the collateral and debt are deleted from the user's account and assigned to the system's balance sheet, with the debt reincarnated as `sin` and assigned to some agent of the system `w`, while collateral goes to `v`.
