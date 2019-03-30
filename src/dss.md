@@ -337,6 +337,49 @@ iff
 
 returns Vice
 ```
+
+#### debt ceiling
+
+```act
+behaviour Line of Vat
+interface Line()
+
+types
+
+    Line : uint256
+
+storage
+
+    Line |-> Line
+
+iff
+
+    VCallValue == 0
+
+returns Line
+```
+
+#### system liveness flag
+
+```act
+behaviour live of Vat
+interface live()
+
+types
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Lemmas 
 
 #### Arithmetic
@@ -486,6 +529,32 @@ if
     CALLER_ID == usr
 ```
 
+```act
+behaviour hope of Vat
+interface hope(address usr)
+
+storage
+
+    can[CALLER_ID][usr] |-> _ => 1
+
+iff
+
+    VCallValue == 0
+```
+
+```act
+behaviour nope of Vat
+interface nope(address usr)
+
+storage
+
+    can[CALLER_ID][usr] |-> _ => 0
+
+iff
+
+    VCallValue == 0
+```
+
 #### initialising an `ilk`
 
 An `ilk` starts with `Rate` set to (fixed-point) one.
@@ -511,6 +580,54 @@ iff
     // act: `Rate` is `. ? : not` zero
     Rate == 0
     VCallValue == 0
+```
+
+#### setting the debt ceiling
+
+```act
+behaviour file of Vat
+interface file(bytes32 what, uint256 data)
+
+types
+
+    Can  : uint256
+    Line : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can
+    Line             |-> Line => (#if what == #string2Word("Line") #then data #else Line #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
+```
+
+#### setting `Ilk` data
+
+```act
+behaviour file-ilk of Vat
+interface file(bytes32 ilk, bytes32 what, uint256 data)
+
+types
+
+    Can  : uint256
+    Spot : uint256
+    Line : uint256
+    Dust : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Can
+    ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else spot #fi)
+    ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else line #fi)
+    ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else dust #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Can == 1
 ```
 
 #### assigning unencumbered collateral
