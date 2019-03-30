@@ -208,7 +208,7 @@ An `urn` is a collateralised debt position.
 
 ```act
 behaviour urns of Vat
-interface urns(bytes32 ilk, bytes32 urn)
+interface urns(bytes32 ilk, address urn)
 
 types
 
@@ -233,7 +233,7 @@ A `gem` is a token used as collateral in some `ilk`.
 
 ```act
 behaviour gem of Vat
-interface gem(bytes32 ilk, bytes32 usr)
+interface gem(bytes32 ilk, address usr)
 
 types
 
@@ -256,7 +256,7 @@ returns Gem
 
 ```act
 behaviour dai of Vat
-interface dai(bytes32 usr)
+interface dai(address usr)
 
 types
 
@@ -279,7 +279,7 @@ returns Rad
 
 ```act
 behaviour sin of Vat
-interface sin(bytes32 usr)
+interface sin(address usr)
 
 types
 
@@ -519,7 +519,7 @@ Collateral coming from outside of the system must be assigned to a user before i
 
 ```act
 behaviour slip of Vat
-interface slip(bytes32 ilk, bytes32 usr, int256 wad)
+interface slip(bytes32 ilk, address usr, int256 wad)
 
 types
 
@@ -750,7 +750,7 @@ When a position of a user `u` is seized, both the collateral and debt are delete
 
 ```act
 behaviour grab of Vat
-interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
+interface grab(bytes32 i, address u, address v, address w, int256 dink, int256 dart)
 
 types
 
@@ -804,7 +804,7 @@ iff in range int256
 
 ```act
 behaviour heal of Vat
-interface heal(bytes32 u, bytes32 v, int256 rad)
+interface heal(address u, address v, int256 rad)
 
 types
 
@@ -842,7 +842,7 @@ Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which say
 
 ```act
 behaviour fold of Vat
-interface fold(bytes32 i, bytes32 u, int256 rate)
+interface fold(bytes32 i, address u, int256 rate)
 
 types
 
