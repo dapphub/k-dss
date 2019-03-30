@@ -857,60 +857,7 @@ calls
 
 This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
-```act
-behaviour tune of Vat
-interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
-
-for all
-
-    Can    : uint256
-    Rate   : uint256
-    Ink_iu : uint256
-    Art_iu : uint256
-    Ink_i  : uint256
-    Art_i  : uint256
-    Gem_iv : uint256
-    Dai_w  : uint256
-    Debt   : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    ilks[i].rate     |-> Rate
-    urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
-    urns[i][u].art   |-> Art_iu => Art_iu + dart
-    ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
-    ilks[i].Art      |-> Art_i  => Art_i  + dart
-    gem[i][v]        |-> Gem_iv => Gem_iv - dink
-    dai[w]           |-> Dai_w  => Dai_w  + (Rate * dart)
-    debt             |-> Debt   => Debt   + (Rate * dart)
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-    VCallValue == 0
-
-iff in range uint256
-
-    Ink_iu + dink
-    Art_iu + dart
-    Ink_i  + dink
-    Art_i  + dart
-    Gem_iv - dink
-    Dai_w  + (Rate * dart)
-    Debt   + (Rate * dart)
-
-iff in range int256
-
-    Rate
-    Rate * dart
-
-calls
-
-    Vat.addui
-    Vat.subui
-```
+#### forking a position
 
 #### confiscating a position
 
