@@ -158,11 +158,32 @@ interface wards(address usr)
 
 for all
 
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+#### allowances
+
+```act
+behaviour can of Vat
+interface can(address src, address dst)
+
+for all
+
     Can : uint256
 
 storage
 
-    wards[usr] |-> Can
+    can[src][dst] |-> Can
 
 iff
 
@@ -440,18 +461,18 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 if
@@ -465,16 +486,16 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can => 1
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 if
@@ -487,18 +508,18 @@ interface deny(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 0
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 if
@@ -521,7 +542,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 if
@@ -565,18 +586,18 @@ interface init(bytes32 ilk)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Rate : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].rate   |-> Rate => #Ray
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: `Rate` is `. ? : not` zero
     Rate == 0
     VCallValue == 0
@@ -590,18 +611,18 @@ interface file(bytes32 what, uint256 data)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Line : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     Line             |-> Line => (#if what == #string2Word("Line") #then data #else Line #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### setting `Ilk` data
@@ -612,14 +633,14 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Spot : uint256
     Line : uint256
     Dust : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else spot #fi)
     ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else line #fi)
     ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else dust #fi)
@@ -627,7 +648,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### assigning unencumbered collateral
@@ -640,18 +661,18 @@ interface slip(bytes32 ilk, address usr, int256 wad)
 
 for all
 
-    Can : uint256
+    May : uint256
     Gem : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     gem[ilk][usr]    |-> Gem => Gem + wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 iff in range uint256
@@ -878,7 +899,7 @@ interface grab(bytes32 i, address u, address v, address w, int256 dink, int256 d
 
 for all
 
-    Can    : uint256
+    May    : uint256
     Rate   : uint256
     Ink_iu : uint256
     Art_iu : uint256
@@ -890,7 +911,7 @@ for all
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[i].rate     |-> Rate
     urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
     urns[i][u].art   |-> Art_iu => Art_iu + dart
@@ -903,7 +924,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 iff in range uint256
@@ -932,7 +953,7 @@ interface heal(address u, address v, int256 rad)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Dai_v : uint256
     Sin_u : uint256
     Debt  : uint256
@@ -940,7 +961,7 @@ for all
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     dai[v]           |-> Dai_v => Dai_v - rad
     sin[u]           |-> Sin_u => Sin_u - rad
     debt             |-> Debt  => Debt  - rad
@@ -949,7 +970,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 iff in range uint256
@@ -974,7 +995,7 @@ interface fold(bytes32 i, address u, int256 rate)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Rate  : uint256
     Dai   : uint256
     Art_i : uint256
@@ -982,7 +1003,7 @@ for all
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[i].rate     |-> Rate => Rate + rate
     ilks[i].Art      |-> Art_i
     dai[u]           |-> Dai  => Dai  + Art_i * rate
@@ -991,7 +1012,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     VCallValue == 0
 
 iff in range uint256
@@ -1027,13 +1048,13 @@ interface wards(address usr)
 
 for all
 
-    Can : uint256
+    May : uint256
 
 storage
 
-    wards[usr] |-> Can
+    wards[usr] |-> May
 
-returns Can
+returns May
 ```
 
 #### `ilk` data
@@ -1119,18 +1140,18 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -1143,16 +1164,16 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can => 1
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
     usr == CALLER_ID
@@ -1164,18 +1185,18 @@ interface deny(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 0
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -1197,7 +1218,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -1213,20 +1234,20 @@ interface init(bytes32 ilk)
 
 for all
 
-    Can : uint256
+    May : uint256
     Tax : uint256
     Rho : uint48
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].tax    |-> Tax => #Ray
     ilks[ilk].rho    |-> Rho => TIME
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: `Tax` is `. ? : not` zero
     Tax == 0
 
@@ -1241,18 +1262,18 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 for all
 
-    Can : uint256
+    May : uint256
     Tax : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### setting the base rate
@@ -1263,18 +1284,18 @@ interface file(bytes32 what, uint256 data)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Repo : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 ```
 
@@ -1286,18 +1307,18 @@ interface file(bytes32 what, bytes32 data)
 
 for all
 
-    Can : uint256
+    May : uint256
     Vow : bytes32
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 ```
 
@@ -1314,7 +1335,7 @@ for all
     Vow   : bytes32
     Tax   : uint256
     Rho   : uint48
-    Can   : uint256
+    May   : uint256
     Rate  : uint256
     Art_i : uint256
     Dai   : uint256
@@ -1330,7 +1351,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     ilks[ilk].Art  |-> Art_i
     dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
@@ -1339,7 +1360,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -1376,13 +1397,13 @@ interface wards(address usr)
 
 for all
 
-    Can : uint256
+    May : uint256
 
 storage
 
-    wards[usr] |-> Can
+    wards[usr] |-> May
 
-returns Can
+returns May
 ```
 
 #### getting a `sin` packet
@@ -1604,18 +1625,18 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -1628,16 +1649,16 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can => 1
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
     usr == CALLER_ID
@@ -1649,18 +1670,18 @@ interface deny(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 0
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -1682,7 +1703,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -1697,7 +1718,7 @@ interface file(bytes32 what, uint256 data)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Wait : uint256
     Sump : uint256
     Bump : uint256
@@ -1705,7 +1726,7 @@ for all
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
     sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
@@ -1714,7 +1735,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### setting vat and liquidators
@@ -1725,14 +1746,14 @@ interface file(bytes32 what, address addr)
 
 for all
 
-    Can : uint256
+    May : uint256
     Cow : address
     Row : address
     Vat : address
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
     row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
     vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
@@ -1740,7 +1761,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### cancelling bad debt and surplus
@@ -1752,7 +1773,7 @@ interface heal(uint256 wad)
 for all
 
     Vat  : address VatLike
-    Can  : uint256
+    May  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1764,7 +1785,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
     sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     vice           |-> Vice => Vice - wad * #Ray
@@ -1773,7 +1794,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -1797,7 +1818,7 @@ for all
 
     Vat  : address VatLike
     Ash  : uint256
-    Can  : uint256
+    May  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1810,7 +1831,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
     sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     vice           |-> Vice => Vice - wad * #Ray
@@ -1819,7 +1840,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -1844,20 +1865,20 @@ interface fess(uint256 tab)
 
 for all
 
-    Can     : uint256
+    May     : uint256
     Sin_era : uint256
     Sin     : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     sin[TIME]        |-> Sin_era => Sin_era + tab
     Sin              |-> Sin     => Sin     + tab
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 iff in range uint256
 
@@ -1907,7 +1928,7 @@ for all
     Ssin    : uint256
     Ash     : uint256
     Sump    : uint256
-    Can     : uint256
+    May     : uint256
     Kicks   : uint256
     Vow_was : address
     Lot_was : uint256
@@ -1930,7 +1951,7 @@ storage
 
 storage Row
 
-    #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.wards[ACCT_ID]              |-> May
     #Flopper.kicks                       |-> Kicks => 1 + Kicks
     #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
     #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
@@ -1946,7 +1967,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // doc:
     (Sin_v / #Ray - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
@@ -1993,7 +2014,7 @@ for all
     Ttl      : uint48
     Tau      : uint48
     Kicks    : uint256
-    Can_move : uint256
+    May_move : uint256
     Dai_v    : uint256
     Sin_v    : uint256
     Dai_c    : uint256
@@ -2019,7 +2040,7 @@ storage Cow
 
 storage Vat
 
-    wards[DaiMove] |-> Can_move
+    wards[DaiMove] |-> May_move
     dai[ACCT_ID]   |-> Dai_v => Dai_v - #Ray * Bump
     sin[ACCT_ID]   |-> Sin_v
     dai[Cow]       |-> Dai_c => Dai_c + #Ray * Bump
@@ -2031,7 +2052,7 @@ iff
     // doc: there is no `Woe`
     (Sin_v / #Ray - Ssin) - Ash == 0
     // doc: DaiMove is authorised to call Vat
-    Can_move == 1
+    May_move == 1
     // act: call stack is not too big
     VCallDepth < 1022
 
@@ -2078,13 +2099,13 @@ interface wards(address usr)
 
 for all
 
-    Can : uint256
+    May : uint256
 
 storage
 
-    wards[usr] |-> Can
+    wards[usr] |-> May
 
-returns Can
+returns May
 ```
 
 #### `ilk` data
@@ -2226,18 +2247,18 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -2250,16 +2271,16 @@ interface rely(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can => 1
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
     usr == CALLER_ID
@@ -2271,18 +2292,18 @@ interface deny(address usr)
 
 for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wards[usr]       |-> Could => 0
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -2304,7 +2325,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
@@ -2319,20 +2340,20 @@ interface file(bytes32 what, address data)
 
 for all
 
-    Can : uint256
+    May : uint256
     Pit : address
     Vow : address
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
     vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### setting liquidation data
@@ -2343,20 +2364,20 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Chop : uint256
     Lump : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
     ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### setting liquidator address
@@ -2367,18 +2388,18 @@ interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Can  : uint256
+    May  : uint256
     Flip : address
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 ```
 
 #### marking a position for liquidation
@@ -2423,7 +2444,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]     |-> Can
+    wards[ACCT_ID]     |-> May
     ilks[ilk].take     |-> Take
     ilks[ilk].rate     |-> Rate
     urns[ilk][urn].ink |-> Ink_iu => 0
@@ -2442,7 +2463,7 @@ storage Vow
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: system is  `. ? : not` live
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
@@ -2604,7 +2625,7 @@ for all
     Vat         : address VatLike
     Ilk         : bytes32
     Gem         : address GemLike
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
@@ -2617,7 +2638,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> Can
+    wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
 
 storage Gem
@@ -2628,7 +2649,7 @@ storage Gem
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -2658,7 +2679,7 @@ for all
     Vat         : address VatLike
     Ilk         : bytes32
     Gem         : address GemLike
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
@@ -2671,7 +2692,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> Can
+    wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Gem
@@ -2682,7 +2703,7 @@ storage Gem
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -2755,7 +2776,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_adapter : uint256
 
@@ -2766,13 +2787,13 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]      |-> Can
+    wards[ACCT_ID]      |-> May
     gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 iff in range int256
 
@@ -2800,7 +2821,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
 
@@ -2811,13 +2832,13 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]      |-> Can
+    wards[ACCT_ID]      |-> May
     gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
     // act: there is `. ? : not` enough ETH in the adapter
@@ -2891,7 +2912,7 @@ for all
 
     Vat         : address VatLike
     Dai         : address GemLike
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
@@ -2903,7 +2924,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
 
 storage Dai
@@ -2914,7 +2935,7 @@ storage Dai
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -2943,7 +2964,7 @@ for all
 
     Vat         : address VatLike
     Dai         : address GemLike
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
@@ -2955,7 +2976,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> Can
+    wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Dai
@@ -2966,7 +2987,7 @@ storage Dai
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -3144,8 +3165,8 @@ for all
     End_was  : uint48
     Gal_was  : address
     Vat      : address VatLike
-    Can      : uint256
-    Can_move : uint256
+    May      : uint256
+    May_move : uint256
     Dai_v    : uint256
     Dai_c    : uint256
 
@@ -3161,7 +3182,7 @@ storage
 
 storage Vat
 
-    wards[DaiMove] |-> Can_move
+    wards[DaiMove] |-> May_move
     dai[CALLER_ID] |-> Dai_v => Dai_v - #Ray * lot
     dai[ACCT_ID]   |-> Dai_c => Dai_c + #Ray * lot
 
@@ -3170,9 +3191,9 @@ iff
     // doc: call stack is not too big
     VCallDepth < 1023
     // doc: Flap is authorised to move for the caller
-    Can      == 1
+    May      == 1
     // doc: DaiMove is authorised to call Vat
-    Can_move == 1
+    May_move == 1
 
 iff in range uint256
 
