@@ -964,7 +964,6 @@ for all
     Rate   : uint256
     Ink_iu : uint256
     Art_iu : uint256
-    Ink_i  : uint256
     Art_i  : uint256
     Gem_iv : uint256
     Sin_w  : uint256
@@ -973,11 +972,10 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
+    ilks[i].Art      |-> Art_i  => Art_i  + dart
     ilks[i].rate     |-> Rate
     urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
     urns[i][u].art   |-> Art_iu => Art_iu + dart
-    ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
-    ilks[i].Art      |-> Art_i  => Art_i  + dart
     gem[i][v]        |-> Gem_iv => Gem_iv - dink
     sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
     vice             |-> Vice   => Vice   - (Rate * dart)
@@ -992,7 +990,6 @@ iff in range uint256
 
     Ink_iu + dink
     Art_iu + dart
-    Ink_i  + dink
     Art_i  + dart
     Gem_iv - dink
     Sin_w  - (Rate * dart)
@@ -2510,7 +2507,6 @@ storage Vat
     ilks[ilk].rate     |-> Rate
     urns[ilk][urn].ink |-> Ink_iu => 0
     urns[ilk][urn].art |-> Art_iu => 0
-    ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
     ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
     gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
     sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
