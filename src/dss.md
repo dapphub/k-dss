@@ -646,6 +646,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### setting `Ilk` data
@@ -672,6 +673,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### assigning unencumbered collateral
