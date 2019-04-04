@@ -123,6 +123,67 @@ syntax Int ::= "#Vat.live" [function]
 // act: the system is `. == 1 ? : not` live
 rule #Vat.live => 10
 ```
+### Dai
+
+syntax Int ::= "#Dai.wards" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: whether `$0` is an owner of `Vat`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #Dai.wards[A] => #hashedLocation("Solidity", 0, A)
+
+syntax Int ::= "#Dai.decimals" [function]
+// -----------------------------------------------
+// doc: decimal places in token balances
+// act: The dai token has .` decimal places
+rule #Dai.decimals => 1
+
+syntax Int ::= "#Dai.name" [function]
+// -----------------------------------------------
+// doc: the Token name
+// act: this token is called .`
+rule #Dai.name => 2
+
+syntax Int ::= "#Dai.totalSupply" [function]
+// -----------------------------------------------
+// doc: the total supply of this token
+// act: the total supply is .`
+rule #Dai.totalSupply => 3
+
+syntax Int ::= "#Dai.balanceOf" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the balance of a user
+// act: the balance of `$0 is .` us , 
+rule #Dai.balanceOf[A] => #hashedLocation("Solidity", 4, A)
+
+syntax Int ::= "#Dai.allowance" "[" Int "]" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #Dai.allowance[A][B] => #hashedLocation("Solidity", 5, A B)
+
+syntax Int ::= "#Dai.nonce" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #Dai.nonce[A] => #hashedLocation("Solidity", 6, A)
+
+syntax Int ::= "#Dai.nonce" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #Dai.nonce[A] => #hashedLocation("Solidity", 6, A)
+
+syntax Int ::= "#Dai.DOMAIN_SEPARATOR" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #Dai.permit_TYPEHASH => 7
+
+syntax Int ::= "#Dai.permit_TYPEHASH" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #Dai.permit_TYPEHASH => 8
 
 ### Drip
 

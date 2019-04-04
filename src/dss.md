@@ -1151,6 +1151,351 @@ iff in range int256
     Art_i * rate
 
 ```
+# Dai
+
+The `Dai` contract is the user facing ERC20 contract maintaining the accounting for external Dai balances. Most functions are standard for a token with changing supply, but it also notably features the ability to issue approvals for transferFroms based on signed messages, called `Permit`s.
+
+## Specification of behaviours
+
+### Accessors
+
+<-- TODO: Name, symbol, domain separator (requires dynamic types) -->
+```act
+behaviour wards of Dai
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+```act
+behaviour allowance of Dai
+interface allowance(address holder, address spender)
+
+types
+
+    Allowed : uint256
+
+storage
+
+    #Dai.allowance[holder][spender] |-> Allowed
+
+iff
+
+    VCallValue == 0
+
+returns Allowed
+```
+
+```act
+behaviour balanceOf of Dai
+interface balanceOf(address who)
+
+types
+
+    Balance : uint256
+
+storage
+
+    #Dai.balances[who] |-> Balance
+
+iff
+
+    VCallValue == 0
+
+returns Balance
+```
+
+```act
+behaviour totalSupply of Dai
+interface totalSupply()
+
+types
+
+    Supply : uint256
+
+storage
+
+    #Dai.supply |-> Supply
+
+iff
+
+    VCallValue == 0
+
+returns Supply
+```
+
+```act
+behaviour nonces of Dai
+interface nonces(address who)
+
+types
+
+    Nonce : uint256
+
+storage
+
+    #Dai.nonces[who] |-> Nonce
+
+iff
+
+    VCallValue == 0
+
+returns Nonce
+```
+
+```act
+behaviour decimals of Dai
+interface decimals()
+
+storage
+
+    #Dai.decimals |-> 18
+
+iff
+
+    VCallValue == 0
+
+returns 18
+```
+
+```act
+behaviour permit_TYPEHASH of Dai
+interface permit_TYPEHASH()
+
+storage
+
+    #Dai.permit_TYPEHASH |-> keccak(#string2Word("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
+
+iff
+
+    VCallValue == 0
+
+returns keccak(#string2Word("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
+```
+
+### Mutators
+
+```act
+behaviour transfer-diff of Dai
+interface transfer(address dst, uint wad)
+
+types
+
+    SrcBal : uint256
+    DstBal : uint256
+
+storage
+
+    #Dai.balanceOf[CALLER_ID] |-> SrcBal => SrcBal - wad
+    #Dai.balanceOf[dst]        |-> DstBal => DstBal + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+
+    VCallValue == 0
+
+if
+    CALLER_ID =/= dst
+
+returns 1
+```
+
+```act
+behaviour transfer-same of Dai
+interface transfer(address dst, uint wad)
+
+types
+
+    SrcBal : uint256
+
+storage
+
+    #Dai.balanceOf[CALLER_ID] |-> SrcBal => SrcBal
+
+iff in range uint256
+
+    SrcBal - wad
+
+iff
+
+    VCallValue == 0
+
+if
+
+CALLER_ID == dst
+
+
+returns 1
+```
+
+
+```act
+behaviour transferFrom-diff of Dai
+interface transferFrom(address src, address dst, uint wad)
+
+types
+
+    SrcBal  : uint256
+    DstBal  : uint256
+    Allowed : uint256
+
+storage
+
+    #Dai.allowance[src][CALLER_ID] |-> Allowed => (#if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi)
+    #Dai.balanceOf[src]            |-> SrcBal  => SrcBal  - wad
+    #Dai.balanceOf[dst]            |-> DstBal  => DstBal  + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+    (#rangeUint(256, Allowed - wad) or src == CALLER_ID)
+    VCallValue == 0
+
+if
+    src =/= dst
+
+returns 1
+```
+
+```act
+behaviour transferFrom-same of Dai
+interface transferFrom(address src, address dst, uint wad)
+
+types
+
+    SrcBal  : uint256
+    Allowed : uint256
+
+storage
+
+    #Dai.allowance[src][CALLER_ID] |-> Allowed => (#if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi)
+    #Dai.balanceOf[src]            |-> SrcBal  => SrcBal
+
+iff in range uint256
+
+    SrcBal - wad
+
+iff
+    (#rangeUint(256, Allowed - wad) or src == CALLER_ID)
+    VCallValue == 0
+
+if
+    src == dst
+
+returns 1
+```
+
+```act
+behaviour mint of Dai
+interface mint(address dst, uint wad)
+
+types
+
+    DstBal      : uint256
+    TotalSupply : uint256
+
+storage
+
+    #Dai.wards[CALLER_ID] |-> May
+    #Dai.balanceOf[dst]   |-> DstBal => DstBal + wad
+    #Dai.totalSupply      |-> TotalSupply => TotalSupply + wad
+
+iff in range uint256
+
+    DstBal + wad
+    TotalSupply + wad
+
+iff
+
+    May == 1
+    VCallValue == 0
+```
+```act
+behaviour burn of Dai
+interface burn(address src, uint wad)
+
+types
+
+    SrcBal      : uint256
+    TotalSupply : uint256
+
+storage
+
+    #Dai.allowance[src][CALLER_ID] |-> Allowed => (#if src == CALLER_ID #then Allowed #else Allowed - wad #fi)
+    #Dai.balanceOf[src]            |-> DstBal => DstBal - wad
+    #Dai.totalSupply               |-> TotalSupply => TotalSupply - wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+
+    (#rangeUint(256, Allowed - wad) or src == CALLER_ID)
+    VCallValue == 0
+```
+
+
+```act
+behaviour approve of Dai
+interface approve(address usr, uint wad)
+
+types
+
+    Allowed : uint256
+
+storage
+
+    #Dai.allowance[CALLER_ID][usr] |-> Allowed => wad
+
+iff
+    VCallValue == 0
+
+returns 1
+```
+
+```act
+behaviour permit of Dai
+interface permit(address holder, address spender, uint256 nonce, uint256 deadline, bool allowed, uint8 v, bytes32 r, bytes32 s)
+
+types
+
+    Nonce : uint256
+
+storage
+
+    #Dai.nonces[holder]             |-> Nonce => Nonce + 1
+    #Dai.allowance[holder][spender] |-> Allowed => (#if allowed #then maxUInt256 #else 0)
+
+iff in range uint256
+
+holder == #sender(#unparseByteStack(#padToWidth(32, #asByteStack(
+keccak(#encodePacked(STUFF))), //TODO
+        v,
+        #unparseByteStack(#padToWidth(32, #asByteStack(r))),
+        #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
+    Nonce + 1
+```
 
 # Jug
 
