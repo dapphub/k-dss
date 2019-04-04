@@ -406,37 +406,37 @@ returns Live
 #### Arithmetic
 
 ```act
-behaviour addui of Vat
-interface add(uint256 x, int256 y) internal
-
-stack
-
-    #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
-
-iff in range uint256
-
-    x + y
-
-if
-
-    #sizeWordStack(WS) <= 1015
+//behaviour addui of Vat
+//interface add(uint256 x, int256 y) internal
+//
+//stack
+//
+//    #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
+//
+//iff in range uint256
+//
+//    x + y
+//
+//if
+//
+//    #sizeWordStack(WS) <= 1015
 ```
 
 ```act
-behaviour subui of Vat
-interface sub(uint256 x, int256 y) internal
-
-stack
-
-    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
-
-iff in range uint256
-
-    x - y
-
-if
-
-    #sizeWordStack(WS) <= 1015
+//behaviour subui of Vat
+//interface sub(uint256 x, int256 y) internal
+//
+//stack
+//
+//    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
+//
+//iff in range uint256
+//
+//    x - y
+//
+//if
+//
+//    #sizeWordStack(WS) <= 1015
 ```
 
 ```act
@@ -703,10 +703,6 @@ iff
 iff in range uint256
 
     Gem + wad
-
-calls
-
-    Vat.addui
 ```
 
 #### moving unencumbered collateral
@@ -815,10 +811,6 @@ if
 
     src =/= dst
 
-calls
-
-    Vat.subuu
-    Vat.adduu
 ```
 
 ```act
@@ -863,7 +855,7 @@ This is the core method that opens, manages, and closes a collateralised debt po
 
 ```act
 behaviour fork-diff of Vat
-interface fork(bytes32, address src, address dst, int256 dink, int256 dart)
+interface fork(bytes32 ilk, address src, address dst, int256 dink, int256 dart)
 
 for all
 
@@ -916,7 +908,7 @@ if
 
 ```act
 behaviour fork-same of Vat
-interface fork(bytes32, address src, address dst, int256 dink, int256 dart)
+interface fork(bytes32 ilk, address src, address dst, int256 dink, int256 dart)
 
 for all
 
@@ -1039,10 +1031,6 @@ iff in range uint256
     Sin_u - rad
     Debt  - rad
     Vice  - rad
-
-calls
-
-    Vat.subui
 ```
 
 #### applying interest to an `ilk`
@@ -1086,9 +1074,6 @@ iff in range int256
     Art_i
     Art_i * rate
 
-calls
-
-    Vat.addui
 ```
 
 # Jug
