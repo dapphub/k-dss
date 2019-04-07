@@ -894,8 +894,8 @@ iff in range uint256
 
 iff
 
-    (src == CALLER_ID) or Can_src
-    (dst == CALLER_ID) or Can_dst
+    (src == CALLER_ID) or (Can_src == 1)
+    (dst == CALLER_ID) or (Can_dst == 1)
     (Art_u - dart) * Rate <= (Ink_u - dink) * Spot
     (Art_v + dart) * Rate <= (Ink_v + dink) * Spot
     ((Art_u - dart) * Rate >= Dust) or (Art_u - dart == 0)
@@ -935,7 +935,7 @@ iff in range uint256
 
 iff
 
-    (src == CALLER_ID) or Can_src
+    (src == CALLER_ID) or (Can_src == 1)
     Art_u * Rate <= Ink_u * Spot
     (Art_u * Rate >= Dust) or (Art_u == 0)
 
