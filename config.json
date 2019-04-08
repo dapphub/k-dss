@@ -12,6 +12,9 @@
     "Vat": {
       "solc_output": "./dss/out/vat.sol.json"
     },
+    "Dai": {
+      "solc_output": "./dss/out/dai.sol.json"
+    },
     "Jug": {
       "solc_output": "./dss/out/jug.sol.json"
     },

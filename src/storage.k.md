@@ -125,6 +125,7 @@ rule #Vat.live => 10
 ```
 ### Dai
 
+```k
 syntax Int ::= "#Dai.wards" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: whether `$0` is an owner of `Vat`
@@ -155,35 +156,30 @@ syntax Int ::= "#Dai.balanceOf" "[" Int "]" [function]
 // act: the balance of `$0 is .` us , 
 rule #Dai.balanceOf[A] => #hashedLocation("Solidity", 4, A)
 
-syntax Int ::= "#Dai.allowance" "[" Int "]" "[" Int "]" [function]
+syntax Int ::= "#Dai.allowance" "[" Int "][" Int "]" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
 rule #Dai.allowance[A][B] => #hashedLocation("Solidity", 5, A B)
 
-syntax Int ::= "#Dai.nonce" "[" Int "]" [function]
+syntax Int ::= "#Dai.nonces" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.nonce[A] => #hashedLocation("Solidity", 6, A)
+rule #Dai.nonces[A] => #hashedLocation("Solidity", 6, A)
 
-syntax Int ::= "#Dai.nonce" "[" Int "]" [function]
+syntax Int ::= "#Dai.DOMAIN_SEPARATOR" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.nonce[A] => #hashedLocation("Solidity", 6, A)
+rule #Dai.DOMAIN_SEPARATOR => 7
 
-syntax Int ::= "#Dai.DOMAIN_SEPARATOR" "[" Int "]" [function]
-// -----------------------------------------------
-// doc: the amount that can be spent on someones behalf
-// act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.permit_TYPEHASH => 7
-
-syntax Int ::= "#Dai.permit_TYPEHASH" "[" Int "]" [function]
+syntax Int ::= "#Dai.permit_TYPEHASH" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
 rule #Dai.permit_TYPEHASH => 8
+```
 
 ### Drip
 

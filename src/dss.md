@@ -1276,16 +1276,117 @@ interface permit_TYPEHASH()
 
 storage
 
-    #Dai.permit_TYPEHASH |-> keccak(#string2Word("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
+    #Dai.permit_TYPEHASH |-> keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
 
 iff
 
     VCallValue == 0
 
-returns keccak(#string2Word("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
+returns keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
 ```
 
 ### Mutators
+
+
+#### adding and removing owners
+
+Any owner can add and remove owners.
+
+```act
+behaviour rely-diff of Dai
+interface rely(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour rely-same of Dai
+interface rely(address usr)
+
+for all
+
+    May   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Dai
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Dai
+interface deny(address usr)
+
+for all
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID == usr
+```
+
 
 ```act
 behaviour transfer-diff of Dai
@@ -1338,8 +1439,7 @@ iff
 
 if
 
-CALLER_ID == dst
-
+    CALLER_ID == dst
 
 returns 1
 ```
@@ -1357,7 +1457,7 @@ types
 
 storage
 
-    #Dai.allowance[src][CALLER_ID] |-> Allowed => (#if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi)
+    #Dai.allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
     #Dai.balanceOf[src]            |-> SrcBal  => SrcBal  - wad
     #Dai.balanceOf[dst]            |-> DstBal  => DstBal  + wad
 
@@ -1387,7 +1487,7 @@ types
 
 storage
 
-    #Dai.allowance[src][CALLER_ID] |-> Allowed => (#if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi)
+    #Dai.allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
     #Dai.balanceOf[src]            |-> SrcBal  => SrcBal
 
 iff in range uint256
@@ -1485,16 +1585,18 @@ types
 storage
 
     #Dai.nonces[holder]             |-> Nonce => Nonce + 1
-    #Dai.allowance[holder][spender] |-> Allowed => (#if allowed #then maxUInt256 #else 0)
+    #Dai.allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
+
+iff 
+
+    holder == #sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodePacked(STUFF))), v,#unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s))))))
+    deadline == 0 or TIME < deadline
+    VCallValue == 0
+    nonce == Nonce
 
 iff in range uint256
-
-holder == #sender(#unparseByteStack(#padToWidth(32, #asByteStack(
-keccak(#encodePacked(STUFF))), //TODO
-        v,
-        #unparseByteStack(#padToWidth(32, #asByteStack(r))),
-        #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
     Nonce + 1
+
 ```
 
 # Jug
