@@ -261,7 +261,7 @@ iff
 returns Live
 ```
 
-### Lemmas 
+### Lemmas
 
 #### Arithmetic
 
@@ -623,7 +623,7 @@ iff
     // act: caller is `. ? : not` authorised
     (May == 1 or src == CALLER_ID)
     VCallValue == 0
-    
+
 iff in range uint256
 
     Gem_src - wad
@@ -717,73 +717,69 @@ interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
 
-	Ilk_rate : uint256
-	Ilk_line : uint256
-	Ilk_spot : uint256
-	Ilk_dust : uint256
-	Ilk_Art  : uint256
-	Urn_ink  : uint256
-	Urn_art  : uint256
-	Gem_iv   : uint256
-	Dai_w    : uint256
-	Debt     : uint256
-	Line     : uint256
-	Can_u    : uint256
-	Can_v    : uint256
-	Can_w    : uint256
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iv   : uint256
+    Dai_w    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Can_v    : uint256
+    Can_w    : uint256
     Live     : uint256
 
 storage
 
     ilks[i].rate      |-> Ilk_rate
-	ilks[i].line      |-> Ilk_line
-	ilks[i].spot      |-> Ilk_spot
-	ilks[i].dust      |-> Ilk_dust
-	Line              |-> Line
-	can[u][CALLER_ID] |-> Can_u
-	can[v][CALLER_ID] |-> Can_v
-	can[w][CALLER_ID] |-> Can_w
-	urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
-	urns[i][u].art    |-> Urn_art  => Urn_art + dart
-	ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
-	gem[i][v]         |-> Gem_iv   => Gem_iv  - dart
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    can[v][CALLER_ID] |-> Can_v
+    can[w][CALLER_ID] |-> Can_w
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
+    urns[i][u].art    |-> Urn_art  => Urn_art + dart
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dart
     dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
-	debt              |-> Debt     => Debt + (Ilk_rate * dart)
-	live              |-> Live
+    debt              |-> Debt     => Debt + (Ilk_rate * dart)
+    live              |-> Live
 
 iff in range uint256
 
-	Urn_ink + dink
-	Urn_art + dart
-	Ilk_Art + dart
-	Gem_iv - dart
-
-	Dai_w + (Ilk_rate * dart)
-	Debt + (Ilk_rate * dart)
-	Ilk_rate * dart
-	
-	Ilk_Art * Ilk_rate
-	Urn_art * Ilk_rate
-	Urn_ink * Ilk_spot
+    Urn_ink + dink
+    Urn_art + dart
+    Ilk_Art + dart
+    Gem_iv - dart
+    Dai_w + (Ilk_rate * dart)
+    Debt + (Ilk_rate * dart)
+    Ilk_rate * dart
+    Ilk_Art * Ilk_rate
+    Urn_art * Ilk_rate
+    Urn_ink * Ilk_spot
 
 if
 
-	u =/= v
-	v =/= w
-	u =/= w
+    u =/= v
+    v =/= w
+    u =/= w
 
 iff
 
-	(Ilk_Art * Ilk_rate <= Ilk_line and Debt <= Line) or (dart <= 0)
-	(dart <= 0 and dink >= 0) or (Urn_art * Ilk_rate <= Urn_ink * Ilk_spot)
-
-	(u == CALLER_ID or Can_u == 1) or (dart <= 0 and dink >= 0)
-	(v == CALLER_ID or Can_v == 1) or (dink < 0)
-	(w == CALLER_ID or Can_w == 1) or (dart > 0)
-	(Urn_art * Ilk_rate >= Ilk_dust) or (Urn_art == 0)
-	Ilk_rate =/= 0
-	Live == 1
-
+    (Ilk_Art * Ilk_rate <= Ilk_line and Debt <= Line) or (dart <= 0)
+    (dart <= 0 and dink >= 0) or (Urn_art * Ilk_rate <= Urn_ink * Ilk_spot)
+    (u == CALLER_ID or Can_u == 1) or (dart <= 0 and dink >= 0)
+    (v == CALLER_ID or Can_v == 1) or (dink < 0)
+    (w == CALLER_ID or Can_w == 1) or (dart > 0)
+    (Urn_art * Ilk_rate >= Ilk_dust) or (Urn_art == 0)
+    Ilk_rate =/= 0
+    Live == 1
     VCallValue == 0
 
 ```
@@ -1447,7 +1443,7 @@ storage
     nonces[holder]             |-> Nonce => Nonce + 1
     allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
 
-iff 
+iff
 
     holder == #sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodePacked(STUFF))), v,#unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s))))))
     deadline == 0 or TIME < deadline
@@ -3642,4 +3638,3 @@ if
 
 returns 1 + Kicks
 ```
-
