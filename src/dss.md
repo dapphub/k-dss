@@ -300,6 +300,24 @@ if
 ```
 
 ```act
+behaviour mului of Vat
+interface mul(uint256 x, int256 y) internal
+
+stack
+
+    #unsigned(y) : x : JMPTO : WS => JMPTO : #unsigned(x * y) : WD
+
+iff in range int256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
 behaviour subuu of Vat
 interface sub(uint256 x, uint256 y) internal
 
@@ -330,6 +348,24 @@ iff in range uint256
 if
 
     #sizeWordStack(WS) <= 100 //TODO: strengthen
+```
+
+```act
+behaviour muluu of Vat
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WD
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
 ```
 
 ### Mutators
