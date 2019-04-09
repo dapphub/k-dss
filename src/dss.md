@@ -406,37 +406,37 @@ returns Live
 #### Arithmetic
 
 ```act
-//behaviour addui of Vat
-//interface add(uint256 x, int256 y) internal
-//
-//stack
-//
-//    #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
-//
-//iff in range uint256
-//
-//    x + y
-//
-//if
-//
-//    #sizeWordStack(WS) <= 1015
+behaviour addui of Vat
+interface add(uint256 x, int256 y) internal
+
+stack
+
+   #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+   x + y
+
+if
+
+   #sizeWordStack(WS) <= 1015
 ```
 
 ```act
-//behaviour subui of Vat
-//interface sub(uint256 x, int256 y) internal
-//
-//stack
-//
-//    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
-//
-//iff in range uint256
-//
-//    x - y
-//
-//if
-//
-//    #sizeWordStack(WS) <= 1015
+behaviour subui of Vat
+interface sub(uint256 x, int256 y) internal
+
+stack
+
+    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    #sizeWordStack(WS) <= 1015
 ```
 
 ```act
