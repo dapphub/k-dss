@@ -11,6 +11,7 @@ stdenv.mkDerivation {
     openjdk8
     parallel
     zip
+    z3
   ];
   shellHook = ''
     export PATH=$KLAB_PATH/node_modules/.bin/:$KLAB_PATH/bin:$PATH
