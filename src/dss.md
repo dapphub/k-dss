@@ -599,6 +599,10 @@ iff
 iff in range uint256
 
     Gem + wad
+
+calls
+
+    addui
 ```
 
 #### moving unencumbered collateral
@@ -818,6 +822,10 @@ iff
     Live == 1
     VCallValue == 0
 
+calls
+
+    addui
+    subui
 ```
 #### forking a position
 
@@ -872,6 +880,11 @@ iff
 if
 
     src =/= dst
+
+calls
+
+    addui
+    subui
 ```
 
 ```act
@@ -910,6 +923,11 @@ iff
 if
 
     src == dst
+
+calls
+
+    addui
+    subui
 ```
 
 #### confiscating a position
@@ -961,6 +979,11 @@ iff in range int256
 
     Rate
     Rate * dart
+
+calls
+
+    addui
+    subui
 ```
 
 #### creating/annihilating system debt and surplus
@@ -999,11 +1022,16 @@ iff in range uint256
     Sin_u - rad
     Debt  - rad
     Vice  - rad
+
+calls
+
+    addui
+    subui
 ```
 
 #### applying interest to an `ilk`
 
-Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which says how many units of `dai` correspond to a unit of `art`. To preserve a key invariant, dai must be created or destroyed, depending on whether `Rate` is increasing or decreasing. The beneficiary/benefactor of the dai is `u`. 
+Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which says how many units of `dai` correspond to a unit of `art`. To preserve a key invariant, dai must be created or destroyed, depending on whether `Rate` is increasing or decreasing. The beneficiary/benefactor of the dai is `u`.
 
 ```act
 behaviour fold of Vat
@@ -1042,6 +1070,10 @@ iff in range int256
     Art_i
     Art_i * rate
 
+calls
+
+    addui
+    subui
 ```
 # Dai
 
