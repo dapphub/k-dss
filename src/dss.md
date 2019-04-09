@@ -665,9 +665,9 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else spot #fi)
-    ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else line #fi)
-    ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else dust #fi)
+    ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
+    ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else Line #fi)
+    ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else Dust #fi)
 
 iff
 
