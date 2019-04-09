@@ -1189,7 +1189,7 @@ types
 
 storage
 
-    #Dai.allowance[holder][spender] |-> Allowed
+    allowance[holder][spender] |-> Allowed
 
 iff
 
@@ -1208,7 +1208,7 @@ types
 
 storage
 
-    #Dai.balances[who] |-> Balance
+    balanceOf[who] |-> Balance
 
 iff
 
@@ -1227,7 +1227,7 @@ types
 
 storage
 
-    #Dai.supply |-> Supply
+    totalSupply |-> Supply
 
 iff
 
@@ -1246,7 +1246,7 @@ types
 
 storage
 
-    #Dai.nonces[who] |-> Nonce
+    nonces[who] |-> Nonce
 
 iff
 
@@ -1261,7 +1261,7 @@ interface decimals()
 
 storage
 
-    #Dai.decimals |-> 18
+    decimals |-> 18
 
 iff
 
@@ -1276,7 +1276,7 @@ interface permit_TYPEHASH()
 
 storage
 
-    #Dai.permit_TYPEHASH |-> keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
+    permit_TYPEHASH |-> keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)")
 
 iff
 
@@ -1399,8 +1399,8 @@ types
 
 storage
 
-    #Dai.balanceOf[CALLER_ID] |-> SrcBal => SrcBal - wad
-    #Dai.balanceOf[dst]        |-> DstBal => DstBal + wad
+    balanceOf[CALLER_ID] |-> SrcBal => SrcBal - wad
+    balanceOf[dst]        |-> DstBal => DstBal + wad
 
 iff in range uint256
 
@@ -1427,7 +1427,7 @@ types
 
 storage
 
-    #Dai.balanceOf[CALLER_ID] |-> SrcBal => SrcBal
+    balanceOf[CALLER_ID] |-> SrcBal => SrcBal
 
 iff in range uint256
 
@@ -1457,9 +1457,9 @@ types
 
 storage
 
-    #Dai.allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
-    #Dai.balanceOf[src]            |-> SrcBal  => SrcBal  - wad
-    #Dai.balanceOf[dst]            |-> DstBal  => DstBal  + wad
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal  => SrcBal  - wad
+    balanceOf[dst]            |-> DstBal  => DstBal  + wad
 
 iff in range uint256
 
@@ -1487,8 +1487,8 @@ types
 
 storage
 
-    #Dai.allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
-    #Dai.balanceOf[src]            |-> SrcBal  => SrcBal
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal  => SrcBal
 
 iff in range uint256
 
@@ -1515,9 +1515,9 @@ types
 
 storage
 
-    #Dai.wards[CALLER_ID] |-> May
-    #Dai.balanceOf[dst]   |-> DstBal => DstBal + wad
-    #Dai.totalSupply      |-> TotalSupply => TotalSupply + wad
+    wards[CALLER_ID] |-> May
+    balanceOf[dst]   |-> DstBal => DstBal + wad
+    totalSupply      |-> TotalSupply => TotalSupply + wad
 
 iff in range uint256
 
@@ -1540,9 +1540,9 @@ types
 
 storage
 
-    #Dai.allowance[src][CALLER_ID] |-> Allowed => (#if src == CALLER_ID #then Allowed #else Allowed - wad #fi)
-    #Dai.balanceOf[src]            |-> DstBal => DstBal - wad
-    #Dai.totalSupply               |-> TotalSupply => TotalSupply - wad
+    allowance[src][CALLER_ID] |-> Allowed => (#if src == CALLER_ID #then Allowed #else Allowed - wad #fi)
+    balanceOf[src]            |-> DstBal => DstBal - wad
+    totalSupply               |-> TotalSupply => TotalSupply - wad
 
 iff in range uint256
 
@@ -1566,7 +1566,7 @@ types
 
 storage
 
-    #Dai.allowance[CALLER_ID][usr] |-> Allowed => wad
+    allowance[CALLER_ID][usr] |-> Allowed => wad
 
 iff
     VCallValue == 0
@@ -1584,8 +1584,8 @@ types
 
 storage
 
-    #Dai.nonces[holder]             |-> Nonce => Nonce + 1
-    #Dai.allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
+    nonces[holder]             |-> Nonce => Nonce + 1
+    allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
 
 iff 
 
