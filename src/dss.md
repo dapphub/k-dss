@@ -316,23 +316,6 @@ if
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
 ```
-
-```act
-behaviour subuu of Vat
-interface sub(uint256 x, uint256 y) internal
-
-stack
-
-    y : x : JMPTO : WS => JMPTO : x - y : WS
-
-iff in range uint256
-    x - y
-
-if
-
-    #sizeWordStack(WS) <= 100 //TODO: strengthen
-```
-
 ```act
 behaviour adduu of Vat
 interface add(uint256 x, uint256 y) internal
@@ -347,8 +330,28 @@ iff in range uint256
 
 if
 
-    #sizeWordStack(WS) <= 100 //TODO: strengthen
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
 ```
+
+```act
+behaviour subuu of Vat
+interface sub(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
 
 ```act
 behaviour muluu of Vat
@@ -405,7 +408,7 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
