@@ -452,11 +452,11 @@ interface deny(address usr)
 
 for all
 
-    Could : uint256
+    May : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Could => 0
+    wards[CALLER_ID] |-> May => 0
 
 iff
 
