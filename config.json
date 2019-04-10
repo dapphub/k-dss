@@ -1,5 +1,6 @@
 {
   "name": "k-dss",
+  "url": "https://github.com/dapphub/k-dss/",
   "src": {
     "specification": "./src/dss.md",
     "smt_prelude": "./src/prelude.smt2.md",
