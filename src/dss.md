@@ -309,6 +309,7 @@ stack
 
 iff in range int256
 
+    x
     x * y
 
 if
