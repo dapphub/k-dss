@@ -4,6 +4,7 @@ stdenv.mkDerivation {
   buildInputs = [
     flex
     getopt
+    utillinux
     git
     gnumake
     jq
