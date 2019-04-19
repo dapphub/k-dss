@@ -14,7 +14,7 @@ This repo contains the formal specification and verification of [multicollateral
 
 The behavior of the contracts is specified in a literate format at [dss.md](src/dss.md), which generates a series of reachability claims, defining `succeeding` and `reverting` behavior for each function of each contract. These reachability claims are then tested against the [formal semantics of the EVM](https://github.com/kframework/evm-semantics) using the [klab](https://github.com/dapphub/klab) tool for interactive proof inspection and debugging.
 
-An html version of the specification, together with links to in-browser symbolic execution previews, is available at [stablecoin.technology](http://stablecoin.technology/)
+An html version of the specification, together with links to in-browser symbolic execution previews, is available at [dapp.ci/k-dss](https://dapp.ci/k-dss)
 
 # Installation
 ## dependencies
@@ -180,7 +180,7 @@ make out/specs/proof-Vat_dai_succ.k.proof.timestamp
 
 # Documentation
 
-To build the literate specification in HTML, run `make doc`. The output of this process is available at [stablecoin.technology](http://stablecoin.technology/)
+To build the literate specification in HTML, run `make doc`. The output of this process is available at [dapp.ci/k-dss](https://dapp.ci/k-dss).
 
 ## specification format
 The format used in [dss.md](src/dss.md) provides a concise way of specifying the behavior of a contract method (see [act-mode](https://github.com/livnev/act-mode) for a simple emacs major mode for `.act` specs).
