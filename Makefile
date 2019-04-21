@@ -53,7 +53,7 @@ all: dapp spec
 
 dapp:
 	git submodule update --init --recursive
-	cd $(DAPP_DIR) && dapp --use solc:0.5.6 build && cd ../
+	cd $(DAPP_DIR) && dapp build && cd ../
 
 dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../
