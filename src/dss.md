@@ -1465,16 +1465,17 @@ types
 
     SrcBal      : uint256
     TotalSupply : uint256
+    Allowed     : uint256
 
 storage
 
     allowance[src][CALLER_ID] |-> Allowed => (#if src == CALLER_ID #then Allowed #else Allowed - wad #fi)
-    balanceOf[src]            |-> DstBal => DstBal - wad
+    balanceOf[src]            |-> SrcBal => SrcBal - wad
     totalSupply               |-> TotalSupply => TotalSupply - wad
 
 iff in range uint256
 
-    DstBal - wad
+    SrcBal - wad
     TotalSupply - wad
 
 iff
@@ -1518,7 +1519,7 @@ storage
 iff
 
     holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodePacked(STUFF))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
-    deadline == 0 or TIME < deadline
+    deadline == 0 or TIME <= deadline
     VCallValue == 0
     nonce == Nonce
 
