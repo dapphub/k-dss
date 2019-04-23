@@ -1474,8 +1474,8 @@ storage
 
 iff in range uint256
 
-    SrcBal - wad
-    DstBal + wad
+    DstBal - wad
+    TotalSupply - wad
 
 iff
 
@@ -1517,7 +1517,7 @@ storage
 
 iff
 
-    holder == #sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodePacked(STUFF))), v,#unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s))))))
+    holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodePacked(STUFF))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
     deadline == 0 or TIME < deadline
     VCallValue == 0
     nonce == Nonce
@@ -3406,7 +3406,7 @@ interface join(bytes32 urn, uint256 wad)
 for all
 
     Vat         : address VatLike
-    Dai         : address GemLike
+    Dai         : address Dai
     May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
@@ -3424,8 +3424,8 @@ storage Vat
 
 storage Dai
 
-    #Gem.balances[CALLER_ID] |-> Bal_usr     => Bal_usr - wad
-    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    balanceOf[CALLER_ID] |-> Bal_usr     => Bal_usr - wad
+    balanceOf[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
@@ -3458,7 +3458,7 @@ interface exit(address usr, uint256 wad)
 for all
 
     Vat         : address VatLike
-    Dai         : address GemLike
+    Dai         : address Dai
     May         : uint256
     Rad         : uint256
     Bal_usr     : uint256
@@ -3476,8 +3476,8 @@ storage Vat
 
 storage Dai
 
-    #Gem.balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
-    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    balanceOf[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
+    balanceOf[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
