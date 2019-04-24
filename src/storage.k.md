@@ -165,7 +165,7 @@ rule #Dai.totalSupply => 5
 syntax Int ::= "#Dai.balanceOf" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the balance of a user
-// act: the balance of `$0 is .` us , 
+// act: the balance of `$0 is .` us ,
 rule #Dai.balanceOf[A] => #hashedLocation("Solidity", 6, A)
 
 syntax Int ::= "#Dai.allowance" "[" Int "][" Int "]" [function]
@@ -276,31 +276,31 @@ syntax Int ::= "#Vow.Ash" [function]
 // ---------------------------------
 // doc: total sin in debt auctions
 // act: the total sin in debt auctions is `.`
-rule #Vow.Ash => 7
+rule #Vow.Ash => 6
 
 syntax Int ::= "#Vow.wait" [function]
 // ----------------------------------
 // doc: sin maturation time
 // act: the sin maturation time is `.`
-rule #Vow.wait => 8
+rule #Vow.wait => 7
 
 syntax Int ::= "#Vow.sump" [function]
 // ----------------------------------
 // doc: debt auction lot size
 // act: the debt auction lot size is `.`
-rule #Vow.sump => 9
+rule #Vow.sump => 8
 
 syntax Int ::= "#Vow.bump" [function]
 // ----------------------------------
 // doc: surplus auction lot size
 // act: the surplus auction lot size is `.`
-rule #Vow.bump => 10
+rule #Vow.bump => 9
 
 syntax Int ::= "#Vow.hump" [function]
 // ---------------------------------
 // doc: surplus dai cushion
 // act: the surplus dai cushion is `.`
-rule #Vow.hump => 11
+rule #Vow.hump => 10
 ```
 
 ### Cat
