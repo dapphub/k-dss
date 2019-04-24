@@ -606,7 +606,7 @@ iff in range uint256
 
 calls
 
-    addui
+    Vat.addui
 ```
 
 #### moving unencumbered collateral
@@ -828,8 +828,8 @@ iff
 
 calls
 
-    addui
-    subui
+    Vat.addui
+    Vat.subui
 ```
 #### forking a position
 
@@ -887,8 +887,8 @@ if
 
 calls
 
-    addui
-    subui
+    Vat.addui
+    Vat.subui
 ```
 
 ```act
@@ -930,8 +930,8 @@ if
 
 calls
 
-    addui
-    subui
+    Vat.addui
+    Vat.subui
 ```
 
 #### confiscating a position
@@ -986,8 +986,8 @@ iff in range int256
 
 calls
 
-    addui
-    subui
+    Vat.addui
+    Vat.subui
 ```
 
 #### creating/annihilating system debt and surplus
@@ -1029,8 +1029,8 @@ iff in range uint256
 
 calls
 
-    addui
-    subui
+    Vat.addui
+    Vat.subui
 ```
 
 #### applying interest to an `ilk`
@@ -1076,8 +1076,8 @@ iff in range int256
 
 calls
 
-    addui
-    subui
+    Vat.addui
+    Vat.subui
 ```
 # Dai
 
