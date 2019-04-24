@@ -1395,7 +1395,7 @@ iff in range uint256
     DstBal + wad
 
 iff
-    #rangeUInt(256, Allowed - wad) or src == CALLER_ID
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
     VCallValue == 0
 
 if
@@ -1423,7 +1423,7 @@ iff in range uint256
     SrcBal - wad
 
 iff
-    #rangeUInt(256, Allowed - wad) or src == CALLER_ID
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
     VCallValue == 0
 
 if
@@ -1469,7 +1469,7 @@ types
 
 storage
 
-    allowance[src][CALLER_ID] |-> Allowed => (#if src == CALLER_ID #then Allowed #else Allowed - wad #fi)
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
     balanceOf[src]            |-> SrcBal => SrcBal - wad
     totalSupply               |-> TotalSupply => TotalSupply - wad
 
@@ -1480,7 +1480,7 @@ iff in range uint256
 
 iff
 
-    #rangeUInt(256, Allowed - wad) or src == CALLER_ID
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
     VCallValue == 0
 ```
 
@@ -1509,7 +1509,8 @@ interface permit(address holder, address spender, uint256 nonce, uint256 deadlin
 
 types
 
-    Nonce : uint256
+   Nonce   : uint256
+   Allowed : uint256
 
 storage
 
@@ -1518,7 +1519,9 @@ storage
 
 iff
 
-    holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodePacked(STUFF))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
+holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(
+#encodeArgs(STUFF)
+)))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
     deadline == 0 or TIME <= deadline
     VCallValue == 0
     nonce == Nonce
