@@ -193,6 +193,45 @@ syntax Int ::= "#Dai.permit_TYPEHASH" [function]
 rule #Dai.permit_TYPEHASH => 10
 ```
 
+### Jug
+```k
+syntax Int ::= "#Jug.wards" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: whether `$0` is an owner of `Jug`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #Jug.wards[A] => #hashedLocation("Solidity", 0, A)
+
+syntax Int ::= "#Jug.ilks" "[" Int "].duty" [function]
+// ----------------------------------------------------
+// doc:
+// act:
+rule #Jug.ilks[Ilk].duty => #hashedLocation("Solidity", 1, Ilk) +Int 0
+
+syntax Int ::= "#Jug.ilks" "[" Int "].rho" [function]
+// ----------------------------------------------------
+// doc:
+// act:
+rule #Jug.ilks[Ilk].rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
+
+syntax Int ::= "#Jug.vat" [function]
+// ----------------------------------
+// doc: `Vat` that this `Jug` points to
+// act: this Jug points to Vat `.`
+rule #Jug.vat => 2
+
+syntax Int ::= "#Jug.vow" [function]
+// ----------------------------------
+// doc: `Vow` that this `Jug` points to
+// act: this Jug points to Vow `.`
+rule #Jug.vow => 3
+
+syntax Int ::= "#Jug.base" [function]
+// ----------------------------------
+// doc:
+// act:
+rule #Jug.base => 4
+```
+
 ### Drip
 
 ```k
