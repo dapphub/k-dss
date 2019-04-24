@@ -1199,8 +1199,8 @@ returns 18
 ```
 
 ```act
-behaviour permit_TYPEHASH of Dai
-interface permit_TYPEHASH()
+behaviour PERMIT_TYPEHASH of Dai
+interface PERMIT_TYPEHASH()
 
 storage
 
