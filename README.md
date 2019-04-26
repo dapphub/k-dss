@@ -30,153 +30,23 @@ This will download and build the target contracts in `dss/`, and compile the lit
 
 # Usage
 
-To run a proof with [klab](https://github.com/dapphub/klab), you'll need to have a `klab server` running. Then try:
+To run a proof with [klab](https://github.com/dapphub/klab), try:
+
 ```sh
-klab run --spec out/specs/proof-Vat_dai_succ.k
+klab prove --dump out/specs/proof-Vat_dai_pass_rough.k
 ```
 
-This will open an interactive `klab` session exploring the success behaviour of the `dai()` method of the contract `Vat`.
+After it finishes, you can open an interactive debug session to exploring the success behaviour of the `dai()` method of the contract `Vat`:
 
-It's also possible to check the behaviours non-interactively, directly using `kprove`, which is much faster. To check all behaviours of the `Vat` contract, executing 4 jobs in parallel:
 ```sh
-make proofs-Vat -j4
+klab debug $(klab hash out/specs/proof-Vat_dai_pass_rough.k)
 ```
 
-Specific behaviours can also be checked, for example:
-```sh
-make out/specs/proof-Vat_dai_succ.k.proof.timestamp
-```
+If you aren't interested in exploring with the debugger, you can omit the `--dump` flag for better performance.
 
 # Progress
 
-(proof CI running at [dapp.ci](https://dapp.ci) )
-
-`x` - the proof is succeeding
-
-`?` - expected to succeed but yet to be checked
-
-`o` - in development (ask before attacking)
-
-`-` - no fail behaviour
-
-```
------------------------------------------
-| behaviour |   .2.sol    |    .sol     |
-|-----------| succ | fail | succ | fail |
-| Vat       +------+------+------+------|
-| wards     | x    | -    | x    | -    |
-| ilks      | x    | -    | x    | -    |
-| urns      | x    | -    | x    | -    |
-| gem       | x    | -    | x    | -    |
-| dai       | x    | -    | x    | -    |
-| sin       | x    | -    | x    | -    |
-| debt      | x    | -    | x    | -    |
-| vice      | x    | -    | x    | -    |
-| rely      | x    | x    | x    | x    |
-| deny      | x    | x    | x    | x    |
-| init      | x    | x    | x    | x    |
-| slip      | x    | x    | x    | x    |
-| flux      | x    | x    | x    | x    |
-| move      | x    | x    | x    | x    |
-| tune      | x    | x    | x    | x    |
-| grab      | x    | x    | x    | x    |
-| heal      | x    | x    | x    | x    |
-| fold      | x    | x    | x    | x    |
-| toll      | x    | x    | x    | x    |
-| Drip      +------+------+------+------|
-| wards     | x    | -    |      | -    |
-| ilks      | x    | -    |      | -    |
-| vat       | x    | -    |      | -    |
-| vow       | x    | -    |      | -    |
-| repo      | x    | -    |      | -    |
-| rely      | x    | x    |      |      |
-| deny      | x    | x    |      |      |
-| init      | x    | x    |      |      |
-| file      | x    | x    |      |      |
-| file-repo | x    | x    |      | -    |
-| file-vow  | x    | x    |      | -    |
-| drip      |      |      |      |      |
-| Pit       +------+------+------+------|
-| wards     | x    | -    |      | -    |
-| ilks      | x    | -    |      | -    |
-| live      | x    | -    |      | -    |
-| Line      | x    | -    |      | -    |
-| vat       | x    | -    |      | -    |
-| rely      | x    | x    |      |      |
-| deny      | x    | x    |      |      |
-| file-ilk  | x    | x    |      |      |
-| file-Line | x    | x    |      |      |
-| frob      |      |      |      |      |
-| Vow       +------+------+------+------|
-| wards     | x    | -    |      | -    |
-| sin       | x    | -    |      | -    |
-| Sin       | x    | -    |      | -    |
-| Ash       | x    | -    |      | -    |
-| wait      | x    | -    |      | -    |
-| sump      | x    | -    |      | -    |
-| bump      | x    | -    |      | -    |
-| hump      | x    | -    |      | -    |
-| Awe       | x    | -    |      | -    |
-| Joy       | x    | -    |      | -    |
-| Woe       | x    | x    |      |      |
-| rely      | x    | x    |      |      |
-| deny      | x    | x    |      |      |
-| file-data | x    | x    |      |      |
-| file-addr | x    | x    |      |      |
-| heal      | x    | x    |      |      |
-| kiss      | x    | x    |      |      |
-| fess      | x    | x    |      |      |
-| flog      | x    | x    |      |      |
-| flop      | x    | x    |      |      |
-| flap      | o    | o    |      |      |
-| Cat       +------+------+------+------|
-| wards     | x    | -    |      | -    |
-| ilks      | x    | -    |      | -    |
-| flips     | x    | -    |      | -    |
-| nflip     | x    | -    |      | -    |
-| live      | x    | -    |      | -    |
-| vat       | x    | -    |      | -    |
-| pit       | x    | -    |      | -    |
-| vow       | x    | -    |      | -    |
-| rely      | x    | x    |      |      |
-| deny      | x    | x    |      |      |
-| file-addr | x    | x    |      |      |
-| file      | x    | x    |      |      |
-| file-flip | x    | x    |      |      |
-| bite      |      |      |      |      |
-| flip      |      |      |      |      |
-| GemJoin   +------+------+------+------|
-| vat       |      | -    |      | -    |
-| ilk       |      | -    |      | -    |
-| gem       |      | -    |      | -    |
-| join      |      |      |      |      |
-| exit      |      |      |      |      |
-| ETHJoin   +------+------+------+------|
-| vat       |      | -    |      | -    |
-| ilk       |      | -    |      | -    |
-| join      |      |      |      |      |
-| exit      |      |      |      |      |
-| DaiJoin   +------+------+------+------|
-| vat       |      | -    |      | -    |
-| dai       |      | -    |      | -    |
-| join      |      |      |      |      |
-| exit      |      |      |      |      |
-| DaiMove   +------+------+------+------|
-| vat       |      | -    |      | -    |
-| hope      |      |      |      |      |
-| nope      |      |      |      |      |
-| move      |      |      |      |      |
-| Flapper   +------+------+------+------|
-| bids      |      | -    |      | -    |
-| dai       |      | -    |      | -    |
-| gem       |      | -    |      | -    |
-| beg       |      | -    |      | -    |
-| ttl       |      | -    |      | -    |
-| tau       |      | -    |      | -    |
-| kicks     |      | -    |      | -    |
-| kick      |      |      |      |      |
------------------------------------------
-```
+You can inspect the current state of the proofs in the CI running at [dapp.ci](https://dapp.ci/k-dss).
 
 # Documentation
 
@@ -186,6 +56,7 @@ To build the literate specification in HTML, run `make doc`. The output of this 
 The format used in [dss.md](src/dss.md) provides a concise way of specifying the behavior of a contract method (see [act-mode](https://github.com/livnev/act-mode) for a simple emacs major mode for `.act` specs).
 
 Let's break down the specification of the behavior of the function `heal` in the contract `Vat`:
+
 ```act
 behaviour heal of Vat
 interface heal(bytes32 u, bytes32 v, int256 rad)
@@ -217,6 +88,7 @@ iff in range uint256
     Debt - rad
     Vice - rad
 ```
+
 This snippet of code will generate two reachability claims, `proof-Vat_heal_succ.k` and `proof-Vat_heal_fail.k`. Both of these claims will refer to the bytecode of the contract `Vat` and use the function signature of `heal(bytes32,bytes32,int256)` as the first 4 bytes of calldata (keeping the rest of the calldata abstract). In the `success` spec, the conditions under the `iff` headers are postulated, while in the `fail` spec their negation is.
 
 The interesting part of this particular function happens under the `storage` header. The meaning of the line:
