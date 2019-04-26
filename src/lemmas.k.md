@@ -223,9 +223,19 @@ rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
   andBool #rangeSInt(256, A *Int B)
   andBool notBool (#unsigned(B) ==Int 0)
 
+
+rule abs(B) ==K 0 => B ==K 0
+
 // possibly get rid of
 rule #sgnInterp(sgn(W), abs(W)) => W
   requires #rangeUInt(256, W)
+
+rule #sgnInterp(sgn(#unsigned(A *Int B) *Int sgn(#unsigned(B))), A) => A
+  requires #rangeSInt(256, A *Int B)
+  andBool #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeSInt(256, A)
+
 
 rule #sgnInterp(sgn(#unsigned(A *Int B)), A) => A
   requires #rangeUInt(256, A)
