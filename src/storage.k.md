@@ -185,12 +185,6 @@ syntax Int ::= "#Dai.DOMAIN_SEPARATOR" [function]
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
 rule #Dai.DOMAIN_SEPARATOR => 9
-
-syntax Int ::= "#Dai.permit_TYPEHASH" [function]
-// -----------------------------------------------
-// doc: the amount that can be spent on someones behalf
-// act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.permit_TYPEHASH => 10
 ```
 
 ### Jug

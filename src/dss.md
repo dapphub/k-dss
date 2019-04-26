@@ -1202,15 +1202,31 @@ returns 18
 behaviour PERMIT_TYPEHASH of Dai
 interface PERMIT_TYPEHASH()
 
-storage
-
-    permit_TYPEHASH |-> keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)"))
-
 iff
 
     VCallValue == 0
 
 returns keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)"))
+```
+
+```act
+behaviour DOMAIN_SEPARATOR of Dai
+interface DOMAIN_SEPARATOR()
+
+for all
+
+    Version : string
+    ChainId : uint256
+
+storage
+
+    DOMAIN_SEPARATOR |-> keccak(#encodeArgs(#bytes32(keccak(#parseBytesRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseBytesRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseBytesRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+
+iff
+
+    VCallValue == 0
+
+returns keccak(#encodeArgs(#bytes32(keccak(#parseBytesRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseBytesRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseBytesRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
 ```
 
 ### Mutators
@@ -1519,9 +1535,7 @@ storage
 
 iff
 
-holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(
-#encodeArgs(STUFF)
-)))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
+    holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodeArgs(STUFF))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
     deadline == 0 or TIME <= deadline
     VCallValue == 0
     nonce == Nonce
