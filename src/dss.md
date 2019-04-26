@@ -1,148 +1,8 @@
 What follows is an executable K specification of the smart contracts of multicollateral dai.
 
-Table of Contents
-=================
-
-   * [Table of Contents](#table-of-contents)
-   * [Vat](#vat)
-      * [Specification of behaviours](#specification-of-behaviours)
-         * [Accessors](#accessors)
-            * [owners](#owners)
-            * [collateral type data](#collateral-type-data)
-            * [urn data](#urn-data)
-            * [internal unencumbered collateral balances](#internal-unencumbered-collateral-balances)
-            * [internal dai balances](#internal-dai-balances)
-            * [internal sin balances](#internal-sin-balances)
-            * [total debt](#total-debt)
-            * [total bad debt](#total-bad-debt)
-         * [Mutators](#mutators)
-            * [adding and removing owners](#adding-and-removing-owners)
-            * [initialising an ilk](#initialising-an-ilk)
-            * [assigning unencumbered collateral](#assigning-unencumbered-collateral)
-            * [moving unencumbered collateral](#moving-unencumbered-collateral)
-            * [transferring dai balances](#transferring-dai-balances)
-            * [administering a position](#administering-a-position)
-            * [confiscating a position](#confiscating-a-position)
-            * [creating/annihilating system debt and surplus](#creatingannihilating-system-debt-and-surplus)
-            * [applying interest to an ilk](#applying-interest-to-an-ilk)
-            * [applying collateral adjustment to an ilk](#applying-collateral-adjustment-to-an-ilk)
-   * [Drip](#drip)
-      * [Specification of behaviours](#specification-of-behaviours-1)
-         * [Accessors](#accessors-1)
-            * [owners](#owners-1)
-            * [ilk data](#ilk-data)
-            * [vat address](#vat-address)
-            * [vow address](#vow-address)
-            * [global interest rate](#global-interest-rate)
-         * [Mutators](#mutators-1)
-            * [adding and removing owners](#adding-and-removing-owners-1)
-            * [initialising an ilk](#initialising-an-ilk-1)
-            * [setting ilk data](#setting-ilk-data)
-            * [setting the base rate](#setting-the-base-rate)
-            * [setting the vow](#setting-the-vow)
-            * [updating the rates](#updating-the-rates)
-   * [Pit](#pit)
-      * [Specification of behaviours](#specification-of-behaviours-2)
-         * [Accessors](#accessors-2)
-            * [owners](#owners-2)
-            * [ilk data](#ilk-data-1)
-            * [liveness](#liveness)
-            * [vat address](#vat-address-1)
-            * [global debt ceiling](#global-debt-ceiling)
-         * [Mutators](#mutators-2)
-            * [adding and removing owners](#adding-and-removing-owners-2)
-            * [setting ilk data](#setting-ilk-data-1)
-            * [setting the global debt ceiling](#setting-the-global-debt-ceiling)
-            * [manipulating a position](#manipulating-a-position)
-   * [Vow](#vow)
-      * [Specification of behaviours](#specification-of-behaviours-3)
-         * [Accessors](#accessors-3)
-            * [owners](#owners-3)
-            * [getting a sin packet](#getting-a-sin-packet)
-            * [getting the Sin](#getting-the-sin)
-            * [getting the Ash](#getting-the-ash)
-            * [getting the wait](#getting-the-wait)
-            * [getting the sump](#getting-the-sump)
-            * [getting the bump](#getting-the-bump)
-            * [getting the hump](#getting-the-hump)
-            * [getting the Awe](#getting-the-awe)
-            * [getting the Joy](#getting-the-joy)
-            * [getting the Woe](#getting-the-woe)
-         * [Mutators](#mutators-3)
-            * [adding and removing owners](#adding-and-removing-owners-3)
-            * [setting Vow parameters](#setting-vow-parameters)
-            * [setting vat and liquidators](#setting-vat-and-liquidators)
-            * [cancelling bad debt and surplus](#cancelling-bad-debt-and-surplus)
-            * [adding to the sin queue](#adding-to-the-sin-queue)
-            * [processing sin queue](#processing-sin-queue)
-            * [starting a debt auction](#starting-a-debt-auction)
-            * [starting a surplus auction](#starting-a-surplus-auction)
-   * [Cat](#cat)
-      * [Specification of behaviours](#specification-of-behaviours-4)
-         * [Accessors](#accessors-4)
-            * [owners](#owners-4)
-            * [ilk data](#ilk-data-2)
-            * [liquidation data](#liquidation-data)
-            * [liquidation counter](#liquidation-counter)
-            * [liveness](#liveness-1)
-            * [vat address](#vat-address-2)
-            * [pit address](#pit-address)
-            * [vow address](#vow-address-1)
-         * [Mutators](#mutators-4)
-            * [adding and removing owners](#adding-and-removing-owners-4)
-            * [setting contract addresses](#setting-contract-addresses)
-            * [setting liquidation data](#setting-liquidation-data)
-            * [setting liquidator address](#setting-liquidator-address)
-            * [marking a position for liquidation](#marking-a-position-for-liquidation)
-            * [starting a collateral auction](#starting-a-collateral-auction)
-   * [GemJoin](#gemjoin)
-      * [Specification of behaviours](#specification-of-behaviours-5)
-         * [Accessors](#accessors-5)
-            * [vat address](#vat-address-3)
-            * [the associated ilk](#the-associated-ilk)
-            * [gem address](#gem-address)
-         * [Mutators](#mutators-5)
-            * [depositing into the system](#depositing-into-the-system)
-            * [withdrawing from the system](#withdrawing-from-the-system)
-   * [ETHJoin](#ethjoin)
-      * [Specification of behaviours](#specification-of-behaviours-6)
-         * [Accessors](#accessors-6)
-            * [vat address](#vat-address-4)
-            * [the associated ilk](#the-associated-ilk-1)
-         * [Mutators](#mutators-6)
-            * [depositing into the system](#depositing-into-the-system-1)
-            * [withdrawing from the system](#withdrawing-from-the-system-1)
-   * [DaiJoin](#daijoin)
-      * [Specification of behaviours](#specification-of-behaviours-7)
-         * [Accessors](#accessors-7)
-            * [vat address](#vat-address-5)
-            * [dai address](#dai-address)
-         * [Mutators](#mutators-7)
-            * [depositing into the system](#depositing-into-the-system-2)
-            * [withdrawing from the system](#withdrawing-from-the-system-2)
-   * [DaiMove](#daimove)
-      * [Specification of behaviours](#specification-of-behaviours-8)
-         * [Accessors](#accessors-8)
-            * [the Vat](#the-vat)
-         * [Mutators](#mutators-8)
-            * [approve or unapprove an address](#approve-or-unapprove-an-address)
-            * [move tokens](#move-tokens)
-   * [Flapper](#flapper)
-      * [Specification of behaviours](#specification-of-behaviours-9)
-         * [Accessors](#accessors-9)
-            * [bid data](#bid-data)
-            * [sell token](#sell-token)
-            * [buy token](#buy-token)
-            * [minimum bid increment](#minimum-bid-increment)
-            * [auction time-to-live](#auction-time-to-live)
-            * [maximum auction duration](#maximum-auction-duration)
-            * [kick counter](#kick-counter)
-         * [Mutators](#mutators-9)
-            * [starting an auction](#starting-an-auction)
-
 # Vat
 
-The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. Its methods cannot be called directly, but only through interfaces like [Pit](#pit) and [Vow](#vow).
+The `Vat` stores the core dai, CDP, and collateral state, and tracks the system's accounting invariants. The `Vat` is where all dai is created and destroyed. The `Vat` provides `frob`: the core interface for interacting with CDPs.
 
 ## Specification of behaviours
 
@@ -154,19 +14,40 @@ The contracts use a multi-owner only-owner authorisation scheme. In the case of 
 
 ```act
 behaviour wards of Vat
-interface wards(address guy)
+interface wards(address usr)
 
-types
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+#### allowances
+
+```act
+behaviour can of Vat
+interface can(address src, address dst)
+
+for all
 
     Can : uint256
 
 storage
 
-    wards[guy] |-> Can
+    can[src][dst] |-> Can
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Can
 ```
@@ -179,25 +60,27 @@ An `ilk` is a collateral type.
 behaviour ilks of Vat
 interface ilks(bytes32 ilk)
 
-types
+for all
 
-    Take  : uint256
-    Rate  : uint256
-    Ink_i : uint256
-    Art_i : uint256
+    Ilk_Art  : uint256
+    Ilk_rate : uint256
+    Ilk_spot : uint256
+    Ilk_line : uint256
+    Ilk_dust : uint256
 
 storage
 
-    ilks[ilk].take |-> Take
-    ilks[ilk].rate |-> Rate
-    ilks[ilk].Ink  |-> Ink_i
-    ilks[ilk].Art  |-> Art_i
+    ilks[ilk].Art  |-> Ilk_Art
+    ilks[ilk].rate |-> Ilk_rate
+    ilks[ilk].spot |-> Ilk_spot
+    ilks[ilk].line |-> Ilk_line
+    ilks[ilk].dust |-> Ilk_dust
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
-returns Take : Rate : Ink_i : Art_i
+returns Ilk_Art : Ilk_rate : Ilk_spot : Ilk_line : Ilk_dust
 ```
 
 #### `urn` data
@@ -206,9 +89,9 @@ An `urn` is a collateralised debt position.
 
 ```act
 behaviour urns of Vat
-interface urns(bytes32 ilk, bytes32 urn)
+interface urns(bytes32 ilk, address urn)
 
-types
+for all
 
     Ink_iu : uint256
     Art_iu : uint256
@@ -218,9 +101,9 @@ storage
     urns[ilk][urn].ink |-> Ink_iu
     urns[ilk][urn].art |-> Art_iu
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Ink_iu : Art_iu
 ```
@@ -231,19 +114,19 @@ A `gem` is a token used as collateral in some `ilk`.
 
 ```act
 behaviour gem of Vat
-interface gem(bytes32 ilk, bytes32 guy)
+interface gem(bytes32 ilk, address usr)
 
-types
+for all
 
     Gem : uint256
 
 storage
 
-    gem[ilk][guy] |-> Gem
+    gem[ilk][usr] |-> Gem
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Gem
 ```
@@ -254,19 +137,19 @@ returns Gem
 
 ```act
 behaviour dai of Vat
-interface dai(bytes32 guy)
+interface dai(address usr)
 
-types
+for all
 
     Rad : uint256
 
 storage
 
-    dai[guy] |-> Rad
+    dai[usr] |-> Rad
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Rad
 ```
@@ -277,19 +160,19 @@ returns Rad
 
 ```act
 behaviour sin of Vat
-interface sin(bytes32 guy)
+interface sin(address usr)
 
-types
+for all
 
     Rad : uint256
 
 storage
 
-    sin[guy] |-> Rad
+    sin[usr] |-> Rad
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Rad
 ```
@@ -300,7 +183,7 @@ returns Rad
 behaviour debt of Vat
 interface debt()
 
-types
+for all
 
     Debt : uint256
 
@@ -308,9 +191,9 @@ storage
 
     debt |-> Debt
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Debt
 ```
@@ -321,7 +204,7 @@ returns Debt
 behaviour vice of Vat
 interface vice()
 
-types
+for all
 
     Vice : uint256
 
@@ -329,12 +212,166 @@ storage
 
     vice |-> Vice
 
-if
+iff
 
-    VGas > 300000
+    VCallValue == 0
 
 returns Vice
 ```
+
+#### debt ceiling
+
+```act
+behaviour Line of Vat
+interface Line()
+
+for all
+
+    Line : uint256
+
+storage
+
+    Line |-> Line
+
+iff
+
+    VCallValue == 0
+
+returns Line
+```
+
+#### system liveness flag
+
+```act
+behaviour live of Vat
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
+### Lemmas
+
+#### Arithmetic
+
+```act
+behaviour addui of Vat
+interface add(uint256 x, int256 y) internal
+
+stack
+
+   #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+   x + y
+
+if
+
+   #sizeWordStack(WS) <= 1015
+```
+
+```act
+behaviour subui of Vat
+interface sub(uint256 x, int256 y) internal
+
+stack
+
+    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    #sizeWordStack(WS) <= 1015
+```
+
+```act
+behaviour mului of Vat
+interface mul(uint256 x, int256 y) internal
+
+stack
+
+    #unsigned(y) : x : JMPTO : WS => JMPTO : #unsigned(x * y) : WD
+
+iff in range int256
+
+    x
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+```act
+behaviour adduu of Vat
+interface add(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+    x + y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour subuu of Vat
+interface sub(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+
+```act
+behaviour muluu of Vat
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WD
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
 ### Mutators
 
 #### adding and removing owners
@@ -342,85 +379,201 @@ returns Vice
 Any owner can add and remove owners.
 
 ```act
-behaviour rely of Vat
-interface rely(address guy)
+behaviour rely-diff of Vat
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+    VCallValue == 0
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
 ```
 
 ```act
-behaviour deny of Vat
-interface deny(address guy)
+behaviour rely-same of Vat
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
-    Could : uint256
+    May : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Vat
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Vat
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID == usr
+```
+
+```act
+behaviour hope of Vat
+interface hope(address usr)
+
+storage
+
+    can[CALLER_ID][usr] |-> _ => 1
+
+iff
+
+    VCallValue == 0
+```
+
+```act
+behaviour nope of Vat
+interface nope(address usr)
+
+storage
+
+    can[CALLER_ID][usr] |-> _ => 0
+
+iff
+
+    VCallValue == 0
 ```
 
 #### initialising an `ilk`
 
-An `ilk` starts with `Rate` and `Take` set to (fixed-point) one.
+An `ilk` starts with `Rate` set to (fixed-point) one.
 
 ```act
 behaviour init of Vat
 interface init(bytes32 ilk)
 
-types
+for all
 
-    Can  : uint256
+    May  : uint256
     Rate : uint256
-    Take : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    ilks[ilk].rate   |-> Rate => 1000000000000000000000000000
-    ilks[ilk].take   |-> Take => 1000000000000000000000000000
+    wards[CALLER_ID] |-> May
+    ilks[ilk].rate   |-> Rate => #Ray
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: `Rate` is `. ? : not` zero
     Rate == 0
-    // act: `Take` is `. ? : not` zero
-    Take == 0
+    VCallValue == 0
+```
 
-if
+#### setting the debt ceiling
 
-    VGas > 300000
+```act
+behaviour file of Vat
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Line : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    Line             |-> Line => (#if what == #string2Word("Line") #then data #else Line #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+```
+
+#### setting `Ilk` data
+
+```act
+behaviour file-ilk of Vat
+interface file(bytes32 ilk, bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Spot : uint256
+    Line : uint256
+    Dust : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
+    ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else Line #fi)
+    ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else Dust #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
 ```
 
 #### assigning unencumbered collateral
@@ -429,54 +582,56 @@ Collateral coming from outside of the system must be assigned to a user before i
 
 ```act
 behaviour slip of Vat
-interface slip(bytes32 ilk, bytes32 guy, int256 wad)
+interface slip(bytes32 ilk, address usr, int256 wad)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
     Gem : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    gem[ilk][guy]    |-> Gem => Gem + wad
+    wards[CALLER_ID] |-> May
+    gem[ilk][usr]    |-> Gem => Gem + wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+    VCallValue == 0
 
 iff in range uint256
 
     Gem + wad
 
-if
+calls
 
-    VGas > 300000
+    Vat.addui
 ```
 
 #### moving unencumbered collateral
 
 ```act
-behaviour flux of Vat
-interface flux(bytes32 ilk, bytes32 src, bytes32 dst, int256 wad)
+behaviour flux-diff of Vat
+interface flux(bytes32 ilk, address src, address dst, uint256 wad)
 
-types
+for all
 
-    Can     : uint256
+    May     : uint256
     Gem_src : uint256
     Gem_dst : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    gem[ilk][src]    |-> Gem_src => Gem_src - wad
-    gem[ilk][dst]    |-> Gem_dst => Gem_dst + wad
+    can[src][CALLER_ID] |-> May
+    gem[ilk][src]       |-> Gem_src => Gem_src - wad
+    gem[ilk][dst]       |-> Gem_dst => Gem_dst + wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    (May == 1 or src == CALLER_ID)
+    VCallValue == 0
 
 iff in range uint256
 
@@ -485,31 +640,71 @@ iff in range uint256
 
 if
 
-    VGas > 300000
+    src =/= dst
+
+calls
+
+    Vat.subuu
+    Vat.adduu
+```
+
+```act
+behaviour flux-same of Vat
+interface flux(bytes32 ilk, address src, address dst, uint256 wad)
+
+for all
+
+    May     : uint256
+    Gem_src : uint256
+
+storage
+
+    can[src][CALLER_ID] |-> May
+    gem[ilk][src]       |-> Gem_src => Gem_src
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    (May == 1 or src == CALLER_ID)
+    VCallValue == 0
+
+iff in range uint256
+
+    Gem_src - wad
+
+if
+
+    src == dst
+
+calls
+
+    Vat.subuu
+    Vat.adduu
 ```
 
 #### transferring dai balances
 
 ```act
-behaviour move of Vat
-interface move(bytes32 src, bytes32 dst, int256 rad)
+behaviour move-diff of Vat
+interface move(address src, address dst, uint256 rad)
 
-types
+for all
 
-    Can     : uint256
-    Dai_src : uint256
     Dai_dst : uint256
+    Dai_src : uint256
+    May     : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    dai[src]         |-> Dai_src => Dai_src - rad
-    dai[dst]         |-> Dai_dst => Dai_dst + rad
+    can[src][CALLER_ID] |-> May
+    dai[src]            |-> Dai_src => Dai_src - rad
+    dai[dst]            |-> Dai_dst => Dai_dst + rad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    (May == 1 or src == CALLER_ID)
+    VCallValue == 0
 
 iff in range uint256
 
@@ -518,7 +713,42 @@ iff in range uint256
 
 if
 
-    VGas > 300000
+    src =/= dst
+
+```
+
+```act
+behaviour move-same of Vat
+interface move(address src, address dst, uint256 rad)
+
+for all
+
+    Dai_src : uint256
+    May     : uint256
+
+storage
+
+    can[src][CALLER_ID] |-> May
+    dai[src]            |-> Dai_src => Dai_src
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    (May == 1 or src == CALLER_ID)
+    VCallValue == 0
+
+iff in range uint256
+
+    Dai_src - rad
+
+if
+
+    src == dst
+
+calls
+
+    Vat.subuu
+    Vat.adduu
 ```
 
 #### administering a position
@@ -526,60 +756,182 @@ if
 This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
 ```act
-behaviour tune of Vat
-interface tune(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
+behaviour frob-diff of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
-types
+for all
 
-    Can    : uint256
-    Take   : uint256
-    Rate   : uint256
-    Ink_iu : uint256
-    Art_iu : uint256
-    Ink_i  : uint256
-    Art_i  : uint256
-    Gem_iv : uint256
-    Dai_w  : uint256
-    Debt   : uint256
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iv   : uint256
+    Dai_w    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Can_v    : uint256
+    Can_w    : uint256
+    Live     : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    ilks[i].take     |-> Take
-    ilks[i].rate     |-> Rate
-    urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
-    urns[i][u].art   |-> Art_iu => Art_iu + dart
-    ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
-    ilks[i].Art      |-> Art_i  => Art_i  + dart
-    gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
-    dai[w]           |-> Dai_w  => Dai_w  + (Rate * dart)
-    debt             |-> Debt   => Debt   + (Rate * dart)
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    can[v][CALLER_ID] |-> Can_v
+    can[w][CALLER_ID] |-> Can_w
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
+    urns[i][u].art    |-> Urn_art  => Urn_art + dart
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dart
+    dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
+    debt              |-> Debt     => Debt + (Ilk_rate * dart)
+    live              |-> Live
 
 iff in range uint256
 
-    Ink_iu + dink
-    Art_iu + dart
-    Ink_i  + dink
-    Art_i  + dart
-    Gem_iv - (Take * dink)
-    Dai_w  + (Rate * dart)
-    Debt   + (Rate * dart)
-
-iff in range int256
-
-    Take
-    Rate
-    Take * dink
-    Rate * dart
+    Urn_ink + dink
+    Urn_art + dart
+    Ilk_Art + dart
+    Gem_iv - dart
+    Dai_w + (Ilk_rate * dart)
+    Debt + (Ilk_rate * dart)
+    Ilk_rate * dart
+    Ilk_Art * Ilk_rate
+    Urn_art * Ilk_rate
+    Urn_ink * Ilk_spot
 
 if
 
-    VGas > 300000
+    u =/= v
+    v =/= w
+    u =/= w
+
+iff
+
+    (Ilk_Art * Ilk_rate <= Ilk_line and Debt <= Line) or (dart <= 0)
+    (dart <= 0 and dink >= 0) or (Urn_art * Ilk_rate <= Urn_ink * Ilk_spot)
+    (u == CALLER_ID or Can_u == 1) or (dart <= 0 and dink >= 0)
+    (v == CALLER_ID or Can_v == 1) or (dink < 0)
+    (w == CALLER_ID or Can_w == 1) or (dart > 0)
+    (Urn_art * Ilk_rate >= Ilk_dust) or (Urn_art == 0)
+    Ilk_rate =/= 0
+    Live == 1
+    VCallValue == 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+```
+#### forking a position
+
+```act
+behaviour fork-diff of Vat
+interface fork(bytes32 ilk, address src, address dst, int256 dink, int256 dart)
+
+for all
+
+    Can_src : uint256
+    Can_dst : uint256
+    Rate    : uint256
+    Spot    : uint256
+    Dust    : uint256
+    Ink_u   : uint256
+    Art_u   : uint256
+    Ink_v   : uint256
+    Art_v   : uint256
+
+storage
+
+    can[src][CALLER_ID] |-> Can_src
+    can[dst][CALLER_ID] |-> Can_dst
+    ilks[ilk].rate      |-> Rate
+    ilks[ilk].spot      |-> Spot
+    ilks[ilk].dust      |-> Dust
+    urns[ilk][src].ink  |-> Ink_u => Ink_u - dink
+    urns[ilk][src].art  |-> Art_u => Art_u - dart
+    urns[ilk][dst].ink  |-> Ink_v => Ink_v + dink
+    urns[ilk][dst].art  |-> Art_v => Art_v + dart
+
+iff in range uint256
+
+    Ink_u - dink
+    Ink_v + dink
+    Art_u - dart
+    Art_v + dart
+    (Ink_u - dink) * Spot
+    (Ink_v + dink) * Spot
+    (Art_u - dart) * Rate
+    (Art_v + dart) * Rate
+
+iff
+
+    (src == CALLER_ID) or (Can_src == 1)
+    (dst == CALLER_ID) or (Can_dst == 1)
+    (Art_u - dart) * Rate <= (Ink_u - dink) * Spot
+    (Art_v + dart) * Rate <= (Ink_v + dink) * Spot
+    ((Art_u - dart) * Rate >= Dust) or (Art_u - dart == 0)
+    ((Art_v + dart) * Rate >= Dust) or (Art_v + dart == 0)
+
+if
+
+    src =/= dst
+
+calls
+
+    Vat.addui
+    Vat.subui
+```
+
+```act
+behaviour fork-same of Vat
+interface fork(bytes32 ilk, address src, address dst, int256 dink, int256 dart)
+
+for all
+
+    Can_src : uint256
+    Rate    : uint256
+    Spot    : uint256
+    Dust    : uint256
+    Ink_u   : uint256
+    Art_u   : uint256
+
+storage
+
+    can[src][CALLER_ID] |-> Can_src
+    ilks[ilk].rate      |-> Rate
+    ilks[ilk].spot      |-> Spot
+    ilks[ilk].dust      |-> Dust
+    urns[ilk][src].ink  |-> Ink_u => Ink_u
+    urns[ilk][src].art  |-> Art_u => Art_u
+
+iff in range uint256
+
+    Ink_u - dink
+    Art_u - dart
+
+iff
+
+    (src == CALLER_ID) or (Can_src == 1)
+    Art_u * Rate <= Ink_u * Spot
+    (Art_u * Rate >= Dust) or (Art_u == 0)
+
+if
+
+    src == dst
+
+calls
+
+    Vat.addui
+    Vat.subui
 ```
 
 #### confiscating a position
@@ -588,16 +940,14 @@ When a position of a user `u` is seized, both the collateral and debt are delete
 
 ```act
 behaviour grab of Vat
-interface grab(bytes32 i, bytes32 u, bytes32 v, bytes32 w, int256 dink, int256 dart)
+interface grab(bytes32 i, address u, address v, address w, int256 dink, int256 dart)
 
-types
+for all
 
-    Can    : uint256
-    Take   : uint256
+    May    : uint256
     Rate   : uint256
     Ink_iu : uint256
     Art_iu : uint256
-    Ink_i  : uint256
     Art_i  : uint256
     Gem_iv : uint256
     Sin_w  : uint256
@@ -605,42 +955,39 @@ types
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    ilks[i].take     |-> Take
+    wards[CALLER_ID] |-> May
+    ilks[i].Art      |-> Art_i  => Art_i  + dart
     ilks[i].rate     |-> Rate
     urns[i][u].ink   |-> Ink_iu => Ink_iu + dink
     urns[i][u].art   |-> Art_iu => Art_iu + dart
-    ilks[i].Ink      |-> Ink_i  => Ink_i  + dink
-    ilks[i].Art      |-> Art_i  => Art_i  + dart
-    gem[i][v]        |-> Gem_iv => Gem_iv - (Take * dink)
+    gem[i][v]        |-> Gem_iv => Gem_iv - dink
     sin[w]           |-> Sin_w  => Sin_w  - (Rate * dart)
     vice             |-> Vice   => Vice   - (Rate * dart)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+    VCallValue == 0
 
 iff in range uint256
 
     Ink_iu + dink
     Art_iu + dart
-    Ink_i  + dink
     Art_i  + dart
-    Gem_iv - (Take * dink)
+    Gem_iv - dink
     Sin_w  - (Rate * dart)
     Vice   - (Rate * dart)
 
 iff in range int256
 
-    Take
     Rate
-    Take * dink
     Rate * dart
 
-if
+calls
 
-    VGas > 300000
+    Vat.addui
+    Vat.subui
 ```
 
 #### creating/annihilating system debt and surplus
@@ -649,11 +996,11 @@ if
 
 ```act
 behaviour heal of Vat
-interface heal(bytes32 u, bytes32 v, int256 rad)
+interface heal(address u, address v, int256 rad)
 
-types
+for all
 
-    Can   : uint256
+    May   : uint256
     Dai_v : uint256
     Sin_u : uint256
     Debt  : uint256
@@ -661,7 +1008,7 @@ types
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     dai[v]           |-> Dai_v => Dai_v - rad
     sin[u]           |-> Sin_u => Sin_u - rad
     debt             |-> Debt  => Debt  - rad
@@ -670,7 +1017,8 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+    VCallValue == 0
 
 iff in range uint256
 
@@ -679,22 +1027,23 @@ iff in range uint256
     Debt  - rad
     Vice  - rad
 
-if
+calls
 
-    VGas > 300000
+    Vat.addui
+    Vat.subui
 ```
 
 #### applying interest to an `ilk`
 
-Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which says how many units of `dai` correspond to a unit of `art`. To preserve a key invariant, dai must be created or destroyed, depending on whether `Rate` is increasing or decreasing. The beneficiary/benefactor of the dai is `u`. 
+Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which says how many units of `dai` correspond to a unit of `art`. To preserve a key invariant, dai must be created or destroyed, depending on whether `Rate` is increasing or decreasing. The beneficiary/benefactor of the dai is `u`.
 
 ```act
 behaviour fold of Vat
-interface fold(bytes32 i, bytes32 u, int256 rate)
+interface fold(bytes32 i, address u, int256 rate)
 
-types
+for all
 
-    Can   : uint256
+    May   : uint256
     Rate  : uint256
     Dai   : uint256
     Art_i : uint256
@@ -702,7 +1051,7 @@ types
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[i].rate     |-> Rate => Rate + rate
     ilks[i].Art      |-> Art_i
     dai[u]           |-> Dai  => Dai  + Art_i * rate
@@ -711,7 +1060,8 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+    VCallValue == 0
 
 iff in range uint256
 
@@ -724,57 +1074,480 @@ iff in range int256
     Art_i
     Art_i * rate
 
-if
+calls
 
-    VGas > 300000
+    Vat.addui
+    Vat.subui
 ```
+# Dai
 
-#### applying collateral adjustment to an `ilk`
+The `Dai` contract is the user facing ERC20 contract maintaining the accounting for external Dai balances. Most functions are standard for a token with changing supply, but it also notably features the ability to issue approvals for transferFroms based on signed messages, called `Permit`s.
 
+## Specification of behaviours
 
-Likewise, the collateral unit `Take` can be adjusted, with collateral going to/from `u`.
+### Accessors
 
+<-- TODO: Name, symbol, domain separator (requires dynamic types) -->
 ```act
-behaviour toll of Vat
-interface toll(bytes32 i, bytes32 u, int256 take)
+behaviour wards of Dai
+interface wards(address usr)
 
-types
+for all
 
-    Can  : uint256
-    Take : uint256
-    Ink  : uint256
-    Gem  : uint256
+    May : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    ilks[i].take     |-> Take => Take + take
-    ilks[i].Ink      |-> Ink
-    gem[i][u]        |-> Gem  => Gem  - Ink * take
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+```act
+behaviour allowance of Dai
+interface allowance(address holder, address spender)
+
+types
+
+    Allowed : uint256
+
+storage
+
+    allowance[holder][spender] |-> Allowed
+
+iff
+
+    VCallValue == 0
+
+returns Allowed
+```
+
+```act
+behaviour balanceOf of Dai
+interface balanceOf(address who)
+
+types
+
+    Balance : uint256
+
+storage
+
+    balanceOf[who] |-> Balance
+
+iff
+
+    VCallValue == 0
+
+returns Balance
+```
+
+```act
+behaviour totalSupply of Dai
+interface totalSupply()
+
+types
+
+    Supply : uint256
+
+storage
+
+    totalSupply |-> Supply
+
+iff
+
+    VCallValue == 0
+
+returns Supply
+```
+
+```act
+behaviour nonces of Dai
+interface nonces(address who)
+
+types
+
+    Nonce : uint256
+
+storage
+
+    nonces[who] |-> Nonce
+
+iff
+
+    VCallValue == 0
+
+returns Nonce
+```
+
+```act
+behaviour decimals of Dai
+interface decimals()
+
+storage
+
+    decimals |-> 18
+
+iff
+
+    VCallValue == 0
+
+returns 18
+```
+
+```act
+behaviour PERMIT_TYPEHASH of Dai
+interface PERMIT_TYPEHASH()
+
+iff
+
+    VCallValue == 0
+
+returns keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)"))
+```
+
+```act
+behaviour DOMAIN_SEPARATOR of Dai
+interface DOMAIN_SEPARATOR()
+
+for all
+
+    Version : string
+    ChainId : uint256
+
+storage
+
+    DOMAIN_SEPARATOR |-> keccak(#encodeArgs(#bytes32(keccak(#parseBytesRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseBytesRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseBytesRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+
+iff
+
+    VCallValue == 0
+
+returns keccak(#encodeArgs(#bytes32(keccak(#parseBytesRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseBytesRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseBytesRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+```
+
+### Mutators
+
+
+#### adding and removing owners
+
+Any owner can add and remove owners.
+
+```act
+behaviour rely-diff of Dai
+interface rely(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-iff in range uint256
-
-    Take + take
-    Gem  - Ink * take
-
-iff in range int256
-
-    Ink
-    Ink * take
+    May == 1
+    VCallValue == 0
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
 ```
 
-# Drip
+```act
+behaviour rely-same of Dai
+interface rely(address usr)
 
-`Drip` updates each collateral type's debt unit `rate` while the offsetting dai is supplied to/by a `vow`. The effect of this is to apply interest to outstanding positions.
+for all
+
+    May   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Dai
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Dai
+interface deny(address usr)
+
+for all
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Could == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID == usr
+```
+
+
+```act
+behaviour transfer-diff of Dai
+interface transfer(address dst, uint wad)
+
+types
+
+    SrcBal : uint256
+    DstBal : uint256
+
+storage
+
+    balanceOf[CALLER_ID] |-> SrcBal => SrcBal - wad
+    balanceOf[dst]        |-> DstBal => DstBal + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+
+    VCallValue == 0
+
+if
+    CALLER_ID =/= dst
+
+returns 1
+```
+
+```act
+behaviour transfer-same of Dai
+interface transfer(address dst, uint wad)
+
+types
+
+    SrcBal : uint256
+
+storage
+
+    balanceOf[CALLER_ID] |-> SrcBal => SrcBal
+
+iff in range uint256
+
+    SrcBal - wad
+
+iff
+
+    VCallValue == 0
+
+if
+
+    CALLER_ID == dst
+
+returns 1
+```
+
+
+```act
+behaviour transferFrom-diff of Dai
+interface transferFrom(address src, address dst, uint wad)
+
+types
+
+    SrcBal  : uint256
+    DstBal  : uint256
+    Allowed : uint256
+
+storage
+
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal  => SrcBal  - wad
+    balanceOf[dst]            |-> DstBal  => DstBal  + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    VCallValue == 0
+
+if
+    src =/= dst
+
+returns 1
+```
+
+```act
+behaviour transferFrom-same of Dai
+interface transferFrom(address src, address dst, uint wad)
+
+types
+
+    SrcBal  : uint256
+    Allowed : uint256
+
+storage
+
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal  => SrcBal
+
+iff in range uint256
+
+    SrcBal - wad
+
+iff
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    VCallValue == 0
+
+if
+    src == dst
+
+returns 1
+```
+
+```act
+behaviour mint of Dai
+interface mint(address dst, uint wad)
+
+types
+
+    DstBal      : uint256
+    TotalSupply : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    balanceOf[dst]   |-> DstBal => DstBal + wad
+    totalSupply      |-> TotalSupply => TotalSupply + wad
+
+iff in range uint256
+
+    DstBal + wad
+    TotalSupply + wad
+
+iff
+
+    May == 1
+    VCallValue == 0
+```
+```act
+behaviour burn of Dai
+interface burn(address src, uint wad)
+
+types
+
+    SrcBal      : uint256
+    TotalSupply : uint256
+    Allowed     : uint256
+
+storage
+
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal => SrcBal - wad
+    totalSupply               |-> TotalSupply => TotalSupply - wad
+
+iff in range uint256
+
+    SrcBal - wad
+    TotalSupply - wad
+
+iff
+
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    VCallValue == 0
+```
+
+
+```act
+behaviour approve of Dai
+interface approve(address usr, uint wad)
+
+types
+
+    Allowed : uint256
+
+storage
+
+    allowance[CALLER_ID][usr] |-> Allowed => wad
+
+iff
+    VCallValue == 0
+
+returns 1
+```
+
+```act
+behaviour permit of Dai
+interface permit(address holder, address spender, uint256 nonce, uint256 deadline, bool allowed, uint8 v, bytes32 r, bytes32 s)
+
+types
+
+   Nonce   : uint256
+   Allowed : uint256
+
+storage
+
+    nonces[holder]             |-> Nonce => Nonce + 1
+    allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
+
+iff
+
+    holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodeArgs(STUFF))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
+    deadline == 0 or TIME <= deadline
+    VCallValue == 0
+    nonce == Nonce
+
+iff in range uint256
+    Nonce + 1
+
+```
+
+# Jug
+
+The `Jug` updates each collateral type's debt unit `rate` while the offsetting dai is supplied to/by a `vow`. The effect of this is to apply interest to outstanding positions.
 
 ## Specification of behaviours
 
@@ -784,32 +1557,28 @@ if
 
 
 ```act
-behaviour wards of Drip
-interface wards(address guy)
+behaviour wards of Jug
+interface wards(address usr)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> May
 
-if
-
-    VGas > 300000
-
-returns Can
+returns May
 ```
 
 #### `ilk` data
 
 
 ```act
-behaviour ilks of Drip
+behaviour ilks of Jug
 interface ilks(bytes32 ilk)
 
-types
+for all
 
     Vow : bytes32
     Tax : uint256
@@ -820,20 +1589,16 @@ storage
     ilks[ilk].tax |-> Tax
     ilks[ilk].rho |-> Rho
 
-if
-
-    VGas > 300000
-
 returns Tax : Rho
 ```
 
 #### `vat` address
 
 ```act
-behaviour vat of Drip
+behaviour vat of Jug
 interface vat()
 
-types
+for all
 
     Vat : address
 
@@ -841,20 +1606,16 @@ storage
 
     vat |-> Vat
 
-if
-
-    VGas > 300000
-
 returns Vat
 ```
 
 #### `vow` address
 
 ```act
-behaviour vow of Drip
+behaviour vow of Jug
 interface vow()
 
-types
+for all
 
     Vow : address
 
@@ -862,30 +1623,22 @@ storage
 
     vow |-> Vow
 
-if
-
-    VGas > 300000
-
 returns Vow
 ```
 
 #### global interest rate
 
 ```act
-behaviour repo of Drip
+behaviour repo of Jug
 interface repo()
 
-types
+for all
 
     Repo : uint256
 
 storage
 
     repo |-> Repo
-
-if
-
-    VGas > 300000
 
 returns Repo
 ```
@@ -896,177 +1649,207 @@ returns Repo
 #### adding and removing owners
 
 ```act
-behaviour rely of Drip
-interface rely(address guy)
+behaviour rely-diff of Jug
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
 ```
 
 ```act
-behaviour deny of Drip
-interface deny(address guy)
+behaviour rely-same of Jug
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
-    Could : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Jug
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Jug
+interface deny(address usr)
+
+for all
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Could == 1
+
+if
+
+    CALLER_ID == usr
 ```
 
 #### initialising an `ilk`
 
 
 ```act
-behaviour init of Drip
+behaviour init of Jug
 interface init(bytes32 ilk)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
     Tax : uint256
     Rho : uint48
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].tax    |-> Tax => #Ray
     ilks[ilk].rho    |-> Rho => TIME
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: `Tax` is `. ? : not` zero
     Tax == 0
 
-if
-
-    VGas > 300000
 ```
 
 #### setting `ilk` data
 
 
 ```act
-behaviour file of Drip
+behaviour file of Jug
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
     Tax : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
+    May == 1
 ```
 
 #### setting the base rate
 
 ```act
-behaviour file-repo of Drip
+behaviour file-repo of Jug
 interface file(bytes32 what, uint256 data)
 
-types
+for all
 
-    Can  : uint256
+    May  : uint256
     Repo : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
-if
-
-    VGas > 300000
 ```
 
 #### setting the `vow`
 
 ```act
-behaviour file-vow of Drip
+behaviour file-vow of Jug
 interface file(bytes32 what, bytes32 data)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
     Vow : bytes32
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
-if
-
-    VGas > 300000
 ```
 
 #### updating the rates
 
 ```act
-behaviour drip of Drip
+behaviour drip of Jug
 interface drip(bytes32 ilk)
 
-types
+for all
 
     Vat   : address VatLike
     Repo  : uint256
     Vow   : bytes32
     Tax   : uint256
     Rho   : uint48
-    Can   : uint256
+    May   : uint256
     Rate  : uint256
     Art_i : uint256
     Dai   : uint256
@@ -1082,7 +1865,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
     ilks[ilk].Art  |-> Art_i
     dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
@@ -1091,7 +1874,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -1110,319 +1893,6 @@ iff in range int256
     Art_i
     #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-
-if
-
-    VGas > 300000
-```
-
-# Pit
-
-The `Pit` is the user's interface to CDPs. It allows users to manipulate their positions subject to certain set conditions intended to limit the system's risk.
-
-## Specification of behaviours
-
-### Accessors
-
-#### owners
-
-```act
-behaviour wards of Pit
-interface wards(address guy)
-
-types
-
-    Can : uint256
-
-storage
-
-    wards[guy] |-> Can
-
-if
-
-    VGas > 300000
-
-returns Can
-```
-
-
-#### `ilk` data
-
-```act
-behaviour ilks of Pit
-interface ilks(bytes32 ilk)
-
-types
-
-    Spot_i : uint256
-    Line_i : uint256
-
-storage
-
-    ilks[ilk].spot |-> Spot_i
-    ilks[ilk].line |-> Line_i
-
-if
-
-    VGas > 300000
-
-returns Spot_i : Line_i
-```
-
-#### liveness
-
-```act
-behaviour live of Pit
-interface live()
-
-types
-
-    Live : uint256
-
-storage
-
-    live |-> Live
-
-if
-
-    VGas > 300000
-
-returns Live
-```
-
-#### `vat` address
-
-```act
-behaviour vat of Pit
-interface vat()
-
-types
-
-    Vat : address VatLike
-
-storage
-
-    vat |-> Vat
-
-if
-
-    VGas > 300000
-
-returns Vat
-```
-
-#### global debt ceiling
-
-```act
-behaviour Line of Pit
-interface Line()
-
-types
-
-    Line : uint256
-
-storage
-
-    Line |-> Line
-
-if
-
-    VGas > 300000
-
-returns Line
-```
-
-### Mutators
-
-#### adding and removing owners
-
-```act
-behaviour rely of Pit
-interface rely(address guy)
-
-types
-
-    Can   : uint256
-    Could : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
-```
-
-```act
-behaviour deny of Pit
-interface deny(address guy)
-
-types
-
-    Can   : uint256
-    Could : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
-```
-
-#### setting `ilk` data
-
-```act
-behaviour file-ilk of Pit
-interface file(bytes32 ilk, bytes32 what, uint256 data)
-
-types
-
-    Can    : uint256
-    Spot_i : uint256
-    Line_i : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    ilks[ilk].spot   |-> Spot_i => #if what == #string2Word("spot") #then data #else Spot_i #fi
-    ilks[ilk].line   |-> Line_i => #if what == #string2Word("line") #then data #else Line_i #fi
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
-```
-
-#### setting the global debt ceiling
-
-```act
-behaviour file-Line of Pit
-interface file(bytes32 what, uint256 data)
-
-types
-
-    Can  : uint256
-    Line : uint256
-
-storage
-
-    wards[CALLER_ID] |-> Can
-    Line             |-> Line => #if what == #string2Word("Line") #then data #else Line #fi
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
-```
-
-#### manipulating a position
-
-
-```act
-behaviour frob of Pit
-interface frob(bytes32 ilk, int256 dink, int256 dart)
-
-types
-
-    Can    : uint256
-    Live   : uint256
-    Line   : uint256
-    Vat    : address VatLike
-    Spot   : uint256
-    Line_i : uint256
-    Ink_i  : uint256
-    Art_i  : uint256
-    Ink_iu  : uint256
-    Art_iu  : uint256
-    Take   : uint256
-    Rate   : uint256
-    Gem_u  : uint256
-    Dai    : uint256
-    Debt   : uint256
-
-storage
-
-    live           |-> Live
-    Line           |-> Line
-    vat            |-> Vat
-    ilks[ilk].line |-> Line_i
-    ilks[ilk].spot |-> Spot
-
-storage Vat
-
-    wards[ACCT_ID]           |-> Can
-    ilks[ilk].rate           |-> Rate
-    ilks[ilk].take           |-> Take
-    ilks[ilk].Ink            |-> Ink_i  => Ink_i + dink
-    ilks[ilk].Art            |-> Art_i  => Art_i + dart
-    urns[ilk][CALLER_ID].ink |-> Ink_iu  => Ink_iu + dink
-    urns[ilk][CALLER_ID].art |-> Art_iu  => Art_iu + dart
-    gem[ilk][CALLER_ID]      |-> Gem_u  => Gem_u - Take * dink
-    dai[CALLER_ID]           |-> Dai    => Dai + Rate * dart
-    debt                     |-> Debt   => Debt + Rate * dart
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    Can == 1
-    // act: `Rate` is `. ? : not` non-zero
-    Rate =/= 0
-    // act: position is `. ? : not` either below collateral and global ceiling or is dai-decreasing
-    (((Art_iu + dart) * Rate <= #Ray * Spot) and (Debt + (Rate * dart) < #Ray * Line)) or (dart <= 0)
-    // act: position is `. ? : not` either safe or risk-decreasing
-    ((dart <= 0) and (dink >= 0)) or ((Ink_iu + dink) * Spot >= (Art_iu + dart) * Rate)
-    // act: system is `. ? : not` live
-    Live == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
-
-iff in range uint256
-
-    Ink_i + dink
-    Art_i + dart
-    Ink_iu + dink
-    Art_iu + dart
-    Gem_u - Take * dink
-    Dai + Rate * dart
-    Debt + Rate * dart
-    (Art_iu + dart) * Rate
-    (Ink_iu + dink) * Spot
-    #Ray * Spot
-    #Ray * Line
-
-iff in range int256
-
-    Take
-    Take * dink
-    Rate
-    Rate * dart
-
-if
-
-    VGas > 300000
 ```
 
 # Vow
@@ -1437,21 +1907,17 @@ The `Vow` is the system's fiscal organ, the recipient of both system surplus and
 
 ```act
 behaviour wards of Vow
-interface wards(address guy)
+interface wards(address usr)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> May
 
-if
-
-    VGas > 300000
-
-returns Can
+returns May
 ```
 
 #### getting a `sin` packet
@@ -1460,17 +1926,13 @@ returns Can
 behaviour sin of Vow
 interface sin(uint48 era)
 
-types
+for all
 
     Sin_era : uint256
 
 storage
 
     sin[era] |-> Sin_era
-
-if
-
-    VGas > 300000
 
 returns Sin_era
 ```
@@ -1481,17 +1943,13 @@ returns Sin_era
 behaviour Sin of Vow
 interface Sin()
 
-types
+for all
 
     Sin : uint256
 
 storage
 
     Sin |-> Sin
-
-if
-
-    VGas > 300000
 
 returns Sin
 ```
@@ -1502,17 +1960,13 @@ returns Sin
 behaviour Ash of Vow
 interface Ash()
 
-types
+for all
 
     Ash : uint256
 
 storage
 
     Ash |-> Ash
-
-if
-
-    VGas > 300000
 
 returns Ash
 ```
@@ -1523,17 +1977,13 @@ returns Ash
 behaviour wait of Vow
 interface wait()
 
-types
+for all
 
     Wait : uint256
 
 storage
 
     wait |-> Wait
-
-if
-
-    VGas > 300000
 
 returns Wait
 ```
@@ -1544,17 +1994,13 @@ returns Wait
 behaviour sump of Vow
 interface sump()
 
-types
+for all
 
     Sump : uint256
 
 storage
 
     sump |-> Sump
-
-if
-
-    VGas > 300000
 
 returns Sump
 ```
@@ -1565,17 +2011,13 @@ returns Sump
 behaviour bump of Vow
 interface bump()
 
-types
+for all
 
     Bump : uint256
 
 storage
 
     bump |-> Bump
-
-if
-
-    VGas > 300000
 
 returns Bump
 ```
@@ -1586,17 +2028,13 @@ returns Bump
 behaviour hump of Vow
 interface hump()
 
-types
+for all
 
     Hump : uint256
 
 storage
 
     hump |-> Hump
-
-if
-
-    VGas > 300000
 
 returns Hump
 ```
@@ -1607,7 +2045,7 @@ returns Hump
 behaviour Awe of Vow
 interface Awe()
 
-types
+for all
 
     Vat : address VatLike
     Sin : uint256
@@ -1625,10 +2063,6 @@ iff
     // act: call stack is not too big
     VCallDepth < 1024
 
-if
-
-    VGas > 300000
-
 returns Sin / #Ray
 ```
 
@@ -1638,7 +2072,7 @@ returns Sin / #Ray
 behaviour Joy of Vow
 interface Joy()
 
-types
+for all
 
     Vat : address VatLike
     Dai : uint256
@@ -1656,10 +2090,6 @@ iff
     // act: call stack is not too big
     VCallDepth < 1024
 
-if
-
-    VGas > 300000
-
 returns Dai / #Ray
 ```
 
@@ -1669,7 +2099,7 @@ returns Dai / #Ray
 behaviour Woe of Vow
 interface Woe()
 
-types
+for all
 
     Vat  : address VatLike
     Ssin : uint256
@@ -1696,10 +2126,6 @@ iff in range uint256
     Sin / #Ray - Ssin
     (Sin / #Ray - Ssin) - Ash
 
-if
-
-    VGas > 300000
-
 returns (Sin / #Ray - Ssin) - Ash
 ```
 
@@ -1708,53 +2134,95 @@ returns (Sin / #Ray - Ssin) - Ash
 #### adding and removing owners
 
 ```act
-behaviour rely of Vow
-interface rely(address guy)
+behaviour rely-diff of Vow
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
 ```
 
 ```act
-behaviour deny of Vow
-interface deny(address guy)
+behaviour rely-same of Vow
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
-    Could : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Vow
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
 ```
 
+```act
+behaviour deny-same of Vow
+interface deny(address usr)
+
+for all
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Could == 1
+
+if
+
+    CALLER_ID == usr
+```
 
 #### setting `Vow` parameters
 
@@ -1762,9 +2230,9 @@ if
 behaviour file-data of Vow
 interface file(bytes32 what, uint256 data)
 
-types
+for all
 
-    Can  : uint256
+    May  : uint256
     Wait : uint256
     Sump : uint256
     Bump : uint256
@@ -1772,7 +2240,7 @@ types
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
     sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
@@ -1781,11 +2249,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
+    May == 1
 ```
 
 #### setting vat and liquidators
@@ -1794,16 +2258,16 @@ if
 behaviour file-addr of Vow
 interface file(bytes32 what, address addr)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
     Cow : address
     Row : address
     Vat : address
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
     row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
     vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
@@ -1811,11 +2275,7 @@ storage
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
+    May == 1
 ```
 
 #### cancelling bad debt and surplus
@@ -1824,10 +2284,10 @@ if
 behaviour heal of Vow
 interface heal(uint256 wad)
 
-types
+for all
 
     Vat  : address VatLike
-    Can  : uint256
+    May  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1839,7 +2299,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
     sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     vice           |-> Vice => Vice - wad * #Ray
@@ -1848,7 +2308,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -1862,21 +2322,17 @@ iff in range uint256
 iff in range int256
 
     wad * #Ray
-
-if
-
-    VGas > 300000
 ```
 
 ```act
 behaviour kiss of Vow
 interface kiss(uint256 wad)
 
-types
+for all
 
     Vat  : address VatLike
     Ash  : uint256
-    Can  : uint256
+    May  : uint256
     Dai  : uint256
     Sin  : uint256
     Vice : uint256
@@ -1889,7 +2345,7 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
     sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
     vice           |-> Vice => Vice - wad * #Ray
@@ -1898,7 +2354,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -1913,10 +2369,6 @@ iff in range uint256
 iff in range int256
 
     wad * #Ray
-
-if
-
-    VGas > 300000
 ```
 
 #### adding to the `sin` queue
@@ -1925,31 +2377,27 @@ if
 behaviour fess of Vow
 interface fess(uint256 tab)
 
-types
+for all
 
-    Can     : uint256
+    May     : uint256
     Sin_era : uint256
     Sin     : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     sin[TIME]        |-> Sin_era => Sin_era + tab
     Sin              |-> Sin     => Sin     + tab
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 iff in range uint256
 
     Sin_era + tab
     Sin     + tab
-
-if
-
-    VGas > 300000
 ```
 
 #### processing `sin` queue
@@ -1958,7 +2406,7 @@ if
 behaviour flog of Vow
 interface flog(uint48 t)
 
-types
+for all
 
     Wait  : uint256
     Sin_t : uint256
@@ -1979,10 +2427,6 @@ iff in range uint256
 
     t   + Wait
     Sin - Sin_t
-
-if
-
-    VGas > 300000
 ```
 
 #### starting a debt auction
@@ -1991,19 +2435,19 @@ if
 behaviour flop of Vow
 interface flop()
 
-types
+for all
 
     Row     : address Flopper
     Vat     : address VatLike
     Ssin    : uint256
     Ash     : uint256
     Sump    : uint256
-    Can     : uint256
+    May     : uint256
     Kicks   : uint256
     Vow_was : address
     Lot_was : uint256
     Bid_was : uint256
-    Guy_was : address
+    Usr_was : address
     Tic_was : uint48
     End_was : uint48
     Ttl     : uint48
@@ -2021,12 +2465,12 @@ storage
 
 storage Row
 
-    #Flopper.wards[ACCT_ID]              |-> Can
+    #Flopper.wards[ACCT_ID]              |-> May
     #Flopper.kicks                       |-> Kicks => 1 + Kicks
     #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
     #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
     #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flopper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flopper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
     #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
@@ -2037,7 +2481,7 @@ storage Vat
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // doc:
     (Sin_v / #Ray - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
@@ -2056,10 +2500,6 @@ iff in range uint256
     (Sin_v / #Ray - Ssin) - Ash
     1 + Kicks
 
-if
-
-    VGas > 300000
-
 returns 1 + Kicks
 ```
 
@@ -2069,7 +2509,7 @@ returns 1 + Kicks
 behaviour flap of Vow
 interface flap()
 
-types
+for all
 
     Cow      : address Flapper
     Vat      : address VatLike
@@ -2077,18 +2517,18 @@ types
     Hump     : uint256
     Ssin     : uint256
     Ash      : uint256
-    DaiMove  : address DaiMoveLike
+    DaiMove  : address
     Could    : uint256
     Bid_was  : uint256
     Lot_was  : uint256
-    Guy_was  : address
+    Usr_was  : address
     Tic_was  : uint48
     End_was  : uint48
     Gal_was  : address
     Ttl      : uint48
     Tau      : uint48
     Kicks    : uint256
-    Can_move : uint256
+    May_move : uint256
     Dai_v    : uint256
     Sin_v    : uint256
     Dai_c    : uint256
@@ -2102,11 +2542,6 @@ storage
     Sin  |-> Ssin
     Ash  |-> Ash
 
-storage DaiMove
-
-    vat                         |-> Vat
-    can[ACCT_ID][Cow]           |-> Could => 0
-
 storage Cow
 
     #Flapper.dai                         |-> DaiMove
@@ -2114,12 +2549,12 @@ storage Cow
     #Flapper.kicks                       |-> Kicks   => 1 + Kicks
     #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
     #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flapper.bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
     #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
 
 storage Vat
 
-    wards[DaiMove] |-> Can_move
+    wards[DaiMove] |-> May_move
     dai[ACCT_ID]   |-> Dai_v => Dai_v - #Ray * Bump
     sin[ACCT_ID]   |-> Sin_v
     dai[Cow]       |-> Dai_c => Dai_c + #Ray * Bump
@@ -2131,7 +2566,7 @@ iff
     // doc: there is no `Woe`
     (Sin_v / #Ray - Ssin) - Ash == 0
     // doc: DaiMove is authorised to call Vat
-    Can_move == 1
+    May_move == 1
     // act: call stack is not too big
     VCallDepth < 1022
 
@@ -2158,7 +2593,6 @@ if
     Cow =/= DaiMove
     Cow =/= Vat
     Vat =/= DaiMove
-    VGas > 600000
 
 returns 1 + Kicks
 ```
@@ -2175,21 +2609,17 @@ The `Cat` is the system's liquidation agent: it decides when a position is unsaf
 
 ```act
 behaviour wards of Cat
-interface wards(address guy)
+interface wards(address usr)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
 
 storage
 
-    wards[guy] |-> Can
+    wards[usr] |-> May
 
-if
-
-    VGas > 300000
-
-returns Can
+returns May
 ```
 
 #### `ilk` data
@@ -2198,7 +2628,7 @@ returns Can
 behaviour ilks of Cat
 interface ilks(bytes32 ilk)
 
-types
+for all
 
     Chop : uint256
     Flip : address
@@ -2210,10 +2640,6 @@ storage
     ilks[ilk].chop |-> Chop
     ilks[ilk].lump |-> Lump
 
-if
-
-    VGas > 300000
-
 returns Flip : Chop : Lump
 ```
 
@@ -2223,7 +2649,7 @@ returns Flip : Chop : Lump
 behaviour flips of Cat
 interface flips(uint256 n)
 
-types
+for all
 
     Ilk : bytes32
     Urn : bytes32
@@ -2237,10 +2663,6 @@ storage
     flips[n].ink |-> Ink
     flips[n].tab |-> Tab
 
-if
-
-    VGas > 300000
-
 returns Ilk : Urn : Ink : Tab
 ```
 
@@ -2250,17 +2672,13 @@ returns Ilk : Urn : Ink : Tab
 behaviour nflip of Cat
 interface nflip()
 
-types
+for all
 
     Nflip : uint256
 
 storage
 
     nflip |-> Nflip
-
-if
-
-    VGas > 300000
 
 returns Nflip
 ```
@@ -2271,17 +2689,13 @@ returns Nflip
 behaviour live of Cat
 interface live()
 
-types
+for all
 
     Live : uint256
 
 storage
 
     live |-> Live
-
-if
-
-    VGas > 300000
 
 returns Live
 ```
@@ -2292,17 +2706,13 @@ returns Live
 behaviour vat of Cat
 interface vat()
 
-types
+for all
 
     Vat : address
 
 storage
 
     vat |-> Vat
-
-if
-
-    VGas > 300000
 
 returns Vat
 ```
@@ -2313,17 +2723,13 @@ returns Vat
 behaviour pit of Cat
 interface pit()
 
-types
+for all
 
     Pit : address
 
 storage
 
     pit |-> Pit
-
-if
-
-    VGas > 300000
 
 returns Pit
 ```
@@ -2334,17 +2740,13 @@ returns Pit
 behaviour vow of Cat
 interface vow()
 
-types
+for all
 
     Vow : address
 
 storage
 
     vow |-> Vow
-
-if
-
-    VGas > 300000
 
 returns Vow
 ```
@@ -2354,51 +2756,94 @@ returns Vow
 #### adding and removing owners
 
 ```act
-behaviour rely of Cat
-interface rely(address guy)
+behaviour rely-diff of Cat
+interface rely(address usr)
 
-types
+for all
 
-    Can   : uint256
+    May   : uint256
     Could : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 1
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
 ```
 
 ```act
-behaviour deny of Cat
-interface deny(address guy)
+behaviour rely-same of Cat
+interface rely(address usr)
 
-types
+for all
 
-    Can : uint256
-    Could : uint256
+    May   : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
-    wards[guy]       |-> Could => 0
+    wards[CALLER_ID] |-> May => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Cat
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Cat
+interface deny(address usr)
+
+for all
+
+    Could : uint256
+
+storage
+
+    wards[CALLER_ID] |-> Could => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    Could == 1
+
+if
+
+    CALLER_ID == usr
 ```
 
 #### setting contract addresses
@@ -2407,26 +2852,22 @@ if
 behaviour file-addr of Cat
 interface file(bytes32 what, address data)
 
-types
+for all
 
-    Can : uint256
+    May : uint256
     Pit : address
     Vow : address
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
     vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
+    May == 1
 ```
 
 #### setting liquidation data
@@ -2435,26 +2876,22 @@ if
 behaviour file of Cat
 interface file(bytes32 ilk, bytes32 what, uint256 data)
 
-types
+for all
 
-    Can  : uint256
+    May  : uint256
     Chop : uint256
     Lump : uint256
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].chop   |-> Chop => (#if what == #string2Word("chop") #then data #else Chop #fi)
     ilks[ilk].lump   |-> Lump => (#if what == #string2Word("lump") #then data #else Lump #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
+    May == 1
 ```
 
 #### setting liquidator address
@@ -2463,24 +2900,20 @@ if
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
-types
+for all
 
-    Can  : uint256
+    May  : uint256
     Flip : address
 
 storage
 
-    wards[CALLER_ID] |-> Can
+    wards[CALLER_ID] |-> May
     ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
-
-if
-
-    VGas > 300000
+    May == 1
 ```
 
 #### marking a position for liquidation
@@ -2489,10 +2922,10 @@ if
 behaviour bite of Cat
 interface bite(bytes32 ilk, address urn)
 
-types
+for all
 
     Vat     : address VatLike
-    Pit     : address PitLike
+    Pit     : address
     Vow     : address VowLike
     Nflip   : uint256
     Ilk_was : uint256
@@ -2525,20 +2958,15 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]     |-> Can
+    wards[ACCT_ID]     |-> May
     ilks[ilk].take     |-> Take
     ilks[ilk].rate     |-> Rate
     urns[ilk][urn].ink |-> Ink_iu => 0
     urns[ilk][urn].art |-> Art_iu => 0
-    ilks[ilk].Ink      |-> Ink_i  => Ink_i  - Ink_iu
     ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
     gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
     sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
     vice               |-> Vice   => Vice   - Rate_* Art_iu
-
-storage Pit
-
-    ilks[ilk].spot     |-> Spot_i
 
 storage Vow
 
@@ -2548,7 +2976,7 @@ storage Vow
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: system is  `. ? : not` live
     Live == 1
     // act: CDP is  `. ?  : not` vulnerable
@@ -2572,10 +3000,6 @@ iff in range uint256
     Sin_era + Art_iu * Rate
     Sin     + Art_iu * Rate
 
-if
-
-    VGas > 300000
-
 returns Nflip + 1
 ```
 
@@ -2585,7 +3009,7 @@ returns Nflip + 1
 behaviour flip of Cat
 interface flip(uint256 n, uint256 wad)
 
-types
+for all
 
     Ilk   : bytes32
     Urn   : address
@@ -2618,7 +3042,7 @@ storage Flip
     #Flipper.kicks                       |-> Kicks => 1 + Kicks
     #Flipper.bids[1 + Kicks].bid         |-> _ => 0
     #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
-    #Flipper.bids[1 + Kicks].guy_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
     #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
     #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
@@ -2639,10 +3063,6 @@ iff in range uint256
     Ink * wad
     wad * Chop
 
-if
-
-    VGas > 300000
-
 returns 1 + Kicks
 ```
 
@@ -2660,17 +3080,13 @@ The `GemJoin` adapter allows standard ERC20 tokens to be deposited for use with 
 behaviour vat of GemJoin
 interface vat()
 
-types
+for all
 
     Vat : address VatLike
 
 storage
 
     vat |-> Vat
-
-if
-
-    VGas > 300000
 
 returns Vat
 ```
@@ -2681,17 +3097,13 @@ returns Vat
 behaviour ilk of GemJoin
 interface ilk()
 
-types
+for all
 
     Ilk : bytes32
 
 storage
 
     ilk |-> Ilk
-
-if
-
-    VGas > 300000
 
 returns Ilk
 ```
@@ -2702,17 +3114,13 @@ returns Ilk
 behaviour gem of GemJoin
 interface gem()
 
-types
+for all
 
     Gem : address
 
 storage
 
     gem |-> Gem
-
-if
-
-    VGas > 300000
 
 returns Gem
 ```
@@ -2725,14 +3133,14 @@ returns Gem
 behaviour join of GemJoin
 interface join(bytes32 urn, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
     Gem         : address GemLike
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -2743,18 +3151,18 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> Can
+    wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
 
 storage Gem
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     - wad
+    balances[CALLER_ID] |-> Bal_usr     => Bal_usr     - wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -2765,28 +3173,28 @@ iff in range int256
 iff in range uint256
 
     Rad + #Ray * wad
-    Bal_guy     - wad
+    Bal_usr     - wad
     Bal_adapter + wad
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 #### withdrawing from the system
 
 ```act
 behaviour exit of GemJoin
-interface exit(address guy, uint256 wad)
+interface exit(address usr, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
     Gem         : address GemLike
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -2797,18 +3205,18 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> Can
+    wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Gem
 
-    balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
+    balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -2819,12 +3227,12 @@ iff in range int256
 iff in range uint256
 
     Rad         - #Ray * wad
-    Bal_guy     + wad
+    Bal_usr     + wad
     Bal_adapter - wad
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 # ETHJoin
@@ -2839,17 +3247,13 @@ if
 behaviour vat of ETHJoin
 interface vat()
 
-types
+for all
 
     Vat : address VatLike
 
 storage
 
     vat |-> Vat
-
-if
-
-    VGas > 300000
 
 returns Vat
 ```
@@ -2860,17 +3264,13 @@ returns Vat
 behaviour ilk of ETHJoin
 interface ilk()
 
-types
+for all
 
     Ilk : bytes32
 
 storage
 
     ilk |-> Ilk
-
-if
-
-    VGas > 300000
 
 returns Ilk
 ```
@@ -2885,11 +3285,11 @@ returns Ilk
 behaviour join of ETHJoin
 interface join(bytes32 urn)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
     Bal_adapter : uint256
 
@@ -2900,13 +3300,13 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]      |-> Can
+    wards[ACCT_ID]      |-> May
     gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
 
 iff in range int256
 
@@ -2919,7 +3319,7 @@ iff in range uint256
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 #### withdrawing from the system
@@ -2928,15 +3328,15 @@ if
 
 ```act
 behaviour exit of ETHJoin
-interface exit(address guy, uint256 wad)
+interface exit(address usr, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Can         : uint256
+    May         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
 
 storage
 
@@ -2945,13 +3345,13 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]      |-> Can
+    wards[ACCT_ID]      |-> May
     gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
     // act: there is `. ? : not` enough ETH in the adapter
@@ -2964,11 +3364,11 @@ iff in range int256
 iff in range uint256
 
     Rad     - #Ray * wad
-    Bal_guy + wad
+    Bal_usr + wad
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 # DaiJoin
@@ -2985,17 +3385,13 @@ The `DaiJoin` adapter allows users to withdraw their dai from the system into a 
 behaviour vat of DaiJoin
 interface vat()
 
-types
+for all
 
     Vat : address VatLike
 
 storage
 
     vat |-> Vat
-
-if
-
-    VGas > 300000
 
 returns Vat
 ```
@@ -3006,17 +3402,13 @@ returns Vat
 behaviour dai of DaiJoin
 interface dai()
 
-types
+for all
 
     Dai : address
 
 storage
 
     dai |-> Dai
-
-if
-
-    VGas > 300000
 
 returns Dai
 ```
@@ -3029,13 +3421,13 @@ returns Dai
 behaviour join of DaiJoin
 interface join(bytes32 urn, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
-    Dai         : address GemLike
-    Can         : uint256
+    Dai         : address Dai
+    May         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -3045,18 +3437,18 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> Can
+    wards[ACCT_ID] |-> May
     dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
 
 storage Dai
 
-    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy - wad
-    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    balanceOf[CALLER_ID] |-> Bal_usr     => Bal_usr - wad
+    balanceOf[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -3067,27 +3459,27 @@ iff in range int256
 iff in range uint256
 
     Rad + #Ray * wad
-    Bal_guy - wad
+    Bal_usr - wad
     Bal_adapter + wad
 
 if
 
-    VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 #### withdrawing from the system
 
 ```act
 behaviour exit of DaiJoin
-interface exit(address guy, uint256 wad)
+interface exit(address usr, uint256 wad)
 
-types
+for all
 
     Vat         : address VatLike
-    Dai         : address GemLike
-    Can         : uint256
+    Dai         : address Dai
+    May         : uint256
     Rad         : uint256
-    Bal_guy     : uint256
+    Bal_usr     : uint256
     Bal_adapter : uint256
 
 storage
@@ -3097,18 +3489,18 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> Can
+    wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
 
 storage Dai
 
-    #Gem.balances[CALLER_ID] |-> Bal_guy     => Bal_guy     + wad
-    #Gem.balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    balanceOf[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
+    balanceOf[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
 
 iff
 
     // act: caller is `. ? : not` authorised
-    Can == 1
+    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
 
@@ -3119,124 +3511,12 @@ iff in range int256
 iff in range uint256
 
     Rad         - #Ray * wad
-    Bal_guy     + wad
+    Bal_usr     + wad
     Bal_adapter - wad
 
 if
 
-    VGas > 300000
-```
-
-# DaiMove
-
-The `DaiMove` provides a minimal interface for transferring internal dai balances and granting transfer approval to other accounts.
-
-## Specification of behaviours
-
-### Accessors
-
-#### the Vat
-
-```act
-behaviour vat of DaiMove
-interface vat()
-types
-
-    Vat : address
-
-storage
-
-    vat |-> Vat
-
-if
-
-    VGas > 300000
-
-returns Vat
-```
-
-### Mutators
-
-#### approve or unapprove an address
-
-```act
-behaviour hope of DaiMove
-interface hope(address guy)
-
-types
-
-    Could : uint256
-
-storage
-
-    can[CALLER_ID][guy] |-> Could => 1
-
-if
-
-    VGas > 300000
-
-behaviour nope of DaiMove
-interface nope(address guy)
-
-types
-
-    Could : uint256
-
-storage
-
-    can[CALLER_ID][guy] |-> Could => 0
-
-if
-
-    VGas > 300000
-```
-
-#### move tokens
-
-```act
-behaviour move of DaiMove
-interface move(address src, address dst, uint256 wad)
-
-types
-
-     Can      : uint256
-     Vat      : address VatLike
-     Can_move : uint256
-     Dai_src  : uint256
-     Dai_dst  : uint256
-
-storage
-
-     can[src][CALLER_ID] |-> Can
-     vat                 |-> Vat
-
-storage Vat
-
-     wards[ACCT_ID]      |-> Can_move
-     dai[src]            |-> Dai_src => Dai_src - #Ray * wad
-     dai[dst]            |-> Dai_dst => Dai_dst + #Ray * wad
-
-iff
-
-     // doc: caller is approved to move tokens
-     ((src == CALLER_ID) or (Can == 1))
-     // doc: call stack not too big
-     VCallDepth < 1024
-     // doc: DaiMove authorised to call Cat
-     Can_move == 1
-
-iff in range uint256
-
-     Dai_src - #Ray * wad
-     Dai_dst + #Ray * wad
-
-iff in range int256
-
-     #Ray * wad
-
-if
-
-     VGas > 300000
+    CALLER_ID =/= ACCT_ID
 ```
 
 # Flapper
@@ -3253,11 +3533,11 @@ The `Flapper` is an auction contract that receives `dai` tokens and starts an au
 behaviour bids of Flapper
 interface bids(uint256 n)
 
-types
+for all
 
     Bid : uint256
     Lot : uint256
-    Guy : address
+    Usr : address
     Tic : uint48
     End : uint48
     Gal : address
@@ -3266,14 +3546,10 @@ storage
 
     bids[n].bid         |-> Bid
     bids[n].lot         |-> Lot
-    bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
+    bids[n].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End)
     bids[n].gal         |-> Gal
 
-if
-
-    VGas > 300000
-
-returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal
+returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Gal
 ```
 
 #### sell token
@@ -3282,17 +3558,13 @@ returns Bid : Lot : #WordPackAddrUInt48UInt48(Guy, Tic, End) : Gal
 behaviour dai of Flapper
 interface dai()
 
-types
+for all
 
     Dai : address
 
 storage
 
     dai |-> Dai
-
-if
-
-    VGas > 300000
 
 returns Dai
 ```
@@ -3303,17 +3575,13 @@ returns Dai
 behaviour gem of Flapper
 interface gem()
 
-types
+for all
 
     Gem : address
 
 storage
 
     gem |-> Gem
-
-if
-
-    VGas > 300000
 
 returns Gem
 ```
@@ -3324,17 +3592,13 @@ returns Gem
 behaviour beg of Flapper
 interface beg()
 
-types
+for all
 
     Beg : uint256
 
 storage
 
     beg |-> Beg
-
-if
-
-    VGas > 300000
 
 returns Beg
 ```
@@ -3345,7 +3609,7 @@ returns Beg
 behaviour ttl of Flapper
 interface ttl()
 
-types
+for all
 
     Ttl : uint48
     Tau : uint48
@@ -3353,10 +3617,6 @@ types
 storage
 
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
-
-if
-
-    VGas > 300000
 
 returns Ttl
 ```
@@ -3367,7 +3627,7 @@ returns Ttl
 behaviour tau of Flapper
 interface tau()
 
-types
+for all
 
     Ttl : uint48
     Tau : uint48
@@ -3375,10 +3635,6 @@ types
 storage
 
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
-
-if
-
-    VGas > 300000
 
 returns Tau
 ```
@@ -3389,17 +3645,13 @@ returns Tau
 behaviour kicks of Flapper
 interface kicks()
 
-types
+for all
 
     Kicks : uint256
 
 storage
 
     kicks |-> Kicks
-
-if
-
-    VGas > 300000
 
 returns Kicks
 ```
@@ -3413,21 +3665,21 @@ returns Kicks
 behaviour kick of Flapper
 interface kick(address gal, uint256 lot, uint256 bid)
 
-types
+for all
 
     Kicks    : uint256
-    DaiMove  : address DaiMoveLike
+    DaiMove  : address
     Ttl      : uint48
     Tau      : uint48
     Bid_was  : uint256
     Lot_was  : uint256
-    Guy_was  : address
+    Usr_was  : address
     Tic_was  : uint48
     End_was  : uint48
     Gal_was  : address
     Vat      : address VatLike
-    Can      : uint256
-    Can_move : uint256
+    May      : uint256
+    May_move : uint256
     Dai_v    : uint256
     Dai_c    : uint256
 
@@ -3438,17 +3690,12 @@ storage
     kicks                       |-> Kicks   => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid_was => bid
     bids[1 + Kicks].lot         |-> Lot_was => lot
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
     bids[1 + Kicks].gal         |-> Gal_was => gal
-
-storage DaiMove
-
-    vat                     |-> Vat
-    can[CALLER_ID][ACCT_ID] |-> Can
 
 storage Vat
 
-    wards[DaiMove] |-> Can_move
+    wards[DaiMove] |-> May_move
     dai[CALLER_ID] |-> Dai_v => Dai_v - #Ray * lot
     dai[ACCT_ID]   |-> Dai_c => Dai_c + #Ray * lot
 
@@ -3457,9 +3704,9 @@ iff
     // doc: call stack is not too big
     VCallDepth < 1023
     // doc: Flap is authorised to move for the caller
-    Can      == 1
+    May      == 1
     // doc: DaiMove is authorised to call Vat
-    Can_move == 1
+    May_move == 1
 
 iff in range uint256
 
@@ -3478,8 +3725,6 @@ iff in range int256
 if
 
    CALLER_ID =/= ACCT_ID
-   VGas > 300000
 
 returns 1 + Kicks
 ```
-

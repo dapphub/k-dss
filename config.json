@@ -1,4 +1,6 @@
 {
+  "name": "k-dss",
+  "url": "https://github.com/dapphub/k-dss/",
   "src": {
     "specification": "./src/dss.md",
     "smt_prelude": "./src/prelude.smt2.md",
@@ -9,48 +11,40 @@
   },
   "implementations": {
     "Vat": {
-      "solc_output": "./dss/out/tune.2.sol.json"
+      "solc_output": "./dss/out/vat.sol.json"
     },
-    "Drip": {
-      "solc_output": "./dss/out/drip.2.sol.json"
+    "Dai": {
+      "solc_output": "./dss/out/dai.sol.json"
     },
-    "Pit": {
-      "solc_output": "./dss/out/frob.2.sol.json"
+    "Jug": {
+      "solc_output": "./dss/out/jug.sol.json"
     },
     "Vow": {
-      "solc_output": "./dss/out/heal.2.sol.json"
+      "solc_output": "./dss/out/vow.sol.json"
     },
     "Cat": {
-      "solc_output": "./dss/out/bite.2.sol.json"
+      "solc_output": "./dss/out/cat.sol.json"
     },
     "GemJoin": {
-      "solc_output": "./dss/out/join.2.sol.json"
+      "solc_output": "./dss/out/join.sol.json"
     },
     "ETHJoin": {
-      "solc_output": "./dss/out/join.2.sol.json"
+      "solc_output": "./dss/out/join.sol.json"
     },
     "DaiJoin": {
-      "solc_output": "./dss/out/join.2.sol.json"
-    },
-    "DaiMove": {
-      "name" : "DaiMove",
-      "solc_output": "./dss/out/move.sol.json"
+      "solc_output": "./dss/out/join.sol.json"
     },
     "VatLike": {
       "name" : "Vat",
-      "solc_output": "./dss/out/tune.2.sol.json"
+      "solc_output": "./dss/out/vat.sol.json"
     },
     "Dripper": {
-      "name": "Drip",
-      "solc_output": "./dss/out/drip.2.sol.json"
-    },
-    "PitLike": {
-      "name" : "Pit",
-      "solc_output": "./dss/out/frob.2.sol.json"
+      "name": "Jug",
+      "solc_output": "./dss/out/jug.sol.json"
     },
     "VowLike": {
       "name" : "Vow",
-      "solc_output": "./dss/out/heal.2.sol.json"
+      "solc_output": "./dss/out/vow.sol.json"
     },
     "Flipper": {
       "name" : "Flipper",
@@ -63,10 +57,6 @@
     "Flapper": {
       "name" : "Flapper",
       "solc_output": "./dss/out/flap.sol.json"
-    },
-    "DaiMoveLike": {
-      "name" : "DaiMove",
-      "solc_output": "./dss/out/move.sol.json"
     }
   },
   "dapp_root": "./dss",
