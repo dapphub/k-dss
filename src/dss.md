@@ -1206,7 +1206,7 @@ iff
 
     VCallValue == 0
 
-returns keccak(#parseBytesRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)"))
+returns keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)"))
 ```
 
 ```act
@@ -1220,13 +1220,13 @@ for all
 
 storage
 
-    DOMAIN_SEPARATOR |-> keccak(#encodeArgs(#bytes32(keccak(#parseBytesRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseBytesRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseBytesRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+    DOMAIN_SEPARATOR |-> keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseByteStackRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseByteStackRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
 
 iff
 
     VCallValue == 0
 
-returns keccak(#encodeArgs(#bytes32(keccak(#parseBytesRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseBytesRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseBytesRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+returns keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseByteStackRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseByteStackRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
 ```
 
 ### Mutators
