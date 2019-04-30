@@ -937,7 +937,6 @@ calls
     Vat.subui
     Vat.muluu
 ```
-```
 
 #### confiscating a position
 
