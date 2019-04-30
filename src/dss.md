@@ -830,6 +830,8 @@ calls
 
     Vat.addui
     Vat.subui
+    Vat.mului
+    Vat.muluu
 ```
 #### forking a position
 
@@ -889,6 +891,7 @@ calls
 
     Vat.addui
     Vat.subui
+    Vat.muluu
 ```
 
 ```act
@@ -932,6 +935,8 @@ calls
 
     Vat.addui
     Vat.subui
+    Vat.muluu
+```
 ```
 
 #### confiscating a position
@@ -1078,6 +1083,7 @@ calls
 
     Vat.addui
     Vat.subui
+    Vat.muluu
 ```
 # Dai
 
