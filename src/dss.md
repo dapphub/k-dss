@@ -1588,15 +1588,15 @@ interface ilks(bytes32 ilk)
 for all
 
     Vow : bytes32
-    Tax : uint256
+    Duty : uint256
     Rho : uint48
 
 storage
 
-    ilks[ilk].tax |-> Tax
-    ilks[ilk].rho |-> Rho
+    ilks[ilk].duty |-> Duty
+    ilks[ilk].rho  |-> Rho
 
-returns Tax : Rho
+returns Duty : Rho
 ```
 
 #### `vat` address
@@ -1756,21 +1756,21 @@ interface init(bytes32 ilk)
 for all
 
     May : uint256
-    Tax : uint256
+    Duty : uint256
     Rho : uint48
 
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[ilk].tax    |-> Tax => #Ray
+    ilks[ilk].duty   |-> Duty => #Ray
     ilks[ilk].rho    |-> Rho => TIME
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
-    // act: `Tax` is `. ? : not` zero
-    Tax == 0
+    // act: `Duty` is `. ? : not` zero
+    Duty == 0
 
 ```
 
@@ -1784,12 +1784,12 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 for all
 
     May : uint256
-    Tax : uint256
+    Duty : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[ilk].tax    |-> Tax => (#if what == #string2Word("tax") #then data #else Tax #fi)
+    ilks[ilk].duty   |-> Duty => (#if what == #string2Word("duty") #then data #else Duty #fi)
 
 iff
 
@@ -1851,32 +1851,32 @@ interface drip(bytes32 ilk)
 
 for all
 
-    Vat   : address VatLike
-    Repo  : uint256
-    Vow   : bytes32
-    Tax   : uint256
-    Rho   : uint48
-    May   : uint256
-    Rate  : uint256
-    Art_i : uint256
-    Dai   : uint256
-    Debt  : uint256
+    Vat    : address VatLike
+    Repo   : uint256
+    Vow    : bytes32
+    Duty   : uint256
+    Rho    : uint48
+    May    : uint256
+    Rate   : uint256
+    Art_i  : uint256
+    Dai    : uint256
+    Debt   : uint256
 
 storage
 
-    vat           |-> Vat
-    vow           |-> Vow
-    repo          |-> Repo
-    ilks[ilk].tax |-> Tax
-    ilks[ilk].rho |-> Rho => TIME
+    vat            |-> Vat
+    vow            |-> Vow
+    repo           |-> Repo
+    ilks[ilk].duty |-> Duty
+    ilks[ilk].rho  |-> Rho => TIME
 
 storage Vat
 
     wards[ACCT_ID] |-> May
-    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
     ilks[ilk].Art  |-> Art_i
-    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
 
@@ -1887,19 +1887,19 @@ iff
 
 iff in range uint256
 
-    Repo + Tax
+    Repo + Duty
     TIME - Rho
-    #rpow(Repo + Tax, TIME - Rho, #Ray) * #Ray
-    #rpow(Repo + Tax, TIME - Rho, #Ray) * Rate
-    Rate + (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    Dai  + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
-    Debt + Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #rpow(Repo + Duty, TIME - Rho, #Ray) * #Ray
+    #rpow(Repo + Duty, TIME - Rho, #Ray) * Rate
+    Rate + (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    Dai  + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    Debt + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 iff in range int256
 
     Art_i
-    #rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate
-    Art_i * (#rmul(#rpow(Repo + Tax, TIME - Rho, #Ray), Rate) - Rate)
+    #rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate
+    Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
 ```
 
 # Vow
