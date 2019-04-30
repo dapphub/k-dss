@@ -1521,22 +1521,24 @@ returns 1
 
 ```act
 behaviour permit of Dai
-interface permit(address holder, address spender, uint256 nonce, uint256 deadline, bool allowed, uint8 v, bytes32 r, bytes32 s)
+interface permit(address holder, address spender, uint256 nonce, uint256 expiry, bool allowed, uint8 v, bytes32 r, bytes32 s)
 
 types
 
    Nonce   : uint256
    Allowed : uint256
+   Domain_separator : bytes32
 
 storage
 
     nonces[holder]             |-> Nonce => Nonce + 1
+    DOMAIN_SEPARATOR           |-> Domain_separator
     allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
 
 iff
 
-    holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodeArgs(STUFF))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
-    deadline == 0 or TIME <= deadline
+    holder == Int(#sender(#unparseByteStack(#padToWidth(32, #asByteStack(keccak(#encodeArgs(#bytes(#parseHexWord("0x19") : #parseHexWord("0x1") : #encodeArgs(#bytes32(Domain_separator), #bytes32(keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 deadline,bool allowed)"))), #address(holder), #address(spender), #uint256(nonce), #uint256(expiry), #bool(allowed))))))))))), v, #unparseByteStack(#padToWidth(32, #asByteStack(r))), #unparseByteStack(#padToWidth(32, #asByteStack(s)))))
+    expiry == 0 or TIME <= expiry
     VCallValue == 0
     nonce == Nonce
 

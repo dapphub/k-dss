@@ -230,11 +230,10 @@ rule abs(B) ==K 0 => B ==K 0
 rule #sgnInterp(sgn(W), abs(W)) => W
   requires #rangeUInt(256, W)
 
-rule #sgnInterp(sgn(#unsigned(A *Int B) *Int sgn(#unsigned(B))), A) => A
+rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)), A) => A
   requires #rangeSInt(256, A *Int B)
   andBool #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A)
 
 
 rule #sgnInterp(sgn(#unsigned(A *Int B)), A) => A
