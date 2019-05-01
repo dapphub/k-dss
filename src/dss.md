@@ -305,7 +305,7 @@ interface mul(uint256 x, int256 y) internal
 
 stack
 
-    #unsigned(y) : x : JMPTO : WS => JMPTO : #unsigned(x * y) : WD
+    #unsigned(y) : x : JMPTO : WS => JMPTO : #unsigned(x * y) : WS
 
 iff in range int256
 
@@ -360,7 +360,7 @@ interface mul(uint256 x, uint256 y) internal
 
 stack
 
-    y : x : JMPTO : WS => JMPTO : x * y : WD
+    y : x : JMPTO : WS => JMPTO : x * y : WS
 
 iff in range uint256
 
