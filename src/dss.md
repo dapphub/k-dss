@@ -1575,6 +1575,10 @@ storage
 
     wards[usr] |-> May
 
+iff
+
+    VCallValue == 0
+
 returns May
 ```
 
@@ -1596,6 +1600,10 @@ storage
     ilks[ilk].duty |-> Duty
     ilks[ilk].rho  |-> Rho
 
+iff
+
+    VCallValue == 0
+
 returns Duty : Rho
 ```
 
@@ -1612,6 +1620,10 @@ for all
 storage
 
     vat |-> Vat
+
+iff
+
+    VCallValue == 0
 
 returns Vat
 ```
@@ -1630,6 +1642,10 @@ storage
 
     vow |-> Vow
 
+iff
+
+    VCallValue == 0
+
 returns Vow
 ```
 
@@ -1646,6 +1662,10 @@ for all
 storage
 
     repo |-> Repo
+
+iff
+
+    VCallValue == 0
 
 returns Repo
 ```
@@ -1673,6 +1693,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
 
@@ -1695,6 +1716,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
     usr == CALLER_ID
@@ -1718,6 +1740,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
 
@@ -1740,6 +1763,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     Could == 1
+    VCallValue == 0
 
 if
 
@@ -1771,6 +1795,7 @@ iff
     May == 1
     // act: `Duty` is `. ? : not` zero
     Duty == 0
+    VCallValue == 0
 
 ```
 
@@ -1795,6 +1820,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### setting the base rate
@@ -1817,7 +1843,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
-
+    VCallValue == 0
 ```
 
 #### setting the `vow`
@@ -1840,7 +1866,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
-
+    VCallValue == 0
 ```
 
 #### updating the rates
@@ -1884,6 +1910,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
 
@@ -1924,6 +1951,10 @@ storage
 
     wards[usr] |-> May
 
+iff
+
+    VCallValue == 0
+
 returns May
 ```
 
@@ -1940,6 +1971,10 @@ for all
 storage
 
     sin[era] |-> Sin_era
+
+iff
+
+    VCallValue == 0
 
 returns Sin_era
 ```
@@ -1958,6 +1993,10 @@ storage
 
     Sin |-> Sin
 
+iff
+
+    VCallValue == 0
+
 returns Sin
 ```
 
@@ -1974,6 +2013,10 @@ for all
 storage
 
     Ash |-> Ash
+
+iff
+
+    VCallValue == 0
 
 returns Ash
 ```
@@ -1992,6 +2035,10 @@ storage
 
     wait |-> Wait
 
+iff
+
+    VCallValue == 0
+
 returns Wait
 ```
 
@@ -2008,6 +2055,10 @@ for all
 storage
 
     sump |-> Sump
+
+iff
+
+    VCallValue == 0
 
 returns Sump
 ```
@@ -2026,6 +2077,10 @@ storage
 
     bump |-> Bump
 
+iff
+
+    VCallValue == 0
+
 returns Bump
 ```
 
@@ -2042,6 +2097,10 @@ for all
 storage
 
     hump |-> Hump
+
+iff
+
+    VCallValue == 0
 
 returns Hump
 ```
@@ -2069,6 +2128,7 @@ iff
 
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 returns Sin / #Ray
 ```
@@ -2096,6 +2156,7 @@ iff
 
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 returns Dai / #Ray
 ```
@@ -2127,6 +2188,7 @@ iff
 
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
 
@@ -2158,6 +2220,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
 
@@ -2180,6 +2243,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
     usr == CALLER_ID
@@ -2203,6 +2267,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
 
@@ -2225,6 +2290,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     Could == 1
+    VCallValue == 0
 
 if
 
@@ -2257,6 +2323,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### setting vat and liquidators
@@ -2283,6 +2350,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### cancelling bad debt and surplus
@@ -2318,6 +2386,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
 
@@ -2364,6 +2433,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
 
@@ -2400,6 +2470,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 iff in range uint256
 
@@ -2429,6 +2500,7 @@ iff
 
     // act: `sin` has `. ? : not` matured
     t + Wait <= TIME
+    VCallValue == 0
 
 iff in range uint256
 
@@ -2495,6 +2567,7 @@ iff
     Dai < #Ray
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint48
 
@@ -2576,6 +2649,7 @@ iff
     May_move == 1
     // act: call stack is not too big
     VCallDepth < 1022
+    VCallValue == 0
 
 iff in range uint48
 
@@ -2626,6 +2700,10 @@ storage
 
     wards[usr] |-> May
 
+iff
+
+    VCallValue == 0
+
 returns May
 ```
 
@@ -2646,6 +2724,10 @@ storage
     ilks[ilk].flip |-> Flip
     ilks[ilk].chop |-> Chop
     ilks[ilk].lump |-> Lump
+
+iff
+
+    VCallValue == 0
 
 returns Flip : Chop : Lump
 ```
@@ -2670,6 +2752,10 @@ storage
     flips[n].ink |-> Ink
     flips[n].tab |-> Tab
 
+iff
+
+    VCallValue == 0
+
 returns Ilk : Urn : Ink : Tab
 ```
 
@@ -2686,6 +2772,10 @@ for all
 storage
 
     nflip |-> Nflip
+
+iff
+
+    VCallValue == 0
 
 returns Nflip
 ```
@@ -2704,6 +2794,10 @@ storage
 
     live |-> Live
 
+iff
+
+    VCallValue == 0
+
 returns Live
 ```
 
@@ -2720,6 +2814,10 @@ for all
 storage
 
     vat |-> Vat
+
+iff
+
+    VCallValue == 0
 
 returns Vat
 ```
@@ -2738,6 +2836,10 @@ storage
 
     pit |-> Pit
 
+iff
+
+    VCallValue == 0
+
 returns Pit
 ```
 
@@ -2754,6 +2856,10 @@ for all
 storage
 
     vow |-> Vow
+
+iff
+
+    VCallValue == 0
 
 returns Vow
 ```
@@ -2780,6 +2886,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
 
@@ -2802,6 +2909,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
     usr == CALLER_ID
@@ -2825,6 +2933,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 if
 
@@ -2847,6 +2956,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     Could == 1
+    VCallValue == 0
 
 if
 
@@ -2875,6 +2985,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### setting liquidation data
@@ -2899,6 +3010,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### setting liquidator address
@@ -2921,6 +3033,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 ```
 
 #### marking a position for liquidation
@@ -2990,6 +3103,7 @@ iff
     Ink_iu * Spot_i < Art_iu * Rate
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range int256
 
@@ -3064,6 +3178,7 @@ iff
     (wad == Lump) or ((wad < Lump) and (wad == Tab))
     // act: call stack is not too big
     VCallDepth < 1023
+    VCallValue == 0
 
 iff in range uint256
 
@@ -3095,6 +3210,10 @@ storage
 
     vat |-> Vat
 
+iff
+
+    VCallValue == 0
+
 returns Vat
 ```
 
@@ -3112,6 +3231,10 @@ storage
 
     ilk |-> Ilk
 
+iff
+
+    VCallValue == 0
+
 returns Ilk
 ```
 
@@ -3128,6 +3251,10 @@ for all
 storage
 
     gem |-> Gem
+
+iff
+
+    VCallValue == 0
 
 returns Gem
 ```
@@ -3172,6 +3299,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range int256
 
@@ -3226,6 +3354,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range int256
 
@@ -3314,6 +3443,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    VCallValue == 0
 
 iff in range int256
 
@@ -3363,6 +3493,7 @@ iff
     VCallDepth < 1024
     // act: there is `. ? : not` enough ETH in the adapter
     wad <= BAL
+    VCallValue == 0
 
 iff in range int256
 
@@ -3400,6 +3531,10 @@ storage
 
     vat |-> Vat
 
+iff
+
+    VCallValue == 0
+
 returns Vat
 ```
 
@@ -3416,6 +3551,10 @@ for all
 storage
 
     dai |-> Dai
+
+iff
+
+    VCallValue == 0
 
 returns Dai
 ```
@@ -3458,6 +3597,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range int256
 
@@ -3510,6 +3650,7 @@ iff
     May == 1
     // act: call stack is not too big
     VCallDepth < 1024
+    VCallValue == 0
 
 iff in range int256
 
@@ -3555,6 +3696,10 @@ storage
     bids[n].lot         |-> Lot
     bids[n].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End)
     bids[n].gal         |-> Gal
+
+iff
+
+    VCallValue == 0
 
 returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Gal
 ```
@@ -3625,6 +3770,10 @@ storage
 
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
 
+iff
+
+    VCallValue == 0
+
 returns Ttl
 ```
 
@@ -3643,6 +3792,10 @@ storage
 
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
 
+iff
+
+    VCallValue == 0
+
 returns Tau
 ```
 
@@ -3659,6 +3812,10 @@ for all
 storage
 
     kicks |-> Kicks
+
+iff
+
+    VCallValue == 0
 
 returns Kicks
 ```
@@ -3714,6 +3871,7 @@ iff
     May      == 1
     // doc: DaiMove is authorised to call Vat
     May_move == 1
+    VCallValue == 0
 
 iff in range uint256
 
