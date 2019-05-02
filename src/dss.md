@@ -1652,22 +1652,22 @@ returns Vow
 #### global interest rate
 
 ```act
-behaviour repo of Jug
-interface repo()
+behaviour base of Jug
+interface base()
 
 for all
 
-    Repo : uint256
+    Base : uint256
 
 storage
 
-    repo |-> Repo
+    base |-> Base
 
 iff
 
     VCallValue == 0
 
-returns Repo
+returns Base
 ```
 
 
@@ -1826,18 +1826,18 @@ iff
 #### setting the base rate
 
 ```act
-behaviour file-repo of Jug
+behaviour file-base of Jug
 interface file(bytes32 what, uint256 data)
 
 for all
 
     May  : uint256
-    Repo : uint256
+    Base : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    repo             |-> Repo => (#if what == #string2Word("repo") #then data #else Repo #fi)
+    base             |-> Base => (#if what == #string2Word("base") #then data #else Base #fi)
 
 iff
 
@@ -1878,7 +1878,7 @@ interface drip(bytes32 ilk)
 for all
 
     Vat    : address VatLike
-    Repo   : uint256
+    Base   : uint256
     Vow    : bytes32
     Duty   : uint256
     Rho    : uint48
@@ -1892,17 +1892,17 @@ storage
 
     vat            |-> Vat
     vow            |-> Vow
-    repo           |-> Repo
+    base           |-> Base
     ilks[ilk].duty |-> Duty
     ilks[ilk].rho  |-> Rho => TIME
 
 storage Vat
 
     wards[ACCT_ID] |-> May
-    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
     ilks[ilk].Art  |-> Art_i
-    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
-    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
 
@@ -1914,19 +1914,19 @@ iff
 
 iff in range uint256
 
-    Repo + Duty
+    Base + Duty
     TIME - Rho
-    #rpow(Repo + Duty, TIME - Rho, #Ray) * #Ray
-    #rpow(Repo + Duty, TIME - Rho, #Ray) * Rate
-    Rate + (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
-    Dai  + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
-    Debt + Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    #rpow(Base + Duty, TIME - Rho, #Ray) * #Ray
+    #rpow(Base + Duty, TIME - Rho, #Ray) * Rate
+    Rate + (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    Dai  + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    Debt + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 iff in range int256
 
     Art_i
-    #rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate
-    Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    #rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate
+    Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 ```
 
 # Vow
