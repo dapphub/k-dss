@@ -1,3 +1,39 @@
+```k
+syntax Int ::= num0 ( Int ) [function, smtlib(smt_num0)]
+syntax Int ::= num1 ( Int ) [function, smtlib(smt_num1)]
+
+rule num0(N) >=Int 0 => num0(N) >=Int 1
+  requires N >=Int 1
+  andBool N modInt 2 ==Int 0
+
+rule num1(N) >=Int 0 => num1(N) >=Int 1
+  requires N >Int 1
+  andBool N modInt 2 =/=Int 0
+
+rule num0(N /Int 2) => num0(N) -Int 1
+  requires N >=Int 1
+  andBool N modInt 2 ==Int 0
+
+rule num0(N /Int 2) => num0(N)
+  requires N >=Int 1
+  andBool N modInt 2 ==Int 1
+
+rule num1(N /Int 2) => num1(N) -Int 1
+  requires N >Int 1
+  andBool N modInt 2 ==Int 1
+
+rule num1(N /Int 2) => num1(N)
+  requires N >Int 1
+  andBool N modInt 2 ==Int 0
+
+rule num0(N) => 0
+  requires N ==Int 1
+
+rule num1(N) => 0
+  requires N ==Int 1
+```
+
+
 # dss lemmas
 
 ### string literal syntax
@@ -26,7 +62,78 @@ We leave these symbolic for now:
 ```k
 syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
 
-syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function]
+syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(smt_rpow), smt-prelude]
+
+syntax Int ::= "#ifInt" Bool "#then" Int "#else" Int "#fi" [function, smtlib(ite), hook(KEQUAL.ite)]
+
+rule A *Int C /Int C => A
+  requires A *Int C <Int pow256
+
+rule (X *Int Y) /Word Y => #ifInt Y ==Int 0 #then 0 #else chop(X) #fi
+
+rule A /Int B <Int pow256 => true
+  requires A <Int pow256
+
+rule Z *Int (X ^Int N) => Z
+  requires N ==Int 0
+
+rule Z *Int (X ^Int (N %Int 2)) => Z
+  requires N ==Int 0
+
+rule 0 ^Int N => 1
+  requires N ==Int 0
+
+rule 0 ^Int N => 0
+  requires N >Int 0
+
+rule 0 <=Int (N /Int 2) => true
+  requires 0 <=Int N
+
+rule N /Int 2 <Int pow256 => true
+  requires N <Int pow256
+
+// TODO - review - do i need it?
+rule chop(X *Int X) => X *Int X
+  requires #rpow(Z, X, N, B) *Int B <Int pow256
+  andBool N >=Int 2
+
+
+rule #rpow(Z, X, 0, Base) => Z
+
+rule #rpow(Z, X, N, Base) => Z
+  requires N modInt 2 ==Int 0
+  andBool N /Int 2 ==Int 0
+
+rule #rpow(Z, 0, N, Base) => 0
+
+rule #rpow(Base, X, N, Base) => X
+  requires N ==Int 1
+
+rule #rpow(((Z *Int X) +Int Half) /Int Base, X, N /Int 2, Base) =>
+     #rpow(Z,                                 X, N,       Base)
+  requires Half ==Int Base /Int 2
+  andBool  N ==Int 1
+
+rule #rpow(((Z *Int X) +Int Half) /Int Base, ((X *Int X) +Int Half) /Int Base, N /Int 2, Base) =>
+     #rpow( Z                               , X                               , N       , Base )
+  requires N modInt 2 =/=Int 0
+  andBool  N >=Int 2
+  andBool Half ==Int Base /Int 2
+
+rule #rpow( Z                              , ((X *Int X) +Int Half) /Int Base, N /Int 2, Base) =>
+     #rpow( Z                              , X                               , N       , Base )
+  requires N modInt 2 ==Int 0
+  andBool  N >=Int 2
+andBool Half ==Int Base /Int 2
+
+rule #rpow( X                              , ((X *Int X) +Int Half) /Int Base, N /Int 2, Base) =>
+     #rpow( Base                           , X                               , N       , Base )
+  requires N modInt 2 =/=Int 0
+  andBool  N /Int 2 =/=Int 0
+  andBool  Half ==Int Base /Int 2
+
+rule Z *Int X <Int pow256 => true
+  requires #rpow(Z, X, N, Base) <Int pow256
 ```
 
 ### hashed storage

@@ -1900,6 +1900,118 @@ iff in range int256
     Art_i
     #rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+
+calls
+
+    Jug.adduu
+```
+
+## Rpow
+
+```act
+behaviour adduu of Jug
+interface add(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+    x + y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+This is the coiductive lemma.
+0.    n % 2 == 0
+      case: n >= 2
+            n even
+      gas: 178
+
+1.    n % 2 == 1
+1.0.  n / 2 == 0
+      case: n == 1
+      terminate loop
+      gas: 194
+
+1.1.  n / 2 == 1
+      case: n >= 3
+            n odd
+      coinductive step
+      gas: 293
+
+
+num0 n := "number of 0 in n"
+num1 n := "number of 1 in n"
+
+gas = 194 + num0(n) * 178 + num1(n) * 293
+
+```act
+behaviour rpow-loop of Jug
+lemma
+
+//  0d63    0da7
+pc
+
+    3427 => 3495
+
+for all
+    Half   : uint256
+    Z      : uint256
+    Base   : uint256
+    N      : uint256
+    X      : uint256
+
+stack
+
+    _ : _ : Half : _ : Z : Base : N : X : WS => Half : _ : #rpow(Z, X, N, Base) : Base : 0 : _ : WS
+
+gas
+
+    194 + ((num0(N) * 178) + (num1(N) * 293))
+
+if
+
+    Half == Base / 2
+    0 <= #rpow(Z, X, N, Base)
+    #rpow(Z, X, N, Base) * Base < pow256
+    N =/= 0
+    Base =/= 0
+    #sizeWordStack(WS) <= 1000
+    num0(N) >= 0
+    num1(N) >= 0
+```
+
+
+```act
+behaviour rpow of Jug
+interface rpow(uint256 x, uint256 n, uint256 b) internal
+
+stack
+
+    b : n : x : JMPTO : WS => JMPTO : #rpow(b, x, n, b) : WS
+
+gas
+
+    3000000 +Int ((num0(ABI_n) *Int 178) +Int (num1(ABI_n) *Int 293))
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 999
+    num0(n) >= 0
+    num1(n) >= 0
+    b =/= 0
+    0 <= #rpow(b, x, n, b)
+    #rpow(b, x, n, b) * b < pow256
+
+calls
+
+  Jug.rpow-loop
 ```
 
 # Vow
