@@ -1954,6 +1954,7 @@ if
 ```
 
 This is the coiductive lemma.
+```
 0.    n % 2 == 0
       case: n >= 2
             n even
@@ -1976,6 +1977,7 @@ num0 n := "number of 0 in n"
 num1 n := "number of 1 in n"
 
 gas = 194 + num0(n) * 178 + num1(n) * 293
+```
 
 ```act
 behaviour rpow-loop of Jug
