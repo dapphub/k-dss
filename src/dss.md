@@ -1986,7 +1986,7 @@ lemma
 //  0d63    0da7
 pc
 
-    3427 => 3495
+    3322 => 3390
 
 for all
     Half   : uint256
