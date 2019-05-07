@@ -1931,6 +1931,7 @@ iff in range int256
 calls
 
     Jug.adduu
+    Jug.rpow
 ```
 
 ## Rpow
@@ -2001,7 +2002,7 @@ stack
 
 gas
 
-    194 + ((num0(N) * 178) + (num1(N) * 293))
+    194 + ((num0(N) * 172) + (num1(N) * 287))
 
 if
 
@@ -2040,7 +2041,7 @@ if
 
 calls
 
-  Jug.rpow-loop
+    Jug.rpow-loop
 ```
 
 # Vow
