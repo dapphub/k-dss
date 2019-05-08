@@ -1849,12 +1849,12 @@ iff
 
 ```act
 behaviour file-vow of Jug
-interface file(bytes32 what, bytes32 data)
+interface file(bytes32 what, address data)
 
 for all
 
     May : uint256
-    Vow : bytes32
+    Vow : address
 
 storage
 
