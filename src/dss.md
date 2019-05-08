@@ -1081,8 +1081,7 @@ iff in range int256
 calls
 
     Vat.addui
-    Vat.subui
-    Vat.muluu
+    Vat.mului
 ```
 # Dai
 
