@@ -333,30 +333,13 @@ rule abs(#unsigned(A *Int B)) /Int abs(#unsigned(B)) => A
 
 rule abs(B) ==K 0 => B ==K 0
 
-// possibly get rid of
-rule #sgnInterp(sgn(W), abs(W)) => W
-  requires #rangeUInt(256, W)
-
 rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)), A) => A
   requires #rangeSInt(256, A *Int B)
   andBool #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
 
-
-rule #sgnInterp(sgn(#unsigned(A *Int B)), A) => A
-  requires #rangeUInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A *Int B)
-  andBool B >=Int 0
-
-rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int (-1), A) => A
-  requires #rangeUInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool #rangeSInt(256, A *Int B)
-  andBool B <Int 0
-
 // lemmas for necessity
-rule #signed(X) <Int 0 => #rangeSInt(256, X)
+rule #signed(X) <Int 0 => notBool #rangeSInt(256, X)
    requires #rangeUInt(256, X)
 
 rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int sgn(#unsigned(B)), chop(abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B)))) ==K A) => false
