@@ -347,4 +347,8 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int sgn(#unsigned(B)), chop(abs
   andBool #rangeSInt(256, B)
   andBool B =/=Int 0
   andBool notBool #rangeSInt(256, A *Int B)
+
+rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 ```
