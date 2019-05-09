@@ -715,6 +715,10 @@ if
 
     src =/= dst
 
+calls
+
+  Vat.adduu
+  Vat.subuu
 ```
 
 ```act
