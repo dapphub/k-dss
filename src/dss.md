@@ -1545,7 +1545,7 @@ storage
 
 iff
 
-    holder == #symEcrec(#padToWidth(32, #asByteStack(keccak(#encodeArgs(#bytes(#parseHexWord("0x19") : #parseHexWord("0x1") : #encodeArgs(#bytes32(Domain_separator), #bytes32(keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)"))), #address(holder), #address(spender), #uint256(nonce), #uint256(expiry), #bool(allowed)))))))))) ++ #padToWidth(32, #asByteStack(v)) ++ #padToWidth(32, #asByteStack(r)) ++ #padToWidth(32, #asByteStack(s)))
+    holder == #symEcrec(#padToWidth(32, #asByteStack(keccak(#parseHexWord("0x19") : #parseHexWord("0x1") : #padToWidth(32, #asByteStack(Domain_separator)) ++ #padToWidth(32, #asByteStack(keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)"))), #address(holder), #address(spender), #uint256(nonce), #uint256(expiry), #bool(allowed)))))))) ++ #padToWidth(32, #asByteStack(v)) ++ #padToWidth(32, #asByteStack(r)) ++ #padToWidth(32, #asByteStack(s)))
     expiry == 0 or TIME <= expiry
     VCallValue == 0
     nonce == Nonce
