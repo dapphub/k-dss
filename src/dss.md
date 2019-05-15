@@ -374,6 +374,33 @@ if
 
 ### Mutators
 
+#### Set global settlement
+
+Freezes the price of all positions.
+
+
+```act
+behaviour cage of Vat
+interface cage()
+
+for all
+
+    May   : uint256
+    Lives : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live             |-> Lives => 0
+
+iff
+
+    VCallvalue == 0
+    May == 1
+```
+
+
+
 #### adding and removing owners
 
 Any owner can add and remove owners.
@@ -1098,11 +1125,13 @@ storage
     ilks[i].Art      |-> Art_i
     dai[u]           |-> Dai  => Dai  + Art_i * rate
     debt             |-> Debt => Debt + Art_i * rate
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 iff in range uint256
