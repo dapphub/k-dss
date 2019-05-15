@@ -998,13 +998,48 @@ calls
     Vat.subui
 ```
 
-#### creating/annihilating system debt and surplus
+#### annihilating system debt and surplus
 
-`dai` and `sin` are two sides of the same coin. When the system has surplus `dai`, it can be cancelled with `sin`. Dually, the system can bring `dai` into existence while creating offsetting `sin`.
-
+`dai` and `sin` are two sides of the same coin. When the system has surplus `dai`, it can be cancelled with `sin`.
 ```act
 behaviour heal of Vat
-interface heal(address u, address v, int256 rad)
+interface heal(uint256 rad)
+
+for all
+
+    Dai  : uint256
+    Sin  : uint256
+    Debt : uint256
+    Vice : uint256
+
+storage
+
+    dai[CALLER_ID]   |-> Dai => Dai - rad
+    sin[CALLER_ID]   |-> Sin => Sin - rad
+    debt             |-> Debt  => Debt  - rad
+    vice             |-> Vice  => Vice  - rad
+
+iff
+
+    VCallValue == 0
+
+iff in range uint256
+
+    Dai - rad
+    Sin - rad
+    Debt  - rad
+    Vice  - rad
+
+calls
+
+    Vat.subuu
+```
+#### Creating system debt and surplus
+
+Authorized actors can increase system debt to generate more dai.
+```act
+behaviour suck of Vat
+interface suck(address u, address v, uint256 rad)
 
 for all
 
@@ -1017,29 +1052,28 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    dai[v]           |-> Dai_v => Dai_v - rad
-    sin[u]           |-> Sin_u => Sin_u - rad
-    debt             |-> Debt  => Debt  - rad
-    vice             |-> Vice  => Vice  - rad
+    dai[u]           |-> Dai_v => Dai_v + rad
+    sin[v]           |-> Sin_u => Sin_u + rad
+    debt             |-> Debt  => Debt  + rad
+    vice             |-> Vice  => Vice  + rad
 
 iff
 
-    // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
 
 iff in range uint256
 
-    Dai_v - rad
-    Sin_u - rad
-    Debt  - rad
-    Vice  - rad
+    Dai_v + rad
+    Sin_u + rad
+    Debt  + rad
+    Vice  + rad
 
 calls
 
-    Vat.addui
-    Vat.subui
+    Vat.adduu
 ```
+
 
 #### applying interest to an `ilk`
 
