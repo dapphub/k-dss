@@ -395,7 +395,7 @@ storage
 
 iff
 
-    VCallvalue == 0
+    VCallValue == 0
     May == 1
 ```
 
@@ -1079,8 +1079,8 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    dai[u]           |-> Dai_v => Dai_v + rad
-    sin[v]           |-> Sin_u => Sin_u + rad
+    sin[u]           |-> Sin_u => Sin_u + rad
+    dai[v]           |-> Dai_v => Dai_v + rad
     debt             |-> Debt  => Debt  + rad
     vice             |-> Vice  => Vice  + rad
 
