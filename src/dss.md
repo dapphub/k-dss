@@ -2311,7 +2311,7 @@ iff
     VCallDepth < 1024
     VCallValue == 0
 
-returns Sin / #Ray
+returns Sin
 ```
 
 #### getting the `Joy`
@@ -2339,7 +2339,7 @@ iff
     VCallDepth < 1024
     VCallValue == 0
 
-returns Dai / #Ray
+returns Dai
 ```
 
 #### getting the `Woe`
@@ -2373,10 +2373,10 @@ iff
 
 iff in range uint256
 
-    Sin / #Ray - Ssin
-    (Sin / #Ray - Ssin) - Ash
+    Sin - Ssin
+    (Sin - Ssin) - Ash
 
-returns (Sin / #Ray - Ssin) - Ash
+returns (Sin - Ssin) - Ash
 ```
 
 ### Mutators
@@ -2499,33 +2499,6 @@ storage
     sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
     hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    May == 1
-    VCallValue == 0
-```
-
-#### setting vat and liquidators
-
-```act
-behaviour file-addr of Vow
-interface file(bytes32 what, address addr)
-
-for all
-
-    May : uint256
-    Cow : address
-    Row : address
-    Vat : address
-
-storage
-
-    wards[CALLER_ID] |-> May
-    cow              |-> Cow => (#if what == #string2Word("flap") #then addr #else Cow #fi)
-    row              |-> Row => (#if what == #string2Word("flop") #then addr #else Row #fi)
-    vat              |-> Vat => (#if what == #string2Word("vat")  #then addr #else Vat #fi)
 
 iff
 
