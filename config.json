@@ -28,19 +28,12 @@
     "GemJoin": {
       "solc_output": "./dss/out/join.sol.json"
     },
-    "ETHJoin": {
-      "solc_output": "./dss/out/join.sol.json"
-    },
     "DaiJoin": {
       "solc_output": "./dss/out/join.sol.json"
     },
     "VatLike": {
       "name" : "Vat",
       "solc_output": "./dss/out/vat.sol.json"
-    },
-    "Dripper": {
-      "name": "Jug",
-      "solc_output": "./dss/out/jug.sol.json"
     },
     "VowLike": {
       "name" : "Vow",
@@ -59,6 +52,13 @@
       "solc_output": "./dss/out/flap.sol.json"
     }
   },
+  "split-fail":[
+    "Vat_heal",
+    "Vat_grab",
+    "Vat_fold",
+    "Vat_frob",
+    "Vat_fork"
+    ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
 }
