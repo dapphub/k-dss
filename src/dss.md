@@ -1021,6 +1021,7 @@ iff in range int256
 
 calls
 
+    Vat.mului
     Vat.addui
     Vat.subui
 ```
@@ -1845,9 +1846,9 @@ interface init(bytes32 ilk)
 
 for all
 
-    May : uint256
+    May  : uint256
     Duty : uint256
-    Rho : uint48
+    Rho  : uint256
 
 storage
 
@@ -3519,144 +3520,6 @@ iff in range uint256
     Rad         - #Ray * wad
     Bal_usr     + wad
     Bal_adapter - wad
-
-if
-
-    CALLER_ID =/= ACCT_ID
-```
-
-# ETHJoin
-
-## Specification of behaviours
-
-### Accessors
-
-#### `vat` address
-
-```act
-behaviour vat of ETHJoin
-interface vat()
-
-for all
-
-    Vat : address VatLike
-
-storage
-
-    vat |-> Vat
-
-returns Vat
-```
-
-#### the associated `ilk`
-
-```act
-behaviour ilk of ETHJoin
-interface ilk()
-
-for all
-
-    Ilk : bytes32
-
-storage
-
-    ilk |-> Ilk
-
-returns Ilk
-```
-
-### Mutators
-
-#### depositing into the system
-
-*TODO* : add `balance ACCT_ID` block
-
-```act
-behaviour join of ETHJoin
-interface join(bytes32 urn)
-
-for all
-
-    Vat         : address VatLike
-    Ilk         : bytes32
-    May         : uint256
-    Rad         : uint256
-    Bal_adapter : uint256
-
-storage
-
-    vat |-> Vat
-    ilk |-> Ilk
-
-storage Vat
-
-    wards[ACCT_ID]      |-> May
-    gem[Ilk][CALLER_ID] |-> Rad => Rad + #Ray * VALUE
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    May == 1
-    VCallValue == 0
-
-iff in range int256
-
-    #Ray * VALUE
-
-iff in range uint256
-
-    Rad         + #Ray * VALUE
-    Bal_adapter + VALUE
-
-if
-
-    CALLER_ID =/= ACCT_ID
-```
-
-#### withdrawing from the system
-
-*TODO* : add `balance ACCT_ID` block
-
-```act
-behaviour exit of ETHJoin
-interface exit(address usr, uint256 wad)
-
-for all
-
-    Vat         : address VatLike
-    Ilk         : bytes32
-    May         : uint256
-    Rad         : uint256
-    Bal_usr     : uint256
-
-storage
-
-    vat             |-> Vat
-    ilk             |-> Ilk
-
-storage Vat
-
-    wards[ACCT_ID]      |-> May
-    gem[Ilk][CALLER_ID] |-> Rad => Rad - #Ray * wad
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
-    // act: there is `. ? : not` enough ETH in the adapter
-    wad <= BAL
-    VCallValue == 0
-
-iff in range int256
-
-    #Ray * wad
-
-iff in range uint256
-
-    Rad     - #Ray * wad
-    Bal_usr + wad
 
 if
 
