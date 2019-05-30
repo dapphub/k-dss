@@ -17,5 +17,6 @@ stdenv.mkDerivation {
   shellHook = ''
     export PATH=$KLAB_PATH/node_modules/.bin/:$KLAB_PATH/bin:$PATH
     export KLAB_EVMS_PATH=$KLAB_PATH/evm-semantics
+    export KLAB_LAX=1
   '';
 }
