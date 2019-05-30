@@ -281,17 +281,17 @@ syntax Int ::= "#Vow.vat" [function]
 // act: this Vow points to Vat `.`
 rule #Vow.vat => 1
 
-syntax Int ::= "#Vow.cow" [function]
+syntax Int ::= "#Vow.flapper" [function]
 // ---------------------------------
 // doc: `Flapper` that this `Vow` points to
 // act: this Vow points to Flapper `.`
-rule #Vow.cow => 2
+rule #Vow.flapper => 2
 
-syntax Int ::= "#Vow.row" [function]
+syntax Int ::= "#Vow.flopper" [function]
 // ---------------------------------
 // doc: `Flopper` that this `Vow` points to
 // act: this Vow points to Flopper `.`
-rule #Vow.row => 3
+rule #Vow.flopper => 3
 
 syntax Int ::= "#Vow.sin" "[" Int "]" [function]
 // ---------------------------------------------
@@ -334,6 +334,13 @@ syntax Int ::= "#Vow.hump" [function]
 // doc: surplus dai cushion
 // act: the surplus dai cushion is `.`
 rule #Vow.hump => 10
+
+syntax Int ::= "#Vow.live" [function]
+// ---------------------------------
+// doc: liveness flag
+// act: the system is active/inactive `.`
+rule #Vow.live => 11
+
 ```
 
 ### Cat
@@ -363,59 +370,23 @@ syntax Int ::= "#Cat.ilks" "[" Int "].lump" [function]
 // act:
 rule #Cat.ilks[Ilk].lump => #hashedLocation("Solidity", 1, Ilk) +Int 2
 
-syntax Int ::= "#Cat.flips" "[" Int "].ilk" [function]
-// ---------------------------------------------------
-// doc: collateral type for flip `$0`
-// act:
-rule #Cat.flips[N].ilk => #hashedLocation("Solidity", 2, N) +Int 0
-
-syntax Int ::= "#Cat.flips" "[" Int "].urn" [function]
-// ---------------------------------------------------
-// doc: owner identifier for flip `$0`
-// act:
-rule #Cat.flips[N].urn => #hashedLocation("Solidity", 2, N) +Int 1
-
-syntax Int ::= "#Cat.flips" "[" Int "].ink" [function]
-// ---------------------------------------------------
-// doc: collateral in flip `$0`
-// act:
-rule #Cat.flips[N].ink => #hashedLocation("Solidity", 2, N) +Int 2
-
-syntax Int ::= "#Cat.flips" "[" Int "].tab" [function]
-// ---------------------------------------------------
-// doc: debt in flip `$0`
-// act:
-rule #Cat.flips[N].tab => #hashedLocation("Solidity", 2, N) +Int 3
-
-syntax Int ::= "#Cat.nflip" [function]
-// -----------------------------------
-// doc: flip count
-// act:
-rule #Cat.nflip => 3
-
 syntax Int ::= "#Cat.live" [function]
 // ----------------------------------
 // doc: system liveness
 // act:
-rule #Cat.live => 4
+rule #Cat.live => 2
 
 syntax Int ::= "#Cat.vat" [function]
 // ---------------------------------
 // doc: `Vat` that this `Cat` points to
 // act:
-rule #Cat.vat => 5
-
-syntax Int ::= "#Cat.pit" [function]
-// ---------------------------------
-// doc: `Pit` that this `Cat` points to
-// act:
-rule #Cat.pit => 6
+rule #Cat.vat => 3
 
 syntax Int ::= "#Cat.vow" [function]
 // ---------------------------------
 // doc: `Vow` that this `Cat` points to
 // act:
-rule #Cat.vow => 7
+rule #Cat.vow => 4
 ```
 
 ### GemJoin
@@ -438,22 +409,6 @@ syntax Int ::= "#GemJoin.gem" [function]
 // doc: underlying token of this adapter
 // act:
 rule #GemJoin.gem => 2
-```
-
-### ETHJoin
-
-```k
-syntax Int ::= "#ETHJoin.vat" [function]
-// -------------------------------------
-// doc: `Vat` that this adapter points to
-// act:
-rule #ETHJoin.vat => 0
-
-syntax Int ::= "#ETHJoin.ilk" [function]
-// -------------------------------------
-// doc: collateral type of this adapter
-// act:
-rule #ETHJoin.ilk => 1
 ```
 
 ### DaiJoin
@@ -578,61 +533,75 @@ rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
 ### Flap
 
 ```k
+syntax Int ::= "#Flapper.wards" "[" Int "]" [function]
+// ---------------------------------------
+// doc: whether `$0` is an owner of `Flop`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #Flapper.wards[A] => #hashedLocation("Solidity", 0, A)
+
+
 syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
 // act:
-rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 0, N) +Int 0
+rule #Flapper.bids[N].bid => #hashedLocation("Solidity", 1, N) +Int 0
 
 syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
 // doc: current lot (gem)
 // act:
-rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 0, N) +Int 1
+rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
 syntax Int ::= "#Flapper.bids" "[" Int "].usr_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flapper.bids[N].usr_tic_end => #hashedLocation("Solidity", 0, N) +Int 2
+rule #Flapper.bids[N].usr_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
 syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
 // doc: beneficiary of the auction
 // act:
-rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 0, N) +Int 3
+rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 1, N) +Int 3
 
 syntax Int ::= "#Flapper.dai" [function]
 // ---------------------------------------
 // doc: dai token
 // act:
-rule #Flapper.dai => 1
+rule #Flapper.dai => 2
 
 syntax Int ::= "#Flapper.gem" [function]
 // ---------------------------------------
 // doc: mkr token
 // act:
-rule #Flapper.gem => 2
+rule #Flapper.gem => 3
 
 syntax Int ::= "#Flapper.beg" [function]
 // ---------------------------------------
 // doc: minimum bid increment
 // act:
-rule #Flapper.gem => 3
+rule #Flapper.gem => 4
 
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flapper.ttl_tau" [function]
 // -----------------------------------------
 // doc:
 // act:
-rule #Flapper.ttl_tau => 4
+rule #Flapper.ttl_tau => 5
 
 syntax Int ::= "#Flapper.kicks" [function]
 // ---------------------------------------
 // doc: auction counter
 // act:
-rule #Flapper.kicks => 5
+rule #Flapper.kicks => 6
+
+syntax Int ::= "#Flapper.live" [function]
+// ---------------------------------------
+// doc: liveness flag
+// act:
+rule #Flapper.live => 7
+
 ```
 
 ### GemLike
