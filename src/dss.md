@@ -412,12 +412,11 @@ interface rely(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 1
+    wards[usr]       |-> _ => 1
 
 iff
 
@@ -459,12 +458,11 @@ interface deny(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 0
+    wards[usr]       |-> _ => 0
 
 iff
 
@@ -1315,12 +1313,11 @@ interface rely(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 1
+    wards[usr]       |-> _ => 1
 
 iff
 
@@ -1362,12 +1359,11 @@ interface deny(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 0
+    wards[usr]       |-> _ => 0
 
 iff
 
@@ -1749,12 +1745,11 @@ interface rely(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 1
+    wards[usr]       |-> _ => 1
 
 iff
 
@@ -1796,12 +1791,11 @@ interface deny(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 0
+    wards[usr]       |-> _ => 0
 
 iff
 
@@ -2144,7 +2138,7 @@ returns May
 
 ```act
 behaviour sin of Vow
-interface sin(uint48 era)
+interface sin(uint256 era)
 
 for all
 
@@ -2391,12 +2385,11 @@ interface rely(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 1
+    wards[usr]       |-> _ => 1
 
 iff
 
@@ -2438,12 +2431,11 @@ interface deny(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 0
+    wards[usr]       |-> _ => 0
 
 iff
 
@@ -2512,7 +2504,7 @@ iff
 
 ```act
 behaviour heal of Vow
-interface heal(uint256 wad)
+interface heal(uint256 rad)
 
 for all
 
@@ -2530,10 +2522,10 @@ storage
 storage Vat
 
     wards[ACCT_ID] |-> May
-    dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
-    sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
-    vice           |-> Vice => Vice - wad * #Ray
-    debt           |-> Debt => Debt - wad * #Ray
+    dai[ACCT_ID]   |-> Dai  => Dai  - rad
+    sin[ACCT_ID]   |-> Sin  => Sin  - rad
+    vice           |-> Vice => Vice - rad
+    debt           |-> Debt => Debt - rad
 
 iff
 
@@ -2545,19 +2537,15 @@ iff
 
 iff in range uint256
 
-    Dai  - wad * #Ray
-    Sin  - wad * #Ray
-    Vice - wad * #Ray
-    Debt - wad * #Ray
-
-iff in range int256
-
-    wad * #Ray
+    Dai  - rad
+    Sin  - rad
+    Vice - rad
+    Debt - rad
 ```
 
 ```act
 behaviour kiss of Vow
-interface kiss(uint256 wad)
+interface kiss(uint256 rad)
 
 for all
 
@@ -2577,10 +2565,10 @@ storage
 storage Vat
 
     wards[ACCT_ID] |-> May
-    dai[ACCT_ID]   |-> Dai  => Dai  - wad * #Ray
-    sin[ACCT_ID]   |-> Sin  => Sin  - wad * #Ray
-    vice           |-> Vice => Vice - wad * #Ray
-    debt           |-> Debt => Debt - wad * #Ray
+    dai[ACCT_ID]   |-> Dai  => Dai  - rad
+    sin[ACCT_ID]   |-> Sin  => Sin  - rad
+    vice           |-> Vice => Vice - rad
+    debt           |-> Debt => Debt - rad
 
 iff
 
@@ -2592,15 +2580,11 @@ iff
 
 iff in range uint256
 
-    Ash  - wad
-    Dai  - wad * #Ray
-    Sin  - wad * #Ray
-    Vice - wad * #Ray
-    Debt - wad * #Ray
-
-iff in range int256
-
-    wad * #Ray
+    Ash  - rad
+    Dai  - rad
+    Sin  - rad
+    Vice - rad
+    Debt - rad
 ```
 
 #### adding to the `sin` queue
@@ -2637,7 +2621,7 @@ iff in range uint256
 
 ```act
 behaviour flog of Vow
-interface flog(uint48 t)
+interface flog(uint256 t)
 
 for all
 
@@ -2671,41 +2655,41 @@ interface flop()
 
 for all
 
-    Row     : address Flopper
-    Vat     : address VatLike
-    Ssin    : uint256
-    Ash     : uint256
-    Sump    : uint256
-    May     : uint256
-    Kicks   : uint256
-    Vow_was : address
-    Lot_was : uint256
-    Bid_was : uint256
-    Usr_was : address
-    Tic_was : uint48
-    End_was : uint48
-    Ttl     : uint48
-    Tau     : uint48
-    Dai     : uint256
-    Sin_v   : uint256
+    Flopp    : address Flopper
+    Vat      : address VatLike
+    Ssin     : uint256
+    Ash      : uint256
+    Sump     : uint256
+    May      : uint256
+    Kicks    : uint256
+    Vow_was  : address
+    Lot_was  : uint256
+    Bid_was  : uint256
+    Usr_was  : address
+    Tic_was  : uint48
+    End_was  : uint48
+    Ttl      : uint48
+    Tau      : uint48
+    Dai      : uint256
+    Sin_v    : uint256
 
 storage
 
-    row  |-> Row
-    vat  |-> Vat
-    Sin  |-> Ssin
-    Ash  |-> Ash => Ash + Sump
-    sump |-> Sump
+    flopper |-> Flopp_
+    vat     |-> Vat
+    Sin     |-> Ssin
+    Ash     |-> Ash => Ash + Sump
+    sump    |-> Sump
 
-storage Row
+storage Flopp
 
-    #Flopper.wards[ACCT_ID]              |-> May
-    #Flopper.kicks                       |-> Kicks => 1 + Kicks
-    #Flopper.bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    #Flopper.bids[1 + Kicks].bid         |-> Bid_was => Sump
-    #Flopper.bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    #Flopper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flopper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    wards[ACCT_ID]              |-> May
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
+    bids[1 + Kicks].bid         |-> Bid_was => Sump
+    bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
@@ -2717,11 +2701,11 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     // doc:
-    (Sin_v / #Ray - Ssin) - Ash >= Sump
+    (Sin_v - Ssin) - Ash >= Sump
     // doc: there is at most dust Joy
-    Dai < #Ray
+    Dai == 0
     // act: call stack is not too big
-    VCallDepth < 1024
+    VCallDepth < 1023
     VCallValue == 0
 
 iff in range uint48
@@ -2731,8 +2715,8 @@ iff in range uint48
 iff in range uint256
 
     Ash + Sump
-    Sin_v / #Ray - Ssin
-    (Sin_v / #Ray - Ssin) - Ash
+    Sin_v - Ssin
+    (Sin_v - Ssin) - Ash
     1 + Kicks
 
 returns 1 + Kicks
@@ -2746,14 +2730,12 @@ interface flap()
 
 for all
 
-    Cow      : address Flapper
+    Flapp    : address Flapper
     Vat      : address VatLike
     Bump     : uint256
     Hump     : uint256
     Ssin     : uint256
     Ash      : uint256
-    DaiMove  : address
-    Could    : uint256
     Bid_was  : uint256
     Lot_was  : uint256
     Usr_was  : address
@@ -2763,48 +2745,50 @@ for all
     Ttl      : uint48
     Tau      : uint48
     Kicks    : uint256
-    May_move : uint256
+    Wishing  : uint256
     Dai_v    : uint256
     Sin_v    : uint256
     Dai_c    : uint256
+    Flap_live : uint256
 
 storage
 
-    cow  |-> Cow
     vat  |-> Vat
+    flap |-> Flapp
     bump |-> Bump
     hump |-> Hump
     Sin  |-> Ssin
     Ash  |-> Ash
 
-storage Cow
+storage Flapp
 
-    #Flapper.dai                         |-> DaiMove
+    #Flapper.vat                         |-> Vat
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks   => 1 + Kicks
     #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
     #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
     #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => ACCT_ID
+    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => 0
+    #Flapper.live                        |-> Flap_live
 
 storage Vat
 
-    wards[DaiMove] |-> May_move
-    dai[ACCT_ID]   |-> Dai_v => Dai_v - #Ray * Bump
-    sin[ACCT_ID]   |-> Sin_v
-    dai[Cow]       |-> Dai_c => Dai_c + #Ray * Bump
+    wish[ACCT_ID][Flapp]|-> Wishing   
+    dai[ACCT_ID]        |-> Dai_v => Dai_v - Bump
+    sin[ACCT_ID]        |-> Sin_v
+    dai[Flapp]          |-> Dai_c => Dai_c + Bump
 
 iff
 
     // doc: there is enough `Joy`
-    Dai_v / #Ray >= (Sin_v + Bump) + Hump
+    Dai_v >= (Sin_v + Bump) + Hump
     // doc: there is no `Woe`
-    (Sin_v / #Ray - Ssin) - Ash == 0
-    // doc: DaiMove is authorised to call Vat
-    May_move == 1
+    (Sin_v - Ssin) - Ash == 0
     // act: call stack is not too big
-    VCallDepth < 1022
+    VCallDepth < 1023
     VCallValue == 0
+    Wishing == 1
+    Flap_live == 1
 
 iff in range uint48
 
@@ -2814,23 +2798,65 @@ iff in range uint256
 
     Sin_v + Bump
     (Sin_v + Bump) + Hump
-    Sin_v / #Ray - Ssin
-    (Sin_v / #Ray - Ssin) - Ash
+    Sin_v - Ssin
+    (Sin_v - Ssin) - Ash
     1 + Kicks
-    Dai_v - #Ray * Bump
-    Dai_c + #Ray * Bump
-
-iff in range int256
-
-     #Ray * Bump
-
-if
-
-    Cow =/= DaiMove
-    Cow =/= Vat
-    Vat =/= DaiMove
+    Dai_v - Bump
+    Dai_c + Bump
 
 returns 1 + Kicks
+```
+
+#### system lock down
+
+```act
+behaviour cage of Vow
+interface cage()
+
+for all
+
+   Vat : address VatLike
+   Flapper : address Flapper
+   Flopper : address Flopper
+   May_flop : uint256
+   Dai_v    : uint256
+   Sin_v    : uint256
+   Dai_f    : uint256
+
+storage
+
+
+   flop |-> Flopper
+   flap |-> Flapper
+   live |-> _ => 0
+   Sin  |-> _ => 0
+   Ash  |-> _ => 0
+
+storage Vat
+
+   dai[Flap]    |-> Dai_f => 0
+   dai[ACCT_ID] |-> Dai_v => Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi + Dai_f
+   sin[ACCT_ID] |-> Sin_v => Sin_v - #if Dai_v > Sin_v #then 0 #else Sin_v - Dai_v #fi
+
+storage Flapper
+
+    live |-> _ => 0
+
+storage Flopper
+
+    wards[ACCT_ID] |-> May_flop
+    live |-> _ => 0
+
+iff
+
+    VCallValue == 0
+    May_flop == 1
+
+iff in range uint256
+
+    Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi
+    Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi + Dai_f
+    Sin_v - #if Dai_v > Sin_v #then 0 #else Sin_v - Dai_v #fi
 ```
 
 # Cat
@@ -2887,54 +2913,6 @@ iff
 returns Flip : Chop : Lump
 ```
 
-#### liquidation data
-
-```act
-behaviour flips of Cat
-interface flips(uint256 n)
-
-for all
-
-    Ilk : bytes32
-    Urn : bytes32
-    Ink : uint256
-    Tab : uint256
-
-storage
-
-    flips[n].ilk |-> Ilk
-    flips[n].urn |-> Urn
-    flips[n].ink |-> Ink
-    flips[n].tab |-> Tab
-
-iff
-
-    VCallValue == 0
-
-returns Ilk : Urn : Ink : Tab
-```
-
-#### liquidation counter
-
-```act
-behaviour nflip of Cat
-interface nflip()
-
-for all
-
-    Nflip : uint256
-
-storage
-
-    nflip |-> Nflip
-
-iff
-
-    VCallValue == 0
-
-returns Nflip
-```
-
 #### liveness
 
 ```act
@@ -2977,27 +2955,6 @@ iff
 returns Vat
 ```
 
-#### `pit` address
-
-```act
-behaviour pit of Cat
-interface pit()
-
-for all
-
-    Pit : address
-
-storage
-
-    pit |-> Pit
-
-iff
-
-    VCallValue == 0
-
-returns Pit
-```
-
 #### `vow` address
 
 ```act
@@ -3030,12 +2987,11 @@ interface rely(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 1
+    wards[usr]       |-> _ => 1
 
 iff
 
@@ -3077,12 +3033,11 @@ interface deny(address usr)
 for all
 
     May   : uint256
-    Could : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wards[usr]       |-> Could => 0
+    wards[usr]       |-> _ => 0
 
 iff
 
@@ -3127,13 +3082,11 @@ interface file(bytes32 what, address data)
 for all
 
     May : uint256
-    Pit : address
     Vow : address
 
 storage
 
     wards[CALLER_ID] |-> May
-    pit              |-> Pit => (#if what == #string2Word("pit") #then data #else Pit #fi)
     vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
 
 iff
@@ -3191,7 +3144,7 @@ iff
     VCallValue == 0
 ```
 
-#### marking a position for liquidation
+#### liquidating a position
 
 ```act
 behaviour bite of Cat
@@ -3428,7 +3381,7 @@ for all
     Ilk         : bytes32
     Gem         : address GemLike
     May         : uint256
-    Rad         : uint256
+    Vat_bal     : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
 
@@ -3441,7 +3394,7 @@ storage
 storage Vat
 
     wards[ACCT_ID]          |-> May
-    gem[Ilk][CALLER_ID]     |-> Rad => Rad + #Ray * wad
+    gem[Ilk][CALLER_ID]     |-> Vat_bal => Vat_bal + wad
 
 storage Gem
 
@@ -3458,11 +3411,11 @@ iff
 
 iff in range int256
 
-    #Ray * wad
+    wad
 
 iff in range uint256
 
-    Rad + #Ray * wad
+    Vat_bal + wad
     Bal_usr     - wad
     Bal_adapter + wad
 
@@ -3882,8 +3835,8 @@ storage Vat
 
 iff
 
-    // doc: call stack is not too big
-    VCallDepth < 1023
+    // doc: call depth is not too deep
+    VCallDepth < 1024
     // doc: Flap is authorised to move for the caller
     May      == 1
     // doc: DaiMove is authorised to call Vat
