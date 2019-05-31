@@ -50,6 +50,9 @@
     "Flapper": {
       "name" : "Flapper",
       "solc_output": "./dss/out/flap.sol.json"
+    },
+    "End": {
+      "solc_output": "./dss/out/end.sol.json"
     }
   },
   "split-fail":[
