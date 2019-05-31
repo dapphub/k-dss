@@ -2773,7 +2773,7 @@ storage Flapp
 
 storage Vat
 
-    wish[ACCT_ID][Flapp]|-> Wishing   
+    wish[ACCT_ID][Flapp]|-> Wishing
     dai[ACCT_ID]        |-> Dai_v => Dai_v - Bump
     sin[ACCT_ID]        |-> Sin_v
     dai[Flapp]          |-> Dai_c => Dai_c + Bump
@@ -3862,4 +3862,87 @@ if
    CALLER_ID =/= ACCT_ID
 
 returns 1 + Kicks
+```
+
+
+# End
+
+The `End` coordinates the process of Global Settlement. It has many specs.
+
+```act
+behaviour cage of End
+interface cage()
+
+for all
+
+    Vat : address VatLike
+    Cat : address Cat
+    Vow : address VowLike
+    Flapper : address Flapper
+    Flopper : address Flopper
+
+    Live : uint256
+
+    CallerMay : uint256
+    EndMayVat : uint256
+    EndMayCat : uint256
+    EndMayVow : uint256
+    VowMayFlap : uint256
+    VowMayFlop : uint256
+
+    FlapDai : uint256
+    Awe : uint256
+    Joy : uint256
+
+storage
+
+    live |-> Live => 0
+    when |-> _ => TIME
+    vat |-> Vat
+    cat |-> Cat
+    vow |-> Vow
+    wards[CALLER_ID] |-> CallerMay
+
+storage Vat
+
+    live |-> _ => 0
+    wards[ACCT_ID] |-> EndMayVat
+    dai[Flap] |-> FlapDai => 0
+    sin[Vow]  |-> Awe => #if Joy + FlapDai > Awe #then 0 #else Awe - Joy - FlapDai #fi
+    dai[Vow]  |-> Joy => #if Joy + FlapDai > Awe #then Joy + FlapDai - Awe #else 0 #fi
+
+storage Cat
+
+    live |-> _ => 0
+    wards[ACCT_ID] |-> EndMayCat
+
+storage Vow
+
+    live |-> _ => 0
+    wards[ACCT_ID] |-> EndMayVow
+    flapper |-> Flapper
+    flopper |-> Flopper
+    Sin |-> _ => 0
+    Ash |-> _ => 0
+
+storage Flapper
+
+    wards[Vow] |-> VowMayFlap
+    live |-> _ => 0
+
+storage Flopper
+
+    wards[Vow] |-> VowMayFlop
+    live |-> _ => 0
+
+iff
+
+    Live == 1
+    CallerMay == 1
+    EndMayVat == 1
+    EndMayCat == 1
+    EndMayVow == 1
+    VowMayFlap == 1
+    VowMayFlop == 1
+    VCallValue == 0
 ```

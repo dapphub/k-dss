@@ -491,19 +491,6 @@ syntax Int ::= "#Flopper.wards" "[" Int "]" [function]
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Flopper.wards[A] => #hashedLocation("Solidity", 0, A)
 
-// packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flopper.ttl_tau" [function]
-// -----------------------------------------
-// doc:
-// act:
-rule #Flopper.ttl_tau => 5
-
-syntax Int ::= "#Flopper.kicks" [function]
-// ---------------------------------------
-// doc: auction counter
-// act:
-rule #Flopper.kicks => 6
-
 syntax Int ::= "#Flopper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
@@ -528,6 +515,43 @@ syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
 // doc: beneficiary of the auction
 // act:
 rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
+
+syntax Int ::= "#Flopper.dai" [function]
+// ---------------------------------------
+// doc: dai token
+// act:
+rule #Flopper.dai => 2
+
+syntax Int ::= "#Flopper.gem" [function]
+// ---------------------------------------
+// doc: mkr token
+// act:
+rule #Flopper.gem => 3
+
+syntax Int ::= "#Flopper.beg" [function]
+// ---------------------------------------
+// doc: minimum bid increment
+// act:
+rule #Flopper.beg => 4
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flopper.ttl_tau" [function]
+// -----------------------------------------
+// doc:
+// act:
+rule #Flopper.ttl_tau => 5
+
+syntax Int ::= "#Flopper.kicks" [function]
+// ---------------------------------------
+// doc: auction counter
+// act:
+rule #Flopper.kicks => 6
+
+syntax Int ::= "#Flopper.live" [function]
+// ---------------------------------------
+// doc: liveness flag
+// act:
+rule #Flopper.live => 7
 ```
 
 ### Flap
@@ -581,7 +605,7 @@ syntax Int ::= "#Flapper.beg" [function]
 // ---------------------------------------
 // doc: minimum bid increment
 // act:
-rule #Flapper.gem => 4
+rule #Flapper.beg => 4
 
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flapper.ttl_tau" [function]
@@ -601,7 +625,6 @@ syntax Int ::= "#Flapper.live" [function]
 // doc: liveness flag
 // act:
 rule #Flapper.live => 7
-
 ```
 
 ### GemLike
@@ -614,4 +637,99 @@ syntax Int ::= "#Gem.balances" "[" Int "]" [function]
 // doc: `gem` balance of `$0`
 // act:
 rule #Gem.balances[A] => #hashedLocation("Solidity", 1, A)
+```
+
+### End
+
+```k
+// act: public
+syntax Int ::= "#End.wards" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: whether `$0` is an owner of `End`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #End.wards[A] => #hashedLocation("Solidity", 0, Ilk)
+
+syntax Int ::= "#End.vat" [function]
+// ---------------------------------
+// doc: `Vat` that this `End` points to
+// act:
+rule #End.vat => 1
+
+syntax Int ::= "#End.cat" [function]
+// ---------------------------------
+// doc: `cat` that this `End` points to
+// act:
+rule #End.cat => 2
+
+syntax Int ::= "#End.vow" [function]
+// ---------------------------------
+// doc: `Vow` that this `End` points to
+// act:
+rule #End.vow => 3
+
+syntax Int ::= "#End.spot" [function]
+// ---------------------------------
+// doc: `Spot` that this `End` points to
+// act:
+rule #End.spot => 4
+
+syntax Int ::= "#End.live" [function]
+// ----------------------------------
+// doc: system liveness
+// act:
+rule #End.live => 5
+
+syntax Int ::= "#End.when" [function]
+// ----------------------------------
+// doc: time of cage
+// act:
+rule #End.when => 6
+
+syntax Int ::= "#End.wait" [function]
+// ----------------------------------
+// doc: processing period
+// act:
+rule #End.wait => 7
+
+syntax Int ::= "#End.debt" [function]
+// ----------------------------------
+// doc: total outstanding debt following processing
+// act:
+rule #End.debt => 8
+
+syntax Int ::= "#End.tag" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the cage price of ilk `$0`
+// act:
+rule #End.tag[Ilk] => #hashedLocation("Solidity", 9, Ilk)
+
+syntax Int ::= "#End.gap" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the collateral shortfall of ilk `$0`
+// act:
+rule #End.gap[Ilk] => #hashedLocation("Solidity", 10, Ilk)
+
+syntax Int ::= "#End.Art" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the total debt of ilk `$0`
+// act:
+rule #End.Art[Ilk] => #hashedLocation("Solidity", 11, Ilk)
+
+syntax Int ::= "#End.fix" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the final cash price of ilk `$0`
+// act:
+rule #End.fix[Ilk] => #hashedLocation("Solidity", 12, Ilk)
+
+syntax Int ::= "#End.bag" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: the packed dai of user `$0`
+// act:
+rule #End.bag[Usr] => #hashedLocation("Solidity", 13, Usr)
+
+syntax Int ::= "#End.out" "[" Int "][" Int "]" [function]
+// ---------------------------------------------
+// doc: cashed collateral of ilk `$0` assigned to `$1`
+// act:
+rule #End.out[Ilk][Usr] => #hashedLocation("Solidity", 14, Ilk Usr)
 ```
