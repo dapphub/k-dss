@@ -2514,10 +2514,14 @@ for all
     Sin  : uint256
     Vice : uint256
     Debt : uint256
+    Siny : uint256
+    Ashy : uint256
 
 storage
 
     vat |-> Vat
+    Sin |-> Siny
+    Ash |-> Ashy
 
 storage Vat
 
@@ -2534,6 +2538,8 @@ iff
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
+    rad <= Dai
+    rad <= Sin - (Ssin - Ashy)
 
 iff in range uint256
 
