@@ -2582,6 +2582,8 @@ iff
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
+    rad <= Dai
+    rad <= Ash
 
 iff in range uint256
 
