@@ -1285,18 +1285,17 @@ interface DOMAIN_SEPARATOR()
 
 for all
 
-    Version : string
-    ChainId : uint256
+    Dom : uint256
 
 storage
 
-    DOMAIN_SEPARATOR |-> keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseByteStackRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseByteStackRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+    DOMAIN_SEPARATOR |-> Dom
 
 iff
 
     VCallValue == 0
 
-returns keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"))), #bytes32(keccak(#parseByteStackRaw("Dai Semi-Automated Permit Office"))), #bytes32(keccak(#parseByteStackRaw(Version))), #uint256(ChainId), #address(CALLER_ID)))
+returns Dom
 ```
 
 ### Mutators
