@@ -132,59 +132,35 @@ syntax Int ::= "#Dai.wards" "[" Int "]" [function]
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Dai.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Dai.decimals" [function]
-// -----------------------------------------------
-// doc: decimal places in token balances
-// act: The dai token has .` decimal places
-rule #Dai.decimals => 1
-
-syntax Int ::= "#Dai.name" [function]
-// -----------------------------------------------
-// doc: the Token name
-// act: this token is called .`
-rule #Dai.name => 2
-
-syntax Int ::= "#Dai.symbol" [function]
-// -----------------------------------------------
-// doc: the Token symbol
-// act: this token has symbol .`
-rule #Dai.symbol => 3
-
-syntax Int ::= "#Dai.version" [function]
-// -----------------------------------------------
-// doc: the Token name
-// act: this token is version .`
-rule #Dai.version => 4
-
 syntax Int ::= "#Dai.totalSupply" [function]
 // -----------------------------------------------
 // doc: the total supply of this token
 // act: the total supply is .`
-rule #Dai.totalSupply => 5
+rule #Dai.totalSupply => 1
 
 syntax Int ::= "#Dai.balanceOf" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the balance of a user
 // act: the balance of `$0 is .` us ,
-rule #Dai.balanceOf[A] => #hashedLocation("Solidity", 6, A)
+rule #Dai.balanceOf[A] => #hashedLocation("Solidity", 2, A)
 
 syntax Int ::= "#Dai.allowance" "[" Int "][" Int "]" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.allowance[A][B] => #hashedLocation("Solidity", 7, A B)
+rule #Dai.allowance[A][B] => #hashedLocation("Solidity", 3, A B)
 
 syntax Int ::= "#Dai.nonces" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.nonces[A] => #hashedLocation("Solidity", 8, A)
+rule #Dai.nonces[A] => #hashedLocation("Solidity", 4, A)
 
 syntax Int ::= "#Dai.DOMAIN_SEPARATOR" [function]
 // -----------------------------------------------
 // doc: the amount that can be spent on someones behalf
 // act: `$1 can spend `.` tokens belonging to `$0`
-rule #Dai.DOMAIN_SEPARATOR => 9
+rule #Dai.DOMAIN_SEPARATOR => 5
 ```
 
 ### Jug
@@ -516,11 +492,11 @@ syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
 // act:
 rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
 
-syntax Int ::= "#Flopper.dai" [function]
+syntax Int ::= "#Flopper.vat" [function]
 // ---------------------------------------
 // doc: dai token
 // act:
-rule #Flopper.dai => 2
+rule #Flopper.vat => 2
 
 syntax Int ::= "#Flopper.gem" [function]
 // ---------------------------------------
@@ -589,11 +565,11 @@ syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
 // act:
 rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 1, N) +Int 3
 
-syntax Int ::= "#Flapper.dai" [function]
+syntax Int ::= "#Flapper.vat" [function]
 // ---------------------------------------
 // doc: dai token
 // act:
-rule #Flapper.dai => 2
+rule #Flapper.vat => 2
 
 syntax Int ::= "#Flapper.gem" [function]
 // ---------------------------------------
