@@ -1259,15 +1259,44 @@ returns Nonce
 behaviour decimals of Dai
 interface decimals()
 
-storage
-
-    decimals |-> 18
-
 iff
 
     VCallValue == 0
 
 returns 18
+```
+
+```act
+behaviour name of Dai
+interface name()
+
+iff
+
+    VCallValue == 0
+
+returns #parseByteStackRaw("Dai Stablecoin")
+```
+
+```act
+behaviour version of Dai
+interface version()
+
+iff
+
+    VCallValue == 0
+
+returns #parseByteStackRaw("1")
+```
+
+```act
+behaviour symbol of Dai
+interface symbol()
+
+iff
+
+    VCallValue == 0
+
+returns #parseByteStackRaw("DAI")
 ```
 
 ```act
@@ -2728,6 +2757,11 @@ iff in range uint256
     (Sin_v - Ssin) - Ash
     1 + Kicks
 
+if
+
+    #rangeUInt(48, TIME)
+
+
 returns 1 + Kicks
 ```
 
@@ -2754,7 +2788,7 @@ for all
     Ttl      : uint48
     Tau      : uint48
     Kicks    : uint256
-    Wishing  : uint256
+    Can      : uint256
     Dai_v    : uint256
     Sin_v    : uint256
     Dai_c    : uint256
@@ -2782,7 +2816,7 @@ storage Flapp
 
 storage Vat
 
-    wish[ACCT_ID][Flapp]|-> Wishing
+    can[ACCT_ID][Flapp] |-> Can
     dai[ACCT_ID]        |-> Dai_v => Dai_v - Bump
     sin[ACCT_ID]        |-> Sin_v
     dai[Flapp]          |-> Dai_c => Dai_c + Bump
@@ -2796,7 +2830,7 @@ iff
     // act: call stack is not too big
     VCallDepth < 1023
     VCallValue == 0
-    Wishing == 1
+    Can == 1
     Flap_live == 1
 
 iff in range uint48
@@ -2812,6 +2846,11 @@ iff in range uint256
     1 + Kicks
     Dai_v - Bump
     Dai_c + Bump
+
+if
+
+    #rangeUInt(48, TIME)
+
 
 returns 1 + Kicks
 ```
@@ -3388,7 +3427,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address GemLike
+    Gem         : address Gemish
     May         : uint256
     Vat_bal     : uint256
     Bal_usr     : uint256
@@ -3443,9 +3482,9 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address GemLike
+    Gem         : address Gemish
     May         : uint256
-    Rad         : uint256
+    Wad         : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
 
@@ -3458,7 +3497,7 @@ storage
 storage Vat
 
     wards[ACCT_ID]          |-> May
-    gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
+    gem[Ilk][CALLER_ID]     |-> Wad => Wad - wad
 
 storage Gem
 
@@ -3473,13 +3512,9 @@ iff
     VCallDepth < 1024
     VCallValue == 0
 
-iff in range int256
-
-    #Ray * wad
-
 iff in range uint256
 
-    Rad         - #Ray * wad
+    Wad         - wad
     Bal_usr     + wad
     Bal_adapter - wad
 
@@ -3544,16 +3579,17 @@ returns Dai
 
 ```act
 behaviour join of DaiJoin
-interface join(bytes32 urn, uint256 wad)
+interface join(bytes32 usr, uint256 wad)
 
 for all
 
     Vat         : address VatLike
     Dai         : address Dai
-    May         : uint256
     Rad         : uint256
-    Bal_usr     : uint256
-    Bal_adapter : uint256
+    Supply      : uint256
+    Bal_caller  : uint256
+    Dai_adapter : uint256
+    Allowed     : uint256
 
 storage
 
@@ -3562,31 +3598,29 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID] |-> May
-    dai[CALLER_ID] |-> Rad => Rad + #Ray * wad
+    dai[usr]     |-> Rad => Rad + #Ray * wad
+    dai[ACCT_ID] |-> Dai_adapter => Dai_adapter - #Ray * wad
 
 storage Dai
 
-    balanceOf[CALLER_ID] |-> Bal_usr     => Bal_usr - wad
-    balanceOf[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    balanceOf[CALLER_ID]          |-> Bal_caller => Bal_caller - wad
+    totalSupply                   |-> Supply     => Supply - wad
+    allowance[ACCT_ID][CALLER_ID] |-> Allowed    => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
-    // act: caller is `. ? : not` authorised
-    May == 1
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
-
-iff in range int256
-
-    #Ray * wad
+    #rangeUInt(256, Allowed - wad) or Allowed == maxUInt256
 
 iff in range uint256
 
+    Supply - wad
+    #Ray * wad
+    Bal_caller - wad
     Rad + #Ray * wad
-    Bal_usr - wad
-    Bal_adapter + wad
+    Dai_adapter - #Ray * wad
 
 if
 
@@ -3603,10 +3637,11 @@ for all
 
     Vat         : address VatLike
     Dai         : address Dai
-    May         : uint256
     Rad         : uint256
+    May         : uint256
     Bal_usr     : uint256
-    Bal_adapter : uint256
+    Dai_adapter : uint256
+    Supply      : uint256
 
 storage
 
@@ -3615,13 +3650,15 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> May
-    gem[Ilk][CALLER_ID]     |-> Rad => Rad - #Ray * wad
+
+    dai[CALLER_ID]   |-> Rad => Rad - #Ray * wad
+    dai[ACCT_ID]     |-> Dai_adapter => Dai_adapter + #Ray * wad
 
 storage Dai
 
-    balanceOf[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
-    balanceOf[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    wards[ACCT_ID] |-> May
+    balanceOf[usr] |-> Bal_usr => Bal_usr + wad
+    totalSupply    |-> Supply => Supply + wad
 
 iff
 
@@ -3631,15 +3668,13 @@ iff
     VCallDepth < 1024
     VCallValue == 0
 
-iff in range int256
-
-    #Ray * wad
-
 iff in range uint256
 
-    Rad         - #Ray * wad
-    Bal_usr     + wad
-    Bal_adapter - wad
+    #Ray * wad
+    Rad - #Ray * wad
+    Dai_adapter + #Ray * wad
+    Bal_usr + wad
+    Supply + wad
 
 if
 
@@ -3653,6 +3688,29 @@ The `Flapper` is an auction contract that receives `dai` tokens and starts an au
 ## Specification of behaviours
 
 ### Accessors
+
+#### Auth
+
+```act
+behaviour wards of Flapper
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+
 
 #### bid data
 
@@ -3686,18 +3744,18 @@ returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Gal
 #### sell token
 
 ```act
-behaviour dai of Flapper
-interface dai()
+behaviour vat of Flapper
+interface vat()
 
 for all
 
-    Dai : address
+    Vat : address
 
 storage
 
-    dai |-> Dai
+    vat |-> Vat
 
-returns Dai
+returns Vat
 ```
 
 #### buy token
@@ -3801,6 +3859,104 @@ returns Kicks
 
 ### Mutators
 
+#### Auth
+
+Any owner can add and remove owners.
+
+```act
+behaviour rely-diff of Flapper
+interface rely(address usr)
+
+for all
+
+    May   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour rely-same of Flapper
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Flapper
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Flapper
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID == usr
+```
+
+
 
 #### starting an auction
 
@@ -3811,68 +3967,142 @@ interface kick(address gal, uint256 lot, uint256 bid)
 for all
 
     Kicks    : uint256
-    DaiMove  : address
     Ttl      : uint48
     Tau      : uint48
-    Bid_was  : uint256
-    Lot_was  : uint256
     Usr_was  : address
     Tic_was  : uint48
     End_was  : uint48
-    Gal_was  : address
     Vat      : address VatLike
-    May      : uint256
-    May_move : uint256
+    Can      : uint256
     Dai_v    : uint256
     Dai_c    : uint256
+    Live     : uint256
 
 storage
 
-    dai                         |-> DaiMove
+    vat                         |-> Vat
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    kicks                       |-> Kicks   => 1 + Kicks
-    bids[1 + Kicks].bid         |-> Bid_was => bid
-    bids[1 + Kicks].lot         |-> Lot_was => lot
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].bid         |-> _ => bid
+    bids[1 + Kicks].lot         |-> _ => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Gal_was => gal
+    bids[1 + Kicks].gal         |-> _ => gal
+    live                        |-> Live
 
 storage Vat
 
-    wards[DaiMove] |-> May_move
-    dai[CALLER_ID] |-> Dai_v => Dai_v - #Ray * lot
-    dai[ACCT_ID]   |-> Dai_c => Dai_c + #Ray * lot
+    can[CALLER_ID][ACCT_ID] |-> Can
+    dai[ACCT_ID]   |-> Dai_v => Dai_v - lot
+    dai[CALLER_ID] |-> Dai_c => Dai_c + lot
 
 iff
 
     // doc: call depth is not too deep
     VCallDepth < 1024
     // doc: Flap is authorised to move for the caller
-    May      == 1
-    // doc: DaiMove is authorised to call Vat
-    May_move == 1
+    Can    == 1
     VCallValue == 0
+    Live       == 1
 
 iff in range uint256
 
     1 + Kicks
-    Dai_v - #Ray * lot
-    Dai_c + #Ray * lot
+    Dai_v - lot
+    Dai_c + lot
 
 iff in range uint48
 
     TIME + Tau
 
-iff in range int256
-
-    #Ray * lot
-
 if
 
-   CALLER_ID =/= ACCT_ID
+    CALLER_ID =/= ACCT_ID
+    #rangeUInt(48, TIME)
 
 returns 1 + Kicks
+
+calls
+
+    Vat.move
 ```
 
+#### Bidding on an auction (tend phase)
+
+
+```act
+behaviour tend of Flapper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+
+    Ttl      : uint48
+    Tau      : uint48
+    Usr_was  : address
+    Gal      : address
+    Tic_was  : uint48
+    End      : uint48
+    Gem      : address Gemish
+    Can      : uint256
+    Beg      : uint256
+    Bid_was  : uint256
+    Dai_v    : uint256
+    Dai_c    : uint256
+    Live     : uint256
+    Bal_usr  : uint256
+    Bal_gal  : uint256
+    Bal_caller : uint256
+
+storage
+
+    gem                  |-> Gem
+    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    bids[id].bid         |-> Bid_was => bid
+    bids[id].lot         |-> Lot
+    bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+    bids[id].gal         |-> Gal
+    live                 |-> Live
+    beg                  |-> Beg
+
+storage Gem
+
+    balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
+    balances[Usr_was]   |-> Bal_usr => Bal_usr + Bid_was
+    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
+    allowance[ACCT_ID][CALLER_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - bid #fi
+    stopped             |-> Stopped
+iff
+
+    // doc: call depth is not too deep
+    VCallDepth < 1024
+    VCallValue == 0
+    Live    == 1
+    Usr_was =/= 0
+    Tic_was == 0 or Tic_was > TIME
+    End > TIME
+    Lot == lot
+    Bid_was < bid
+    Bid_was * Beg <= bid * #Ray
+    #rangeUInt(256, Allowed - bid) or Allowed == maxUInt256
+    Stopped == 0
+
+iff in range uint256
+
+    Dai_v - lot
+    Dai_c + lot
+    bid - Bid_was
+    Bal_caller  - Bid_was
+    Bal_usr + Bid_was
+    Bal_gal + bid - Bid_was
+    Bal_caller  - bid
+
+iff in range uint48
+
+    TIME + Ttl
+
+if
+    ACCT_ID =/= CALLER_ID
+    #rangeUInt(48, TIME)
+```
 
 # End
 
