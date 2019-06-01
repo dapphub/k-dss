@@ -33,6 +33,31 @@ rule num1(N) => 0
   requires N ==Int 1
 
 rule (A -Int B) +Int B => A
+
+rule (A -Int B) -Int (C -Int B) => A -Int C
+```
+
+### Solidity Word Packing
+We will have to use some of these tricks when reasoning about solidity implementations of `Flip`, `Flap`, and `Flop`:
+
+```k
+syntax Int ::= "pow48"  [function]
+syntax Int ::= "pow208" [function]
+rule pow48  => 281474976710656                                                 [macro]
+rule pow208 => 411376139330301510538742295639337626245683966408394965837152256 [macro]
+
+syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
+// ----------------------------------------------------------
+rule #WordPackUInt48UInt48(X, Y) => Y *Int pow48 +Int X
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+syntax Int ::= "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
+// ----------------------------------------------------------------------
+rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int pow208 +Int X *Int pow160 +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
 ```
 
 
@@ -159,12 +184,14 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
 ```k
 syntax Int ::= "MaskLast20" [function]
 syntax Int ::= "MaskFirst6" [function]
+syntax Int ::= "MaskFirst12" [function]
 syntax Int ::= "MaskFirst26" [function]
 // -----------------------------------
 // 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
 rule MaskLast20 => 115792089237316195423570985007226406215939081747436879206741300988257197096960 [macro]
 // 0x000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff
 rule MaskFirst6 => 411376139330301510538742295639337626245683966408394965837152255                [macro]
+rule MaskFirst12 => 1461501637330902918203684832716283019655932542975  [macro]
 // 0x0000000000000000000000000000000000000000000000000000ffffffffffff
 rule MaskFirst26 => 281474976710655                                                               [macro]
 
@@ -210,6 +237,11 @@ rule (X *Int pow208) |Int (Y *Int pow160 +Int A) => (X *Int pow208 +Int Y *Int p
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
+
+rule MaskFirst12 &Int #WordPackAddrUInt48UInt48(A, B, C) => C
+  requires #rangeAddress(C)
+  andBool #rangeUInt(48, A)
+  andBool #rangeUInt(48, B)
 
 // rule MaskFirst26 &Int X => X
 //   requires #rangeUInt(48, X)
