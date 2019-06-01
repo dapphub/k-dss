@@ -911,6 +911,7 @@ iff
     (Art_v + dart) * Rate <= (Ink_v + dink) * Spot
     ((Art_u - dart) * Rate >= Dust) or (Art_u - dart == 0)
     ((Art_v + dart) * Rate >= Dust) or (Art_v + dart == 0)
+    VCallValue == 0
 
 if
 
@@ -955,6 +956,7 @@ iff
     (src == CALLER_ID) or (Can_src == 1)
     Art_u * Rate <= Ink_u * Spot
     (Art_u * Rate >= Dust) or (Art_u == 0)
+    VCallValue == 0
 
 if
 
@@ -2760,12 +2762,12 @@ for all
 
 storage
 
-    vat  |-> Vat
-    flap |-> Flapp
-    bump |-> Bump
-    hump |-> Hump
-    Sin  |-> Ssin
-    Ash  |-> Ash
+    vat     |-> Vat
+    flapper |-> Flapp
+    bump    |-> Bump
+    hump    |-> Hump
+    Sin     |-> Ssin
+    Ash     |-> Ash
 
 storage Flapp
 
