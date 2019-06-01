@@ -1,28 +1,5 @@
 # dss storage model
 
-### Solidity Word Packing
-We will have to use some of these tricks when reasoning about solidity implementations of `Flip`, `Flap`, and `Flop`:
-
-```k
-syntax Int ::= "pow48"  [function]
-syntax Int ::= "pow208" [function]
-rule pow48  => 281474976710656                                                 [macro]
-rule pow208 => 411376139330301510538742295639337626245683966408394965837152256 [macro]
-
-syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
-// ----------------------------------------------------------
-rule #WordPackUInt48UInt48(X, Y) => Y *Int pow48 +Int X
-  requires #rangeUInt(48, X)
-  andBool #rangeUInt(48, Y)
-
-syntax Int ::= "#WordPackAddrUInt48UInt48" "(" Int "," Int "," Int ")" [function]
-// ----------------------------------------------------------------------
-rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int pow208 +Int X *Int pow160 +Int A
-  requires #rangeAddress(A)
-  andBool #rangeUInt(48, X)
-  andBool #rangeUInt(48, Y)
-```
-
 ### Vat
 
 ```k
@@ -612,7 +589,19 @@ syntax Int ::= "#Gem.balances" "[" Int "]" [function]
 // --------------------------------------------------
 // doc: `gem` balance of `$0`
 // act:
-rule #Gem.balances[A] => #hashedLocation("Solidity", 1, A)
+rule #Gem.balances[A] => #hashedLocation("Solidity", 3, A)
+
+syntax Int ::= "#Gem.stopped" [function]
+// --------------------------------------------------
+// doc: `gem` balance of `$0`
+// act:
+rule #Gem.stopped => 4
+
+syntax Int ::= "#Gem.allowance" "[" Int "][" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #Gem.allowance[A][B] => #hashedLocation("Solidity", 8, A B)
 ```
 
 ### End
