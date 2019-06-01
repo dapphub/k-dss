@@ -31,6 +31,8 @@ rule num0(N) => 0
 
 rule num1(N) => 0
   requires N ==Int 1
+
+rule (A -Int B) +Int B => A
 ```
 
 
