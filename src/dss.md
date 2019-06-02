@@ -3201,20 +3201,45 @@ iff
 #### liquidating a position
 
 ```act
+behaviour muluu of Cat
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour minuu of Cat
+interface min(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : #if x > y #then y #else x #fi : WS
+
+if
+
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
 behaviour bite of Cat
 interface bite(bytes32 ilk, address urn)
 
 for all
 
     Vat     : address VatLike
-    Pit     : address
     Vow     : address VowLike
-    Nflip   : uint256
-    Ilk_was : uint256
-    Urn_was : uint256
-    Ink_was : uint256
-    Tab_was : uint256
-    Take    : uint256
+    Flip    : address Flipper
+    Live    : uint256
     Rate    : uint256
     Art_i   : uint256
     Ink_iu  : uint256
@@ -3224,128 +3249,433 @@ for all
     Vice    : uint256
     Sin     : uint256
     Sin_era : uint256
-    Live    : uint256
+    Chop    : uint256
+    Lump    : uint256
+    Kicks   : uint256
+    Lot     : uint256
+    Art     : uint256
+    Ttl     : uint48
+    Tau     : uint48
 
 storage
 
-    vat                |-> Vat
-    pit                |-> Pit
-    vow                |-> Vow
-    nflip              |-> Nflip   => Nflip + 1
-    flips[Nflip].ilk   |-> Ilk_was => ilk
-    flips[Nflip].urn   |-> Urn_was => urn
-    flips[Nflip].ink   |-> Ink_was => Ink_iu
-    flips[Nflip].tab   |-> Tab_was => Rate * Art_iu
-    live               |-> Live
-
-storage Vat
-
-    wards[ACCT_ID]     |-> May
-    ilks[ilk].take     |-> Take
-    ilks[ilk].rate     |-> Rate
-    urns[ilk][urn].ink |-> Ink_iu => 0
-    urns[ilk][urn].art |-> Art_iu => 0
-    ilks[ilk].Art      |-> Art_i  => Art_i  - Art_iu
-    gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv + Take * Ink_iu
-    sin[Vow]           |-> Sin_w  => Sin_w  - Rate * Art_iu
-    vice               |-> Vice   => Vice   - Rate_* Art_iu
-
-storage Vow
-
-    sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate
-    Sin                |-> Sin     => Sin     + Art_iu * Rate
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // act: system is  `. ? : not` live
-    Live == 1
-    // act: CDP is  `. ?  : not` vulnerable
-    Ink_iu * Spot_i < Art_iu * Rate
-    // act: call stack is not too big
-    VCallDepth < 1024
-    VCallValue == 0
-
-iff in range int256
-
-    Take
-    Rate
-    Take * (0 - Ink_iu)
-    Rate * (0 - Art_iu)
-
-iff in range uint256
-
-    Art_i   - Art_iu
-    Sin_w   - Rate   * Art_iu
-    Gem_iv  + Take   * Ink_iu
-    Vice    - Rate   * Art_iu
-    Sin_era + Art_iu * Rate
-    Sin     + Art_iu * Rate
-
-returns Nflip + 1
-```
-
-#### starting a collateral auction
-
-```act
-behaviour flip of Cat
-interface flip(uint256 n, uint256 wad)
-
-for all
-
-    Ilk   : bytes32
-    Urn   : address
-    Ink   : uint256
-    Tab   : uint256
-    Flip  : address Flipper
-    Chop  : uint256
-    Lump  : uint256
-    Vow   : address
-    Ttl   : uint48
-    Tau   : uint48
-    Kicks : uint256
-    Live  : uint256
-
-storage
-
-    flips[n].ilk   |-> Ilk
-    flips[n].urn   |-> Urn
-    flips[n].ink   |-> Ink => Ink - (Ink * wad) / Tab
-    flips[n].tab   |-> Tab => Tab - wad
+    vat            |-> Vat
+    vow            |-> Vow
+    live           |-> Live
     ilks[ilk].flip |-> Flip
     ilks[ilk].chop |-> Chop
     ilks[ilk].lump |-> Lump
-    vow            |-> Vow
-    live           |-> Live
+
+storage Vat
+
+    wards[ACCT_ID]     |-> CatMayVat
+    ilks[ilk].rate     |-> Rate
+    urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lot
+    urns[ilk][urn].art |-> Art_iu => Art_iu - Art
+    ilks[ilk].Art      |-> Art_i  => Art_i  - Art
+    gem[ilk][Flip]     |-> Gem_iv => Gem_iv + Lot
+    sin[Vow]           |-> Sin_w  => Sin_w  + Art * Rate
+    vice               |-> Vice   => Vice   + Art * Rate
+
+storage Vow
+
+    wards[ACCT_ID]     |-> CatMayVow
+    sin[TIME]          |-> Sin_era => Sin_era + Art * Rate
+    Sin                |-> Sin     => Sin     + Art * Rate
 
 storage Flip
 
     #Flipper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flipper.kicks                       |-> Kicks => 1 + Kicks
     #Flipper.bids[1 + Kicks].bid         |-> _ => 0
-    #Flipper.bids[1 + Kicks].lot         |-> _ => (Ink * wad) / Tab
+    #Flipper.bids[1 + Kicks].lot         |-> _ => Lot
     #Flipper.bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flipper.bids[1 + Kicks].urn         |-> _ => Urn
+    #Flipper.bids[1 + Kicks].urn         |-> _ => urn
     #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
-    #Flipper.bids[1 + Kicks].tab         |-> _ => (wad * Chop) /Int 1000000000000000000000000000)
+    #Flipper.bids[1 + Kicks].tab         |-> _ => #rmul(Chop, Art * Rate)
 
 iff
 
-    // act: system is  `. ? : not` live
+    CatMayVat == 1
+    CatMayVow == 1
     Live == 1
-    // doc: flipping no more than the available debt
-    wad <= Tab
-    // doc: flipping the lot size or the remainder
-    (wad == Lump) or ((wad < Lump) and (wad == Tab))
-    // act: call stack is not too big
+    Ink_iu * Spot_i < Art_iu * Rate
     VCallDepth < 1023
+    VCallValue == 0
+    (Ink_iu >= Lump and Lot == Lump) or (Ink_iu < Lump and Lot == Ink_iu)
+    Art == Lot * Art_iu / Ink_iu
+
+iff in range int256
+
+    Art
+    Lot
+
+iff in range uint256
+
+    Ink_iu - Lot
+    Art_iu - Art
+    Art_i  - Art
+    Gem_iv + Lot
+    Sin_w  + Art * Rate
+    Vice   + Art * Rate
+    Chop * Art * Rate
+
+
+returns 1 + Kicks
+
+calls
+
+  Cat.muluu
+  Cat.minuu
+  Vat.grab
+  Vow.fess
+  Flip.kick
+```
+
+## Flip: liquidation auction
+
+```act
+behaviour wards of Flipper
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+#### bid data
+
+```act
+behaviour bids of Flipper
+interface bids(uint256 n)
+
+for all
+
+    Bid : uint256
+    Lot : uint256
+    Usr : address
+    Tic : uint48
+    End : uint48
+    Urn : address
+    Gal : address
+    Tab : uint256
+
+storage
+
+    bids[n].bid         |-> Bid
+    bids[n].lot         |-> Lot
+    bids[n].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End)
+    bids[n].urn         |-> Urn
+    bids[n].gal         |-> Gal
+    bids[n].tab         |-> Tab
+
+iff
+
+    VCallValue == 0
+
+returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Urn : Gal : Tab
+```
+
+#### sell token
+
+```act
+behaviour vat of Flipper
+interface vat()
+
+for all
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+returns Vat
+```
+
+#### buy token
+
+```act
+behaviour ilk of Flipper
+interface ilk()
+
+for all
+
+    Ilk : uint256
+
+storage
+
+    ilk |-> Ilk
+
+returns Ilk
+```
+
+#### minimum bid increment
+
+```act
+behaviour beg of Flipper
+interface beg()
+
+for all
+
+    Beg : uint256
+
+storage
+
+    beg |-> Beg
+
+returns Beg
+```
+
+#### auction time-to-live
+
+```act
+behaviour ttl of Flipper
+interface ttl()
+
+for all
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+iff
+
+    VCallValue == 0
+
+returns Ttl
+```
+
+#### maximum auction duration
+
+```act
+behaviour tau of Flipper
+interface tau()
+
+for all
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+iff
+
+    VCallValue == 0
+
+returns Tau
+```
+
+#### kick counter
+
+```act
+behaviour kicks of Flipper
+interface kicks()
+
+for all
+
+    Kicks : uint256
+
+storage
+
+    kicks |-> Kicks
+
+iff
+
+    VCallValue == 0
+
+returns Kicks
+```
+
+### Mutators
+
+#### Auth
+
+Any owner can add and remove owners.
+
+```act
+behaviour rely-diff of Flipper
+interface rely(address usr)
+
+for all
+
+    May   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour rely-same of Flipper
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Flipper
+interface deny(address usr)
+
+for all
+
+    May   : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Flipper
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID == usr
+```
+
+```act
+behaviour addu48u48 of Flipper
+interface add(uint48 x, uint48 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint48
+
+    x + y
+
+if
+
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour kick of Flipper
+interface kick(address urn, address gal, uint256 tab, uint256 lot, uint256 bid)
+
+for all
+
+    Vat      : address VatLike
+    Ilk      : uint256
+    Kicks    : uint256
+    Ttl      : uint48
+    Tau      : uint48
+    MayFlux  : uint256
+    Gem_v    : uint256
+    Gem_c    : uint256
+
+storage
+
+    vat                         |-> Vat
+    ilk                         |-> Ilk
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].bid         |-> _ => bid
+    bids[1 + Kicks].lot         |-> _ => lot
+    bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
+    bids[1 + Kicks].urn         |-> _ => urn
+    bids[1 + Kicks].gal         |-> _ => gal
+    bids[1 + Kicks].tab         |-> _ => tab
+
+storage Vat
+
+    can[ACCT_ID][CALLER_ID] |-> MayFlux
+    gem[Ilk][CALLER_ID]     |-> Gem_v => Gem_v - lot
+    gem[Ilk][ACCT_ID]       |-> Gem_c => Gem_c + lot
+
+iff
+
+    MayFlux == 1
+    VCallDepth < 1024
     VCallValue == 0
 
 iff in range uint256
 
-    Ink * wad
-    wad * Chop
+    Kicks + 1
+    Gem_v - lot
+    Gem_c + lot
+
+iff in range uint48
+
+    TIME + Tau
+
+if
+
+   CALLER_ID =/= ACCT_ID
+
+calls
+
+  Flipper.addu48u48
+  Vat.flux-diff
 
 returns 1 + Kicks
 ```

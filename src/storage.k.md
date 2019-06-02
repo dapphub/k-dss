@@ -383,55 +383,79 @@ rule #DaiJoin.dai => 1
 ### Flip
 
 ```k
-// packed, use #WordPackUInt48UInt48 to unpack this
-syntax Int ::= "#Flipper.ttl_tau" [function]
-// -----------------------------------------
-// doc:
-// act:
-rule #Flipper.ttl_tau => 3
-
-syntax Int ::= "#Flipper.kicks" [function]
+syntax Int ::= "#Flipper.wards" "[" Int "]" [function]
 // ---------------------------------------
-// doc: auction counter
-// act:
-rule #Flipper.kicks => 4
+// doc: whether `$0` is an owner of `Flip`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #Flipper.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#Flipper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
 // doc: current bid (dai)
 // act:
-rule #Flipper.bids[N].bid => #hashedLocation("Solidity", 5, N) +Int 0
+rule #Flipper.bids[N].bid => #hashedLocation("Solidity", 1, N) +Int 0
 
 syntax Int ::= "#Flipper.bids" "[" Int "].lot" [function]
 // ------------------------------------------------------
 // doc: current lot (gem)
 // act:
-rule #Flipper.bids[N].lot => #hashedLocation("Solidity", 5, N) +Int 1
+rule #Flipper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
 syntax Int ::= "#Flipper.bids" "[" Int "].usr_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flipper.bids[N].usr_tic_end => #hashedLocation("Solidity", 5, N) +Int 2
+rule #Flipper.bids[N].usr_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
 syntax Int ::= "#Flipper.bids" "[" Int "].urn" [function]
 // ------------------------------------------------------
-// doc: beneficiary of remaining gems
+// doc: CDP owner
 // act:
-rule #Flipper.bids[N].urn => #hashedLocation("Solidity", 5, N) +Int 3
+rule #Flipper.bids[N].urn => #hashedLocation("Solidity", 1, N) +Int 3
 
 syntax Int ::= "#Flipper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
-// doc: beneficiary of dai
+// doc: beneficiary of the auction
 // act:
-rule #Flipper.bids[N].gal => #hashedLocation("Solidity", 5, N) +Int 4
+rule #Flipper.bids[N].gal => #hashedLocation("Solidity", 1, N) +Int 4
 
 syntax Int ::= "#Flipper.bids" "[" Int "].tab" [function]
 // ------------------------------------------------------
-// doc: debt to cover
+// doc: beneficiary of the auction
 // act:
-rule #Flipper.bids[N].tab => #hashedLocation("Solidity", 5, N) +Int 5
+rule #Flipper.bids[N].tab => #hashedLocation("Solidity", 1, N) +Int 5
+
+syntax Int ::= "#Flipper.vat" [function]
+// ---------------------------------------
+// doc: CDP engine
+// act:
+rule #Flipper.vat => 2
+
+syntax Int ::= "#Flipper.ilk" [function]
+// ---------------------------------------
+// doc: collateral type
+// act:
+rule #Flipper.ilk => 3
+
+syntax Int ::= "#Flipper.beg" [function]
+// ---------------------------------------
+// doc: minimum bid increment
+// act:
+rule #Flipper.beg => 4
+
+// packed, use #WordPackUInt48UInt48 to unpack this
+syntax Int ::= "#Flipper.ttl_tau" [function]
+// -----------------------------------------
+// doc:
+// act:
+rule #Flipper.ttl_tau => 5
+
+syntax Int ::= "#Flipper.kicks" [function]
+// ---------------------------------------
+// doc: auction counter
+// act:
+rule #Flipper.kicks => 6
 ```
 
 
