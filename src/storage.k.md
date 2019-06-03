@@ -636,7 +636,7 @@ syntax Int ::= "#End.wards" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: whether `$0` is an owner of `End`
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
-rule #End.wards[A] => #hashedLocation("Solidity", 0, Ilk)
+rule #End.wards[A] => #hashedLocation("Solidity", 0, A)
 
 syntax Int ::= "#End.vat" [function]
 // ---------------------------------
