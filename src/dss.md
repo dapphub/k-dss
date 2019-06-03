@@ -3383,7 +3383,7 @@ iff
 
     VCallValue == 0
 
-returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Urn : Gal : Tab
+returns Bid : Lot : Usr : Tic : End : Urn : Gal : Tab
 ```
 
 #### sell token

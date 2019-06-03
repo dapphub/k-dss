@@ -238,10 +238,19 @@ rule (X *Int pow208) |Int (Y *Int pow160 +Int A) => (X *Int pow208 +Int Y *Int p
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
 
-rule MaskFirst12 &Int #WordPackAddrUInt48UInt48(C, B, A) => C
-  requires #rangeAddress(C)
-  andBool #rangeUInt(48, A)
-  andBool #rangeUInt(48, B)
+rule maxUInt160 &Int (((X *Int pow208) +Int (Y *Int pow160)) +Int A) => A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule ((((X *Int pow208) +Int (Y *Int pow160)) +Int A) /Int pow160) => (X *Int pow48) +Int Y
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule maxUInt48 &Int (X *Int pow48) +Int Y => Y
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
 
 // rule MaskFirst26 &Int X => X
 //   requires #rangeUInt(48, X)
