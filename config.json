@@ -63,7 +63,7 @@
       "solc_output": "./dss/out/end.sol.json"
     }
   },
-  "split-fail":[
+  "split_fail":[
     "Vat_heal",
     "Vat_grab",
     "Vat_fold",
