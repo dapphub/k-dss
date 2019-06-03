@@ -3393,7 +3393,7 @@ iff
 returns Bid : Lot : Usr : Tic : End : Urn : Gal : Tab
 ```
 
-#### sell token
+#### cdp engine
 
 ```act
 behaviour vat of Flipper
@@ -3410,7 +3410,7 @@ storage
 returns Vat
 ```
 
-#### buy token
+#### collateral type
 
 ```act
 behaviour ilk of Flipper
@@ -3521,7 +3521,7 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -3567,7 +3567,7 @@ interface deny(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -3636,7 +3636,7 @@ for all
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
-    MayFlux  : uint256
+    CanFlux  : uint256
     Gem_v    : uint256
     Gem_c    : uint256
 
@@ -3655,13 +3655,13 @@ storage
 
 storage Vat
 
-    can[ACCT_ID][CALLER_ID] |-> MayFlux
+    can[ACCT_ID][CALLER_ID] |-> CanFlux
     gem[Ilk][CALLER_ID]     |-> Gem_v => Gem_v - lot
     gem[Ilk][ACCT_ID]       |-> Gem_c => Gem_c + lot
 
 iff
 
-    MayFlux == 1
+    CanFlux == 1
     VCallDepth < 1024
     VCallValue == 0
 
@@ -4081,7 +4081,7 @@ iff
 
     VCallValue == 0
 
-returns Bid : Lot : #WordPackAddrUInt48UInt48(Usr, Tic, End) : Gal
+returns Bid : Lot : Usr : Tic : End : Gal
 ```
 
 #### sell token
@@ -4212,7 +4212,7 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -4258,7 +4258,7 @@ interface deny(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -4304,19 +4304,33 @@ if
 #### starting an auction
 
 ```act
+behaviour addu48u48 of Flapper
+interface add(uint48 x, uint48 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint48
+
+    x + y
+
+if
+
+    #sizeWordStack(WS) <= 100
+```
+
+```act
 behaviour kick of Flapper
 interface kick(address gal, uint256 lot, uint256 bid)
 
 for all
 
+    Vat      : address VatLike
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
-    Usr_was  : address
-    Tic_was  : uint48
-    End_was  : uint48
-    Vat      : address VatLike
-    Can      : uint256
+    CanMove  : uint256
     Dai_v    : uint256
     Dai_c    : uint256
     Live     : uint256
@@ -4328,28 +4342,26 @@ storage
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> _ => bid
     bids[1 + Kicks].lot         |-> _ => lot
-    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].gal         |-> _ => gal
     live                        |-> Live
 
 storage Vat
 
-    can[CALLER_ID][ACCT_ID] |-> Can
+    can[ACCT_ID][CALLER_ID] |-> CanMove
     dai[ACCT_ID]   |-> Dai_v => Dai_v - lot
     dai[CALLER_ID] |-> Dai_c => Dai_c + lot
 
 iff
 
-    // doc: call depth is not too deep
-    VCallDepth < 1024
-    // doc: Flap is authorised to move for the caller
-    Can    == 1
+    Live == 1
+    Can == 1
     VCallValue == 0
-    Live       == 1
+    VCallDepth < 1024
 
 iff in range uint256
 
-    1 + Kicks
+    Kicks + 1
     Dai_v - lot
     Dai_c + lot
 
@@ -4360,13 +4372,13 @@ iff in range uint48
 if
 
     CALLER_ID =/= ACCT_ID
-    #rangeUInt(48, TIME)
 
 returns 1 + Kicks
 
 calls
 
-    Vat.move
+    Vat.move-diff
+    Flapper.addu48u48
 ```
 
 #### Bidding on an auction (tend phase)
