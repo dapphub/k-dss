@@ -67,8 +67,9 @@
     "Vat_heal",
     "Vat_grab",
     "Vat_fold",
-    "Vat_frob",
-    "Vat_fork"
+    "Vat_frob-diff",
+    "Vat_fork-diff",
+    "Vat_fork-same"
     ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
