@@ -1280,7 +1280,7 @@ iff
 
     VCallValue == 0
 
-returns #parseByteStackRaw("Dai Stablecoin")
+returnsRaw #asByteStackInWidthaux(32, 31, 32, #enc(#string("Dai Stablecoin")))
 ```
 
 ```act
@@ -1291,7 +1291,7 @@ iff
 
     VCallValue == 0
 
-returns #parseByteStackRaw("1")
+returnsRaw #asByteStackInWidthaux(32, 31, 32, #enc(#string("1")))
 ```
 
 ```act
@@ -1302,7 +1302,7 @@ iff
 
     VCallValue == 0
 
-returns #parseByteStackRaw("DAI")
+returnsRaw #asByteStackInWidthaux(32, 31, 32, #enc(#string("DAI")))
 ```
 
 ```act
@@ -4627,4 +4627,10 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
     VCallValue == 0
+
+calls
+
+  Vat.cage
+  Cat.cage
+  Vow.cage
 ```
