@@ -3177,7 +3177,8 @@ iff
 
 #### setting liquidator address
 
-```act
+TODO: add Vat storage
+```
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
@@ -3196,6 +3197,10 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+
+calls
+
+  Vat.hope
 ```
 
 #### liquidating a position
@@ -3328,6 +3333,8 @@ calls
   Cat.muluu
   Cat.minuu
   Vat.grab
+  Vat.ilks
+  Vat.urns
   Vow.fess
   Flip.kick
 ```
