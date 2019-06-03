@@ -252,8 +252,12 @@ rule maxUInt48 &Int (X *Int pow48) +Int Y => Y
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-// rule MaskFirst26 &Int X => X
-//   requires #rangeUInt(48, X)
+rule ((X *Int pow208) +Int A) /Int pow160 => X *Int pow48
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
+rule maxUInt48 &Int (X *Int pow48) => 0
+  requires #rangeUInt(48, X)
 ```
 
 ### miscellaneous

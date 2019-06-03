@@ -3765,7 +3765,7 @@ iff in range uint48
 
 if
 
-   CALLER_ID =/= ACCT_ID
+    CALLER_ID =/= ACCT_ID
 
 calls
 
@@ -3773,6 +3773,256 @@ calls
   Vat.flux-diff
 
 returns 1 + Kicks
+```
+
+```act
+behaviour tick of Flipper
+interface tick(uint256 id)
+
+for all
+  Usr : address
+  Tic : uint48
+  End : uint48
+  Tau : uint48
+  Ttl : uint48
+
+storage
+  ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End) => #WordPackAddrUInt48UInt48(Usr, Tic, End + Tau)
+
+iff
+  End < TIME
+  Tic == 0
+  VCallValue == 0
+
+iff in range uint48
+  End + Tau
+
+calls
+  Flipper.addu48u48
+```
+
+```act
+behaviour tend of Flipper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+  Vat : address VatLike
+  Beg : uint256
+  Bid : uint256
+  Lot : uint256
+  Tab : uint256
+  Gal : address
+  Ttl : uint48
+  Tau : uint48
+  Usr : address
+  Tic : uint48
+  End : uint48
+  Dai_c : uint256
+  Dai_u : uint256
+  Dai_g : uint256
+
+storage
+  vat          |-> Vat
+  beg          |-> Beg
+  bids[id].bid |-> Bid => bid
+  bids[id].lot |-> Lot => lot
+  bids[id].tab |-> Tab
+  bids[id].gal |-> Gal
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
+
+storage Vat
+  dai[CALLER_ID] |-> Dai_c => Dai_c - bid
+  dai[Usr]       |-> Dai_u => Dai_u + bid
+  dai[Gal]       |-> Dai_g => Dai_g + bid - Bid
+
+iff
+  Guy /= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+
+  lot == Lot
+  bid <= Tab
+  bid >  Bid
+  (bid * #RAY >= beg * Bid) or (bid == Tab)
+
+  CALLER_ID /= Usr
+  VCallValue == 0
+
+if in range uint256
+  Dai_c - bid
+  Dai_u + bid
+  Dai_g + bid - Bid
+  bid * #RAY
+  Beg * Bid
+
+if in range uint48
+  Tic + Ttl
+
+calls
+  Flipper.muluu
+  Vat.move-diff
+```
+
+```act
+behaviour dent of Flipper
+interface dent(uint256 id, uint256 lot, uint256 bid)
+
+for all
+  Vat : address VatLike
+  Beg : uint256
+  Bid : uint256
+  Lot : uint256
+  Tab : uint256
+  Gal : address
+  Ttl : uint48
+  Tau : uint48
+  Usr : address
+  Tic : uint48
+  End : uint48
+  Dai_c : uint256
+  Dai_u : uint256
+  Dai_g : uint256
+
+storage
+  vat          |-> Vat
+  ilk          |-> Ilk
+  beg          |-> Beg
+  bids[id].bid |-> Bid => bid
+  bids[id].lot |-> Lot => lot
+  bids[id].tab |-> Tab
+  bids[id].urn |-> Urn
+  bids[id].gal |-> Gal
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
+
+storage Vat
+  dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
+  dai[Usr]          |-> Dai_u => Dai_u + bid
+  gem[ilk][ACCT_ID] |-> Dai_a => Dai_a + lot - Lot
+  gem[ilk][Urn]     |-> Dai_v => Dai_v + Lot - lot
+
+iff
+  Guy /= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+
+  bid == Bid
+  bid == Tab
+  lot <  Lot
+  Lot * #RAY >= lot * Beg
+
+  CALLER_ID /= Usr
+  ACCT_ID   /= Urn
+  VCallValue == 0
+
+if in range uint256
+  Dai_c - bid
+  Dai_u + bid
+  Dai_g + bid - Bid
+  Lot * #RAY
+  lot * Beg
+
+if in range uint48
+  Tic + Ttl
+
+calls
+  Flipper.muluu
+  Vat.move-diff
+  Vat.flux-diff
+```
+
+```act
+behaviour deal of Flipper
+interface deal(uint256 id)
+
+storage
+  bids[id].bid         |-> _   => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].urn         |-> _ => 0
+  bids[id].gal         |-> _ => 0
+  bids[id].tab         |-> _ => 0
+
+storage Vat
+  gem[ilk][ACCT_ID] |-> Gem_a => Gem_a - Lot
+  gem[ilk][Usr]     |-> Gem_u => Gem_u + Lot
+
+for all
+  Lot : uint256
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Gem_a : uint256
+
+iff
+  Tic /= 0
+  Tic < TIME or End < TIME
+  ACCT_ID /= Usr
+  VCallValue == 0
+
+if in range uint256
+  Gem_a - Lot
+  Gem_u + Lot
+
+calls
+  Vat.flux-diff
+```
+
+```act
+behaviour yank of Flipper
+interface yank(uint256 id)
+
+for all
+  Vat : address VatLike
+  Bid : uint256
+  Lot : uint256
+  Tab : uint256
+  Ttl : uint48
+  Tau : uint48
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Dai_u : uint256
+  Dai_g : uint256
+  Gem_a : uint256
+  Gem_u : uint256
+
+storage
+  wards[CALLER_ID]     |-> May
+  vat                  |-> Vat
+  ilk                  |-> Ilk
+  bids[id].bid         |-> Bid => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].tab         |-> Tab => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].urn         |-> _ => 0
+  bids[id].gal         |-> _ => 0
+
+storage Vat
+  gem[Ilk][ACCT_ID]   |-> Gem_a => Gem_a - Lot
+  gem[Ilk][CALLER_ID] |-> Gem_u => Gem_u + Lot
+  dai[CALLER_ID]      |-> Dai_u => Dai_u - Bid
+  dai[Guy]            |-> Dai_g => Dai_g + Bid
+
+iff
+  May == 1
+  Guy /= 0
+  Bid < Tab
+  CALLER_ID /= ACCT_ID
+  CALLER_ID /= Guy
+  VCallValue == 0
+
+if in range uint256
+  Gem_a - Lot
+  Gem_c + Lot
+  Dai_u - Bid
+  Dai_g + Bid
+
+calls
+  Vat.flux-diff
+  Vat.move-diff
 ```
 
 # GemJoin
