@@ -263,6 +263,30 @@ returns Live
 
 ### Lemmas
 
+#### Wish
+
+```act
+behaviour wish of Vat
+interface wish(address u, address v) internal
+
+for all
+
+  Can : uint256
+
+stack
+
+  v : u : JMPTO : WS => JMPTO : (u == v or Can) : WS
+
+storage
+
+  can[u][v] |-> Can
+
+if
+
+  #sizeWordStack(WS) <= 1015
+
+```
+
 #### Arithmetic
 
 ```act
@@ -829,13 +853,18 @@ iff in range uint256
     Urn_ink + dink
     Urn_art + dart
     Ilk_Art + dart
+    Gem_iv - dink
     Gem_iv - dart
     Dai_w + (Ilk_rate * dart)
     Debt + (Ilk_rate * dart)
-    Ilk_rate * dart
     Ilk_Art * Ilk_rate
     Urn_art * Ilk_rate
     Urn_ink * Ilk_spot
+    (Urn_ink + ABI_dink) * Ilk_spot
+
+iff in range int256
+
+    Ilk_rate * dart
 
 if
 
