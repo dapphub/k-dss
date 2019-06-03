@@ -263,30 +263,6 @@ returns Live
 
 ### Lemmas
 
-#### Wish
-
-```act
-behaviour wish of Vat
-interface wish(address u, address v) internal
-
-for all
-
-  Can : uint256
-
-stack
-
-  v : u : JMPTO : WS => JMPTO : (u == v or Can) : WS
-
-storage
-
-  can[u][v] |-> Can
-
-if
-
-  #sizeWordStack(WS) <= 1015
-
-```
-
 #### Arithmetic
 
 ```act
