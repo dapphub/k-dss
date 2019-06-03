@@ -950,6 +950,7 @@ iff in range uint256
 
     Ink_u - dink
     Art_u - dart
+    Ink_u * Spot
 
 iff
 
