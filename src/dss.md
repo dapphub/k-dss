@@ -2147,6 +2147,57 @@ The `Vow` is the system's fiscal organ, the recipient of both system surplus and
 
 ## Specification of behaviours
 
+### Lemmas
+
+```act
+behaviour adduu of Vow
+interface add(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+    x + y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour subuu of Vow
+interface sub(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour minuu of Vow
+interface min(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : #if x > y #then y #else x #fi : WS
+
+if
+
+    #sizeWordStack(WS) <= 1000
+```
+
 ### Accessors
 
 #### owners
@@ -2408,6 +2459,10 @@ iff in range uint256
     (Sin - Ssin) - Ash
 
 returns (Sin - Ssin) - Ash
+
+calls
+
+  Vow.subuu
 ```
 
 ### Mutators
@@ -2583,6 +2638,10 @@ iff in range uint256
     Sin  - rad
     Vice - rad
     Debt - rad
+
+calls
+
+  Vow.subuu
 ```
 
 ```act
@@ -2629,6 +2688,10 @@ iff in range uint256
     Sin  - rad
     Vice - rad
     Debt - rad
+
+calls
+
+  Vow.subuu
 ```
 
 #### adding to the `sin` queue
@@ -2659,6 +2722,10 @@ iff in range uint256
 
     Sin_era + tab
     Sin     + tab
+
+calls
+
+  Vow.adduu
 ```
 
 #### processing `sin` queue
@@ -2689,6 +2756,11 @@ iff in range uint256
 
     t   + Wait
     Sin - Sin_t
+
+calls
+
+  Vow.adduu
+  Vow.subuu
 ```
 
 #### starting a debt auction
@@ -2769,6 +2841,11 @@ if
 
 
 returns 1 + Kicks
+
+calls
+
+  Vow.subuu
+  Vow.adduu
 ```
 
 #### starting a surplus auction
@@ -2859,6 +2936,11 @@ if
 
 
 returns 1 + Kicks
+
+calls
+
+  Vow.subuu
+  Vow.adduu
 ```
 
 #### system lock down
@@ -2911,6 +2993,12 @@ iff in range uint256
     Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi
     Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi + Dai_f
     Sin_v - #if Dai_v > Sin_v #then 0 #else Sin_v - Dai_v #fi
+
+calls
+
+  Vow.subuu
+  Vow.adduu
+  Vow.minuu
 ```
 
 # Cat
