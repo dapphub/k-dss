@@ -3610,6 +3610,23 @@ calls
   Flip.kick
 ```
 
+```act
+behaviour cage of Cat
+interface cage()
+
+for all
+  Auth : uint256
+
+storage
+  wards[CALLER_ID] |-> Auth
+  live |-> _ => 0
+
+iff
+  Auth == 1
+  VCallDepth < 1024
+  VCallValue == 0
+```
+
 ## Flip: liquidation auction
 
 ```act
