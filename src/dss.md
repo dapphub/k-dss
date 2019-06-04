@@ -5623,3 +5623,376 @@ calls
   Cat.cage
   Vow.cage
 ```
+
+### Math Lemmas
+
+```act
+behaviour adduu of End
+interface add(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+    x + y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour subuu of End
+interface sub(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+
+```act
+behaviour muluu of End
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour minuu of End
+interface min(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : #if x > y #then y #else x #fi : WS
+
+if
+
+    #sizeWordStack(WS) <= 1000
+```
+
+
+### Accessors
+
+```act
+behaviour wards of End
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+```act
+behaviour vat of End
+interface vat()
+
+for all
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+iff
+
+    VCallValue == 0
+
+returns Vat
+```
+
+```act
+behaviour cat of End
+interface cat()
+
+for all
+
+    Cat : address
+
+storage
+
+    cat |-> Cat
+
+iff
+
+    VCallValue == 0
+
+returns Cat
+```
+
+#### `vow` address
+
+```act
+behaviour vow of End
+interface vow()
+
+for all
+
+    Vow : address
+
+storage
+
+    vow |-> Vow
+
+iff
+
+    VCallValue == 0
+
+returns Vow
+```
+
+
+#### `spot` address
+
+```act
+behaviour spot of End
+interface spot()
+
+for all
+
+    Spot : address
+
+storage
+
+    spot |-> Spot
+
+iff
+
+    VCallValue == 0
+
+returns Spot
+```
+
+#### liveness
+
+```act
+behaviour live of End
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
+### Time of cage
+
+```act
+behaviour when of End
+interface when()
+
+for all
+
+    When : uint256
+
+storage
+
+    when |-> When
+
+iff
+
+    VCallValue == 0
+
+returns When
+```
+
+### Processing period
+
+```act
+behaviour wait of End
+interface wait()
+
+for all
+
+    Wait : uint256
+
+storage
+
+    wait |-> Wait
+
+iff
+
+    VCallValue == 0
+
+returns Wait
+```
+
+### Total Outstanding Debt
+
+```act
+behaviour debt of End
+interface debt()
+
+for all
+
+    Debt : uint256
+
+storage
+
+    debt |-> Debt
+
+iff
+
+    VCallValue == 0
+
+returns Debt
+```
+
+### Ilk Data
+
+```act
+behaviour tag of End
+interface tag(bytes32 usr)
+
+for all
+
+    Ray : uint256
+
+storage
+
+    tag[ilk] |-> Ray
+
+iff
+
+    VCallValue == 0
+
+returns Ray
+```
+
+```act
+behaviour gap of End
+interface gap(bytes32 usr)
+
+for all
+
+    Wad : uint256
+
+storage
+
+    gap[ilk] |-> Wad
+
+iff
+
+    VCallValue == 0
+
+returns Wad
+```
+
+```act
+behaviour Art of End
+interface Art(bytes32 usr)
+
+for all
+
+    Wad : uint256
+
+storage
+
+    Art[ilk] |-> Wad
+
+iff
+
+    VCallValue == 0
+
+returns Wad
+```
+
+```act
+behaviour fix of End
+interface fix(bytes32 usr)
+
+for all
+
+    Ray : uint256
+
+storage
+
+    fix[ilk] |-> Ray
+
+iff
+
+    VCallValue == 0
+
+returns Ray
+```
+
+```act
+behaviour bag of End
+interface bag(address usr)
+
+for all
+
+    Wad : uint256
+
+storage
+
+    bag[usr] |-> Wad
+
+iff
+
+    VCallValue == 0
+
+returns Wad
+```
+
+```act
+behaviour out of End
+interface out(bytes32 ilk, address usr)
+
+for all
+
+    Wad : uint256
+
+storage
+
+    out[ilk][usr] |-> Wad
+
+iff
+
+    VCallValue == 0
+
+returns Wad
+```
