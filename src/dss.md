@@ -868,6 +868,7 @@ calls
     Vat.mului
     Vat.muluu
 ```
+
 #### forking a position
 
 ```act
@@ -3035,7 +3036,7 @@ interface flap()
 
 for all
 
-    Flap     : address Flopper
+    Flap     : address Flapper
     Vat      : address VatLike
     Sin      : uint256
     Ash      : uint256
@@ -3112,7 +3113,7 @@ calls
   Vow.Joy
   Vow.Awe
   Vow.Woe
-  Flap.kick
+  Flapper.kick
 ```
 
 #### system lock down
