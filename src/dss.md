@@ -2315,6 +2315,69 @@ iff
 returns May
 ```
 
+#### getting the `Vat`
+
+```act
+behaviour vat of Vow
+interface vat()
+
+for all
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+iff
+
+    VCallValue == 0
+
+returns Vat
+```
+
+#### getting the `Flapper`
+
+```act
+behaviour flapper of Vow
+interface flapper()
+
+for all
+
+    Flapper : address
+
+storage
+
+    flapper |-> Flapper
+
+iff
+
+    VCallValue == 0
+
+returns Flapper
+```
+
+#### getting the `Flopper`
+
+```act
+behaviour flopper of Vow
+interface flopper()
+
+for all
+
+    Flopper : address
+
+storage
+
+    flopper |-> Flopper
+
+iff
+
+    VCallValue == 0
+
+returns Flopper
+```
+
 #### getting a `sin` packet
 
 ```act
@@ -2460,6 +2523,27 @@ iff
     VCallValue == 0
 
 returns Hump
+```
+
+#### getting the `live` flag
+
+```act
+behaviour live of Vow
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
 ```
 
 #### getting the `Awe`
@@ -3092,12 +3176,12 @@ iff in range uint256
 
 calls
 
-  Flapper.cage
-  Flopper.cage
-  Vat.heal
   Vow.subuu
   Vow.adduu
   Vow.minuu
+  Vat.heal
+  Flapper.cage
+  Flopper.cage
 ```
 
 # Cat
