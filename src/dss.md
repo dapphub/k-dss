@@ -833,6 +833,8 @@ iff in range uint256
     Gem_iv - dart
     Dai_w + (Ilk_rate * dart)
     Debt + (Ilk_rate * dart)
+    (Urn_art + dart) * Ilk_rate
+    (Ilk_Art + dart) * Ilk_rate
     Ilk_Art * Ilk_rate
     Urn_art * Ilk_rate
     Urn_ink * Ilk_spot
@@ -840,6 +842,7 @@ iff in range uint256
 
 iff in range int256
 
+    Ilk_rate
     Ilk_rate * dart
 
 if
@@ -4151,6 +4154,10 @@ iff in range uint256
 if
 
     CALLER_ID =/= ACCT_ID
+
+calls
+
+  Vat.slip
 ```
 
 #### withdrawing from the system
