@@ -1495,7 +1495,6 @@ if
 returns 1
 ```
 
-
 ```act
 behaviour transferFrom-diff of Dai
 interface transferFrom(address src, address dst, uint wad)
@@ -1525,6 +1524,99 @@ if
     src =/= dst
 
 returns 1
+```
+
+```act
+behaviour move-diff of Dai
+interface move(address src, address dst, uint wad)
+
+types
+
+    SrcBal  : uint256
+    DstBal  : uint256
+    Allowed : uint256
+
+storage
+
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal  => SrcBal  - wad
+    balanceOf[dst]            |-> DstBal  => DstBal  + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    VCallValue == 0
+
+if
+    src =/= dst
+
+calls
+  Dai.transferFrom-diff
+```
+
+```act
+behaviour push of Dai
+interface push(address dst, uint wad)
+
+types
+
+    SrcBal  : uint256
+    DstBal  : uint256
+
+storage
+
+    balanceOf[CALLER_ID]      |-> SrcBal  => SrcBal  - wad
+    balanceOf[dst]            |-> DstBal  => DstBal  + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+    VCallValue == 0
+
+if
+    CALLER_ID =/= dst
+
+calls
+  Dai.transferFrom-diff
+```
+
+```act
+behaviour pull of Dai
+interface pull(address src, uint wad)
+
+types
+
+    SrcBal  : uint256
+    DstBal  : uint256
+    Allowed : uint256
+
+storage
+
+    allowance[src][CALLER_ID] |-> Allowed => #if (src == CALLER_ID or Allowed == maxUInt256) #then Allowed #else Allowed - wad #fi
+    balanceOf[src]            |-> SrcBal  => SrcBal  - wad
+    balanceOf[CALLER_ID]      |-> DstBal  => DstBal  + wad
+
+iff in range uint256
+
+    SrcBal - wad
+    DstBal + wad
+
+iff
+    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    VCallValue == 0
+
+if
+    src =/= CALLER_ID
+
+calls
+  Dai.transferFrom-diff
 ```
 
 ```act
