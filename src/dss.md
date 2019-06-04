@@ -4187,6 +4187,7 @@ storage Vat
   gem[ilk][Usr]     |-> Gem_u => Gem_u + Lot
 
 for all
+  Vat : address VatLike
   Lot : uint256
   Guy : address
   Tic : uint48
@@ -4196,7 +4197,7 @@ for all
 iff
   Tic =/= 0
   Tic < TIME or End < TIME
-  ACCT_ID =/= Usr
+  ACCT_ID =/= Guy
   VCallValue == 0
 
 if in range uint256
