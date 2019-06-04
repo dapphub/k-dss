@@ -3908,6 +3908,31 @@ if
     CALLER_ID == usr
 ```
 
+#### Auction parameters
+
+```act
+behaviour file of Flipper
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May : uint256
+    Beg : uint256
+    Ttl : uint256
+    Tau : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    beg |-> Beg => (#if what == #string2Word("beg") #then data #else Beg #fi)
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau) => (#if what == #string2Word("ttl") #then #WordPackUInt48UInt48(data, Tau) #else (#if what == #string2Word("tau") #then #WordPackUInt48UInt48(Ttl, data) #else #WordPackUInt48UInt48(Ttl, Tau) #fi) #fi)
+
+iff
+
+    May == 1
+    VCallValue == 0
+```
+
 ```act
 behaviour addu48u48 of Flipper
 interface add(uint48 x, uint48 y) internal
@@ -4773,6 +4798,27 @@ iff
 returns Kicks
 ```
 
+#### liveness flag
+
+```act
+behaviour live of Flapper
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
 
 #### Auth
@@ -4872,7 +4918,9 @@ if
     CALLER_ID == usr
 ```
 
+#### Auction parameters
 
+todo: file of flapper
 
 #### starting an auction
 
@@ -5290,6 +5338,27 @@ iff
 returns Kicks
 ```
 
+#### liveness flag
+
+```act
+behaviour live of Flopper
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
 
 #### Auth
@@ -5389,7 +5458,9 @@ if
     CALLER_ID == usr
 ```
 
+#### Auction parameters
 
+todo: file of flopper
 
 #### starting an auction
 
