@@ -3948,7 +3948,7 @@ storage Vat
   dai[Gal]       |-> Dai_g => Dai_g + bid - Bid
 
 iff
-  Guy /= 0
+  Guy =/= 0
   Tic > TIME or Tic == 0
   End > TIME
 
@@ -3957,7 +3957,7 @@ iff
   bid >  Bid
   (bid * #RAY >= beg * Bid) or (bid == Tab)
 
-  CALLER_ID /= Usr
+  CALLER_ID =/= Usr
   VCallValue == 0
 
 if in range uint256
@@ -4014,7 +4014,7 @@ storage Vat
   gem[ilk][Urn]     |-> Dai_v => Dai_v + Lot - lot
 
 iff
-  Guy /= 0
+  Guy =/= 0
   Tic > TIME or Tic == 0
   End > TIME
 
@@ -4023,8 +4023,8 @@ iff
   lot <  Lot
   Lot * #RAY >= lot * Beg
 
-  CALLER_ID /= Usr
-  ACCT_ID   /= Urn
+  CALLER_ID =/= Usr
+  ACCT_ID   =/= Urn
   VCallValue == 0
 
 if in range uint256
@@ -4067,9 +4067,9 @@ for all
   Gem_a : uint256
 
 iff
-  Tic /= 0
+  Tic =/= 0
   Tic < TIME or End < TIME
-  ACCT_ID /= Usr
+  ACCT_ID =/= Usr
   VCallValue == 0
 
 if in range uint256
@@ -4118,10 +4118,10 @@ storage Vat
 
 iff
   May == 1
-  Guy /= 0
+  Guy =/= 0
   Bid < Tab
-  CALLER_ID /= ACCT_ID
-  CALLER_ID /= Guy
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= Guy
   VCallValue == 0
 
 if in range uint256
@@ -4944,7 +4944,7 @@ storage
 
 iff
   Auth == 1
-  CALLER_ID /= ACCT_ID
+  CALLER_ID =/= ACCT_ID
   VCallDepth < 1024
   VCallValue == 0
 
@@ -4990,7 +4990,7 @@ storage Gem
 
 iff
   Live == 0
-  Guy /= 0
+  Guy =/= 0
   Stopped == 0
   VCallDepth < 1024
   VCallValue == 0
@@ -5353,7 +5353,7 @@ storage Vat
 
 iff
   Live == 1
-  Guy /= 0
+  Guy =/= 0
   VCallDepth < 1024
   VCallValue == 0
 
