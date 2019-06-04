@@ -5538,90 +5538,6 @@ if in range uint256
 
 The `End` coordinates the process of Global Settlement. It has many specs.
 
-```act
-behaviour cage of End
-interface cage()
-
-for all
-
-    Vat : address VatLike
-    Cat : address Cat
-    Vow : address VowLike
-    Flapper : address Flapper
-    Flopper : address Flopper
-
-    Live : uint256
-
-    CallerMay : uint256
-    EndMayVat : uint256
-    EndMayCat : uint256
-    EndMayVow : uint256
-    VowMayFlap : uint256
-    VowMayFlop : uint256
-
-    FlapDai : uint256
-    Awe : uint256
-    Joy : uint256
-
-storage
-
-    live |-> Live => 0
-    when |-> _ => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
-
-storage Vat
-
-    live |-> _ => 0
-    wards[ACCT_ID] |-> EndMayVat
-    dai[Flap] |-> FlapDai => 0
-    sin[Vow]  |-> Awe => #if Joy + FlapDai > Awe #then 0 #else Awe - Joy - FlapDai #fi
-    dai[Vow]  |-> Joy => #if Joy + FlapDai > Awe #then Joy + FlapDai - Awe #else 0 #fi
-
-storage Cat
-
-    live |-> _ => 0
-    wards[ACCT_ID] |-> EndMayCat
-
-storage Vow
-
-    live |-> _ => 0
-    wards[ACCT_ID] |-> EndMayVow
-    flapper |-> Flapper
-    flopper |-> Flopper
-    Sin |-> _ => 0
-    Ash |-> _ => 0
-
-storage Flapper
-
-    wards[Vow] |-> VowMayFlap
-    live |-> _ => 0
-
-storage Flopper
-
-    wards[Vow] |-> VowMayFlop
-    live |-> _ => 0
-
-iff
-
-    Live == 1
-    CallerMay == 1
-    EndMayVat == 1
-    EndMayCat == 1
-    EndMayVow == 1
-    VowMayFlap == 1
-    VowMayFlop == 1
-    VCallValue == 0
-
-calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage
-```
-
 ### Math Lemmas
 
 ```act
@@ -5993,4 +5909,238 @@ iff
     VCallValue == 0
 
 returns Wad
+```
+
+## Behaviours
+
+```act
+behaviour cage of End
+interface cage()
+
+for all
+
+    Vat : address VatLike
+    Cat : address Cat
+    Vow : address VowLike
+    Flapper : address Flapper
+    Flopper : address Flopper
+
+    Live : uint256
+
+    CallerMay : uint256
+    EndMayVat : uint256
+    EndMayCat : uint256
+    EndMayVow : uint256
+    VowMayFlap : uint256
+    VowMayFlop : uint256
+
+    FlapDai : uint256
+    Awe : uint256
+    Joy : uint256
+
+storage
+
+    live |-> Live => 0
+    when |-> _ => TIME
+    vat |-> Vat
+    cat |-> Cat
+    vow |-> Vow
+    wards[CALLER_ID] |-> CallerMay
+
+storage Vat
+
+    live |-> _ => 0
+    wards[ACCT_ID] |-> EndMayVat
+    dai[Flap] |-> FlapDai => 0
+    sin[Vow]  |-> Awe => #if Joy + FlapDai > Awe #then 0 #else Awe - Joy - FlapDai #fi
+    dai[Vow]  |-> Joy => #if Joy + FlapDai > Awe #then Joy + FlapDai - Awe #else 0 #fi
+
+storage Cat
+
+    live |-> _ => 0
+    wards[ACCT_ID] |-> EndMayCat
+
+storage Vow
+
+    live |-> _ => 0
+    wards[ACCT_ID] |-> EndMayVow
+    flapper |-> Flapper
+    flopper |-> Flopper
+    Sin |-> _ => 0
+    Ash |-> _ => 0
+
+storage Flapper
+
+    wards[Vow] |-> VowMayFlap
+    live |-> _ => 0
+
+storage Flopper
+
+    wards[Vow] |-> VowMayFlop
+    live |-> _ => 0
+
+iff
+
+    Live == 1
+    CallerMay == 1
+    EndMayVat == 1
+    EndMayCat == 1
+    EndMayVow == 1
+    VowMayFlap == 1
+    VowMayFlop == 1
+    VCallValue == 0
+
+calls
+
+  Vat.cage
+  Cat.cage
+  Vow.cage
+```
+
+```act
+behaviour free of End
+interface free(bytes32 ilk)
+
+for all
+  Live   : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+  Gem_iu : uint256
+
+storage
+  live |-> Live
+  vow  |-> Vow
+
+storage Vat
+  urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
+  urns[ilk][CALLER_ID].art |-> Art_iu => Art_iu
+  gem[ilk][CALLER_ID]      |-> Gem_iu => Gem_iu + Ink_iu
+  ilks[ilk].rate           |-> Rate_i
+  sin[Vow]                 |-> Awe => Awe + (Art_iu * Rate_i)
+
+iff
+  Live == 0
+  Art_iu == 0
+  VCallValue == 0
+
+if in range int256
+  -Ink_iu
+
+if in range uint256
+  Gem_iu + Ink_iu
+  Art_ui * Rate_i
+  Awe + Art_ui * Rate_i
+
+calls
+  Vat.urns
+  Vat.grab
+```
+
+```act
+behaviour thaw of End
+interface thaw()
+
+for all
+  Live : uint256
+  Debt : uint256
+  When : uint256
+  Wait : uint256
+  FinalDebt : uint256
+  Joy  : uint256
+
+storage
+  live |-> Live
+  debt |-> Debt |-> FinalDebt
+  when |-> When
+  wait |-> Wait
+
+storage Vat
+  dai[Vow] |-> Joy
+  debt     |-> FinalDebt
+
+iff
+  Live == 0
+  Debt == 0
+  Joy  == 0
+  VCallValue == 0
+
+if in range uint256
+  When + Wait
+
+calls
+  End.adduu
+  Vow.Joy
+```
+
+```act
+behaviour pack of End
+interface pack(uint256 wad)
+
+for all
+  Vat  : address VatLike
+  Vow  : address VowLike
+  Debt : uint256
+  Bag  : uint256
+  Joy  : uint256
+  Dai  : uint256
+  Can  : uint256
+
+storage
+  vat  |-> Vat
+  vow  |-> Vow
+  debt |-> Debt
+  bag[CALLER_ID] |-> Bag => Bag + wad
+
+storage Vat
+  can[CALLER_ID][ACCT_ID] |-> Can
+  dai[CALLER_ID]          |-> Dai => Dai - wad * #RAY
+  dai[Vow]                |-> Joy => Joy + wad * #RAY
+
+iff
+  Debt =/= 0
+  Can  == 1
+  CALLER_ID =/= Vow
+  VCallValue == 0
+
+if in range uint256
+  Bag + wad
+  Dai_c - wad * #RAY
+
+calls
+  End.muluu
+  End.adduu
+  Vat.move-diff
+```
+
+```act
+behaviour cash of End
+interface cash(bytes32 ilk, uint wad)
+
+for all
+  Fix   : uint256
+  Bag   : uint256
+  Out   : uint256
+  Gem_e : uint256
+  Gem_c : uint256
+
+storage
+  fix[ilk] |-> Fix
+  bag[ilk] |-> Bag
+  out[ilk][CALLER_ID] |-> Out => Out + wad
+
+storage Vat
+  gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - #rmul(wad, Fix)
+  gem[ilk][CALLER_Id] |-> Gem_c => Gem_c + #rmul(wad, Fix)
+
+iff
+  Fix =/= 0
+  Out + wad <= Bag
+  VCallValue == 0
+
+if in range uint256
+  Out + wad
+
+calls
+  End.adduu
+  Vat.flux-diff
 ```
