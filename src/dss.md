@@ -819,9 +819,9 @@ storage
     urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
     urns[i][u].art    |-> Urn_art  => Urn_art + dart
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
-    gem[i][v]         |-> Gem_iv   => Gem_iv  - dart
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
     dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
-    debt              |-> Debt     => Debt + (Ilk_rate * dart)
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
     live              |-> Live
 
 iff in range uint256
@@ -829,15 +829,13 @@ iff in range uint256
     Urn_ink + dink
     Urn_art + dart
     Ilk_Art + dart
-    Gem_iv - dink
-    Gem_iv - dart
+    Gem_iv  - dink
     Dai_w + (Ilk_rate * dart)
-    Debt + (Ilk_rate * dart)
+    Debt  + (Ilk_rate * dart)
     (Urn_art + dart) * Ilk_rate
     (Ilk_Art + dart) * Ilk_rate
     Ilk_Art * Ilk_rate
     Urn_art * Ilk_rate
-    Urn_ink * Ilk_spot
     (Urn_ink + ABI_dink) * Ilk_spot
 
 iff in range int256
