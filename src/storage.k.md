@@ -487,7 +487,7 @@ syntax Int ::= "#Flopper.bids" "[" Int "].usr_tic_end" [function]
 // act:
 rule #Flopper.bids[N].usr_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
-syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
 // doc: beneficiary of the auction
 // act:

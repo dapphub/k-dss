@@ -3046,19 +3046,19 @@ interface cage()
 
 for all
 
-   Vat : address VatLike
+   Vat     : address VatLike
    Flapper : address Flapper
    Flopper : address Flopper
-   May_flop : uint256
-   Dai_v    : uint256
-   Sin_v    : uint256
-   Dai_f    : uint256
+   MayFlap : uint256
+   MayFlop : uint256
+   Dai_v   : uint256
+   Sin_v   : uint256
+   Dai_f   : uint256
 
 storage
 
-
-   flop |-> Flopper
-   flap |-> Flapper
+   flopper |-> Flopper
+   flapper |-> Flapper
    live |-> _ => 0
    Sin  |-> _ => 0
    Ash  |-> _ => 0
@@ -3071,17 +3071,19 @@ storage Vat
 
 storage Flapper
 
+    wards[ACCT_ID] |-> MayFlap
     live |-> _ => 0
 
 storage Flopper
 
-    wards[ACCT_ID] |-> May_flop
+    wards[ACCT_ID] |-> MayFlop
     live |-> _ => 0
 
 iff
 
+    MayFlap == 1
+    MayFlop == 1
     VCallValue == 0
-    May_flop == 1
 
 iff in range uint256
 
