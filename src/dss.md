@@ -2571,6 +2571,10 @@ iff
     VCallDepth < 1024
     VCallValue == 0
 
+calls
+
+    vat.sin
+
 returns Sin
 ```
 
@@ -2599,6 +2603,10 @@ iff
     VCallDepth < 1024
     VCallValue == 0
 
+calls
+
+    vat.dai
+
 returns Dai
 ```
 
@@ -2610,20 +2618,20 @@ interface Woe()
 
 for all
 
-    Vat  : address VatLike
-    Ssin : uint256
-    Sin  : uint256
-    Ash  : uint256
+    Vat : address VatLike
+    Sin : uint256
+    Awe : uint256
+    Ash : uint256
 
 storage
 
     vat |-> Vat
-    Sin |-> Ssin
+    Sin |-> Sin
     Ash |-> Ash
 
 storage Vat
 
-    sin[ACCT_ID] |-> Sin
+    sin[ACCT_ID] |-> Awe
 
 iff
 
@@ -2633,14 +2641,15 @@ iff
 
 iff in range uint256
 
-    Sin - Ssin
-    (Sin - Ssin) - Ash
+    Awe - Sin
+    (Awe - Sin) - Ash
 
-returns (Sin - Ssin) - Ash
+returns (Awe - Sin) - Ash
 
 calls
 
   Vow.subuu
+  Vow.Awe
 ```
 
 ### Mutators
@@ -2778,48 +2787,47 @@ interface heal(uint256 rad)
 for all
 
     Vat  : address VatLike
-    May  : uint256
-    Dai  : uint256
+    Ash  : uint256
     Sin  : uint256
+    Joy  : uint256
+    Awe  : uint256
     Vice : uint256
     Debt : uint256
-    Siny : uint256
-    Ashy : uint256
 
 storage
 
     vat |-> Vat
-    Sin |-> Siny
-    Ash |-> Ashy
+    Ash |-> Ash
+    Sin |-> Sin
 
 storage Vat
 
-    wards[ACCT_ID] |-> May
-    dai[ACCT_ID]   |-> Dai  => Dai  - rad
-    sin[ACCT_ID]   |-> Sin  => Sin  - rad
-    vice           |-> Vice => Vice - rad
-    debt           |-> Debt => Debt - rad
+    dai[ACCT_ID] |-> Joy  => Joy  - rad
+    sin[ACCT_ID] |-> Awe  => Awe  - rad
+    vice         |-> Vice => Vice - rad
+    debt         |-> Debt => Debt - rad
 
 iff
 
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
+    rad <= Joy
+    rad <= (Awe - Sin) - Ash
     VCallValue == 0
-    rad <= Dai
-    rad <= Sin - (Ssin - Ashy)
+    VCallDepth < 1024
 
 iff in range uint256
 
-    Dai  - rad
-    Sin  - rad
+    (Awe - Sin) - Ash
+    Joy  - rad
+    Awe  - rad
     Vice - rad
     Debt - rad
 
 calls
 
   Vow.subuu
+  Vow.Joy
+  Vow.Woe
+  Vat.heal
 ```
 
 ```act
@@ -2830,46 +2838,43 @@ for all
 
     Vat  : address VatLike
     Ash  : uint256
-    May  : uint256
-    Dai  : uint256
-    Sin  : uint256
+    Joy  : uint256
+    Awe  : uint256
     Vice : uint256
     Debt : uint256
 
 storage
 
     vat |-> Vat
-    Ash |-> Ash => Ash - wad
+    Ash |-> Ash => Ash - rad
 
 storage Vat
 
-    wards[ACCT_ID] |-> May
-    dai[ACCT_ID]   |-> Dai  => Dai  - rad
-    sin[ACCT_ID]   |-> Sin  => Sin  - rad
-    vice           |-> Vice => Vice - rad
-    debt           |-> Debt => Debt - rad
+    dai[ACCT_ID] |-> Joy  => Joy  - rad
+    sin[ACCT_ID] |-> Awe  => Awe  - rad
+    vice         |-> Vice => Vice - rad
+    debt         |-> Debt => Debt - rad
 
 iff
 
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
-    VCallValue == 0
-    rad <= Dai
+    rad <= Joy
     rad <= Ash
+    VCallValue == 0
+    VCallDepth < 1024
 
 iff in range uint256
 
     Ash  - rad
-    Dai  - rad
-    Sin  - rad
+    Joy  - rad
+    Awe  - rad
     Vice - rad
     Debt - rad
 
 calls
 
   Vow.subuu
+  Vow.Joy
+  Vat.heal
 ```
 
 #### adding to the `sin` queue
@@ -2949,55 +2954,49 @@ interface flop()
 
 for all
 
-    Flopp    : address Flopper
+    Flop     : address Flopper
     Vat      : address VatLike
-    Ssin     : uint256
+    MayFlop  : uint256
+    Sin      : uint256
     Ash      : uint256
+    Awe      : uint256
+    Joy      : uint256
     Sump     : uint256
-    May      : uint256
     Kicks    : uint256
-    Vow_was  : address
-    Lot_was  : uint256
-    Bid_was  : uint256
-    Usr_was  : address
-    Tic_was  : uint48
-    End_was  : uint48
     Ttl      : uint48
     Tau      : uint48
-    Dai      : uint256
-    Sin_v    : uint256
+    FlopLive : uint256
 
 storage
 
-    flopper |-> Flopp_
+    flopper |-> Flop
     vat     |-> Vat
-    Sin     |-> Ssin
+    Sin     |-> Sin
     Ash     |-> Ash => Ash + Sump
     sump    |-> Sump
 
-storage Flopp
+storage Flop
 
-    wards[ACCT_ID]              |-> May
+    live                        |-> FlopLive
+    wards[ACCT_ID]              |-> MayFlop
     kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].vow         |-> Vow_was => ACCT_ID
-    bids[1 + Kicks].bid         |-> Bid_was => Sump
-    bids[1 + Kicks].lot         |-> Lot_was => maxUInt256
-    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
+    bids[1 + Kicks].vow         |-> _ => ACCT_ID
+    bids[1 + Kicks].bid         |-> _ => Sump
+    bids[1 + Kicks].lot         |-> _ => maxUInt256
+    bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
 
-    dai[ACCT_ID] |-> Dai
-    sin[ACCT_ID] |-> Sin_v
+    dai[ACCT_ID] |-> Joy
+    sin[ACCT_ID] |-> Awe
 
 iff
 
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // doc:
-    (Sin_v - Ssin) - Ash >= Sump
-    // doc: there is at most dust Joy
-    Dai == 0
+    FlopLive == 1
+    MayFlop == 1
+    (Awe - Sin) - Ash >= Sump
+    Joy == 0
     // act: call stack is not too big
     VCallDepth < 1023
     VCallValue == 0
@@ -3009,8 +3008,8 @@ iff in range uint48
 iff in range uint256
 
     Ash + Sump
-    Sin_v - Ssin
-    (Sin_v - Ssin) - Ash
+    Awe - Sin
+    (Awe - Sin) - Ash
     1 + Kicks
 
 if
@@ -3022,8 +3021,10 @@ returns 1 + Kicks
 
 calls
 
-  Vow.subuu
   Vow.adduu
+  Vow.Woe
+  Vow.Joy
+  Flopper.kick
 ```
 
 #### starting a surplus auction
@@ -3034,65 +3035,59 @@ interface flap()
 
 for all
 
-    Flapp    : address Flapper
+    Flap     : address Flopper
     Vat      : address VatLike
+    Sin      : uint256
+    Ash      : uint256
+    Awe      : uint256
+    Joy      : uint256
     Bump     : uint256
     Hump     : uint256
-    Ssin     : uint256
-    Ash      : uint256
-    Bid_was  : uint256
-    Lot_was  : uint256
-    Usr_was  : address
-    Tic_was  : uint48
-    End_was  : uint48
-    Gal_was  : address
+    Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
-    Kicks    : uint256
+
     Can      : uint256
-    Dai_v    : uint256
-    Sin_v    : uint256
-    Dai_c    : uint256
-    Flap_live : uint256
+    Dai_a    : uint256
+    FlapLive : uint256
 
 storage
 
     vat     |-> Vat
-    flapper |-> Flapp
+    flapper |-> Flap
     bump    |-> Bump
     hump    |-> Hump
-    Sin     |-> Ssin
+    Sin     |-> Sin
     Ash     |-> Ash
 
-storage Flapp
+storage Flap
 
     #Flapper.vat                         |-> Vat
     #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     #Flapper.kicks                       |-> Kicks   => 1 + Kicks
-    #Flapper.bids[1 + Kicks].bid         |-> Bid_was => 0
-    #Flapper.bids[1 + Kicks].lot         |-> Lot_was => Bump
-    #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End_was) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic_was, TIME + Tau)
-    #Flapper.bids[1 + Kicks].gal         |-> Gal_was => 0
-    #Flapper.live                        |-> Flap_live
+    #Flapper.bids[1 + Kicks].bid         |-> _ => 0
+    #Flapper.bids[1 + Kicks].lot         |-> _ => Bump
+    #Flapper.bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids[1 + Kicks].gal         |-> _ => 0
+    #Flapper.live                        |-> FlapLive
 
 storage Vat
 
-    can[ACCT_ID][Flapp] |-> Can
-    dai[ACCT_ID]        |-> Dai_v => Dai_v - Bump
-    sin[ACCT_ID]        |-> Sin_v
-    dai[Flapp]          |-> Dai_c => Dai_c + Bump
+    can[ACCT_ID][Flap] |-> Can
+    dai[ACCT_ID]       |-> Joy => Joy - Bump
+    sin[ACCT_ID]       |-> Awe
+    dai[Flap]          |-> Dai_a => Dai_a + Bump
 
 iff
 
     // doc: there is enough `Joy`
-    Dai_v >= (Sin_v + Bump) + Hump
+    Joy >= (Awe + Bump) + Hump
     // doc: there is no `Woe`
-    (Sin_v - Ssin) - Ash == 0
-    // act: call stack is not too big
+    (Awe - Sin) - Ash == 0
+    Can == 1
+    FlapLive == 1
     VCallDepth < 1023
     VCallValue == 0
-    Can == 1
-    Flap_live == 1
 
 iff in range uint48
 
@@ -3100,18 +3095,13 @@ iff in range uint48
 
 iff in range uint256
 
-    Sin_v + Bump
-    (Sin_v + Bump) + Hump
-    Sin_v - Ssin
-    (Sin_v - Ssin) - Ash
+    Awe + Bump
+    (Awe + Bump) + Hump
+    Awe - Sin
+    (Awe - Sin) - Ash
     1 + Kicks
-    Dai_v - Bump
-    Dai_c + Bump
-
-if
-
-    #rangeUInt(48, TIME)
-
+    Joy   - Bump
+    Dai_a + Bump
 
 returns 1 + Kicks
 
@@ -3119,6 +3109,10 @@ calls
 
   Vow.subuu
   Vow.adduu
+  Vow.Joy
+  Vow.Awe
+  Vow.Woe
+  Flap.kick
 ```
 
 #### system lock down
@@ -3179,6 +3173,9 @@ calls
   Vow.subuu
   Vow.adduu
   Vow.minuu
+  Vow.Joy
+  Vow.Awe
+  vat.dai
   Vat.heal
   Flapper.cage
   Flopper.cage
