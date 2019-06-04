@@ -1734,10 +1734,11 @@ storage
 
 iff
 
-    holder == #symEcrec(#padToWidth(32, #asByteStack(keccak(#parseHexWord("0x19") : #parseHexWord("0x1") : #padToWidth(32, #asByteStack(Domain_separator)) ++ #padToWidth(32, #asByteStack(keccak(#encodeArgs(#bytes32(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)"))), #address(holder), #address(spender), #uint256(nonce), #uint256(expiry), #bool(allowed)))))))) ++ #padToWidth(32, #asByteStack(v)) ++ #padToWidth(32, #asByteStack(r)) ++ #padToWidth(32, #asByteStack(s)))
+    holder == #symEcrec(#buf(32, keccak(#parseHexWord("0x19") : #parseHexWord("0x1") : #buf(32, Domain_separator) ++ #buf(32, keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) holder spender nonce expiry allowed)))) ++ #buf(32, v) ++ #buf(32, r) ++ #buf(32, s))
     expiry == 0 or TIME <= expiry
     VCallValue == 0
     nonce == Nonce
+    VCallDepth < 1024
 
 iff in range uint256
     Nonce + 1
