@@ -491,7 +491,7 @@ syntax Int ::= "#Flopper.bids" "[" Int "].vow" [function]
 // ------------------------------------------------------
 // doc: beneficiary of the auction
 // act:
-rule #Flopper.bids[N].vow => #hashedLocation("Solidity", 1, N) +Int 3
+rule #Flopper.bids[N].gal => #hashedLocation("Solidity", 1, N) +Int 3
 
 syntax Int ::= "#Flopper.vat" [function]
 // ---------------------------------------
@@ -539,7 +539,6 @@ syntax Int ::= "#Flapper.wards" "[" Int "]" [function]
 // doc: whether `$0` is an owner of `Flop`
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
 rule #Flapper.wards[A] => #hashedLocation("Solidity", 0, A)
-
 
 syntax Int ::= "#Flapper.bids" "[" Int "].bid" [function]
 // ------------------------------------------------------
