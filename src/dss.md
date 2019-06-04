@@ -3590,6 +3590,10 @@ storage
 
     vat |-> Vat
 
+iff
+
+    VCallValue == 0
+
 returns Vat
 ```
 
@@ -3607,6 +3611,10 @@ storage
 
     ilk |-> Ilk
 
+iff
+
+    VCallValue == 0
+
 returns Ilk
 ```
 
@@ -3623,6 +3631,10 @@ for all
 storage
 
     beg |-> Beg
+
+iff
+
+    VCallValue == 0
 
 returns Beg
 ```
@@ -4528,7 +4540,7 @@ iff
 returns Bid : Lot : Usr : Tic : End : Gal
 ```
 
-#### sell token
+#### CDP Engine
 
 ```act
 behaviour vat of Flapper
@@ -4542,10 +4554,14 @@ storage
 
     vat |-> Vat
 
+iff
+
+    VCallValue == 0
+
 returns Vat
 ```
 
-#### buy token
+#### MKR Token
 
 ```act
 behaviour gem of Flapper
@@ -4558,6 +4574,10 @@ for all
 storage
 
     gem |-> Gem
+
+iff
+
+    VCallValue == 0
 
 returns Gem
 ```
@@ -4575,6 +4595,10 @@ for all
 storage
 
     beg |-> Beg
+
+iff
+
+    VCallValue == 0
 
 returns Beg
 ```
@@ -4871,7 +4895,6 @@ storage Gem
     stopped             |-> Stopped
 iff
 
-    // doc: call depth is not too deep
     VCallDepth < 1024
     VCallValue == 0
     Live    == 1
@@ -4901,6 +4924,75 @@ iff in range uint48
 if
     ACCT_ID =/= CALLER_ID
     #rangeUInt(48, TIME)
+```
+
+```act
+behaviour cage of Flapper
+interface cage(uint256 rad)
+
+for all
+  Vat  : address VatLike
+  Auth : uint256
+
+storage
+  wards[CALLER_ID] |-> Auth
+  vat              |-> Vat
+  live             |-> _ => 0
+
+iff
+  Auth == 1
+  CALLER_ID /= ACCT_ID
+  VCallDepth < 1024
+  VCallValue == 0
+
+storage Vat
+  dai[ACCT_ID]   |-> Dai_a => Dai_a - rad
+  dai[CALLER_ID] |-> Dai_u => Dai_u + rad
+
+if in range uint256
+  Dai_a - rad
+  Dai_u + rad
+
+calls
+  Vat.move-diff
+```
+
+```act
+behaviour yank of Flapper
+interface yank(uint256 id)
+
+for all
+  Stopped : uint256
+  Live    : uint256
+  Gem     : address Gemish
+  Guy     : address
+  Bid     : uint256
+  Gem_a   : uint256
+  Gem_g   : uint256
+
+storage
+  live |-> Live
+  gem  |-> Gem
+  bids[id].bid         |-> Bid => 0
+  bids[id].lot         |-> _ => 0
+  bids[id].gal         |-> _ => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+
+storage Gem
+  balances[ACCT_ID] |-> Gem_a => Gem_a - Bid
+  balances[Guy]     |-> Gem_g => Gem_g + Bid
+  stopped           |-> Stopped
+
+iff
+  Live == 1
+  Guy /= 0
+  Stopped == 0
+  VCallDepth < 1024
+  VCallValue == 0
+
+if in range uint256
+  Gem_a - Bid
+  Gem_g + Bid
 ```
 
 # End
