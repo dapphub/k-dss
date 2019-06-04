@@ -4197,7 +4197,7 @@ returns Gem
 
 ```act
 behaviour join of GemJoin
-interface join(bytes32 urn, uint256 wad)
+interface join(address urn, uint256 wad)
 
 for all
 
@@ -4359,7 +4359,7 @@ returns Dai
 
 ```act
 behaviour join of DaiJoin
-interface join(bytes32 usr, uint256 wad)
+interface join(address usr, uint256 wad)
 
 for all
 
@@ -4431,8 +4431,9 @@ storage
 storage Vat
 
 
-    dai[CALLER_ID]   |-> Rad => Rad - #Ray * wad
-    dai[ACCT_ID]     |-> Dai_adapter => Dai_adapter + #Ray * wad
+    dai[CALLER_ID]          |-> Rad => Rad - #Ray * wad
+    dai[ACCT_ID]            |-> Dai_adapter => Dai_adapter + #Ray * wad
+    can[ACCT_ID][CALLER_ID] |-> Can
 
 storage Dai
 
@@ -4444,6 +4445,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Can == 1
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
@@ -4459,6 +4461,11 @@ iff in range uint256
 if
 
     CALLER_ID =/= ACCT_ID
+
+calls
+
+    Vat.move-diff
+    Dai.mint
 ```
 
 # Flapper
