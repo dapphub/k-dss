@@ -3091,6 +3091,9 @@ iff in range uint256
 
 calls
 
+  Flapper.cage
+  Flopper.cage
+  Vat.heal
   Vow.subuu
   Vow.adduu
   Vow.minuu
@@ -4966,6 +4969,8 @@ for all
   Live    : uint256
   Gem     : address Gemish
   Guy     : address
+  Tic     : uint256
+  End     : uint256
   Bid     : uint256
   Gem_a   : uint256
   Gem_g   : uint256
@@ -4984,7 +4989,7 @@ storage Gem
   stopped           |-> Stopped
 
 iff
-  Live == 1
+  Live == 0
   Guy /= 0
   Stopped == 0
   VCallDepth < 1024
@@ -4993,6 +4998,368 @@ iff
 if in range uint256
   Gem_a - Bid
   Gem_g + Bid
+```
+
+# Flopper
+
+The `Flopper` is an auction contract.
+
+## Specification of behaviours
+
+### Accessors
+
+#### Auth
+
+```act
+behaviour wards of Flopper
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+
+
+#### bid data
+
+```act
+behaviour bids of Flopper
+interface bids(uint256 n)
+
+for all
+
+    Bid : uint256
+    Lot : uint256
+    Usr : address
+    Tic : uint48
+    End : uint48
+    Gal : address
+
+storage
+
+    bids[n].bid         |-> Bid
+    bids[n].lot         |-> Lot
+    bids[n].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End)
+    bids[n].gal         |-> Gal
+
+iff
+
+    VCallValue == 0
+
+returns Bid : Lot : Usr : Tic : End : Gal
+```
+
+#### CDP Engine
+
+```act
+behaviour vat of Flopper
+interface vat()
+
+for all
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+iff
+
+    VCallValue == 0
+
+returns Vat
+```
+
+#### MKR Token
+
+```act
+behaviour gem of Flopper
+interface gem()
+
+for all
+
+    Gem : address
+
+storage
+
+    gem |-> Gem
+
+iff
+
+    VCallValue == 0
+
+returns Gem
+```
+
+#### minimum bid increment
+
+```act
+behaviour beg of Flopper
+interface beg()
+
+for all
+
+    Beg : uint256
+
+storage
+
+    beg |-> Beg
+
+iff
+
+    VCallValue == 0
+
+returns Beg
+```
+
+#### auction time-to-live
+
+```act
+behaviour ttl of Flopper
+interface ttl()
+
+for all
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+iff
+
+    VCallValue == 0
+
+returns Ttl
+```
+
+#### maximum auction duration
+
+```act
+behaviour tau of Flopper
+interface tau()
+
+for all
+
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+
+iff
+
+    VCallValue == 0
+
+returns Tau
+```
+
+#### kick counter
+
+```act
+behaviour kicks of Flopper
+interface kicks()
+
+for all
+
+    Kicks : uint256
+
+storage
+
+    kicks |-> Kicks
+
+iff
+
+    VCallValue == 0
+
+returns Kicks
+```
+
+### Mutators
+
+#### Auth
+
+Any owner can add and remove owners.
+
+```act
+behaviour rely-diff of Flopper
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour rely-same of Flopper
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Flopper
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID =/= usr
+```
+
+```act
+behaviour deny-same of Flopper
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    CALLER_ID == usr
+```
+
+
+
+#### starting an auction
+
+```act
+behaviour addu48u48 of Flopper
+interface add(uint48 x, uint48 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint48
+
+    x + y
+
+if
+
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour cage of Flopper
+interface cage()
+
+for all
+  Auth : uint256
+
+storage
+  wards[CALLER_ID] |-> Auth
+  live |-> _ => 0
+
+iff
+  Auth == 1
+  VCallDepth < 1024
+  VCallValue == 0
+```
+
+```act
+behaviour yank of Flopper
+interface yank(uint256 id)
+
+for all
+  Live    : uint256
+  Vat     : address VatLike
+  Guy     : address
+  Tic     : uint256
+  End     : uint256
+  Bid     : uint256
+  Dai_a   : uint256
+  Dai_g   : uint256
+
+storage
+  live |-> Live
+  vat  |-> Vat
+  bids[id].bid |-> Bid => 0
+  bids[id].lot |-> _   => 0
+  bids[id].gal |-> _   => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+
+storage Vat
+  dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
+  dai[Guy]     |-> Dai_g => Dai_g + Bid
+
+iff
+  Live == 1
+  Guy /= 0
+  VCallDepth < 1024
+  VCallValue == 0
+
+if in range uint256
+  Dai_a - Bid
+  Dai_g + Bid
 ```
 
 # End
