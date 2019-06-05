@@ -3978,7 +3978,7 @@ storage
 
 storage Vat
 
-    can[ACCT_ID][CALLER_ID] |-> CanFlux
+    can[CALLER_ID][ACCT_ID] |-> CanFlux
     gem[Ilk][CALLER_ID]     |-> Gem_v => Gem_v - lot
     gem[Ilk][ACCT_ID]       |-> Gem_c => Gem_c + lot
 
@@ -3997,6 +3997,7 @@ iff in range uint256
 iff in range uint48
 
     TIME + Tau
+    TIME
 
 if
 
@@ -4023,7 +4024,7 @@ for all
 
 storage
   ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End) => #WordPackAddrUInt48UInt48(Usr, Tic, End + Tau)
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr, Tic, End) => #WordPackAddrUInt48UInt48(Usr, Tic, TIME + Tau)
 
 iff
   End < TIME
@@ -4031,7 +4032,8 @@ iff
   VCallValue == 0
 
 iff in range uint48
-  End + Tau
+  TIME + Tau
+  TIME
 
 calls
   Flipper.addu48u48
@@ -4085,14 +4087,14 @@ iff
   CALLER_ID =/= Usr
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Dai_c - bid
   Dai_u + bid
   Dai_g + bid - Bid
   bid * #RAY
   Beg * Bid
 
-if in range uint48
+iff in range uint48
   Tic + Ttl
 
 calls
@@ -4118,7 +4120,8 @@ for all
   End : uint48
   Dai_c : uint256
   Dai_u : uint256
-  Dai_g : uint256
+  Gem_a : uint256
+  Gem_v : uint256
 
 storage
   vat          |-> Vat
@@ -4135,11 +4138,11 @@ storage
 storage Vat
   dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
   dai[Usr]          |-> Dai_u => Dai_u + bid
-  gem[ilk][ACCT_ID] |-> Dai_a => Dai_a + lot - Lot
-  gem[ilk][Urn]     |-> Dai_v => Dai_v + Lot - lot
+  gem[ilk][ACCT_ID] |-> Gem_a => Gem_a + lot - Lot
+  gem[ilk][Urn]     |-> Gem_v => Gem_v + Lot - lot
 
 iff
-  Guy =/= 0
+  Usr =/= 0
   Tic > TIME or Tic == 0
   End > TIME
 
@@ -4152,14 +4155,15 @@ iff
   ACCT_ID   =/= Urn
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Dai_c - bid
   Dai_u + bid
-  Dai_g + bid - Bid
+  Gem_a + lot - Lot
+  Gem_v + Lot - lot
   Lot * #RAY
   lot * Beg
 
-if in range uint48
+iff in range uint48
   Tic + Ttl
 
 calls
@@ -4171,6 +4175,14 @@ calls
 ```act
 behaviour deal of Flipper
 interface deal(uint256 id)
+
+for all
+  Vat : address VatLike
+  Lot : uint256
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Gem_a : uint256
 
 storage
   bids[id].bid         |-> _   => 0
@@ -4184,21 +4196,13 @@ storage Vat
   gem[ilk][ACCT_ID] |-> Gem_a => Gem_a - Lot
   gem[ilk][Usr]     |-> Gem_u => Gem_u + Lot
 
-for all
-  Vat : address VatLike
-  Lot : uint256
-  Guy : address
-  Tic : uint48
-  End : uint48
-  Gem_a : uint256
-
 iff
   Tic =/= 0
   Tic < TIME or End < TIME
   ACCT_ID =/= Guy
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Gem_a - Lot
   Gem_u + Lot
 
@@ -4250,7 +4254,7 @@ iff
   CALLER_ID =/= Guy
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Gem_a - Lot
   Gem_c + Lot
   Dai_u - Bid
@@ -4968,7 +4972,7 @@ storage
 
 storage Vat
 
-    can[ACCT_ID][CALLER_ID] |-> CanMove
+    can[CALLER_ID][ACCT_ID] |-> CanMove
     dai[ACCT_ID]   |-> Dai_v => Dai_v - lot
     dai[CALLER_ID] |-> Dai_c => Dai_c + lot
 
@@ -5079,6 +5083,47 @@ if
 ```
 
 ```act
+behaviour deal of Flapper
+interface deal(uint256 id)
+
+for all
+  Live  : uint256
+  Tic   : uint256
+  End   : uint256
+  Guy   : address
+  Lot   : uint256
+  Vat   : address VatLike
+  Dai_a : uint256
+  Dai_g : uint256
+
+storage
+  bids[id].bid         |-> _   => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].urn         |-> _ => 0
+  bids[id].gal         |-> _ => 0
+  bids[id].tab         |-> _ => 0
+
+storage Vat
+  dai[ACCT_ID] |-> Dai_a => Dai_a - Lot
+  dai[Guy]     |-> Dai_g => Dai_g + Lot
+
+iff
+  Live == 1
+  (Tic < TIME and Tic =/= 0) or (End < TIME)
+
+if
+  Guy =/= ACCT_ID
+
+iff in range uint256
+  Dai_a - Lot
+  Dai_g + Lot
+
+calls
+  Vat.move-diff
+```
+
+```act
 behaviour cage of Flapper
 interface cage(uint256 rad)
 
@@ -5101,7 +5146,7 @@ storage Vat
   dai[ACCT_ID]   |-> Dai_a => Dai_a - rad
   dai[CALLER_ID] |-> Dai_u => Dai_u + rad
 
-if in range uint256
+iff in range uint256
   Dai_a - rad
   Dai_u + rad
 
@@ -5144,7 +5189,7 @@ iff
   VCallDepth < 1024
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Gem_a - Bid
   Gem_g + Bid
 ```
@@ -5457,12 +5502,6 @@ if
     CALLER_ID == usr
 ```
 
-#### Auction parameters
-
-todo: file of flopper
-
-#### starting an auction
-
 ```act
 behaviour addu48u48 of Flopper
 interface add(uint48 x, uint48 y) internal
@@ -5478,6 +5517,150 @@ iff in range uint48
 if
 
     #sizeWordStack(WS) <= 100
+```
+
+#### Auction parameters
+
+todo: file of flopper
+
+#### starting an auction
+
+// todo: update storage / dss again
+
+```act
+behaviour kick of Flopper
+interface kick(address gal, uint256 lot, uint256 bid)
+
+for all
+  Live     : uint256
+  Kicks    : uint256
+  Ttl      : uint48
+  Tau      : uint48
+  Dai_v    : uint256
+  Dai_c    : uint256
+
+storage
+  live                        |-> Live
+  kicks                       |-> Kicks => 1 + Kicks
+  ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[1 + Kicks].bid         |-> _ => bid
+  bids[1 + Kicks].lot         |-> _ => lot
+  bids[1 + Kicks].guy         |-> _ => gal
+  bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
+
+iff
+  Live == 1
+  VCallValue == 0
+  VCallDepth < 1024
+
+iff in range uint256
+  Kicks + 1
+  Dai_v - lot
+  Dai_c + lot
+
+iff in range uint48
+  TIME + Tau
+  TIME
+
+if
+  CALLER_ID =/= ACCT_ID
+
+returns 1 + Kicks
+
+calls
+  Vat.move-diff
+  Flapper.addu48u48
+```
+
+```act
+behaviour dent of Flopper
+interface dent(uint id, uint lot, uint bid)
+
+for all
+  Live : uint256
+  Vat  : address VatLike
+  Beg  : uint256
+  Ttl  : uint256
+  Bid  : uint256
+  Lot  : uint256
+  Guy  : address
+  Tic  : uint256
+  End  : uint256
+  CanMove : uint256
+  Dai_a   : uint256
+  Dai_g   : uint256
+
+iff
+  Live == 1
+  Guy =/= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+  bid == Bid
+  lot <  Lot
+  Beg * lot / #RAY <= Lot
+  CanMove == 1
+
+storage Vat
+  can[CALLER_ID][ACCT_ID] |-> CanMove
+  dai[ACCT_ID] |-> Dai_a => Dai_a - bid
+  dai[Guy]     |-> Dai_g => Dai_g + bid
+
+storage
+  vat |-> Vat
+  beg |-> Beg
+  ttl |-> Ttl
+  bids[id].bid         |-> Bid => bid
+  bids[id].lot         |-> Lot => lot
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+
+iff in range uint256
+  Dai_a - bid
+  Dai_a + bid
+
+iff in range uint48
+  TIME
+  TIME + Ttl
+
+if
+  Guy =/= CALLER_ID
+
+calls
+  Flopper.muluu
+  Flopper.addu48u48
+  Vat.move-diff
+```
+
+```act
+behaviour deal of Flopper
+interface deal(uint256 id)
+
+for all
+  Live    : uint256
+  Tic     : uint256
+  End     : uint256
+  Guy     : address
+  Lot     : uint256
+  Gem     : address Gemish
+  Gem_g   : uint256
+  Stopped : uint256
+  Supply  : uint256
+
+storage
+  bids[id].bid         |-> _   => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+
+storage Gem
+  balances[Guy] |-> Gem_g  => Gem_g  + Lot
+  supply        |-> Supply => Supply + Lot
+  stopped       |-> Stopped
+  owner         |-> Owner
+
+iff
+  Live == 1
+  (Tic < TIME and Tic =/= 0) or (End < TIME)
+  Stopped == 0
+  Owner   == ACCT_ID
 ```
 
 ```act
@@ -5516,7 +5699,6 @@ storage
   vat  |-> Vat
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> _   => 0
-  bids[id].gal |-> _   => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Vat
@@ -5529,7 +5711,7 @@ iff
   VCallDepth < 1024
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Dai_a - Bid
   Dai_g + Bid
 ```
@@ -6023,10 +6205,10 @@ iff
   Art_iu == 0
   VCallValue == 0
 
-if in range int256
+iff in range int256
   -Ink_iu
 
-if in range uint256
+iff in range uint256
   Gem_iu + Ink_iu
   Art_ui * Rate_i
   Awe + Art_ui * Rate_i
@@ -6064,7 +6246,7 @@ iff
   Joy  == 0
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   When + Wait
 
 calls
@@ -6102,7 +6284,7 @@ iff
   CALLER_ID =/= Vow
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Bag + wad
   Dai_c - wad * #RAY
 
@@ -6137,7 +6319,7 @@ iff
   Out + wad <= Bag
   VCallValue == 0
 
-if in range uint256
+iff in range uint256
   Out + wad
 
 calls
