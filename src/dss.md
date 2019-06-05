@@ -3162,6 +3162,7 @@ iff
     MayFlap == 1
     MayFlop == 1
     VCallValue == 0
+    VCallDepth < 1023
 
 iff in range uint256
 
@@ -3574,10 +3575,10 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate
-    VCallDepth < 1023
-    VCallValue == 0
     (Ink_iu >= Lump and Lot == Lump) or (Ink_iu < Lump and Lot == Ink_iu)
     Art == Lot * Art_iu / Ink_iu
+    VCallDepth < 1023
+    VCallValue == 0
 
 iff in range int256
 
@@ -3605,7 +3606,7 @@ calls
   Vat.ilks
   Vat.urns
   Vow.fess
-  Flip.kick
+  Flipper.kick
 ```
 
 ```act
@@ -3621,7 +3622,6 @@ storage
 
 iff
   Auth == 1
-  VCallDepth < 1024
   VCallValue == 0
 ```
 
@@ -4086,6 +4086,7 @@ iff
 
   CALLER_ID =/= Usr
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Dai_c - bid
@@ -4154,6 +4155,7 @@ iff
   CALLER_ID =/= Usr
   ACCT_ID   =/= Urn
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Dai_c - bid
@@ -4201,6 +4203,7 @@ iff
   Tic < TIME or End < TIME
   ACCT_ID =/= Guy
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Gem_a - Lot
@@ -4253,6 +4256,7 @@ iff
   CALLER_ID =/= ACCT_ID
   CALLER_ID =/= Guy
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Gem_a - Lot
@@ -5049,10 +5053,9 @@ storage Gem
     balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
     allowance[ACCT_ID][CALLER_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - bid #fi
     stopped             |-> Stopped
+
 iff
 
-    VCallDepth < 1024
-    VCallValue == 0
     Live    == 1
     Usr_was =/= 0
     Tic_was == 0 or Tic_was > TIME
@@ -5062,6 +5065,8 @@ iff
     Bid_was * Beg <= bid * #Ray
     #rangeUInt(256, Allowed - bid) or Allowed == maxUInt256
     Stopped == 0
+    VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
 
@@ -5112,6 +5117,7 @@ iff
   Live == 1
   (Tic < TIME and Tic =/= 0) or (End < TIME)
   VCallValue == 0
+  VCallDepth < 1024
 
 if
   Guy =/= ACCT_ID
@@ -5591,17 +5597,6 @@ for all
   Dai_a   : uint256
   Dai_g   : uint256
 
-iff
-  Live == 1
-  Guy =/= 0
-  Tic > TIME or Tic == 0
-  End > TIME
-  bid == Bid
-  lot <  Lot
-  Beg * lot / #RAY <= Lot
-  CanMove == 1
-  VCallValue == 0
-
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> CanMove
   dai[ACCT_ID] |-> Dai_a => Dai_a - bid
@@ -5614,6 +5609,18 @@ storage
   bids[id].bid         |-> Bid => bid
   bids[id].lot         |-> Lot => lot
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+
+iff
+  Live == 1
+  Guy =/= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+  bid == Bid
+  lot <  Lot
+  Beg * lot / #RAY <= Lot
+  CanMove == 1
+  VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Dai_a - bid
@@ -5664,6 +5671,7 @@ iff
   Stopped == 0
   Owner   == ACCT_ID
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Gem_g  + Lot
@@ -5683,7 +5691,6 @@ storage
 
 iff
   Auth == 1
-  VCallDepth < 1024
   VCallValue == 0
 ```
 
@@ -6218,6 +6225,7 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
     VCallValue == 0
+    VCallDepth < 1022
 
 calls
 
@@ -6292,6 +6300,7 @@ iff
   End =/= Flap
   Flap =/= Guy
   VCallValue == 0
+  VCallDepth < 1023
 
 iff in range uint256
   Art + (Tab / Rate_i)
@@ -6351,6 +6360,7 @@ iff
   Tag =/= 0
   Ink_iu >= #rmul(#rmul(Art_iu, Rate_i), Tag)
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Art_iu * Rate_i
@@ -6403,6 +6413,7 @@ iff
   Tag =/= 0
   Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #RAY)
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Art_iu * Rate_i
@@ -6455,6 +6466,7 @@ iff
   Debt == 0
   Joy  == 0
   VCallValue == 0
+  VCallDepth < 1023
 
 iff in range uint256
   When + Wait
@@ -6492,6 +6504,7 @@ iff
   Live == 0
   Art_iu == 0
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range int256
   -Ink_iu
@@ -6535,6 +6548,7 @@ iff
   Debt =/= 0
   Fix == 0
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Art * Rate_i
@@ -6580,6 +6594,7 @@ iff
   Can  == 1
   CALLER_ID =/= Vow
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Bag + wad
@@ -6616,6 +6631,7 @@ iff
   Fix =/= 0
   Out + wad <= Bag
   VCallValue == 0
+  VCallDepth < 1024
 
 iff in range uint256
   Out + wad
