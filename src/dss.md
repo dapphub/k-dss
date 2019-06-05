@@ -5111,6 +5111,7 @@ storage Vat
 iff
   Live == 1
   (Tic < TIME and Tic =/= 0) or (End < TIME)
+  VCallValue == 0
 
 if
   Guy =/= ACCT_ID
@@ -5599,6 +5600,7 @@ iff
   lot <  Lot
   Beg * lot / #RAY <= Lot
   CanMove == 1
+  VCallValue == 0
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> CanMove
@@ -5661,6 +5663,11 @@ iff
   (Tic < TIME and Tic =/= 0) or (End < TIME)
   Stopped == 0
   Owner   == ACCT_ID
+  VCallValue == 0
+
+iff in range uint256
+  Gem_g  + Lot
+  Supply + Lot
 ```
 
 ```act
@@ -6339,6 +6346,7 @@ storage Vat
 iff
   Tag =/= 0
   Ink_iu >= #rmul(#rmul(Art_iu, Rate_i), Tag)
+  VCallValue == 0
 
 iff in range uint256
   Art_iu * Rate_i
@@ -6390,6 +6398,7 @@ storage Vat
 iff
   Tag =/= 0
   Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #RAY)
+  VCallValue == 0
 
 iff in range uint256
   Art_iu * Rate_i
@@ -6521,6 +6530,7 @@ storage Vat
 iff
   Debt =/= 0
   Fix == 0
+  VCallValue == 0
 
 iff in range uint256
   Art * Rate_i
