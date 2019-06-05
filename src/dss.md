@@ -4367,6 +4367,7 @@ interface deal(uint256 id)
 
 for all
   Vat : address VatLike
+  Ilk : bytes32
   Lot : uint256
   Guy : address
   Tic : uint48
@@ -4374,6 +4375,7 @@ for all
   Gem_a : uint256
 
 storage
+  ilk                  |-> Ilk
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
@@ -4382,8 +4384,8 @@ storage
   bids[id].tab         |-> _ => 0
 
 storage Vat
-  gem[ilk][ACCT_ID] |-> Gem_a => Gem_a - Lot
-  gem[ilk][Usr]     |-> Gem_u => Gem_u + Lot
+  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - Lot
+  gem[Ilk][Usr]     |-> Gem_u => Gem_u + Lot
 
 iff
   Tic =/= 0
@@ -4543,7 +4545,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address Gemish
+    Gem         : address GemLike
     May         : uint256
     Vat_bal     : uint256
     Bal_usr     : uint256
@@ -4602,7 +4604,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address Gemish
+    Gem         : address GemLike
     May         : uint256
     Wad         : uint256
     Bal_usr     : uint256
@@ -5215,7 +5217,7 @@ for all
     Gal      : address
     Tic_was  : uint48
     End      : uint48
-    Gem      : address Gemish
+    Gem      : address GemLike
     Can      : uint256
     Beg      : uint256
     Bid_was  : uint256
@@ -5359,7 +5361,7 @@ interface yank(uint256 id)
 for all
   Stopped : uint256
   Live    : uint256
-  Gem     : address Gemish
+  Gem     : address GemLike
   Guy     : address
   Tic     : uint256
   End     : uint256
@@ -5840,7 +5842,7 @@ for all
   End     : uint256
   Guy     : address
   Lot     : uint256
-  Gem     : address Gemish
+  Gem     : address GemLike
   Gem_g   : uint256
   Stopped : uint256
   Supply  : uint256
