@@ -6983,7 +6983,8 @@ if
 
 iff in range uint256
   Bag + wad
-  Dai_c - wad * #Ray
+  Dai - wad * #Ray
+  Joy + wad * #Ray
 
 calls
   End.muluu
