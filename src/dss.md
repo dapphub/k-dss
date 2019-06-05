@@ -4084,9 +4084,11 @@ iff
   bid >  Bid
   (bid * #RAY >= beg * Bid) or (bid == Tab)
 
-  CALLER_ID =/= Usr
   VCallValue == 0
   VCallDepth < 1024
+
+if
+  CALLER_ID =/= Usr
 
 iff in range uint256
   Dai_c - bid
@@ -4152,10 +4154,12 @@ iff
   lot <  Lot
   Lot * #RAY >= lot * Beg
 
-  CALLER_ID =/= Usr
-  ACCT_ID   =/= Urn
   VCallValue == 0
   VCallDepth < 1024
+
+if
+  CALLER_ID =/= Usr
+  ACCT_ID   =/= Urn
 
 iff in range uint256
   Dai_c - bid
@@ -4201,9 +4205,11 @@ storage Vat
 iff
   Tic =/= 0
   Tic < TIME or End < TIME
-  ACCT_ID =/= Guy
   VCallValue == 0
   VCallDepth < 1024
+
+if
+  ACCT_ID =/= Guy
 
 iff in range uint256
   Gem_a - Lot
@@ -4253,10 +4259,12 @@ iff
   May == 1
   Guy =/= 0
   Bid < Tab
-  CALLER_ID =/= ACCT_ID
-  CALLER_ID =/= Guy
   VCallValue == 0
   VCallDepth < 1024
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= Guy
 
 iff in range uint256
   Gem_a - Lot
@@ -5143,9 +5151,11 @@ storage
 
 iff
   Auth == 1
-  CALLER_ID =/= ACCT_ID
   VCallDepth < 1024
   VCallValue == 0
+
+if
+  CALLER_ID =/= ACCT_ID
 
 storage Vat
   dai[ACCT_ID]   |-> Dai_a => Dai_a - rad
@@ -5720,9 +5730,11 @@ storage Vat
 iff
   Live == 0
   Guy =/= 0
-  Guy =/= ACCT_ID
   VCallDepth < 1024
   VCallValue == 0
+
+if
+  Guy =/= ACCT_ID
 
 iff in range uint256
   Dai_a - Bid
@@ -6295,10 +6307,12 @@ iff
   EndMayYank == 1
   Guy =/= 0
   Bid < Tab
-  End =/= Flap
-  Flap =/= Guy
   VCallValue == 0
   VCallDepth < 1023
+
+if
+  End =/= Flap
+  Flap =/= Guy
 
 iff in range uint256
   Art + (Tab / Rate_i)
@@ -6590,9 +6604,11 @@ storage Vat
 iff
   Debt =/= 0
   Can  == 1
-  CALLER_ID =/= Vow
   VCallValue == 0
   VCallDepth < 1024
+
+if
+  CALLER_ID =/= Vow
 
 iff in range uint256
   Bag + wad
