@@ -3588,19 +3588,28 @@ interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
+    Vat  : address VatLike
     May  : uint256
     Flip : address
 
 storage
 
+    vat              |-> Vat
     wards[CALLER_ID] |-> May
     ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+
+storage Vat
+
+    can[ACCT_ID][Flip] |-> _ => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+
+calls
+  Vat.hope
 ```
 
 #### setting liquidation data
