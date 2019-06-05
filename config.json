@@ -7,6 +7,9 @@
     "rules": [
       "./src/storage.k.md",
       "./src/lemmas.k.md"
+    ],
+    "dirty_rules": [
+      "./src/dirty_lemmas.k.md"
     ]
   },
   "implementations": {
