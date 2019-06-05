@@ -4603,6 +4603,7 @@ if
 calls
 
   Vat.slip
+  GemLike.transferFrom
 ```
 
 #### withdrawing from the system
@@ -4654,6 +4655,10 @@ iff in range uint256
 if
 
     CALLER_ID =/= ACCT_ID
+
+calls
+  Vat.slip
+  GemLike.transfer
 ```
 
 # DaiJoin
@@ -5288,6 +5293,9 @@ iff in range uint48
 if
     ACCT_ID =/= CALLER_ID
     #rangeUInt(48, TIME)
+
+calls
+    GemLike.transferFrom
 ```
 
 ```act
@@ -5405,6 +5413,9 @@ iff
 iff in range uint256
   Gem_a - Bid
   Gem_g + Bid
+
+calls
+  GemLike.transferFrom
 ```
 
 # Flopper
@@ -5882,6 +5893,9 @@ iff
 iff in range uint256
   Gem_g  + Lot
   Supply + Lot
+
+calls
+  GemLike.mint
 ```
 
 ```act
@@ -7019,7 +7033,7 @@ calls
 
 # DSToken
 
-Reference implementation of an ERC20 token.
+Reference implementation of an ERC20 token, as used by e.g. MKR and Dai v1.
 
 ```act
 behaviour totalSupply of GemLike
@@ -7133,4 +7147,50 @@ if
   src =/= dst
 
 returns 1
+```
+
+```act
+behaviour mint of GemLike
+interface mint(address dst, uint wad)
+
+types
+  Owner  : address
+  Gem_d  : uint256
+  Supply : uint256
+
+storage
+  owner |-> Owner
+  balances[dst] |-> Gem_d  => Gem_d  + wad
+  supply        |-> Supply => Supply + wad
+
+iff in range uint256
+  Gem_d + wad
+  Supply + wad
+
+iff
+  Owner == CALLER_ID
+  VCallValue == 0
+```
+
+```act
+behaviour burn of GemLike
+interface burn(address src, uint wad)
+
+types
+  Gem_s     : uint256
+  Supply    : uint256
+  Allowance : uint256
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowed #else Allowed - wad #fi
+  balances[src]             |-> Gem_s  => Gem_s  - wad
+  supply                    |-> Supply => Supply - wad
+
+iff in range uint256
+  Gem_s  - wad
+  Supply - wad
+
+iff
+  #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
+  VCallValue == 0
 ```
