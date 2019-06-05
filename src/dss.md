@@ -3418,6 +3418,29 @@ iff
     VCallValue == 0
 ```
 
+#### setting liquidation auction
+
+```act
+behaviour file-flip of Cat
+interface file(bytes32 ilk, bytes32 what, address data)
+
+for all
+
+    May  : uint256
+    Flip : address
+
+storage
+
+    wards[CALLER_ID] |-> May
+    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+```
+
 #### setting liquidation data
 
 ```act
