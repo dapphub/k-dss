@@ -851,7 +851,7 @@ if
 
 iff
 
-    ((Ilk_Art + dart) * Ilk_rate <= Ilk_line and ((Debt + Ilk_rate * dart) <= Line) or (dart <= 0)
+    ((Ilk_Art + dart) * Ilk_rate <= Ilk_line and ((Debt + Ilk_rate * dart) <= Line) or (dart <= 0))
     (dart <= 0 and dink >= 0) or ((Urn_art + dart) * Ilk_rate <= (Urn_ink + dink) * Ilk_spot)
     (u == CALLER_ID or Can_u == 1) or (dart <= 0 and dink >= 0)
     (v == CALLER_ID or Can_v == 1) or (dink < 0)
