@@ -6124,10 +6124,13 @@ stack
 
     y : x : JMPTO : WS => JMPTO : (x * #Ray) / y : WS
 
+iff
+
+    y =/= 0
+
 iff in range uint256
 
     x * #Ray
-    y =/= 0
 
 if
 
