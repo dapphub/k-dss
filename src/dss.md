@@ -7007,3 +7007,122 @@ calls
   End.adduu
   Vat.flux-diff
 ```
+
+
+# DSToken
+
+Reference implementation of an ERC20 token.
+
+```act
+behaviour totalSupply of GemLike
+interface totalSupply()
+
+for all
+  Supply : uint256
+
+storage
+  supply |-> Supply
+
+iff
+  VCallValue == 0
+
+returns Supply
+```
+
+```act
+behaviour balanceOf of GemLike
+interface balanceOf(address usr)
+
+for all
+  BalanceOf : uint256
+
+storage
+  balances[usr] |-> BalanceOf
+
+iff
+  VCallValue == 0
+
+returns BalanceOf
+```
+
+```act
+behaviour allowance of GemLike
+interface allowance(address src, address usr)
+
+for all
+  Allowance : uint256
+
+storage
+  allowance[src][usr] |-> Allowance
+
+iff
+  VCallValue == 0
+
+returns Allowance
+```
+
+```act
+behaviour approve of GemLike
+interface approve(address usr, uint256 wad)
+
+storage
+  allowance[CALLER_ID][usr] |-> _ => wad
+
+iff
+  VCallValue == 0
+
+returns 1
+```
+
+```act
+behaviour transfer of GemLike
+interface transfer(address usr, uint256 wad)
+
+for all
+  Gem_c : uint256
+  Gem_u : uint256
+
+storage
+  balances[CALLER_ID] |-> Gem_c => Gem_c - wad
+  balances[usr]       |-> Gem_u => Gem_u + wad
+
+if
+  usr =/= CALLER_ID
+
+iff in range uint256
+  Gem_c - wad
+  Gem_u + wad
+
+iff
+  VCallValue == 0
+
+returns 1
+```
+
+```act
+behaviour transferFrom of GemLike
+interface transferFrom(address src, address dst, uint wad)
+
+for all
+  Gem_s     : uint256
+  Gem_d     : uint256
+  Allowance : uint256
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
+  balances[src] |-> Gem_s => Gem_s - wad
+  balances[usr] |-> Gem_d => Gem_d + wad
+
+iff in range uint256
+  Gem_s - wad
+  Gem_d + wad
+
+iff
+  #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowance == maxUInt256)
+  VCallValue == 0
+
+if
+  src =/= dst
+
+returns 1
+```

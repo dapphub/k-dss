@@ -21,6 +21,8 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
   andBool #rangeAddress(A)
 ```
 
+### DSToken storage layout
+
 ```k
 Syntax Int ::= "#GemLike.supply" [function]
 rule #GemLike.supply => 0
