@@ -5105,9 +5105,7 @@ storage
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].urn         |-> _ => 0
   bids[id].gal         |-> _ => 0
-  bids[id].tab         |-> _ => 0
 
 storage Vat
   dai[ACCT_ID] |-> Dai_a => Dai_a - Lot
