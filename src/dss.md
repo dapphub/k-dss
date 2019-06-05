@@ -7088,10 +7088,15 @@ returns Allowance
 behaviour approve of GemLike
 interface approve(address usr, uint256 wad)
 
+for all
+  Stopped : uint256
+
 storage
   allowance[CALLER_ID][usr] |-> _ => wad
+  stopped |-> Stopped
 
 iff
+  Stopped == 0
   VCallValue == 0
 
 returns 1
@@ -7104,10 +7109,12 @@ interface transfer(address usr, uint256 wad)
 for all
   Gem_c : uint256
   Gem_u : uint256
+  Stopped : uint256
 
 storage
   balances[CALLER_ID] |-> Gem_c => Gem_c - wad
   balances[usr]       |-> Gem_u => Gem_u + wad
+  stopped |-> Stopped
 
 if
   usr =/= CALLER_ID
@@ -7117,6 +7124,7 @@ iff in range uint256
   Gem_u + wad
 
 iff
+  Stopped == 0
   VCallValue == 0
 
 returns 1
@@ -7130,11 +7138,13 @@ for all
   Gem_s     : uint256
   Gem_d     : uint256
   Allowance : uint256
+  Stopped   : uint256
 
 storage
   allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src] |-> Gem_s => Gem_s - wad
   balances[usr] |-> Gem_d => Gem_d + wad
+  stopped |-> Stopped
 
 iff in range uint256
   Gem_s - wad
@@ -7143,6 +7153,7 @@ iff in range uint256
 iff
   #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowance == maxUInt256)
   VCallValue == 0
+  Stopped == 0
 
 if
   src =/= dst
@@ -7158,18 +7169,21 @@ types
   Owner  : address
   Gem_d  : uint256
   Supply : uint256
+  Stopped : uint256
 
 storage
-  owner |-> Owner
   balances[dst] |-> Gem_d  => Gem_d  + wad
   supply        |-> Supply => Supply + wad
+  owner   |-> Owner
+  stopped |-> Stopped
 
 iff in range uint256
   Gem_d + wad
   Supply + wad
 
 iff
-  Owner == CALLER_ID
+  Owner   == CALLER_ID
+  Stopped == 0
   VCallValue == 0
 ```
 
@@ -7181,11 +7195,13 @@ types
   Gem_s     : uint256
   Supply    : uint256
   Allowance : uint256
+  Stopped   : uint256
 
 storage
   allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowed #else Allowed - wad #fi
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
+  stopped |-> Stopped
 
 iff in range uint256
   Gem_s  - wad
@@ -7194,4 +7210,5 @@ iff in range uint256
 iff
   #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
   VCallValue == 0
+  Stopped == 0
 ```
