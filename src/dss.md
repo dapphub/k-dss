@@ -5336,8 +5336,10 @@ behaviour cage of Flapper
 interface cage(uint256 rad)
 
 for all
-  Vat  : address VatLike
-  Auth : uint256
+  Vat   : address VatLike
+  Auth  : uint256
+  Dai_a : uint256
+  Dai_u : uint256
 
 storage
   wards[CALLER_ID] |-> Auth
