@@ -5304,6 +5304,7 @@ for all
   Dai_g : uint256
 
 storage
+  vat                  |-> Vat
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
