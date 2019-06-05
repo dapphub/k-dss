@@ -6215,6 +6215,102 @@ calls
   Vow.cage
 ```
 
+// todo: skip: tighten ranges
+
+```act
+behaviour skip of End
+interface skip(bytes32 ilk, uint256 id)
+
+for all
+  Vat  : address VatLike
+  Cat  : address Cat
+  Flip : address Flipper
+  EndMayYank : uint256
+  Bid    : uint256
+  Lot    : uint256
+  Tab    : uint256
+  Guy    : address
+  Tic    : uint256
+  End    : uint256
+  Urn    : address
+  Rate_i : uint256
+  Dai_g  : uint256
+  Joy    : uint256
+  Debt   : uint256
+  Awe    : uint256
+  Vice   : uint256
+  Gem_a  : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+  Art    : uint256
+
+storage Cat
+  ilks[ilk].flip |-> Flip
+
+storage Flip
+  wards[CALLER_ID]     |-> EndMayYank
+  bids[id].bid         |-> Bid => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].tab         |-> Tab => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].urn         |-> Urn => 0
+  bids[id].gal         |-> _   => 0
+
+storage Vat
+  ilks[ilk].rate |-> Rate_i
+  can[ACCT_ID][Flip] |-> _ => 1
+
+  dai[Guy] |-> Dai_g => Dai_g + Bid
+  dai[Vow] |-> Joy   => Joy         + Tab
+  debt     |-> Debt  => Debt  + Bid + Tab
+  sin[Vow] |-> Awe   => Awe   + Bid + Tab - ((Tab / Rate_i) * Rate_i)
+  vice     |-> Vice  => Vice  + Bid + Tab - ((Tab / Rate_i) * Rate_i)
+
+  gem[ilk][Flip]     |-> Gem_a  => Gem_a  - Lot
+  urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
+  urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
+
+storage
+  art[ilk] |-> Art => Art + (Tab / Rate_i)
+
+iff
+  Tag =/= 0
+  EndMayYank == 1
+  Guy =/= 0
+  Bid < Tab
+  End =/= Flap
+  Flap =/= Guy
+  VCallValue == 0
+
+iff in range uint256
+  Art + (Tab / Rate_i)
+  (Tab / Rate_i) * Rate_i
+  Dai_g + Bid
+  Joy         + Tab
+  Debt  + Bid + Tab
+  Awe   + Bid + Tab
+  Vice  + Bid + Tab
+  Awe   + Bid + Tab - ((Tab / Rate_i) * Rate_i)
+  Vice  + Bid + Tab - ((Tab / Rate_i) * Rate_i)
+  Gem_a  - Lot
+  Ink_iu + Lot
+  Art_iu + (Tab / Rate_i)
+
+iff in range int256
+  Lot
+  Tab / Rate_i
+
+calls
+  End.adduu
+  Vat.ilks
+  Vat.suck
+  Vat.hope
+  Vat.grab
+  Cat.ilks
+  Flipper.bids
+  Flipper.yank
+```
+
 ```act
 behaviour skim of End
 interface skim(bytes32 ilk, address urn)
