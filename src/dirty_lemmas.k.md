@@ -24,7 +24,7 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
 ### DSToken storage layout
 
 ```k
-Syntax Int ::= "#GemLike.supply" [function]
+syntax Int ::= "#GemLike.supply" [function]
 rule #GemLike.supply => 0
 
 syntax Int ::= "#GemLike.balances" "[" Int "]" [function]
@@ -33,10 +33,10 @@ rule #GemLike.balances[A] => #hashedLocation("Solidity", 1, A)
 syntax Int ::= "#GemLike.allowance" "[" Int "][" Int "]" [function]
 rule #GemLike.allowance[A][B] => #hashedLocation("Solidity", 2, A B)
 
-Syntax Int ::= "#GemLike.authority" [function]
+syntax Int ::= "#GemLike.authority" [function]
 rule #GemLike.authority => 3
 
-Syntax Int ::= "#GemLike.owner" [function]
+syntax Int ::= "#GemLike.owner" [function]
 rule #GemLike.owner => 4
 
 syntax Int ::= "#GemLike.stopped" [function]
