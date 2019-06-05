@@ -6127,6 +6127,7 @@ stack
 iff in range uint256
 
     x * #Ray
+    y =/= 0
 
 if
 
