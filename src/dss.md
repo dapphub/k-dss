@@ -5929,9 +5929,6 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
-
-calls
-  End.muluu
 ```
 
 ```act
@@ -5950,9 +5947,6 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
-
-calls
-  End.muluu
 ```
 
 
