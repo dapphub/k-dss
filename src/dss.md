@@ -5790,6 +5790,42 @@ if
     #sizeWordStack(WS) <= 1000
 ```
 
+```act
+behaviour rmul of End
+interface rmul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : (x * y) / #RAY : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour rdiv of End
+interface rdiv(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : (x * #RAY) / y : WS
+
+iff in range uint256
+
+    x * #RAY
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
 
 ### Accessors
 
@@ -6180,10 +6216,152 @@ calls
 ```
 
 ```act
+behaviour skim of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat : address VatLike
+  Vow : address VowLike
+  Tag : uint256
+  Awe : uint256
+  Art_iu : uint256
+  Ink_iu : uint256
+  Rate_u : uint256
+
+storage
+  vat      |-> Vat
+  vow      |-> Vow
+  tag[ilk] |-> Tag
+
+storage Vat
+  ilks[ilk].rate     |-> Rate_i
+  gem[ACCT_ID]       |-> Gem_a  => Gem_a  + #rmul(#rmul(Art_iu, Rate_i), Tag)
+  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag)
+  urns[ilk][urn].art |-> Art_iu => 0
+  sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
+
+iff
+  Tag =/= 0
+  Ink_iu >= #rmul(#rmul(Art_iu, Rate_i), Tag)
+
+iff in range uint256
+  Art_iu * Rate_i
+  ((Art_iu * Rate_i) / #RAY) * Tag
+  Ink_iu - ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY)
+  Gem_a  + ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY)
+
+iff in range int256
+  -Art_iu
+  ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY) - Ink_iu
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.min
+  Vat.urns
+  Vat.ilks
+  Vat.grab
+```
+
+```act
+behaviour bail of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat : address VatLike
+  Vow : address VowLike
+  Tag : uint256
+  Gap : uint256
+  Awe : uint256
+  Art_iu : uint256
+  Ink_iu : uint256
+  Rate_u : uint256
+
+storage
+  vat      |-> Vat
+  vow      |-> Vow
+  tag[ilk] |-> Tag
+  gap[ilk] |-> Gap => Gap + (#rmul(#rmul(Art_iu, Rate_i), Tag) - Ink_iu)
+
+storage Vat
+  ilks[ilk].rate     |-> Rate_i
+  gem[ACCT_ID]       |-> Gem_a  => Gem_a  + Ink_iu
+  urns[ilk][urn].ink |-> Ink_iu => 0
+  urns[ilk][urn].art |-> Art_iu => 0
+  sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
+
+iff
+  Tag =/= 0
+  Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #RAY)
+
+iff in range uint256
+  Art_iu * Rate_i
+  ((Art_iu * Rate_i) / #RAY) * Tag
+  ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY) - Ink_iu
+  (((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY) - Ink_iu) + Gap
+
+iff in range int256
+  -Art_iu
+  -Ink_iu
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.min
+  Vat.urns
+  Vat.ilks
+  Vat.grab
+```
+
+```act
+behaviour thaw of End
+interface thaw()
+
+for all
+  Vat  : address VatLike
+  Vow  : address VowLike
+  Live : uint256
+  Debt : uint256
+  When : uint256
+  Wait : uint256
+  Joy  : uint256
+  FinalDebt : uint256
+
+storage
+  vat  |-> Vat
+  vow  |-> Vow
+  live |-> Live
+  debt |-> Debt |-> FinalDebt
+  when |-> When
+  wait |-> Wait
+
+storage Vat
+  dai[Vow] |-> Joy
+  debt     |-> FinalDebt
+
+iff
+  Live == 0
+  Debt == 0
+  Joy  == 0
+  VCallValue == 0
+
+iff in range uint256
+  When + Wait
+
+calls
+  End.adduu
+  Vow.Joy
+```
+
+```act
 behaviour free of End
 interface free(bytes32 ilk)
 
 for all
+  Vat    : address VatLike
+  Vow    : address VowLike
   Live   : uint256
   Ink_iu : uint256
   Art_iu : uint256
@@ -6192,6 +6370,7 @@ for all
 storage
   live |-> Live
   vow  |-> Vow
+  vat  |-> Vat
 
 storage Vat
   urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
@@ -6218,40 +6397,48 @@ calls
   Vat.grab
 ```
 
+
 ```act
-behaviour thaw of End
-interface thaw()
+behaviour flow of End
+interface flow(bytes32 ilk)
 
 for all
-  Live : uint256
-  Debt : uint256
-  When : uint256
-  Wait : uint256
-  FinalDebt : uint256
-  Joy  : uint256
+  Vat    : address VatLike
+  Debt   : uint256
+  Fix    : uint256
+  Gap    : uint256
+  Art    : uint256
+  Tag    : uint256
+  Rate_i : uint256
 
 storage
-  live |-> Live
-  debt |-> Debt |-> FinalDebt
-  when |-> When
-  wait |-> Wait
+  vat      |-> Vat
+  debt     |-> Debt
+  gap[ilk] |-> Gap
+  Art[ilk] |-> Art
+  tag[ilk] |-> Tag
+  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i), Tag) - Gap) * #RAY) * #RAY) / Debt
 
 storage Vat
-  dai[Vow] |-> Joy
-  debt     |-> FinalDebt
+  ilks[ilk].rate |-> Rate_i
 
 iff
-  Live == 0
-  Debt == 0
-  Joy  == 0
-  VCallValue == 0
+  Debt =/= 0
+  Fix == 0
 
 iff in range uint256
-  When + Wait
+  Art * Rate_i
+  (Art * Rate_i / #RAY) * Tag
+  ((Art * Rate_i / #RAY) * Tag) / #RAY - Gap
+  (((Art * Rate_i / #RAY) * Tag) / #RAY - Gap) * #RAY
+  ((((Art * Rate_i / #RAY) * Tag) / #RAY - Gap) * #RAY) * #RAY
 
 calls
-  End.adduu
-  Vow.Joy
+  End.muluu
+  End.subuu
+  End.rmul
+  End.rdiv
+  Vat.ilks
 ```
 
 ```act
@@ -6299,6 +6486,7 @@ behaviour cash of End
 interface cash(bytes32 ilk, uint wad)
 
 for all
+  Vat   : address VatLike
   Fix   : uint256
   Bag   : uint256
   Out   : uint256
