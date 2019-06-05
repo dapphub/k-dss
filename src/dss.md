@@ -5745,7 +5745,7 @@ storage
   ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[1 + Kicks].bid         |-> _ => bid
   bids[1 + Kicks].lot         |-> _ => lot
-  bids[1 + Kicks].guy         |-> _ => gal
+  bids[1 + Kicks].gal         |-> _ => gal
   bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
 
 iff
