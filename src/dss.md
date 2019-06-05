@@ -2826,8 +2826,8 @@ iff in range uint256
 calls
 
   Vow.subuu
-  Vow.Joy
-  Vow.Woe
+  Vat.dai
+  Vat.sin
   Vat.heal
 ```
 
@@ -2874,7 +2874,7 @@ iff in range uint256
 calls
 
   Vow.subuu
-  Vow.Joy
+  Vat.dai
   Vat.heal
 ```
 
@@ -3023,8 +3023,8 @@ returns 1 + Kicks
 calls
 
   Vow.adduu
-  Vow.Woe
-  Vow.Joy
+  Vat.sin
+  Vat.dai
   Flopper.kick
 ```
 
@@ -3110,9 +3110,8 @@ calls
 
   Vow.subuu
   Vow.adduu
-  Vow.Joy
-  Vow.Awe
-  Vow.Woe
+  Vat.dai
+  Vat.sin
   Flapper.kick
 ```
 
@@ -3175,9 +3174,8 @@ calls
   Vow.subuu
   Vow.adduu
   Vow.minuu
-  Vow.Joy
-  Vow.Awe
   Vat.dai
+  Vat.sin
   Vat.heal
   Flapper.cage
   Flopper.cage
