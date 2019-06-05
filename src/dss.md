@@ -6024,7 +6024,7 @@ returns Debt
 
 ```act
 behaviour tag of End
-interface tag(bytes32 usr)
+interface tag(bytes32 ilk)
 
 for all
 
@@ -6043,7 +6043,7 @@ returns Ray
 
 ```act
 behaviour gap of End
-interface gap(bytes32 usr)
+interface gap(bytes32 ilk)
 
 for all
 
@@ -6062,7 +6062,7 @@ returns Wad
 
 ```act
 behaviour Art of End
-interface Art(bytes32 usr)
+interface Art(bytes32 ilk)
 
 for all
 
@@ -6081,7 +6081,7 @@ returns Wad
 
 ```act
 behaviour fix of End
-interface fix(bytes32 usr)
+interface fix(bytes32 ilk)
 
 for all
 
