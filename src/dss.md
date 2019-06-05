@@ -4082,7 +4082,7 @@ iff
   lot == Lot
   bid <= Tab
   bid >  Bid
-  (bid * #RAY >= beg * Bid) or (bid == Tab)
+  (bid * #Ray >= beg * Bid) or (bid == Tab)
 
   VCallValue == 0
   VCallDepth < 1024
@@ -4094,7 +4094,7 @@ iff in range uint256
   Dai_c - bid
   Dai_u + bid
   Dai_g + bid - Bid
-  bid * #RAY
+  bid * #Ray
   Beg * Bid
 
 iff in range uint48
@@ -4152,7 +4152,7 @@ iff
   bid == Bid
   bid == Tab
   lot <  Lot
-  Lot * #RAY >= lot * Beg
+  Lot * #Ray >= lot * Beg
 
   VCallValue == 0
   VCallDepth < 1024
@@ -4166,7 +4166,7 @@ iff in range uint256
   Dai_u + bid
   Gem_a + lot - Lot
   Gem_v + Lot - lot
-  Lot * #RAY
+  Lot * #Ray
   lot * Beg
 
 iff in range uint48
@@ -5625,7 +5625,7 @@ iff
   End > TIME
   bid == Bid
   lot <  Lot
-  Beg * lot / #RAY <= Lot
+  Beg * lot / #Ray <= Lot
   CanMove == 1
   VCallValue == 0
   VCallDepth < 1024
@@ -5824,7 +5824,7 @@ interface rmul(uint256 x, uint256 y) internal
 
 stack
 
-    y : x : JMPTO : WS => JMPTO : (x * y) / #RAY : WS
+    y : x : JMPTO : WS => JMPTO : (x * y) / #Ray : WS
 
 iff in range uint256
 
@@ -5842,11 +5842,11 @@ interface rdiv(uint256 x, uint256 y) internal
 
 stack
 
-    y : x : JMPTO : WS => JMPTO : (x * #RAY) / y : WS
+    y : x : JMPTO : WS => JMPTO : (x * #Ray) / y : WS
 
 iff in range uint256
 
-    x * #RAY
+    x * #Ray
 
 if
 
@@ -6376,13 +6376,13 @@ iff
 
 iff in range uint256
   Art_iu * Rate_i
-  ((Art_iu * Rate_i) / #RAY) * Tag
-  Ink_iu - ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY)
-  Gem_a  + ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY)
+  ((Art_iu * Rate_i) / #Ray) * Tag
+  Ink_iu - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 iff in range int256
   -Art_iu
-  ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY) - Ink_iu
+  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu
 
 calls
   End.adduu
@@ -6423,15 +6423,15 @@ storage Vat
 
 iff
   Tag =/= 0
-  Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #RAY)
+  Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #Ray)
   VCallValue == 0
   VCallDepth < 1024
 
 iff in range uint256
   Art_iu * Rate_i
-  ((Art_iu * Rate_i) / #RAY) * Tag
-  ((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY) - Ink_iu
-  (((((Art_iu * Rate_i) / #RAY) * Tag) / #RAY) - Ink_iu) + Gap
+  ((Art_iu * Rate_i) / #Ray) * Tag
+  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu
+  (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu) + Gap
 
 iff in range int256
   -Art_iu
@@ -6551,7 +6551,7 @@ storage
   gap[ilk] |-> Gap
   Art[ilk] |-> Art
   tag[ilk] |-> Tag
-  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i), Tag) - Gap) * #RAY) * #RAY) / Debt
+  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i), Tag) - Gap) * #Ray) * #Ray) / Debt
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
@@ -6564,10 +6564,10 @@ iff
 
 iff in range uint256
   Art * Rate_i
-  (Art * Rate_i / #RAY) * Tag
-  ((Art * Rate_i / #RAY) * Tag) / #RAY - Gap
-  (((Art * Rate_i / #RAY) * Tag) / #RAY - Gap) * #RAY
-  ((((Art * Rate_i / #RAY) * Tag) / #RAY - Gap) * #RAY) * #RAY
+  (Art * Rate_i / #Ray) * Tag
+  ((Art * Rate_i / #Ray) * Tag) / #Ray - Gap
+  (((Art * Rate_i / #Ray) * Tag) / #Ray - Gap) * #Ray
+  ((((Art * Rate_i / #Ray) * Tag) / #Ray - Gap) * #Ray) * #Ray
 
 calls
   End.muluu
@@ -6598,8 +6598,8 @@ storage
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
-  dai[CALLER_ID]          |-> Dai => Dai - wad * #RAY
-  dai[Vow]                |-> Joy => Joy + wad * #RAY
+  dai[CALLER_ID]          |-> Dai => Dai - wad * #Ray
+  dai[Vow]                |-> Joy => Joy + wad * #Ray
 
 iff
   Debt =/= 0
@@ -6612,7 +6612,7 @@ if
 
 iff in range uint256
   Bag + wad
-  Dai_c - wad * #RAY
+  Dai_c - wad * #Ray
 
 calls
   End.muluu
