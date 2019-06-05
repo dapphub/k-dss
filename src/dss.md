@@ -4382,8 +4382,10 @@ for all
   Tic : uint48
   End : uint48
   Gem_a : uint256
+  Gem_u : uint256
 
 storage
+  vat                  |-> Vat
   ilk                  |-> Ilk
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
