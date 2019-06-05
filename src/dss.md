@@ -6725,7 +6725,7 @@ iff in range uint256
   Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 iff in range int256
-  -Art_iu
+  0 - Art_iu
   ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu
 
 calls
@@ -6778,8 +6778,8 @@ iff in range uint256
   (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu) + Gap
 
 iff in range int256
-  -Art_iu
-  -Ink_iu
+  0 - Art_iu
+  0 - Ink_iu
 
 calls
   End.adduu
@@ -6863,7 +6863,7 @@ iff
   VCallDepth < 1024
 
 iff in range int256
-  -Ink_iu
+  0 - Ink_iu
 
 iff in range uint256
   Gem_iu + Ink_iu
