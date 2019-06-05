@@ -4783,10 +4783,9 @@ storage
 
 storage Vat
 
-
     dai[CALLER_ID]          |-> Rad => Rad - #Ray * wad
     dai[ACCT_ID]            |-> Dai_adapter => Dai_adapter + #Ray * wad
-    can[ACCT_ID][CALLER_ID] |-> Can
+    can[CALLER_ID][ACCT_ID] |-> Can
 
 storage Dai
 
@@ -5906,14 +5905,14 @@ behaviour yank of Flopper
 interface yank(uint256 id)
 
 for all
-  Live    : uint256
-  Vat     : address VatLike
-  Guy     : address
-  Tic     : uint256
-  End     : uint256
-  Bid     : uint256
-  Dai_a   : uint256
-  Dai_g   : uint256
+  Live   : uint256
+  Vat    : address VatLike
+  Guy    : address
+  Tic    : uint256
+  End    : uint256
+  Bid    : uint256
+  Dai_a  : uint256
+  Dai_g  : uint256
 
 storage
   live |-> Live
@@ -6991,6 +6990,7 @@ for all
   Gem_c : uint256
 
 storage
+  vat      |-> Vat
   fix[ilk] |-> Fix
   bag[ilk] |-> Bag
   out[ilk][CALLER_ID] |-> Out => Out + wad
@@ -7007,9 +7007,12 @@ iff
 
 iff in range uint256
   Out + wad
+  Gem_e - #rmul(wad, Fix)
+  Gem_c + #rmul(wad, Fix)
 
 calls
   End.adduu
+  End.rmul
   Vat.flux-diff
 ```
 
