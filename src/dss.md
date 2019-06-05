@@ -6079,6 +6079,56 @@ iff
 returns Live
 ```
 
+### Setting `End` parameters
+
+```act
+behaviour file-wait of End
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Wait : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wait |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+```
+
+```act
+behaviour file-addr of End
+interface file(bytes32 what, address data)
+
+for all
+
+    May  : uint256
+    Vat  : address
+    Cat  : address
+    Vow  : address
+    Spot : address
+
+storage
+
+    wards[CALLER_ID] |-> May
+    vat  |-> Vat  => (#if what == #string2Word("vat")  #then data #else Vat #fi)
+    cat  |-> Cat  => (#if what == #string2Word("cat")  #then data #else Cat #fi)
+    vow  |-> Vow  => (#if what == #string2Word("vow")  #then data #else Vow #fi)
+    spot |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+```
+
 ### Time of cage
 
 ```act
