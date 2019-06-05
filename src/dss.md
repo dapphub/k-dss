@@ -5713,14 +5713,18 @@ storage Vat
   dai[Guy]     |-> Dai_g => Dai_g + Bid
 
 iff
-  Live == 1
+  Live == 0
   Guy =/= 0
+  Guy =/= ACCT_ID
   VCallDepth < 1024
   VCallValue == 0
 
 iff in range uint256
   Dai_a - Bid
   Dai_g + Bid
+
+calls
+  Vat.move-diff
 ```
 
 # End
