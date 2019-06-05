@@ -2574,7 +2574,7 @@ iff
 
 calls
 
-    vat.sin
+    Vat.sin
 
 returns Sin
 ```
@@ -2606,7 +2606,7 @@ iff
 
 calls
 
-    vat.dai
+    Vat.dai
 
 returns Dai
 ```
@@ -3176,7 +3176,7 @@ calls
   Vow.minuu
   Vow.Joy
   Vow.Awe
-  vat.dai
+  Vat.dai
   Vat.heal
   Flapper.cage
   Flopper.cage
