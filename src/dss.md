@@ -4265,11 +4265,11 @@ iff in range uint256
 iff in range uint48
 
     TIME + Tau
-    TIME
 
 if
 
     CALLER_ID =/= ACCT_ID
+    #rangeUInt(48, TIME)
 
 calls
 
@@ -4301,7 +4301,9 @@ iff
 
 iff in range uint48
   TIME + Tau
-  TIME
+
+if
+  #rangeUInt(48, TIME)
 
 calls
   Flipper.addu48u48
@@ -5313,6 +5315,7 @@ iff in range uint48
 if
 
     CALLER_ID =/= ACCT_ID
+    #rangeUInt(48, TIME)
 
 returns 1 + Kicks
 
@@ -5896,10 +5899,10 @@ iff in range uint256
 
 iff in range uint48
   TIME + Tau
-  TIME
 
 if
   CALLER_ID =/= ACCT_ID
+  #rangeUInt(48, TIME)
 
 returns 1 + Kicks
 
@@ -5956,11 +5959,11 @@ iff in range uint256
   Dai_a + bid
 
 iff in range uint48
-  TIME
   TIME + Ttl
 
 if
   Guy =/= CALLER_ID
+  #rangeUInt(48, TIME)
 
 calls
   Flopper.muluu
