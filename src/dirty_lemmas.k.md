@@ -23,28 +23,26 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
 
 ### DSToken storage layout
 
+### DSToken
+
+A hypothetical token contract, based on `ds-token`:
+
 ```k
-syntax Int ::= "#GemLike.supply" [function]
-rule #GemLike.supply => 0
+syntax Int ::= "#DSToken.balances" "[" Int "]" [function]
+// --------------------------------------------------
+// doc: `gem` balance of `$0`
+// act:
+rule #DSToken.balances[A] => #hashedLocation("Solidity", 1, A)
 
-syntax Int ::= "#GemLike.balances" "[" Int "]" [function]
-rule #GemLike.balances[A] => #hashedLocation("Solidity", 1, A)
+syntax Int ::= "#DSToken.stopped" [function]
+// --------------------------------------------------
+// doc: `gem` balance of `$0`
+// act:
+rule #DSToken.stopped => 4
 
-syntax Int ::= "#GemLike.allowance" "[" Int "][" Int "]" [function]
-rule #GemLike.allowance[A][B] => #hashedLocation("Solidity", 2, A B)
-
-syntax Int ::= "#GemLike.authority" [function]
-rule #GemLike.authority => 3
-
-syntax Int ::= "#GemLike.owner" [function]
-rule #GemLike.owner => 4
-
-syntax Int ::= "#GemLike.stopped" [function]
-rule #GemLike.stopped => 5
-
-syntax Int ::= "#GemLike.symbol" [function]
-rule #GemLike.symbol => 6
-
-syntax Int ::= "#GemLike.decimals" [function]
-rule #GemLike.decimals => 7
+syntax Int ::= "#DSToken.allowance" "[" Int "][" Int "]" [function]
+// -----------------------------------------------
+// doc: the amount that can be spent on someones behalf
+// act: `$1 can spend `.` tokens belonging to `$0`
+rule #DSToken.allowance[A][B] => #hashedLocation("Solidity", 2, A B)
 ```
