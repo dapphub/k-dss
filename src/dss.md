@@ -5898,8 +5898,6 @@ for all
   Kicks    : uint256
   Ttl      : uint48
   Tau      : uint48
-  Dai_v    : uint256
-  Dai_c    : uint256
   Old_usr  : address
   Old_tic  : uint48
   Old_end  : uint48
@@ -5911,7 +5909,7 @@ storage
   ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[1 + Kicks].bid         |-> _ => bid
   bids[1 + Kicks].lot         |-> _ => lot
-  bids[1 + Kicks].gal         |-> Old_gal => gal
+  bids[1 + Kicks].gal         |-> Old_gal => CALLER_ID
   bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
 
 iff
@@ -5921,20 +5919,16 @@ iff
 
 iff in range uint256
   Kicks + 1
-  Dai_v - lot
-  Dai_c + lot
 
 iff in range uint48
   TIME + Tau
 
 if
-  CALLER_ID =/= ACCT_ID
   #rangeUInt(48, TIME)
 
 returns 1 + Kicks
 
 calls
-  Vat.move-diff
   Flapper.addu48u48
 ```
 
