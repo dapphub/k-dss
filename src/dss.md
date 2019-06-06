@@ -5274,21 +5274,21 @@ storage
 storage Vat
 
     can[CALLER_ID][ACCT_ID] |-> CanMove
-    dai[ACCT_ID]   |-> Dai_v => Dai_v - lot
-    dai[CALLER_ID] |-> Dai_c => Dai_c + lot
+    dai[ACCT_ID]   |-> Dai_v => Dai_v + lot
+    dai[CALLER_ID] |-> Dai_c => Dai_c - lot
 
 iff
 
     Live == 1
-    Can == 1
+    CanMove == 1
     VCallValue == 0
     VCallDepth < 1024
 
 iff in range uint256
 
     Kicks + 1
-    Dai_v - lot
-    Dai_c + lot
+    Dai_v + lot
+    Dai_c - lot
 
 iff in range uint48
 
