@@ -6963,7 +6963,7 @@ iff
   Live == 0
   Debt == 0
   Joy  == 0
-  TIME > When + Wait
+  TIME >= When + Wait
   VCallValue == 0
   VCallDepth < 1023
 
