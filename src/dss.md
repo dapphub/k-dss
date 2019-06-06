@@ -1599,6 +1599,41 @@ if
     CALLER_ID == usr
 ```
 
+```act
+behaviour adduu of Dai
+interface add(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+    x + y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour subuu of Dai
+interface sub(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
 
 ```act
 behaviour transfer-diff of Dai
@@ -1627,6 +1662,11 @@ if
     CALLER_ID =/= dst
 
 returns 1
+
+calls
+
+    Dai.adduu
+    Dai.subuu
 ```
 
 ```act
@@ -1654,6 +1694,11 @@ if
     CALLER_ID == dst
 
 returns 1
+
+calls
+
+    Dai.adduu
+    Dai.subuu
 ```
 
 ```act
@@ -1685,6 +1730,11 @@ if
     src =/= dst
 
 returns 1
+
+calls
+
+    Dai.adduu
+    Dai.subuu
 ```
 
 ```act
@@ -1716,7 +1766,8 @@ if
     src =/= dst
 
 calls
-  Dai.transferFrom-diff
+
+    Dai.transferFrom-diff
 ```
 
 ```act
@@ -1745,7 +1796,8 @@ if
     CALLER_ID =/= dst
 
 calls
-  Dai.transferFrom-diff
+
+    Dai.transferFrom-diff
 ```
 
 ```act
@@ -1777,7 +1829,8 @@ if
     src =/= CALLER_ID
 
 calls
-  Dai.transferFrom-diff
+
+    Dai.transferFrom-diff
 ```
 
 ```act
@@ -1806,6 +1859,11 @@ if
     src == dst
 
 returns 1
+
+calls
+
+    Dai.adduu
+    Dai.subuu
 ```
 
 ```act
@@ -1832,7 +1890,12 @@ iff
 
     May == 1
     VCallValue == 0
+
+calls
+
+    Dai.adduu
 ```
+
 ```act
 behaviour burn of Dai
 interface burn(address src, uint wad)
@@ -1858,6 +1921,10 @@ iff
 
     #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
     VCallValue == 0
+
+calls
+
+    Dai.subuu
 ```
 
 
@@ -1905,7 +1972,6 @@ iff
 
 iff in range uint256
     Nonce + 1
-
 ```
 
 # Jug
