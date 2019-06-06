@@ -1069,8 +1069,6 @@ iff in range uint256
     Art_v + dart
     (Ink_u - dink) * Spot
     (Ink_v + dink) * Spot
-    (Art_u - dart) * Rate
-    (Art_v + dart) * Rate
 
 iff
 
