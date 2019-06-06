@@ -4632,7 +4632,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address GemLike
+    Gem         : address DSToken
     May         : uint256
     Vat_bal     : uint256
     Bal_usr     : uint256
@@ -4679,7 +4679,7 @@ if
 calls
 
   Vat.slip
-  GemLike.transferFrom
+  DSToken.transferFrom
 ```
 
 #### withdrawing from the system
@@ -4692,7 +4692,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address GemLike
+    Gem         : address DSToken
     May         : uint256
     Wad         : uint256
     Bal_usr     : uint256
@@ -4734,7 +4734,7 @@ if
 
 calls
   Vat.slip
-  GemLike.transfer
+  DSToken.transfer
 ```
 
 # DaiJoin
@@ -5325,7 +5325,7 @@ calls
 
 
 ```act
-behaviour tend of Flapper
+behaviour tend-diff of Flapper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -5336,7 +5336,7 @@ for all
     Gal      : address
     Tic_was  : uint48
     End      : uint48
-    Gem      : address GemLike
+    Gem      : address DSToken
     Can      : uint256
     Beg      : uint256
     Bid_was  : uint256
@@ -5382,6 +5382,7 @@ iff
 
 iff in range uint256
 
+    bid * #Ray
     Dai_v - lot
     Dai_c + lot
     bid - Bid_was
@@ -5396,10 +5397,13 @@ iff in range uint48
 
 if
     ACCT_ID =/= CALLER_ID
+    CALLER_ID =/= Usr_was
+    CALLER_ID =/= Gal
+    Gal =/= Usr_was
     #rangeUInt(48, TIME)
 
 calls
-    GemLike.transferFrom
+    DSToken.transferFrom
 ```
 
 ```act
@@ -5486,7 +5490,7 @@ interface yank(uint256 id)
 for all
   Stopped : uint256
   Live    : uint256
-  Gem     : address GemLike
+  Gem     : address DSToken
   Guy     : address
   Tic     : uint256
   End     : uint256
@@ -5519,7 +5523,7 @@ iff in range uint256
   Gem_g + Bid
 
 calls
-  GemLike.transferFrom
+  DSToken.transferFrom
 ```
 
 # Flopper
@@ -5973,7 +5977,7 @@ for all
   End     : uint256
   Guy     : address
   Lot     : uint256
-  Gem     : address GemLike
+  Gem     : address DSToken
   Gem_g   : uint256
   Stopped : uint256
   Supply  : uint256
@@ -6002,7 +6006,7 @@ iff in range uint256
   Supply + Lot
 
 calls
-  GemLike.mint
+  DSToken.mint
 ```
 
 ```act
@@ -7148,43 +7152,7 @@ calls
 Reference implementation of an ERC20 token, as used by e.g. MKR and Dai v1.
 
 ```act
-behaviour adduu of GemLike
-interface add(uint256 x, uint256 y) internal
-
-stack
-
-    y : x : JMPTO : WS => JMPTO : x + y : WS
-
-iff in range uint256
-
-    x + y
-
-if
-
-    // TODO: strengthen
-    #sizeWordStack(WS) <= 100
-```
-
-```act
-behaviour subuu of GemLike
-interface sub(uint256 x, uint256 y) internal
-
-stack
-
-    y : x : JMPTO : WS => JMPTO : x - y : WS
-
-iff in range uint256
-
-    x - y
-
-if
-
-    // TODO: strengthen
-    #sizeWordStack(WS) <= 100
-```
-
-```act
-behaviour totalSupply of GemLike
+behaviour totalSupply of DSToken
 interface totalSupply()
 
 for all
@@ -7200,7 +7168,7 @@ returns Supply
 ```
 
 ```act
-behaviour balanceOf of GemLike
+behaviour balanceOf of DSToken
 interface balanceOf(address usr)
 
 for all
@@ -7216,7 +7184,7 @@ returns BalanceOf
 ```
 
 ```act
-behaviour allowance of GemLike
+behaviour allowance of DSToken
 interface allowance(address src, address usr)
 
 for all
@@ -7232,7 +7200,7 @@ returns Allowance
 ```
 
 ```act
-behaviour approve of GemLike
+behaviour approve of DSToken
 interface approve(address usr, uint256 wad)
 
 for all
@@ -7250,7 +7218,7 @@ returns 1
 ```
 
 ```act
-behaviour transfer of GemLike
+behaviour transfer of DSToken
 interface transfer(address usr, uint256 wad)
 
 for all
@@ -7278,7 +7246,7 @@ returns 1
 ```
 
 ```act
-behaviour transferFrom of GemLike
+behaviour transferFrom of DSToken
 interface transferFrom(address src, address dst, uint wad)
 
 for all
@@ -7290,7 +7258,7 @@ for all
 storage
   allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src] |-> Gem_s => Gem_s - wad
-  balances[usr] |-> Gem_d => Gem_d + wad
+  balances[dst] |-> Gem_d => Gem_d + wad
   stopped |-> Stopped
 
 iff in range uint256
@@ -7309,7 +7277,7 @@ returns 1
 ```
 
 ```act
-behaviour mint of GemLike
+behaviour mint of DSToken
 interface mint(address dst, uint wad)
 
 types
@@ -7335,7 +7303,7 @@ iff
 ```
 
 ```act
-behaviour burn of GemLike
+behaviour burn of DSToken
 interface burn(address src, uint wad)
 
 types

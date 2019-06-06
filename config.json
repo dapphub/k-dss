@@ -54,7 +54,7 @@
       "name" : "Flapper",
       "solc_output": "./dss/out/flap.sol.json"
     },
-    "GemLike": {
+    "DSToken": {
       "name" : "DSToken",
       "solc_output": "./dss/out/test/vat.t.sol.json"
     },
