@@ -6914,6 +6914,7 @@ iff
   Live == 0
   Debt == 0
   Joy  == 0
+  TIME > When + Wait
   VCallValue == 0
   VCallDepth < 1023
 
@@ -7090,6 +7091,9 @@ iff in range uint256
   Out + wad
   Gem_e - #rmul(wad, Fix)
   Gem_c + #rmul(wad, Fix)
+
+if
+  ACCT_ID =/= CALLER_ID
 
 calls
   End.adduu
