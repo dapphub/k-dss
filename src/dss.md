@@ -7107,6 +7107,42 @@ calls
 Reference implementation of an ERC20 token, as used by e.g. MKR and Dai v1.
 
 ```act
+behaviour adduu of GemLike
+interface add(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x + y : WS
+
+iff in range uint256
+
+    x + y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
+behaviour subuu of GemLike
+interface sub(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x - y : WS
+
+iff in range uint256
+
+    x - y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 100
+```
+
+```act
 behaviour totalSupply of GemLike
 interface totalSupply()
 
