@@ -3283,6 +3283,7 @@ for all
     Old_usr  : address
     Old_tic  : uint48
     Old_end  : uint48
+    Old_gal  : address
 
 storage
 
@@ -3301,7 +3302,7 @@ storage Flap
     #Flapper.bids[1 + Kicks].bid         |-> _ => 0
     #Flapper.bids[1 + Kicks].lot         |-> _ => Bump
     #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids[1 + Kicks].gal         |-> _ => 0
+    #Flapper.bids[1 + Kicks].gal         |-> Old_gal => 0
     #Flapper.live                        |-> FlapLive
 
 storage Vat
@@ -3796,6 +3797,7 @@ for all
     Old_usr  : address
     Old_tic  : uint48
     Old_end  : uint48
+    Old_gal  : address
 
 storage
 
@@ -3831,7 +3833,7 @@ storage Flip
     #Flipper.bids[1 + Kicks].lot         |-> _ => Lot
     #Flipper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flipper.bids[1 + Kicks].urn         |-> _ => urn
-    #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
+    #Flipper.bids[1 + Kicks].gal         |-> Old_gal => Vow
     #Flipper.bids[1 + Kicks].tab         |-> _ => #rmul(Chop, Art * Rate)
 
 iff
@@ -4230,6 +4232,7 @@ for all
     CanFlux  : uint256
     Gem_v    : uint256
     Gem_c    : uint256
+    Old_gal  : address
 
 storage
 
@@ -4241,7 +4244,7 @@ storage
     bids[1 + Kicks].lot         |-> _ => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].urn         |-> _ => urn
-    bids[1 + Kicks].gal         |-> _ => gal
+    bids[1 + Kicks].gal         |-> Old_gal => gal
     bids[1 + Kicks].tab         |-> _ => tab
 
 storage Vat
@@ -4461,6 +4464,7 @@ for all
   End : uint48
   Gem_a : uint256
   Gem_u : uint256
+  Old_gal : address
 
 storage
   vat                  |-> Vat
@@ -4469,7 +4473,7 @@ storage
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].urn         |-> _ => 0
-  bids[id].gal         |-> _ => 0
+  bids[id].gal         |-> Old_gal => 0
   bids[id].tab         |-> _ => 0
 
 storage Vat
@@ -4511,6 +4515,7 @@ for all
   Dai_g : uint256
   Gem_a : uint256
   Gem_u : uint256
+  Old_gal : address
 
 storage
   wards[CALLER_ID]     |-> May
@@ -4521,7 +4526,7 @@ storage
   bids[id].tab         |-> Tab => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].urn         |-> _ => 0
-  bids[id].gal         |-> _ => 0
+  bids[id].gal         |-> Old_gal => 0
 
 storage Vat
   gem[Ilk][ACCT_ID]   |-> Gem_a => Gem_a - Lot
@@ -5273,6 +5278,7 @@ for all
     Old_usr  : address
     Old_tic  : uint48
     Old_end  : uint48
+    Old_gal  : address
     CanMove  : uint256
     Dai_v    : uint256
     Dai_c    : uint256
@@ -5286,7 +5292,7 @@ storage
     bids[1 + Kicks].bid         |-> _ => bid
     bids[1 + Kicks].lot         |-> _ => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
-    bids[1 + Kicks].gal         |-> _ => gal
+    bids[1 + Kicks].gal         |-> Old_gal => gal
     live                        |-> Live
 
 storage Vat
@@ -5423,13 +5429,14 @@ for all
   Vat   : address VatLike
   Dai_a : uint256
   Dai_g : uint256
+  Old_gal : address
 
 storage
   vat                  |-> Vat
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].gal         |-> _ => 0
+  bids[id].gal         |-> Old_gal => 0
 
 storage Vat
   dai[ACCT_ID] |-> Dai_a => Dai_a - Lot
@@ -5501,13 +5508,14 @@ for all
   Bid     : uint256
   Gem_a   : uint256
   Gem_g   : uint256
+  Old_Gal : address
 
 storage
   live |-> Live
   gem  |-> Gem
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> _ => 0
-  bids[id].gal         |-> _ => 0
+  bids[id].gal         |-> Old_Gal => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Gem
@@ -5877,6 +5885,7 @@ for all
   Old_usr  : address
   Old_tic  : uint48
   Old_end  : uint48
+  Old_gal  : address
 
 storage
   live                        |-> Live
@@ -5884,7 +5893,7 @@ storage
   ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[1 + Kicks].bid         |-> _ => bid
   bids[1 + Kicks].lot         |-> _ => lot
-  bids[1 + Kicks].gal         |-> _ => gal
+  bids[1 + Kicks].gal         |-> Old_gal => gal
   bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
 
 iff
@@ -6758,6 +6767,7 @@ for all
   Ink_iu : uint256
   Art_iu : uint256
   Art    : uint256
+  Old_gal : address
 
 storage Cat
   ilks[ilk].flip |-> Flip
@@ -6769,7 +6779,7 @@ storage Flip
   bids[id].tab         |-> Tab => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].urn         |-> Urn => 0
-  bids[id].gal         |-> _   => 0
+  bids[id].gal         |-> Old_gal   => 0
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
