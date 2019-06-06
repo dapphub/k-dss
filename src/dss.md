@@ -3193,6 +3193,9 @@ for all
     Ttl      : uint48
     Tau      : uint48
     FlopLive : uint256
+    Old_usr  : address
+    Old_tic  : uint48
+    Old_end  : uint48
 
 storage
 
@@ -3210,7 +3213,7 @@ storage Flop
     bids[1 + Kicks].vow         |-> _ => ACCT_ID
     bids[1 + Kicks].bid         |-> _ => Sump
     bids[1 + Kicks].lot         |-> _ => maxUInt256
-    bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
 
 storage Vat
@@ -3277,6 +3280,9 @@ for all
     Can      : uint256
     Dai_a    : uint256
     FlapLive : uint256
+    Old_usr  : address
+    Old_tic  : uint48
+    Old_end  : uint48
 
 storage
 
@@ -3294,7 +3300,7 @@ storage Flap
     #Flapper.kicks                       |-> Kicks   => 1 + Kicks
     #Flapper.bids[1 + Kicks].bid         |-> _ => 0
     #Flapper.bids[1 + Kicks].lot         |-> _ => Bump
-    #Flapper.bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flapper.bids[1 + Kicks].gal         |-> _ => 0
     #Flapper.live                        |-> FlapLive
 
@@ -3787,6 +3793,9 @@ for all
     Art     : uint256
     Ttl     : uint48
     Tau     : uint48
+    Old_usr  : address
+    Old_tic  : uint48
+    Old_end  : uint48
 
 storage
 
@@ -3820,7 +3829,7 @@ storage Flip
     #Flipper.kicks                       |-> Kicks => 1 + Kicks
     #Flipper.bids[1 + Kicks].bid         |-> _ => 0
     #Flipper.bids[1 + Kicks].lot         |-> _ => Lot
-    #Flipper.bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    #Flipper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
     #Flipper.bids[1 + Kicks].urn         |-> _ => urn
     #Flipper.bids[1 + Kicks].gal         |-> _ => Vow
     #Flipper.bids[1 + Kicks].tab         |-> _ => #rmul(Chop, Art * Rate)
