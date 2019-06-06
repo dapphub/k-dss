@@ -21,28 +21,30 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
   andBool #rangeAddress(A)
 ```
 
-### DSToken storage layout
-
 ### DSToken
 
-A hypothetical token contract, based on `ds-token`:
-
 ```k
+syntax Int ::= "#DSToken.supply" [function]
+rule #DSToken.supply => 0
+
 syntax Int ::= "#DSToken.balances" "[" Int "]" [function]
-// --------------------------------------------------
-// doc: `gem` balance of `$0`
-// act:
 rule #DSToken.balances[A] => #hashedLocation("Solidity", 1, A)
 
-syntax Int ::= "#DSToken.stopped" [function]
-// --------------------------------------------------
-// doc: `gem` balance of `$0`
-// act:
-rule #DSToken.stopped => 4
-
 syntax Int ::= "#DSToken.allowance" "[" Int "][" Int "]" [function]
-// -----------------------------------------------
-// doc: the amount that can be spent on someones behalf
-// act: `$1 can spend `.` tokens belonging to `$0`
 rule #DSToken.allowance[A][B] => #hashedLocation("Solidity", 2, A B)
+
+syntax Int ::= "#DSToken.authority" [function]
+rule #DSToken.authority => 3
+
+syntax Int ::= "#DSToken.owner" [function]
+rule #DSToken.owner => 4
+
+syntax Int ::= "#DSToken.stopped" [function]
+rule #DSToken.stopped => 5
+
+syntax Int ::= "#DSToken.symbol" [function]
+rule #DSToken.symbol => 6
+
+syntax Int ::= "#DSToken.decimals" [function]
+rule #DSToken.decimals => 7
 ```
