@@ -5007,7 +5007,7 @@ storage
 
 iff
 
-VCallValue == 0
+  VCallValue == 0
 
 returns Bid : Lot : Usr : Tic : End : Gal
 ```
@@ -5284,6 +5284,24 @@ if
 ```
 
 ```act
+behaviour muluu of Flapper
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
 behaviour kick of Flapper
 interface kick(address gal, uint256 lot, uint256 bid)
 
@@ -5353,7 +5371,7 @@ calls
 
 
 ```act
-behaviour tend-diff of Flapper
+behaviour tend of Flapper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -5432,6 +5450,8 @@ if
 
 calls
     DSToken.transferFrom
+    Flapper.muluu
+    Flapper.addu48u48
 ```
 
 ```act
@@ -5881,6 +5901,24 @@ if
     #sizeWordStack(WS) <= 100
 ```
 
+```act
+behaviour muluu of Flopper
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
 #### Auction parameters
 
 todo: file of flopper
@@ -6012,6 +6050,7 @@ storage
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].gal         |-> _   => 0
 
 storage Gem
   balances[Guy] |-> Gem_g  => Gem_g  + Lot
@@ -6021,7 +6060,8 @@ storage Gem
 
 iff
   Live == 1
-  (Tic < TIME and Tic =/= 0) or (End < TIME)
+  Tic < TIME or End < TIME
+  Tic =/= 0  or End < TIME
   Stopped == 0
   Owner   == ACCT_ID
   VCallValue == 0
@@ -6071,6 +6111,7 @@ storage
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> _   => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].gal |-> _   => 0
 
 storage Vat
   dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
