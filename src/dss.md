@@ -4215,6 +4215,9 @@ for all
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
+    Old_usr  : address
+    Old_tic  : uint48
+    Old_end  : uint48
     CanFlux  : uint256
     Gem_v    : uint256
     Gem_c    : uint256
@@ -4227,7 +4230,7 @@ storage
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> _ => bid
     bids[1 + Kicks].lot         |-> _ => lot
-    bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].urn         |-> _ => urn
     bids[1 + Kicks].gal         |-> _ => gal
     bids[1 + Kicks].tab         |-> _ => tab
@@ -5255,6 +5258,9 @@ for all
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
+    Old_usr  : address
+    Old_tic  : uint48
+    Old_end  : uint48
     CanMove  : uint256
     Dai_v    : uint256
     Dai_c    : uint256
@@ -5267,7 +5273,7 @@ storage
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> _ => bid
     bids[1 + Kicks].lot         |-> _ => lot
-    bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].gal         |-> _ => gal
     live                        |-> Live
 
@@ -5851,6 +5857,9 @@ for all
   Tau      : uint48
   Dai_v    : uint256
   Dai_c    : uint256
+  Old_usr  : address
+  Old_tic  : uint48
+  Old_end  : uint48
 
 storage
   live                        |-> Live
@@ -5859,7 +5868,7 @@ storage
   bids[1 + Kicks].bid         |-> _ => bid
   bids[1 + Kicks].lot         |-> _ => lot
   bids[1 + Kicks].gal         |-> _ => gal
-  bids[1 + Kicks].usr_tic_end |-> _ => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
+  bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
 
 iff
   Live == 1
