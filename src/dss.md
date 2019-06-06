@@ -7217,7 +7217,7 @@ iff in range uint256
   Gem_d + wad
 
 iff
-  #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowance == maxUInt256)
+  #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
   VCallValue == 0
   Stopped == 0
 
@@ -7262,12 +7262,14 @@ types
   Supply    : uint256
   Allowance : uint256
   Stopped   : uint256
+  Owner     : uint256
 
 storage
-  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowed #else Allowed - wad #fi
+  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
   stopped |-> Stopped
+  owner   |-> Owner
 
 iff in range uint256
   Gem_s  - wad
@@ -7277,4 +7279,5 @@ iff
   #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
   VCallValue == 0
   Stopped == 0
+  Owner == CALLER_ID
 ```
