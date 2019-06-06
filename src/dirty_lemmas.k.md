@@ -19,7 +19,55 @@ rule maxUInt208 &Int ((X *Int pow208) +Int A ) => A
 rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
   requires #rangeUInt(48, X)
   andBool #rangeAddress(A)
+
+syntax Int ::= "Mask26_32" [function]
+// 0xffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000
+rule Mask26_32 => 115792089237316195423570985008687907853269984665640564039457583726438152929280 [macro]
+syntax Int ::= "Mask20_26" [function]
+// 0xffffffffffffffffffffffffffffffffffffffff000000000000ffffffffffff
+rule Mask20_26 => 115792089237316195423570985008687907853269984665561335876943319951794562400255 [macro]
+
+rule Mask26_32 &Int (Y *Int pow48 +Int X) => Y *Int pow48
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule Mask20_26 &Int (Y *Int pow48 +Int X) => X
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule chop(((maxUInt48 &Int X) *Int pow48)) => (maxUInt48 &Int X) *Int pow48
+  requires #rangeUInt(256, X)
+
+rule chop((((maxUInt48 &Int X) *Int pow48) |Int Y)) => ((maxUInt48 &Int X) *Int pow48) |Int Y
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
+
+rule chop(((maxUInt48 &Int X) +Int (Y *Int pow48))) => (maxUInt48 &Int X) +Int (Y *Int pow48)
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
+
+rule chop(((maxUInt48 &Int X) |Int (Y *Int pow48))) => (maxUInt48 &Int X) |Int (Y *Int pow48)
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
+
+rule ((maxUInt48 &Int X) |Int (Y *Int pow48)) => (Y *Int pow48) +Int (maxUInt48 &Int X)
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
+
+rule (((maxUInt48 &Int X) *Int pow48) |Int Y) => ((maxUInt48 &Int X) *Int pow48) +Int Y
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
+
+rule chop((((maxUInt48 &Int X) *Int pow48) +Int Y)) => ((maxUInt48 &Int X) *Int pow48) +Int Y
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
+
+rule chop(((Y *Int pow48) +Int (maxUInt48 &Int X))) => (Y *Int pow48) +Int (maxUInt48 &Int X)
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(256, X)
 ```
+
+
 ```k
 syntax Int ::= "#WordPackAddrUInt8" "(" Int "," Int ")" [function]
 // ----------------------------------------------------------
