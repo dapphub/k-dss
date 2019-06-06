@@ -4782,6 +4782,24 @@ returns Dai
 #### depositing into the system
 
 ```act
+behaviour muluu of DaiJoin
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
 behaviour join of DaiJoin
 interface join(address usr, uint256 wad)
 
@@ -4829,6 +4847,12 @@ iff in range uint256
 if
 
     CALLER_ID =/= ACCT_ID
+
+calls
+
+    DaiJoin.muluu
+    Vat.move-diff
+    Dai.burn
 ```
 
 #### withdrawing from the system
@@ -4887,6 +4911,7 @@ if
 
 calls
 
+    DaiJoin.muluu
     Vat.move-diff
     Dai.mint
 ```
