@@ -4216,6 +4216,24 @@ if
 ```
 
 ```act
+behaviour muluu of Flipper
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
 behaviour kick of Flipper
 interface kick(address urn, address gal, uint256 tab, uint256 lot, uint256 bid)
 
