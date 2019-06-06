@@ -4857,6 +4857,7 @@ iff in range uint256
 if
 
     CALLER_ID =/= ACCT_ID
+    usr =/= ACCT_ID
 
 calls
 
