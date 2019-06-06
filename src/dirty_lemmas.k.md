@@ -20,6 +20,16 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
   requires #rangeUInt(48, X)
   andBool #rangeAddress(A)
 ```
+```k
+syntax Int ::= "#WordPackAddrUInt8" "(" Int "," Int ")" [function]
+// ----------------------------------------------------------
+rule #WordPackAddrUInt8(X, Y) => Y *Int pow160 +Int X
+  requires #rangeAddress(X)
+  andBool #rangeUInt(8, Y)
+
+
+```
+
 
 ### DSToken
 
@@ -36,15 +46,12 @@ rule #DSToken.allowance[A][B] => #hashedLocation("Solidity", 2, A B)
 syntax Int ::= "#DSToken.authority" [function]
 rule #DSToken.authority => 3
 
-syntax Int ::= "#DSToken.owner" [function]
-rule #DSToken.owner => 4
-
-syntax Int ::= "#DSToken.stopped" [function]
-rule #DSToken.stopped => 5
+syntax Int ::= "#DSToken.owner_stopped" [function]
+rule #DSToken.owner_stopped => 4
 
 syntax Int ::= "#DSToken.symbol" [function]
-rule #DSToken.symbol => 6
+rule #DSToken.symbol => 5
 
 syntax Int ::= "#DSToken.decimals" [function]
-rule #DSToken.decimals => 7
+rule #DSToken.decimals => 6
 ```

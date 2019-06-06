@@ -4984,7 +4984,7 @@ storage
 
 iff
 
-    VCallValue == 0
+VCallValue == 0
 
 returns Bid : Lot : Usr : Tic : End : Gal
 ```
@@ -7228,12 +7228,13 @@ interface transfer(address usr, uint256 wad)
 for all
   Gem_c : uint256
   Gem_u : uint256
-  Stopped : uint256
+  Owner : address
+  Stopped : bool
 
 storage
   balances[CALLER_ID] |-> Gem_c => Gem_c - wad
   balances[usr]       |-> Gem_u => Gem_u + wad
-  stopped |-> Stopped
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 if
   usr =/= CALLER_ID
@@ -7257,13 +7258,14 @@ for all
   Gem_s     : uint256
   Gem_d     : uint256
   Allowance : uint256
-  Stopped   : uint256
+  Owner     : address
+  Stopped   : bool
 
 storage
   allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src] |-> Gem_s => Gem_s - wad
   balances[dst] |-> Gem_d => Gem_d + wad
-  stopped |-> Stopped
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff in range uint256
   Gem_s - wad
@@ -7285,16 +7287,15 @@ behaviour mint of DSToken
 interface mint(address dst, uint wad)
 
 types
-  Owner  : address
-  Gem_d  : uint256
-  Supply : uint256
-  Stopped : uint256
-
+  Owner   : address
+  Gem_d   : uint256
+  Supply  : uint256
+  Stopped : bool
+ 
 storage
   balances[dst] |-> Gem_d  => Gem_d  + wad
   supply        |-> Supply => Supply + wad
-  owner   |-> Owner
-  stopped |-> Stopped
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff in range uint256
   Gem_d + wad
@@ -7314,15 +7315,14 @@ types
   Gem_s     : uint256
   Supply    : uint256
   Allowance : uint256
-  Stopped   : uint256
-  Owner     : uint256
+  Stopped   : bool
+  Owner     : address
 
 storage
   allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
-  stopped |-> Stopped
-  owner   |-> Owner
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff in range uint256
   Gem_s  - wad
