@@ -4183,8 +4183,8 @@ for all
 
     May : uint256
     Beg : uint256
-    Ttl : uint256
-    Tau : uint256
+    Ttl : uint48
+    Tau : uint48
 
 storage
 
@@ -5422,8 +5422,8 @@ interface deal(uint256 id)
 
 for all
   Live  : uint256
-  Tic   : uint256
-  End   : uint256
+  Tic   : uint48
+  End   : uint48
   Guy   : address
   Lot   : uint256
   Vat   : address VatLike
@@ -5503,8 +5503,8 @@ for all
   Live    : uint256
   Gem     : address DSToken
   Guy     : address
-  Tic     : uint256
-  End     : uint256
+  Tic     : uint48
+  End     : uint48
   Bid     : uint256
   Gem_a   : uint256
   Gem_g   : uint256
@@ -5928,12 +5928,13 @@ for all
   Live : uint256
   Vat  : address VatLike
   Beg  : uint256
-  Ttl  : uint256
+  Ttl  : uint48
+  Tau  : uint48
   Bid  : uint256
   Lot  : uint256
   Guy  : address
-  Tic  : uint256
-  End  : uint256
+  Tic  : uint48
+  End  : uint48
   CanMove : uint256
   Dai_a   : uint256
   Dai_g   : uint256
@@ -5946,7 +5947,7 @@ storage Vat
 storage
   vat |-> Vat
   beg |-> Beg
-  ttl |-> Ttl
+  ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[id].bid         |-> Bid => bid
   bids[id].lot         |-> Lot => lot
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
@@ -5986,8 +5987,8 @@ interface deal(uint256 id)
 
 for all
   Live    : uint256
-  Tic     : uint256
-  End     : uint256
+  Tic     : uint48
+  End     : uint48
   Guy     : address
   Lot     : uint256
   Gem     : address DSToken
@@ -6046,8 +6047,8 @@ for all
   Live   : uint256
   Vat    : address VatLike
   Guy    : address
-  Tic    : uint256
-  End    : uint256
+  Tic    : uint48
+  End    : uint48
   Bid    : uint256
   Dai_a  : uint256
   Dai_g  : uint256
@@ -6754,8 +6755,8 @@ for all
   Lot    : uint256
   Tab    : uint256
   Guy    : address
-  Tic    : uint256
-  End    : uint256
+  Tic    : uint48
+  End    : uint48
   Urn    : address
   Rate_i : uint256
   Dai_g  : uint256
