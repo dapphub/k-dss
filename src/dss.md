@@ -5474,22 +5474,22 @@ behaviour deal of Flapper
 interface deal(uint256 id)
 
 for all
+  Vat   : address VatLike
   Live  : uint256
+  Lot   : uint256
+  Guy   : address
   Tic   : uint48
   End   : uint48
-  Guy   : address
-  Lot   : uint256
-  Vat   : address VatLike
   Dai_a : uint256
   Dai_g : uint256
-  Old_gal : address
 
 storage
   vat                  |-> Vat
+  live                 |-> Live
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].gal         |-> Old_gal => 0
+  bids[id].gal         |-> _ => 0
 
 storage Vat
   dai[ACCT_ID] |-> Dai_a => Dai_a - Lot
