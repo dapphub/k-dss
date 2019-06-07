@@ -1721,7 +1721,7 @@ iff in range uint256
     DstBal + wad
 
 iff
-    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    wad <= Allowed or src == CALLER_ID
     VCallValue == 0
 
 if
@@ -1757,7 +1757,7 @@ iff in range uint256
     DstBal + wad
 
 iff
-    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    wad <= Allowed or src == CALLER_ID
     VCallValue == 0
 
 if
@@ -1820,7 +1820,7 @@ iff in range uint256
     DstBal + wad
 
 iff
-    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    wad <= Allowed or src == CALLER_ID
     VCallValue == 0
 
 if
@@ -1850,7 +1850,7 @@ iff in range uint256
     SrcBal - wad
 
 iff
-    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    wad <= Allowed or src == CALLER_ID
     VCallValue == 0
 
 if
@@ -1917,7 +1917,7 @@ iff in range uint256
 
 iff
 
-    #rangeUInt(256, Allowed - wad) or (src == CALLER_ID or Allowed == maxUInt256)
+    wad <= Allowed or src == CALLER_ID
     VCallValue == 0
 
 calls
@@ -4686,7 +4686,7 @@ storage Gem
 
 iff
 
-    #rangeUInt(256, Allowed - wad) or Allowed == maxUInt256
+    wad <= Allowed
     Stopped == 0
     // act: caller is `. ? : not` authorised
     May == 1
@@ -4880,7 +4880,7 @@ iff
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
-    #rangeUInt(256, Allowed - wad) or Allowed == maxUInt256
+    wad <= Allowed
 
 iff in range uint256
 
@@ -5436,7 +5436,7 @@ iff
     Lot == lot
     Bid_was < bid
     Bid_was * Beg <= bid * #Ray
-    #rangeUInt(256, Allowed - bid) or Allowed == maxUInt256
+    bid <= Allowed
     Stopped == 0
     VCallDepth < 1024
     VCallValue == 0
@@ -7354,7 +7354,7 @@ iff in range uint256
   Gem_d + wad
 
 iff
-  #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
+  wad <= Allowance or src == CALLER_ID
   VCallValue == 0
   Stopped == 0
 
@@ -7413,7 +7413,7 @@ iff in range uint256
   Supply - wad
 
 iff
-  #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
+  wad <= Allowance or src == CALLER_ID
   VCallValue == 0
   VCallDepth < 1024
   Stopped == 0
