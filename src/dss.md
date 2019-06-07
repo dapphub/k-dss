@@ -3364,6 +3364,8 @@ for all
    Dai_v   : uint256
    Sin_v   : uint256
    Dai_f   : uint256
+   Debt    : uint256
+   Vice    : uint256
 
 storage
 
@@ -3376,8 +3378,10 @@ storage
 storage Vat
 
    dai[Flap]    |-> Dai_f => 0
-   dai[ACCT_ID] |-> Dai_v => Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi + Dai_f
-   sin[ACCT_ID] |-> Sin_v => Sin_v - #if Dai_v > Sin_v #then 0 #else Sin_v - Dai_v #fi
+   dai[ACCT_ID] |-> Dai_v => #if (Dai_v + Dai_f) > Sin_v #then (Dai_v + Dai_f) - Sin_v #else 0 #fi
+   sin[ACCT_ID] |-> Sin_v => #if (Dai_v + Dai_f) > Sin_v #then 0 #else Sin_v - (Dai_v + Dai_f) #fi
+   debt |-> Debt => #if (Dai_v + Dai_f) > Sin_v #then Debt - Sin_v #else Debt - (Dai_v + Dai_f) #fi
+   vice |-> Vice => #if (Dai_v + Dai_f) > Sin_v #then Vice - Sin_v #else Vice - (Dai_v + Dai_f) #fi
 
 storage Flapper
 
@@ -3398,9 +3402,11 @@ iff
 
 iff in range uint256
 
-    Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi
-    Dai_v - #if Dai_v > Sin_v #then Dai_v - Sin_v #else 0 #fi + Dai_f
-    Sin_v - #if Dai_v > Sin_v #then 0 #else Sin_v - Dai_v #fi
+    Dai_v + Dai_f
+    #if (Dai_v + Dai_f) > Sin_v #then (Dai_v + Dai_f) - Sin_v #else 0 #fi
+    #if (Dai_v + Dai_f) > Sin_v #then 0 #else Sin_v - (Dai_v + Dai_f) #fi
+    #if (Dai_v + Dai_f) > Sin_v #then Debt - Sin_v #else Debt - (Dai_v + Dai_f) #fi
+    #if (Dai_v + Dai_f) > Sin_v #then Vice - Sin_v #else Vice - (Dai_v + Dai_f) #fi
 
 calls
 
