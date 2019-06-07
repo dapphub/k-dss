@@ -4662,6 +4662,8 @@ for all
     Vat_bal     : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
+    Owner       : address
+    Stopped     : bool
 
 storage
 
@@ -4678,9 +4680,11 @@ storage Gem
 
     balances[CALLER_ID] |-> Bal_usr     => Bal_usr     - wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
+    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
 
+    Stopped == 0
     // act: caller is `. ? : not` authorised
     May == 1
     // act: call stack is not too big
@@ -4722,6 +4726,8 @@ for all
     Wad         : uint256
     Bal_usr     : uint256
     Bal_adapter : uint256
+    Owner       : address
+    Stopped     : bool
 
 storage
 
@@ -4738,9 +4744,11 @@ storage Gem
 
     balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
 
+    Stopped == 0
     // act: caller is `. ? : not` authorised
     May == 1
     // act: call stack is not too big
@@ -5392,6 +5400,8 @@ for all
     Bal_usr  : uint256
     Bal_gal  : uint256
     Bal_caller : uint256
+    Owner      : address
+    Stopped    : bool
 
 storage
 
@@ -5410,10 +5420,11 @@ storage Gem
     balances[Usr_was]   |-> Bal_usr => Bal_usr + Bid_was
     balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
     allowance[ACCT_ID][CALLER_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - bid #fi
-    stopped             |-> Stopped
+    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
 
+    Stopped == 0
     Live    == 1
     Usr_was =/= 0
     Tic_was == 0 or Tic_was > TIME
@@ -5537,7 +5548,6 @@ behaviour yank of Flapper
 interface yank(uint256 id)
 
 for all
-  Stopped : uint256
   Live    : uint256
   Gem     : address DSToken
   Guy     : address
@@ -5547,6 +5557,8 @@ for all
   Gem_a   : uint256
   Gem_g   : uint256
   Old_Gal : address
+  Stopped : bool
+  Owner   : address
 
 storage
   live |-> Live
@@ -5559,7 +5571,7 @@ storage
 storage Gem
   balances[ACCT_ID] |-> Gem_a => Gem_a - Bid
   balances[Guy]     |-> Gem_g => Gem_g + Bid
-  stopped           |-> Stopped
+  owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
   Live == 0
@@ -6043,8 +6055,9 @@ for all
   Lot     : uint256
   Gem     : address DSToken
   Gem_g   : uint256
-  Stopped : uint256
+  Stopped : bool
   Supply  : uint256
+  Owner   : address
 
 storage
   bids[id].bid         |-> _   => 0
@@ -6055,8 +6068,7 @@ storage
 storage Gem
   balances[Guy] |-> Gem_g  => Gem_g  + Lot
   supply        |-> Supply => Supply + Lot
-  stopped       |-> Stopped
-  owner         |-> Owner
+  owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
   Live == 1
@@ -7273,11 +7285,12 @@ behaviour approve of DSToken
 interface approve(address usr, uint256 wad)
 
 for all
-  Stopped : uint256
+  Stopped : bool
+  Owner   : address
 
 storage
   allowance[CALLER_ID][usr] |-> _ => wad
-  stopped |-> Stopped
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
   Stopped == 0
