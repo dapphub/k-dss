@@ -5488,7 +5488,7 @@ storage
   live                 |-> Live
   bids[id].bid         |-> _   => 0
   bids[id].lot         |-> Lot => 0
-  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(0, 0, 0)
   bids[id].gal         |-> _ => 0
 
 storage Vat
