@@ -3369,11 +3369,12 @@ for all
 
 storage
 
-   flopper |-> Flopper
-   flapper |-> Flapper
-   live |-> _ => 0
-   Sin  |-> _ => 0
-   Ash  |-> _ => 0
+    wards[CALLER_ID] |-> Can
+    flopper |-> Flopper
+    flapper |-> Flapper
+    live |-> _ => 0
+    Sin  |-> _ => 0
+    Ash  |-> _ => 0
 
 storage Vat
 
@@ -3395,6 +3396,7 @@ storage Flopper
 
 iff
 
+    Can == 1
     Dai_v + Dai_f > Sin_v
     MayFlap == 1
     MayFlop == 1
@@ -3442,6 +3444,7 @@ for all
 
 storage
 
+   wards[CALLER_ID] |-> Can
    flopper |-> Flopper
    flapper |-> Flapper
    live |-> _ => 0
@@ -3468,6 +3471,7 @@ storage Flopper
 
 iff
 
+    Can == 1
     Dai_v + Dai_f < Sin_v
     MayFlap == 1
     MayFlop == 1
@@ -3514,6 +3518,7 @@ for all
 
 storage
 
+   wards[CALLER_ID] |-> Can
    flopper |-> Flopper
    flapper |-> Flapper
    live |-> _ => 0
@@ -3540,6 +3545,7 @@ storage Flopper
 
 iff
 
+    Can == 1
     Dai_v + Dai_f == Sin_v
     MayFlap == 1
     MayFlop == 1
