@@ -6921,8 +6921,8 @@ storage Vat
 iff
   Tag =/= 0
   Ink_iu >= #rmul(#rmul(Art_iu, Rate_i), Tag)
-  VCallValue == 0
   VCallDepth < 1024
+  VCallValue == 0
 
 iff in range uint256
   Art_iu * Rate_i
@@ -6974,8 +6974,8 @@ storage Vat
 iff
   Tag =/= 0
   Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #Ray)
-  VCallValue == 0
   VCallDepth < 1024
+  VCallValue == 0
 
 iff in range uint256
   Art_iu * Rate_i
@@ -7037,6 +7037,7 @@ iff in range uint256
 calls
   End.adduu
   Vow.Joy
+  Vat.debt
 ```
 
 ```act
