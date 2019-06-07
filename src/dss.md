@@ -5405,6 +5405,7 @@ for all
     Bal_caller : uint256
     Owner      : address
     Stopped    : bool
+    Allowed    : uint256
 
 storage
 
