@@ -7041,7 +7041,7 @@ storage
   vat  |-> Vat
   vow  |-> Vow
   live |-> Live
-  debt |-> Debt |-> FinalDebt
+  debt |-> Debt => FinalDebt
   when |-> When
   wait |-> Wait
 
