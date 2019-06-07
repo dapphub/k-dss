@@ -3351,7 +3351,7 @@ calls
 #### system lock down
 
 ```act
-behaviour cage of Vow
+behaviour cage-surplus of Vow
 interface cage()
 
 for all
@@ -3377,11 +3377,11 @@ storage
 
 storage Vat
 
-   dai[Flap]    |-> Dai_f => 0
-   dai[ACCT_ID] |-> Dai_v => #if (Dai_v + Dai_f) > Sin_v #then (Dai_v + Dai_f) - Sin_v #else 0 #fi
-   sin[ACCT_ID] |-> Sin_v => #if (Dai_v + Dai_f) > Sin_v #then 0 #else Sin_v - (Dai_v + Dai_f) #fi
-   debt |-> Debt => #if (Dai_v + Dai_f) > Sin_v #then Debt - Sin_v #else Debt - (Dai_v + Dai_f) #fi
-   vice |-> Vice => #if (Dai_v + Dai_f) > Sin_v #then Vice - Sin_v #else Vice - (Dai_v + Dai_f) #fi
+    dai[Flap]    |-> Dai_f => 0
+    dai[ACCT_ID] |-> Dai_v => (Dai_v + Dai_f) - Sin_v
+    sin[ACCT_ID] |-> Sin_v => 0
+    debt |-> Debt => Debt - Sin_v
+    vice |-> Vice => Vice - Sin_v
 
 storage Flapper
 
@@ -3395,6 +3395,7 @@ storage Flopper
 
 iff
 
+    Dai_v + Dai_f > Sin_v
     MayFlap == 1
     MayFlop == 1
     VCallValue == 0
@@ -3403,10 +3404,8 @@ iff
 iff in range uint256
 
     Dai_v + Dai_f
-    #if (Dai_v + Dai_f) > Sin_v #then (Dai_v + Dai_f) - Sin_v #else 0 #fi
-    #if (Dai_v + Dai_f) > Sin_v #then 0 #else Sin_v - (Dai_v + Dai_f) #fi
-    #if (Dai_v + Dai_f) > Sin_v #then Debt - Sin_v #else Debt - (Dai_v + Dai_f) #fi
-    #if (Dai_v + Dai_f) > Sin_v #then Vice - Sin_v #else Vice - (Dai_v + Dai_f) #fi
+    Debt - Sin_v
+    Vice - Sin_v
 
 if
 
@@ -3424,6 +3423,149 @@ calls
   Flopper.cage
 ```
 
+```act
+behaviour cage-deficit of Vow
+interface cage()
+
+for all
+
+   Vat     : address VatLike
+   Flapper : address Flapper
+   Flopper : address Flopper
+   MayFlap : uint256
+   MayFlop : uint256
+   Dai_v   : uint256
+   Sin_v   : uint256
+   Dai_f   : uint256
+   Debt    : uint256
+   Vice    : uint256
+
+storage
+
+   flopper |-> Flopper
+   flapper |-> Flapper
+   live |-> _ => 0
+   Sin  |-> _ => 0
+   Ash  |-> _ => 0
+
+storage Vat
+
+    dai[Flap]    |-> Dai_f => 0
+    dai[ACCT_ID] |-> Dai_v => 0
+    sin[ACCT_ID] |-> Sin_v => Sin_v - (Dai_v + Dai_f)
+    debt |-> Debt => Debt - (Dai_v + Dai_f)
+    vice |-> Vice => Vice - (Dai_v + Dai_f)
+
+storage Flapper
+
+    wards[ACCT_ID] |-> MayFlap
+    live |-> _ => 0
+
+storage Flopper
+
+    wards[ACCT_ID] |-> MayFlop
+    live |-> _ => 0
+
+iff
+
+    Dai_v + Dai_f < Sin_v
+    MayFlap == 1
+    MayFlop == 1
+    VCallValue == 0
+    VCallDepth < 1023
+
+iff in range uint256
+
+    Debt - (Dai_v + Dai_f)
+    Vice - (Dai_v + Dai_f)
+
+if
+
+    Flapper =/= ACCT_ID
+
+calls
+
+  Vow.subuu
+  Vow.adduu
+  Vow.minuu
+  Vat.dai
+  Vat.sin
+  Vat.heal
+  Flapper.cage
+  Flopper.cage
+```
+
+```act
+behaviour cage-balance of Vow
+interface cage()
+
+for all
+
+   Vat     : address VatLike
+   Flapper : address Flapper
+   Flopper : address Flopper
+   MayFlap : uint256
+   MayFlop : uint256
+   Dai_v   : uint256
+   Sin_v   : uint256
+   Dai_f   : uint256
+   Debt    : uint256
+   Vice    : uint256
+
+storage
+
+   flopper |-> Flopper
+   flapper |-> Flapper
+   live |-> _ => 0
+   Sin  |-> _ => 0
+   Ash  |-> _ => 0
+
+storage Vat
+
+    dai[Flap]    |-> Dai_f => 0
+    dai[ACCT_ID] |-> Dai_v => 0
+    sin[ACCT_ID] |-> Sin_v => 0
+    debt |-> Debt => Debt - (Dai_v + Dai_f)
+    vice |-> Vice => Vice - Sin_v
+
+storage Flapper
+
+    wards[ACCT_ID] |-> MayFlap
+    live |-> _ => 0
+
+storage Flopper
+
+    wards[ACCT_ID] |-> MayFlop
+    live |-> _ => 0
+
+iff
+
+    Dai_v + Dai_f == Sin_v
+    MayFlap == 1
+    MayFlop == 1
+    VCallValue == 0
+    VCallDepth < 1023
+
+iff in range uint256
+
+    Debt - (Dai_v + Dai_f)
+    Vice - Sin_v
+
+if
+
+    Flapper =/= ACCT_ID
+
+calls
+
+  Vow.subuu
+  Vow.adduu
+  Vow.minuu
+  Vat.dai
+  Vat.sin
+  Vat.heal
+  Flapper.cage
+  Flopper.cage
+```
 # Cat
 
 The `Cat` is the system's liquidation agent: it decides when a position is unsafe and allows it to be seized and sent off to auction.
