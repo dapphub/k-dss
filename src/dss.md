@@ -7102,7 +7102,7 @@ storage
   gap[ilk] |-> Gap
   Art[ilk] |-> Art
   tag[ilk] |-> Tag
-  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i), Tag) - Gap) * #Ray) * #Ray) / Debt
+  fix[ilk] |-> Fix => (((((((Art * Rate_i) / #Ray) * Tag) / #Ray) - Gap) * #Ray) * #Ray) / Debt
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
@@ -7115,10 +7115,10 @@ iff
 
 iff in range uint256
   Art * Rate_i
-  (Art * Rate_i / #Ray) * Tag
-  ((Art * Rate_i / #Ray) * Tag) / #Ray - Gap
-  (((Art * Rate_i / #Ray) * Tag) / #Ray - Gap) * #Ray
-  ((((Art * Rate_i / #Ray) * Tag) / #Ray - Gap) * #Ray) * #Ray
+  ((Art * Rate_i) / #Ray) * Tag
+  ((((Art * Rate_i) / #Ray) * Tag) / #Ray) - Gap
+  (((((Art * Rate_i) / #Ray) * Tag) / #Ray) - Gap) * #Ray
+  ((((((Art * Rate_i) / #Ray) * Tag) / #Ray) - Gap) * #Ray) * #Ray
 
 calls
   End.muluu
@@ -7191,8 +7191,8 @@ storage
   out[ilk][CALLER_ID] |-> Out => Out + wad
 
 storage Vat
-  gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - #rmul(wad, Fix)
-  gem[ilk][CALLER_Id] |-> Gem_c => Gem_c + #rmul(wad, Fix)
+  gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - ((wad * Fix) / #Ray)
+  gem[ilk][CALLER_Id] |-> Gem_c => Gem_c + ((wad * Fix) / #Ray)
 
 iff
   Fix =/= 0
@@ -7202,8 +7202,8 @@ iff
 
 iff in range uint256
   Out + wad
-  Gem_e - #rmul(wad, Fix)
-  Gem_c + #rmul(wad, Fix)
+  Gem_e - ((wad * Fix) / #Ray)
+  Gem_c + ((wad * Fix) / #Ray)
 
 if
   ACCT_ID =/= CALLER_ID
@@ -7355,7 +7355,7 @@ types
   Gem_d   : uint256
   Supply  : uint256
   Stopped : bool
- 
+
 storage
   balances[dst] |-> Gem_d  => Gem_d  + wad
   supply        |-> Supply => Supply + wad
