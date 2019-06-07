@@ -3370,6 +3370,7 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
+    vat |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
     live |-> _ => 0
@@ -3444,12 +3445,13 @@ for all
 
 storage
 
-   wards[CALLER_ID] |-> Can
-   flopper |-> Flopper
-   flapper |-> Flapper
-   live |-> _ => 0
-   Sin  |-> _ => 0
-   Ash  |-> _ => 0
+    wards[CALLER_ID] |-> Can
+    vat |-> Vat
+    flopper |-> Flopper
+    flapper |-> Flapper
+    live |-> _ => 0
+    Sin  |-> _ => 0
+    Ash  |-> _ => 0
 
 storage Vat
 
@@ -3519,6 +3521,7 @@ for all
 storage
 
    wards[CALLER_ID] |-> Can
+   vat |-> Vat
    flopper |-> Flopper
    flapper |-> Flapper
    live |-> _ => 0
