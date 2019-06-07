@@ -7229,6 +7229,7 @@ iff
 
 iff in range uint256
   Out + wad
+  wad * Fix
   Gem_e - ((wad * Fix) / #Ray)
   Gem_c + ((wad * Fix) / #Ray)
 
