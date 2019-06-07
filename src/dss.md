@@ -3408,6 +3408,10 @@ iff in range uint256
     #if (Dai_v + Dai_f) > Sin_v #then Debt - Sin_v #else Debt - (Dai_v + Dai_f) #fi
     #if (Dai_v + Dai_f) > Sin_v #then Vice - Sin_v #else Vice - (Dai_v + Dai_f) #fi
 
+if
+
+    Flapper =/= ACCT_ID
+
 calls
 
   Vow.subuu
