@@ -2,13 +2,6 @@ This is an example for rules that won't affect the proof hashes
 this should be "flushed" once in a while to the real lemmas.k file
 
 ```k
-rule chop((X *Int pow208) +Int A) => (X *Int pow208) +Int A
-  requires #rangeAddress(A)
-  andBool #rangeUint(48, X)
-
-rule chop(X *Int pow208) => X *Int pow208
-  requires #rangeUint(48, X)
-
 syntax Int ::= "maxUInt208" [function]
 rule maxUInt208 => 411376139330301510538742295639337626245683966408394965837152255 [macro]
 
@@ -35,36 +28,13 @@ rule Mask20_26 &Int (Y *Int pow48 +Int X) => X
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-rule chop(((maxUInt48 &Int X) *Int pow48)) => (maxUInt48 &Int X) *Int pow48
-  requires #rangeUInt(256, X)
-
-rule chop((((maxUInt48 &Int X) *Int pow48) |Int Y)) => ((maxUInt48 &Int X) *Int pow48) |Int Y
+rule X |Int Y *Int pow48 => Y *Int pow48 +Int X
   requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
+  andBool #rangeUInt(48, X)
 
-rule chop(((maxUInt48 &Int X) +Int (Y *Int pow48))) => (maxUInt48 &Int X) +Int (Y *Int pow48)
+rule (X *Int pow48) |Int Y => (X *Int pow48) +Int Y
   requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
-
-rule chop(((maxUInt48 &Int X) |Int (Y *Int pow48))) => (maxUInt48 &Int X) |Int (Y *Int pow48)
-  requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
-
-rule ((maxUInt48 &Int X) |Int (Y *Int pow48)) => (Y *Int pow48) +Int (maxUInt48 &Int X)
-  requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
-
-rule (((maxUInt48 &Int X) *Int pow48) |Int Y) => ((maxUInt48 &Int X) *Int pow48) +Int Y
-  requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
-
-rule chop((((maxUInt48 &Int X) *Int pow48) +Int Y)) => ((maxUInt48 &Int X) *Int pow48) +Int Y
-  requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
-
-rule chop(((Y *Int pow48) +Int (maxUInt48 &Int X))) => (Y *Int pow48) +Int (maxUInt48 &Int X)
-  requires #rangeUInt(48, Y)
-  andBool #rangeUInt(256, X)
+  andBool #rangeUInt(48, X)
 ```
 
 
