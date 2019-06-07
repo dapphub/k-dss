@@ -7389,6 +7389,7 @@ iff
 
 if
   Owner == CALLER_ID
+  ACCT_ID =/= CALLER_ID
 ```
 
 ```act
@@ -7420,4 +7421,5 @@ iff
 
 if
   Owner == CALLER_ID
+  ACCT_ID =/= CALLER_ID
 ```
