@@ -4664,6 +4664,7 @@ for all
     Bal_adapter : uint256
     Owner       : address
     Stopped     : bool
+    Allowed     : uint256
 
 storage
 
@@ -4681,9 +4682,11 @@ storage Gem
     balances[CALLER_ID] |-> Bal_usr     => Bal_usr     - wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
+    #rangeUInt(256, Allowed - wad) or Allowed == maxUInt256
     Stopped == 0
     // act: caller is `. ? : not` authorised
     May == 1
@@ -4870,7 +4873,7 @@ storage Dai
 
     balanceOf[CALLER_ID]          |-> Bal_caller => Bal_caller - wad
     totalSupply                   |-> Supply     => Supply - wad
-    allowance[ACCT_ID][CALLER_ID] |-> Allowed    => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed    => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
@@ -4881,11 +4884,11 @@ iff
 
 iff in range uint256
 
-    Supply - wad
     #Ray * wad
-    Bal_caller - wad
     Rad + #Ray * wad
     Dai_adapter - #Ray * wad
+    Supply - wad
+    Bal_caller - wad
 
 if
 
@@ -5419,7 +5422,7 @@ storage Gem
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Usr_was]   |-> Bal_usr => Bal_usr + Bid_was
     balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
-    allowance[ACCT_ID][CALLER_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - bid #fi
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - bid #fi
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
