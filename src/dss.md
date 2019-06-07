@@ -7384,9 +7384,11 @@ iff in range uint256
   Supply + wad
 
 iff
-  Owner   == CALLER_ID
   Stopped == 0
   VCallValue == 0
+
+if
+  Owner == CALLER_ID
 ```
 
 ```act
@@ -7413,6 +7415,9 @@ iff in range uint256
 iff
   #rangeUInt(256, Allowance - wad) or (src == CALLER_ID or Allowance == maxUInt256)
   VCallValue == 0
+  VCallDepth < 1024
   Stopped == 0
+
+if
   Owner == CALLER_ID
 ```
