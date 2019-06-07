@@ -7191,6 +7191,8 @@ storage Vat
   dai[Vow] |-> Joy
   debt     |-> FinalDebt
 
+storage Vow
+
 iff
   Live == 0
   Debt == 0
