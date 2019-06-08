@@ -186,3 +186,29 @@ storage
 iff
   VCallValue == 0
 ```
+
+```act
+behaviour dale of Flopper
+interface dale(uint256 id)
+
+for all
+  Live   : uint256
+  Bid    : uint256
+  Lot    : uint256
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+  Gal    : address
+
+storage
+  live         |-> Live
+  bids[id].bid |-> Bid => 0
+  bids[id].lot |-> Lot => 0
+  bids[id].usr_tic_end |-> Guy + pow160 * Tic + pow208 * End => 0
+  bids[id].gal |-> Gal => 0
+
+iff
+  VCallValue == 0
+  Live == 1
+  (Tic < TIME and Tic =/= 0) or (End < TIME)
+```
