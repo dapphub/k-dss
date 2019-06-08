@@ -6338,7 +6338,7 @@ for all
   End    : uint48
   Bid    : uint256
   Lot    : uint256
-  Gal    : uint256
+  Gal    : address
   Dai_a  : uint256
   Dai_g  : uint256
 
@@ -6347,8 +6347,8 @@ storage
   vat  |-> Vat
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> Lot => 0
-  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].gal |-> Gal => #DropAddr(Gal)
+  bids[id].usr_tic_end |-> Guy + pow160 * Tic + pow208 * End => 0
+  bids[id].gal |-> Gal => 0
 
 storage Vat
   dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
