@@ -212,3 +212,26 @@ iff
   Live == 1
   (Tic < TIME and Tic =/= 0) or (End < TIME)
 ```
+
+```act
+behaviour tank of Flopper
+interface tank(uint256 id)
+
+for all
+  Bid    : uint256
+  Lot    : uint256
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+  Gal    : address
+
+storage
+  bids[id].bid |-> Bid => 0
+  bids[id].lot |-> Lot => 0
+  bids[id].usr_tic_end |-> Guy + pow160 * Tic + pow208 * End => 0
+  bids[id].gal |-> Gal => 0
+
+iff
+  VCallValue == 0
+  Guy =/= 0
+```
