@@ -3387,11 +3387,13 @@ storage Vat
 
 storage Flapper
 
+    vat |-> Vat
     wards[ACCT_ID] |-> MayFlap
     live |-> _ => 0
 
 storage Flopper
 
+    vat |-> Vat
     wards[ACCT_ID] |-> MayFlop
     live |-> _ => 0
 
@@ -3463,11 +3465,13 @@ storage Vat
 
 storage Flapper
 
+    vat |-> Vat
     wards[ACCT_ID] |-> MayFlap
     live |-> _ => 0
 
 storage Flopper
 
+    vat |-> Vat
     wards[ACCT_ID] |-> MayFlop
     live |-> _ => 0
 
@@ -3538,11 +3542,13 @@ storage Vat
 
 storage Flapper
 
+    vat |-> Vat
     wards[ACCT_ID] |-> MayFlap
     live |-> _ => 0
 
 storage Flopper
 
+    vat |-> Vat
     wards[ACCT_ID] |-> MayFlop
     live |-> _ => 0
 
