@@ -3415,6 +3415,7 @@ iff in range uint256
 if
 
     Flapper =/= ACCT_ID
+    Flapper =/= Vat
 
 calls
 
@@ -3492,6 +3493,7 @@ iff in range uint256
 if
 
     Flapper =/= ACCT_ID
+    Flapper =/= Vat
 
 calls
 
@@ -3570,6 +3572,7 @@ iff in range uint256
 if
 
     Flapper =/= ACCT_ID
+    Flapper =/= Vat
 
 calls
 
