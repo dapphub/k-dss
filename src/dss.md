@@ -4416,7 +4416,7 @@ for all
     CanFlux  : uint256
     Gem_v    : uint256
     Gem_c    : uint256
-    Old_gal  : address
+    Old_gal  : uint256
 
 storage
 
@@ -4428,7 +4428,7 @@ storage
     bids[1 + Kicks].lot         |-> _ => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].urn         |-> _ => urn
-    bids[1 + Kicks].gal         |-> Old_gal => gal
+    bids[1 + Kicks].gal         |-> Old_gal => gal + (Old_gal & MaskLast20)
     bids[1 + Kicks].tab         |-> _ => tab
 
 storage Vat
@@ -5527,7 +5527,7 @@ storage
     bids[1 + Kicks].bid         |-> _ => bid
     bids[1 + Kicks].lot         |-> _ => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Old_gal => gal
+    bids[1 + Kicks].gal         |-> Old_gal => gal + (Old_gal & MaskLast20)
     live                        |-> Live
 
 storage Vat
@@ -6339,7 +6339,7 @@ storage
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].gal |-> Gal => 0
+  bids[id].gal |-> Gal => Gal &Int MaskLast20
 
 storage Vat
   dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
