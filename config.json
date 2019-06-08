@@ -13,54 +13,10 @@
     ]
   },
   "implementations": {
-    "Vat": {
-      "solc_output": "./dss/out/vat.sol.json"
-    },
-    "Dai": {
-      "solc_output": "./dss/out/dai.sol.json"
-    },
-    "Jug": {
-      "solc_output": "./dss/out/jug.sol.json"
-    },
-    "Vow": {
-      "solc_output": "./dss/out/vow.sol.json"
-    },
-    "Cat": {
-      "solc_output": "./dss/out/cat.sol.json"
-    },
-    "GemJoin": {
-      "solc_output": "./dss/out/join.sol.json"
-    },
-    "DaiJoin": {
-      "solc_output": "./dss/out/join.sol.json"
-    },
-    "VatLike": {
-      "name" : "Vat",
-      "solc_output": "./dss/out/vat.sol.json"
-    },
-    "VowLike": {
-      "name" : "Vow",
-      "solc_output": "./dss/out/vow.sol.json"
-    },
-    "Flipper": {
-      "name" : "Flipper",
-      "solc_output": "./dss/out/flip.sol.json"
-    },
     "Flopper": {
       "name" : "Flopper",
       "solc_output": "./dss/out/flop.sol.json"
     },
-    "Flapper": {
-      "name" : "Flapper",
-      "solc_output": "./dss/out/flap.sol.json"
-    },
-    "DSToken": {
-      "name" : "DSToken",
-      "solc_output": "./dss/out/test/vat.t.sol.json"
-    },
-    "End": {
-      "solc_output": "./dss/out/end.sol.json"
-    }
   },
   "split_fail":[
     ],
