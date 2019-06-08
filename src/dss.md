@@ -124,7 +124,7 @@ iff
   VCallValue == 0
 ```
 
-```
+```act
 behaviour kill7 of Flopper
 interface kill(uint256 id)
 
