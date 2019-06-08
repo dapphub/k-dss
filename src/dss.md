@@ -3425,6 +3425,8 @@ calls
   Vow.subuu
   Vow.adduu
   Vow.minuu
+  Vow.Joy
+  Vow.Awe
   Vat.dai
   Vat.sin
   Vat.heal
@@ -3506,6 +3508,8 @@ calls
   Vow.subuu
   Vow.adduu
   Vow.minuu
+  Vow.Joy
+  Vow.Awe
   Vat.dai
   Vat.sin
   Vat.heal
@@ -3588,6 +3592,8 @@ calls
   Vow.subuu
   Vow.adduu
   Vow.minuu
+  Vow.Joy
+  Vow.Awe
   Vat.dai
   Vat.sin
   Vat.heal
