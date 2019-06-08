@@ -5438,7 +5438,28 @@ if
 
 #### Auction parameters
 
-todo: file of flapper
+```act
+behaviour file of Flapper
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May : uint256
+    Beg : uint256
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    wards[CALLER_ID] |-> May
+    beg |-> Beg => (#if what == #string2Word("beg") #then data #else Beg #fi)
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau) => (#if what == #string2Word("ttl") #then #WordPackUInt48UInt48(data, Tau) #else (#if what == #string2Word("tau") #then #WordPackUInt48UInt48(Ttl, data) #else #WordPackUInt48UInt48(Ttl, Tau) #fi) #fi)
+
+iff
+
+    May == 1
+    VCallValue == 0
+```
 
 #### starting an auction
 
@@ -6102,7 +6123,28 @@ if
 
 #### Auction parameters
 
-todo: file of flopper
+```act
+behaviour file of Flopper
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May : uint256
+    Beg : uint256
+    Ttl : uint48
+    Tau : uint48
+
+storage
+
+    wards[CALLER_ID] |-> May
+    beg |-> Beg => (#if what == #string2Word("beg") #then data #else Beg #fi)
+    ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau) => (#if what == #string2Word("ttl") #then #WordPackUInt48UInt48(data, Tau) #else (#if what == #string2Word("tau") #then #WordPackUInt48UInt48(Ttl, data) #else #WordPackUInt48UInt48(Ttl, Tau) #fi) #fi)
+
+iff
+
+    May == 1
+    VCallValue == 0
+```
 
 #### starting an auction
 
