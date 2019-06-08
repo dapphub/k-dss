@@ -5469,6 +5469,10 @@ iff
 
     May == 1
     VCallValue == 0
+
+if
+
+    (what =/= #string2Word("ttl") and what =/= #string2Word("tau")) or #rangeUInt(48, data)
 ```
 
 #### starting an auction
@@ -6156,6 +6160,10 @@ iff
 
     May == 1
     VCallValue == 0
+
+if
+
+    (what =/= #string2Word("ttl") and what =/= #string2Word("tau")) or #rangeUInt(48, data)
 ```
 
 #### starting an auction
