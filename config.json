@@ -16,7 +16,7 @@
     "Flopper": {
       "name" : "Flopper",
       "solc_output": "./dss/out/flop.sol.json"
-    },
+    }
   },
   "split_fail":[
     ],
