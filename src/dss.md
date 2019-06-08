@@ -4700,6 +4700,7 @@ for all
   Gem_a : uint256
   Gem_u : uint256
   Old_gal : address
+  Old_urn : address
 
 storage
   wards[CALLER_ID]     |-> May
@@ -4709,7 +4710,7 @@ storage
   bids[id].lot         |-> Lot => 0
   bids[id].tab         |-> Tab => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].urn         |-> _ => 0
+  bids[id].urn         |-> Old_urn => 0
   bids[id].gal         |-> Old_gal => 0
 
 storage Vat
@@ -5747,6 +5748,7 @@ for all
   Bid     : uint256
   Gem_a   : uint256
   Gem_g   : uint256
+  Old_Lot : address
   Old_Gal : address
   Stopped : bool
   Owner   : address
@@ -5755,14 +5757,14 @@ storage
   live |-> Live
   gem  |-> Gem
   bids[id].bid         |-> Bid => 0
-  bids[id].lot         |-> _ => 0
+  bids[id].lot         |-> Old_Lot => 0
   bids[id].gal         |-> Old_Gal => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Gem
   balances[ACCT_ID] |-> Gem_a => Gem_a - Bid
   balances[Guy]     |-> Gem_g => Gem_g + Bid
-  owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+  owner_stopped     |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
   Live == 0
