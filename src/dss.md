@@ -123,3 +123,26 @@ storage
 iff
   VCallValue == 0
 ```
+
+```
+behaviour kill7 of Flopper
+interface kill(uint256 id)
+
+for all
+  Bid    : uint256
+  Lot    : uint256
+  Gal    : address
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+
+
+storage
+  bids[id].bid         |-> Bid => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].gal         |-> Gal => 0
+
+iff
+  VCallValue == 0
+```
