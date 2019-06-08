@@ -3416,6 +3416,8 @@ if
 
     Flapper =/= ACCT_ID
     Flapper =/= Vat
+    Flopper =/= ACCT_ID
+    Flopper =/= Vat
 
 calls
 
@@ -3494,6 +3496,8 @@ if
 
     Flapper =/= ACCT_ID
     Flapper =/= Vat
+    Flopper =/= ACCT_ID
+    Flopper =/= Vat
 
 calls
 
@@ -3573,6 +3577,8 @@ if
 
     Flapper =/= ACCT_ID
     Flapper =/= Vat
+    Flopper =/= ACCT_ID
+    Flopper =/= Vat
 
 calls
 
