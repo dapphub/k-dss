@@ -3379,7 +3379,7 @@ storage
 
 storage Vat
 
-    dai[Flap]    |-> Dai_f => 0
+    dai[Flapper]    |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => (Dai_v + Dai_f) - Sin_v
     sin[ACCT_ID] |-> Sin_v => 0
     debt |-> Debt => Debt - Sin_v
@@ -3455,7 +3455,7 @@ storage
 
 storage Vat
 
-    dai[Flap]    |-> Dai_f => 0
+    dai[Flapper]    |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => Sin_v - (Dai_v + Dai_f)
     debt |-> Debt => Debt - (Dai_v + Dai_f)
@@ -3530,7 +3530,7 @@ storage
 
 storage Vat
 
-    dai[Flap]    |-> Dai_f => 0
+    dai[Flapper]    |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => 0
     debt |-> Debt => Debt - (Dai_v + Dai_f)
