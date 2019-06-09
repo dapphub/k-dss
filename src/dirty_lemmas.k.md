@@ -39,10 +39,6 @@ rule (X *Int pow48) |Int Y => (X *Int pow48) +Int Y
 syntax Int ::= "#DropAddr" "(" Int ")" [function]
 rule #DropAddr(W) => MaskLast20 &Int W
   requires #rangeUInt(256, W)
-
-
-syntax Int ::= "pow96" [function]
-rule pow96 => 79228162514264337593543950336 [macro]
 ```
 
 

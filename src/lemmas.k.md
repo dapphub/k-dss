@@ -42,8 +42,10 @@ We will have to use some of these tricks when reasoning about solidity implement
 
 ```k
 syntax Int ::= "pow48"  [function]
+syntax Int ::= "pow96"  [function]
 syntax Int ::= "pow208" [function]
 rule pow48  => 281474976710656                                                 [macro]
+rule pow96  => 79228162514264337593543950336                                   [macro]
 rule pow208 => 411376139330301510538742295639337626245683966408394965837152256 [macro]
 
 syntax Int ::= "#WordPackUInt48UInt48" "(" Int "," Int ")" [function]
