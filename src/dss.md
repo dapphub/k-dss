@@ -214,7 +214,7 @@ iff
 ```
 
 ```act
-behaviour tank of Flopper
+behaviour tank1 of Flopper
 interface tank(uint256 id)
 
 for all
@@ -231,6 +231,32 @@ storage
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> Lot => 0
   bids[id].usr_tic_end |-> Guy + pow160 * Tic + pow208 * End => 0
+  bids[id].gal |-> Gal => 0
+
+iff
+  VCallValue == 0
+  Live == 0
+  Guy =/= 0
+```
+
+```act
+behaviour tank2 of Flopper
+interface tank(uint256 id)
+
+for all
+  Live   : uint256
+  Bid    : uint256
+  Lot    : uint256
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+  Gal    : address
+
+storage
+  live         |-> Live
+  bids[id].bid |-> Bid => 0
+  bids[id].lot |-> Lot => 0
+  bids[id].usr_tic_end |-> pow208 * End + pow160 * Tic + Guy => 0
   bids[id].gal |-> Gal => 0
 
 iff
