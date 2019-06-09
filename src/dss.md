@@ -187,6 +187,66 @@ iff
   VCallValue == 0
 ```
 
+This works, but we don't use `End`, `Tic` or `Guy` anywhere.
+
+Try a simple getter that consumes the values:
+
+```act
+behaviour look of Flopper
+interface look(uint256 id)
+
+for all
+  Live   : uint256
+  Bid    : uint256
+  Lot    : uint256
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+  Gal    : address
+
+storage
+  live         |-> Live
+  bids[id].bid |-> Bid
+  bids[id].lot |-> Lot
+  bids[id].usr_tic_end |-> End * pow208 + Tic * pow160 + Guy
+  bids[id].gal |-> Gal
+
+iff
+  VCallValue == 0
+  Live == 1
+  Tic > 0
+  End < TIME
+  Guy =/= 0
+```
+
+And then try to adjust the values..
+
+```act
+behaviour tank of Flopper
+interface tank(uint256 id)
+
+for all
+  Live   : uint256
+  Bid    : uint256
+  Lot    : uint256
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+  Gal    : address
+
+storage
+  live         |-> Live
+  bids[id].bid |-> Bid => 0
+  bids[id].lot |-> Lot => 0
+  bids[id].usr_tic_end |-> End * pow208 + Tic * pow160 + Guy => 0
+  bids[id].gal |-> Gal => 0
+
+iff
+  VCallValue == 0
+  Live == 0
+  Guy =/= 0
+```
+
 ```act
 behaviour dale of Flopper
 interface dale(uint256 id)
@@ -211,122 +271,4 @@ iff
   VCallValue == 0
   Live == 1
   (Tic < TIME and Tic =/= 0) or (End < TIME)
-```
-
-```act
-behaviour tank1 of Flopper
-interface tank(uint256 id)
-
-for all
-  Live   : uint256
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Gal    : address
-
-storage
-  live         |-> Live
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].usr_tic_end |-> End * pow208 + Tic * pow160 + Guy => 0
-  bids[id].gal |-> Gal => 0
-
-iff
-  VCallValue == 0
-  Live == 0
-  Guy =/= 0
-```
-
-```act
-behaviour tank2 of Flopper
-interface tank(uint256 id)
-
-for all
-  Live   : uint256
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Gal    : address
-
-storage
-  live         |-> Live
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].usr_tic_end |-> End * pow208 + Tic * pow160 + Guy => 0
-  bids[id].gal |-> Gal => 0
-
-iff
-  VCallValue == 0
-  Live == 0
-  Guy =/= 0
-
-if
-  #rangeUInt(48, Tic)
-  #rangeUInt(48, End)
-  #rangeAddress(Guy)
-```
-
-```act
-behaviour look1 of Flopper
-interface look(uint256 id)
-
-for all
-  Live   : uint256
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Gal    : address
-
-storage
-  live         |-> Live
-  bids[id].bid |-> Bid
-  bids[id].lot |-> Lot
-  bids[id].usr_tic_end |-> End * pow208 + Tic * pow160 + Guy
-  bids[id].gal |-> Gal
-
-iff
-  VCallValue == 0
-  Live == 1
-  Tic > 0
-  End < TIME
-  Guy =/= 0
-```
-
-```act
-behaviour look2 of Flopper
-interface look(uint256 id)
-
-for all
-  Live   : uint256
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Gal    : address
-
-storage
-  live         |-> Live
-  bids[id].bid |-> Bid
-  bids[id].lot |-> Lot
-  bids[id].usr_tic_end |-> End * pow208 + Tic * pow160 + Guy
-  bids[id].gal |-> Gal
-
-iff
-  VCallValue == 0
-  Live == 1
-  Tic > 0
-  End < TIME
-  Guy =/= 0
-
-if
-  #rangeUInt(48, Tic)
-  #rangeUInt(48, End)
-  #rangeAddress(Guy)
 ```
