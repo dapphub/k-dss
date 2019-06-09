@@ -235,3 +235,31 @@ iff
   VCallValue == 0
   Guy =/= 0
 ```
+
+```act
+behaviour look of Flopper
+interface look(uint256 id)
+
+for all
+  Live   : uint256
+  Bid    : uint256
+  Lot    : uint256
+  Guy    : address
+  Tic    : uint48
+  End    : uint48
+  Gal    : address
+
+storage
+  live         |-> Live
+  bids[id].bid |-> Bid
+  bids[id].lot |-> Lot
+  bids[id].usr_tic_end |-> Guy + pow160 * Tic + pow208 * End
+  bids[id].gal |-> Gal
+
+iff
+  VCallValue == 0
+  Live == 1
+  Tic > 0
+  End < TIME
+  Guy =/= 0
+```
