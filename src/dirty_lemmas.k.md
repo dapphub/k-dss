@@ -36,15 +36,22 @@ rule (X *Int pow48) |Int Y => (X *Int pow48) +Int Y
   requires #rangeUInt(48, Y)
   andBool #rangeUInt(48, X)
 
-syntax Int ::= "#DropAddr" "(" Int ")" [function]
-rule #DropAddr(W) => MaskLast20 &Int W
-  requires #rangeUInt(256, W)
-
 rule maxUInt160 &Int ((X *Int pow208) +Int (Y *Int pow160)) => 0
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
+rule maxUInt160 &Int (((X *Int pow208) +Int A) => A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
+rule maxUInt160 &Int (((X *Int pow160) +Int A) => A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
 rule maxUInt160 &Int (X *Int pow208) => 0
+  requires #rangeUInt(48, X)
+
+rule maxUInt160 &Int (X *Int pow160) => 0
   requires #rangeUInt(48, X)
 ```
 

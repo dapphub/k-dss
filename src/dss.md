@@ -4434,6 +4434,9 @@ for all
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
+    Bid      : uint256
+    Lot      : uint256
+    Tab      : uint256
     Old_usr  : address
     Old_tic  : uint48
     Old_end  : uint48
@@ -4449,12 +4452,12 @@ storage
     ilk                         |-> Ilk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].bid         |-> _ => bid
-    bids[1 + Kicks].lot         |-> _ => lot
+    bids[1 + Kicks].bid         |-> Bid => bid
+    bids[1 + Kicks].lot         |-> Lot => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].urn         |-> Old_urn => urn
     bids[1 + Kicks].gal         |-> Old_gal => gal
-    bids[1 + Kicks].tab         |-> _ => tab
+    bids[1 + Kicks].tab         |-> Tab => tab
 
 storage Vat
 
@@ -4667,10 +4670,12 @@ interface deal(uint256 id)
 for all
   Vat : address VatLike
   Ilk : bytes32
+  Bid : uint256
   Lot : uint256
   Guy : address
   Tic : uint48
   End : uint48
+  Tab : uint256
   Gem_a : uint256
   Gem_u : uint256
   Old_gal : address
@@ -4679,16 +4684,16 @@ for all
 storage
   vat                  |-> Vat
   ilk                  |-> Ilk
-  bids[id].bid         |-> _   => 0
+  bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].urn         |-> Old_urn => 0
   bids[id].gal         |-> Old_gal => 0
-  bids[id].tab         |-> _ => 0
+  bids[id].tab         |-> Tab => 0
 
 storage Vat
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - Lot
-  gem[Ilk][Usr]     |-> Gem_u => Gem_u + Lot
+  gem[Ilk][Guy]     |-> Gem_u => Gem_u + Lot
 
 iff
   Tic =/= 0
@@ -5541,6 +5546,8 @@ for all
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
+    Bid      : uint256
+    Lot      : uint256
     Old_usr  : address
     Old_tic  : uint48
     Old_end  : uint48
@@ -5555,8 +5562,8 @@ storage
     vat                         |-> Vat
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].bid         |-> _ => bid
-    bids[1 + Kicks].lot         |-> _ => lot
+    bids[1 + Kicks].bid         |-> Bid => bid
+    bids[1 + Kicks].lot         |-> Lot => lot
     bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
     bids[1 + Kicks].gal         |-> Old_gal => gal
     live                        |-> Live
@@ -5696,18 +5703,19 @@ interface deal(uint256 id)
 for all
   Vat   : address VatLike
   Live  : uint256
+  Bid   : uint256
   Lot   : uint256
   Guy   : address
   Tic   : uint48
   End   : uint48
+  Gal   : address
   Dai_a : uint256
   Dai_g : uint256
-  Gal   : address
 
 storage
   vat                  |-> Vat
   live                 |-> Live
-  bids[id].bid         |-> _   => 0
+  bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].gal         |-> Gal => 0
@@ -5723,7 +5731,7 @@ iff
   VCallDepth < 1024
 
 if
-  Guy =/= ACCT_ID
+  ACCT_ID =/= Guy
 
 iff in range uint256
   Dai_a - Lot
@@ -6309,10 +6317,12 @@ interface deal(uint256 id)
 
 for all
   Live    : uint256
+  Bid     : uint256
+  Lot     : uint256
+  Guy     : address
   Tic     : uint48
   End     : uint48
-  Guy     : address
-  Lot     : uint256
+  Gal     : address
   Gem     : address DSToken
   Gem_g   : uint256
   Stopped : bool
@@ -6320,15 +6330,15 @@ for all
   Owner   : address
 
 storage
-  bids[id].bid         |-> _   => 0
+  bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].gal         |-> _   => 0
+  bids[id].gal         |-> Gal => 0
 
 storage Gem
   balances[Guy] |-> Gem_g  => Gem_g  + Lot
   supply        |-> Supply => Supply + Lot
-  owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
   Live == 1
