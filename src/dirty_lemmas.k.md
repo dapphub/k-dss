@@ -40,11 +40,11 @@ rule maxUInt160 &Int ((X *Int pow208) +Int (Y *Int pow160)) => 0
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-rule maxUInt160 &Int (((X *Int pow208) +Int A) => A
+rule maxUInt160 &Int ((X *Int pow208) +Int A) => A
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
 
-rule maxUInt160 &Int (((X *Int pow160) +Int A) => A
+rule maxUInt160 &Int ((X *Int pow160) +Int A) => A
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
 
