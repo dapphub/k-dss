@@ -6209,8 +6209,10 @@ for all
   Old_tic  : uint48
   Old_end  : uint48
   Old_gal  : address
+  Ward     : uint256
 
 storage
+  wards[CALLER_ID]            |-> Ward
   live                        |-> Live
   kicks                       |-> Kicks => 1 + Kicks
   ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -6220,6 +6222,7 @@ storage
   bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
 
 iff
+  Ward == 1
   Live == 1
   VCallValue == 0
   VCallDepth < 1024
