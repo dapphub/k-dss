@@ -5810,6 +5810,9 @@ iff in range uint256
 
 calls
   DSToken.transferFrom
+
+if
+  ACCT_ID =/= Guy
 ```
 
 # Flopper
