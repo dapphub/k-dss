@@ -218,6 +218,7 @@ behaviour tank of Flopper
 interface tank(uint256 id)
 
 for all
+  Live   : uint256
   Bid    : uint256
   Lot    : uint256
   Guy    : address
@@ -226,6 +227,7 @@ for all
   Gal    : address
 
 storage
+  live         |-> Live
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> Lot => 0
   bids[id].usr_tic_end |-> Guy + pow160 * Tic + pow208 * End => 0
@@ -233,6 +235,7 @@ storage
 
 iff
   VCallValue == 0
+  Live == 0
   Guy =/= 0
 ```
 
