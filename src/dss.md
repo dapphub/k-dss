@@ -1,51 +1,10 @@
-### These work
+### Not working
 
-Unfortunately they don't allow for reading the initial usr_tic_end slot
-values separately.
-
-```act
-behaviour kill2 of Flopper
-interface kill(uint256 id)
-
-for all
-  Bid    : uint256
-  Lot    : uint256
-  Gal    : address
-  UTE    : uint256
-
-storage
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].usr_tic_end |-> UTE => 0
-  bids[id].gal |-> Gal => 0
-
-iff
-  VCallValue == 0
-```
-
+This one doesn't work because we overwrite the whole slot that Gal is
+in. This is wrong, we should leave the higher bytes untouched.
 
 ```act
-behaviour kill5 of Flopper
-interface kill(uint256 id)
-
-for all
-  Bid    : uint256
-  Lot    : uint256
-  Gal    : address
-  UTE    : uint256
-
-storage
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].usr_tic_end |-> UTE => 0
-  bids[id].gal |-> Gal => #DropAddr(Gal)
-
-iff
-  VCallValue == 0
-```
-
-```act
-behaviour kill6 of Flopper
+behaviour kill4 of Flopper
 interface kill(uint256 id)
 
 for all
@@ -58,16 +17,18 @@ storage
   bids[id].bid |-> Bid => 0
   bids[id].lot |-> Lot => 0
   bids[id].usr_tic_end |-> UTE => 0
-  bids[id].gal |-> Gal => #DropAddr(Gal)
+  bids[id].gal |-> Gal => 0
 
 iff
   VCallValue == 0
 ```
 
-### These don't work
+### These work
 
-This one doesn't work because we overwrite the whole slot that Gal is
-in. This is wrong, we should leave the higher bytes untouched.
+Unfortunately they don't allow for reading the initial usr_tic_end slot
+values separately.
+
+We can type `Gal : address`:
 
 ```act
 behaviour kill1 of Flopper
@@ -76,7 +37,7 @@ interface kill(uint256 id)
 for all
   Bid    : uint256
   Lot    : uint256
-  Gal    : uint256
+  Gal    : address
   UTE    : uint256
 
 storage
@@ -89,7 +50,45 @@ iff
   VCallValue == 0
 ```
 
-These don't work because WorkPackAddrUint48UInt48 is broken somehow.
+Or, we can introduce a lemma to only change the relevant bits:
+
+```
+syntax Int ::= "#DropAddr" "(" Int ")" [function]
+rule #DropAddr(W) => MaskLast20 &Int W
+  requires #rangeUInt(256, W)
+```
+
+```act
+behaviour kill2 of Flopper
+interface kill(uint256 id)
+
+for all
+  Bid    : uint256
+  Lot    : uint256
+  Gal    : uint256
+  UTE    : uint256
+
+storage
+  bids[id].bid |-> Bid => 0
+  bids[id].lot |-> Lot => 0
+  bids[id].usr_tic_end |-> UTE => 0
+  bids[id].gal |-> Gal => #DropAddr(Gal)
+
+iff
+  VCallValue == 0
+```
+
+With another lemma, we can make `WordPackAddrUInt48UInt48` apply fully
+and match on the values of the `usr_tic_end` element:
+
+```
+rule maxUInt160 &Int ((X *Int pow208) +Int (Y *Int pow160)) => 0
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule maxUInt160 &Int (X *Int pow208) => 0
+  requires #rangeUInt(48, X)
+```
 
 ```act
 behaviour kill3 of Flopper
@@ -108,28 +107,6 @@ storage
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].gal         |-> Gal => 0
-
-iff
-  VCallValue == 0
-```
-
-```act
-behaviour kill4 of Flopper
-interface kill(uint256 id)
-
-for all
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Gal    : address
-
-storage
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(0, 0, 0)
-  bids[id].gal |-> Gal => 0
 
 iff
   VCallValue == 0
