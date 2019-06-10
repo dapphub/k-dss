@@ -58,6 +58,12 @@ rule #WordPackAddrUInt48UInt48(A, X, Y) => Y *Int pow208 +Int X *Int pow160 +Int
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
+
+syntax Int ::= "#WordPackAddrUInt8" "(" Int "," Int ")" [function]
+// ----------------------------------------------------------
+rule #WordPackAddrUInt8(X, Y) => Y *Int pow160 +Int X
+  requires #rangeAddress(X)
+  andBool #rangeUInt(8, Y)
 ```
 
 
@@ -77,18 +83,19 @@ rule #string2Word(S) => #asWord(#padRightToWidth(32, #parseByteStackRaw(S)))
 ```k
 syntax Int ::= "#Wad" [function]
 // -----------------------------
-rule #Wad => 1000000000000000000
+rule #Wad => 1000000000000000000           [macro]
 
 syntax Int ::= "#Ray" [function]
 // -----------------------------
-rule #Ray => 1000000000000000000000000000
+rule #Ray => 1000000000000000000000000000  [macro]
+
+syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
+rule #rmul(X, Y) => (X *Int Y) /Int #Ray
 ```
 
 We leave these symbolic for now:
 
 ```k
-syntax Int ::= "#rmul" "(" Int "," Int ")" [function]
-
 syntax Int ::= "#rpow" "(" Int "," Int "," Int "," Int ")"  [function, smtlib(smt_rpow), smt-prelude]
 
 syntax Int ::= "#ifInt" Bool "#then" Int "#else" Int "#fi" [function, smtlib(ite), hook(KEQUAL.ite)]
@@ -182,20 +189,54 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
 **TODO**: refactor and tidy these.
 
 ```k
-syntax Int ::= "MaskLast20" [function]
-syntax Int ::= "MaskFirst6" [function]
-syntax Int ::= "MaskFirst12" [function]
-syntax Int ::= "MaskFirst26" [function]
+syntax Int ::= "Mask12_32" [function]
+syntax Int ::= "Mask0_6" [function]
+syntax Int ::= "Mask0_12" [function]
+syntax Int ::= "Mask0_26" [function]
+syntax Int ::= "Mask26_32" [function]
+syntax Int ::= "Mask20_26" [function]
 // -----------------------------------
-// 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
-rule MaskLast20 => 115792089237316195423570985007226406215939081747436879206741300988257197096960 [macro]
 // 0x000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff
-rule MaskFirst6 => 411376139330301510538742295639337626245683966408394965837152255                [macro]
-rule MaskFirst12 => 1461501637330902918203684832716283019655932542975  [macro]
+rule Mask0_6 => 411376139330301510538742295639337626245683966408394965837152255                  [macro]
+// 0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff
+rule Mask0_12 => 1461501637330902918203684832716283019655932542975                               [macro]
+// 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
+rule Mask12_32 => 115792089237316195423570985007226406215939081747436879206741300988257197096960 [macro]
 // 0x0000000000000000000000000000000000000000000000000000ffffffffffff
-rule MaskFirst26 => 281474976710655                                                               [macro]
+rule Mask0_26 => 281474976710655                                                                 [macro]
+// 0xffffffffffffffffffffffffffffffffffffffff000000000000ffffffffffff
+rule Mask20_26 => 115792089237316195423570985008687907853269984665561335876943319951794562400255 [macro]
+// 0xffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000
+rule Mask26_32 => 115792089237316195423570985008687907853269984665640564039457583726438152929280 [macro]
 
-rule MaskLast20 &Int A => 0
+syntax Int ::= "maxUInt208" [function]
+rule maxUInt208 => 411376139330301510538742295639337626245683966408394965837152255 [macro]
+
+rule maxUInt208 &Int ((X *Int pow208) +Int A ) => A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
+rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
+  requires #rangeUInt(48, X)
+  andBool #rangeAddress(A)
+
+rule Mask26_32 &Int (Y *Int pow48 +Int X) => Y *Int pow48
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule Mask20_26 &Int (Y *Int pow48 +Int X) => X
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule X |Int Y *Int pow48 => Y *Int pow48 +Int X
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(48, X)
+
+rule (X *Int pow48) |Int Y => (X *Int pow48) +Int Y
+  requires #rangeUInt(48, Y)
+  andBool #rangeUInt(48, X)
+
+rule Mask12_32 &Int A => 0
   requires #rangeAddress(A)
 
 rule X |Int 0 => X
@@ -209,7 +250,7 @@ rule chop(A |Int B) => A |Int B
   andBool #rangeUInt(256, B)
 
 // Masking for packed words
-rule MaskLast20 &Int (Y *Int pow208 +Int X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160
+rule Mask12_32 &Int (Y *Int pow208 +Int X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -228,7 +269,7 @@ rule (Y *Int pow48 +Int X) /Int pow48 => Y
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-rule MaskFirst6 &Int (X *Int pow208 +Int Y *Int pow160 +Int A) => Y *Int pow160 +Int A
+rule Mask0_6 &Int (X *Int pow208 +Int Y *Int pow160 +Int A) => Y *Int pow160 +Int A
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
@@ -242,6 +283,24 @@ rule maxUInt160 &Int (((X *Int pow208) +Int (Y *Int pow160)) +Int A) => A
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
+
+rule maxUInt160 &Int ((X *Int pow208) +Int (Y *Int pow160)) => 0
+  requires #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule maxUInt160 &Int ((X *Int pow208) +Int A) => A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
+rule maxUInt160 &Int ((X *Int pow160) +Int A) => A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
+rule maxUInt160 &Int (X *Int pow208) => 0
+  requires #rangeUInt(48, X)
+
+rule maxUInt160 &Int (X *Int pow160) => 0
+  requires #rangeUInt(48, X)
 
 rule ((((X *Int pow208) +Int (Y *Int pow160)) +Int A) /Int pow160) => (X *Int pow48) +Int Y
   requires #rangeAddress(A)
@@ -284,7 +343,7 @@ rule #take(N, #padToWidth(N, WS) ) => #padToWidth(N, WS)
 ### 48-bit integer arithmetic
 
 ```k
-rule notBool((MaskFirst26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
+rule notBool((Mask0_26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
   requires #rangeUInt(48, A)
   andBool #rangeUInt(48, B)
 ```
