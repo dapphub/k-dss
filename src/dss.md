@@ -3296,14 +3296,14 @@ storage
 
 storage Flap
 
-    #Flapper.vat                         |-> Vat
-    #Flapper.ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    #Flapper.kicks                       |-> Kicks   => 1 + Kicks
-    #Flapper.bids[1 + Kicks].bid         |-> _ => 0
-    #Flapper.bids[1 + Kicks].lot         |-> _ => Bump
-    #Flapper.bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    #Flapper.bids[1 + Kicks].gal         |-> Old_gal => 0
-    #Flapper.live                        |-> FlapLive
+    vat                         |-> Vat
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
+    bids[1 + Kicks].bid         |-> _ => 0
+    bids[1 + Kicks].lot         |-> _ => Bump
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
+    bids[1 + Kicks].gal         |-> Old_gal => 0
+    live                        |-> FlapLive
 
 storage Vat
 
@@ -4454,7 +4454,7 @@ storage
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => bid
     bids[1 + Kicks].lot         |-> Lot => lot
-    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, Old_tic, TIME + Tau)
     bids[1 + Kicks].urn         |-> Old_urn => urn
     bids[1 + Kicks].gal         |-> Old_gal => gal
     bids[1 + Kicks].tab         |-> Tab => tab
@@ -4567,7 +4567,7 @@ iff
   lot == Lot
   bid <= Tab
   bid >  Bid
-  (bid * #Ray >= beg * Bid) or (bid == Tab)
+  (bid * #Ray >= Beg * Bid) or (bid == Tab)
 
   VCallValue == 0
   VCallDepth < 1024
@@ -4626,8 +4626,8 @@ storage
 storage Vat
   dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
   dai[Usr]          |-> Dai_u => Dai_u + bid
-  gem[ilk][ACCT_ID] |-> Gem_a => Gem_a + lot - Lot
-  gem[ilk][Urn]     |-> Gem_v => Gem_v + Lot - lot
+  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - Lot)
+  gem[Ilk][Urn]     |-> Gem_v => Gem_v + (Lot - lot)
 
 iff
   Usr =/= 0
@@ -4649,8 +4649,8 @@ if
 iff in range uint256
   Dai_c - bid
   Dai_u + bid
-  Gem_a + lot - Lot
-  Gem_v + Lot - lot
+  Gem_a - (Lot - Lot)
+  Gem_v + (Lot - lot)
   Lot * #Ray
   lot * Beg
 
@@ -5564,7 +5564,7 @@ storage
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => bid
     bids[1 + Kicks].lot         |-> Lot => lot
-    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, 0, TIME + Tau)
+    bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, Old_tic, TIME + Tau)
     bids[1 + Kicks].gal         |-> Old_gal => gal
     live                        |-> Live
 
@@ -5608,6 +5608,96 @@ calls
 
 
 ```act
+behaviour tend-max-approve of Flapper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+
+    Ttl      : uint48
+    Tau      : uint48
+    Usr_was  : address
+    Gal      : address
+    Tic_was  : uint48
+    End      : uint48
+    Gem      : address DSToken
+    Can      : uint256
+    Beg      : uint256
+    Bid_was  : uint256
+    Dai_v    : uint256
+    Dai_c    : uint256
+    Live     : uint256
+    Bal_usr  : uint256
+    Bal_gal  : uint256
+    Bal_caller : uint256
+    Owner      : address
+    Stopped    : bool
+    Allowed    : uint256
+
+storage
+
+    gem                  |-> Gem
+    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    bids[id].bid         |-> Bid_was => bid
+    bids[id].lot         |-> Lot
+    bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Usr_was, Tic_was, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+    bids[id].gal         |-> Gal
+    live                 |-> Live
+    beg                  |-> Beg
+
+storage Gem
+
+    balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
+    balances[Usr_was]   |-> Bal_usr => Bal_usr + Bid_was
+    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed
+    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff
+
+    Stopped == 0
+    Live    == 1
+    Usr_was =/= 0
+    Tic_was == 0 or Tic_was > TIME
+    End > TIME
+    Lot == lot
+    Bid_was < bid
+    Bid_was * Beg <= bid * #Ray
+    bid <= Allowed
+    Allowed == maxUInt256
+    Stopped == 0
+    VCallDepth < 1024
+    VCallValue == 0
+
+iff in range uint256
+
+    bid * #Ray
+    Dai_v - lot
+    Dai_c + lot
+    bid - Bid_was
+    Bal_caller  - Bid_was
+    Bal_usr + Bid_was
+    Bal_gal + bid - Bid_was
+    Bal_caller  - bid
+
+iff in range uint48
+
+    TIME + Ttl
+
+if
+    ACCT_ID =/= CALLER_ID
+    CALLER_ID =/= Usr_was
+    CALLER_ID =/= Gal
+    Gal =/= Usr_was
+    #rangeUInt(48, TIME)
+
+calls
+    DSToken.transferFrom
+    DSToken.transferFrom-max-approve
+    Flapper.muluu
+    Flapper.addu48u48
+```
+
+```act
 behaviour tend of Flapper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
@@ -5649,7 +5739,7 @@ storage Gem
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Usr_was]   |-> Bal_usr => Bal_usr + Bid_was
     balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - bid #fi
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed - bid
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
@@ -5662,7 +5752,7 @@ iff
     Lot == lot
     Bid_was < bid
     Bid_was * Beg <= bid * #Ray
-    bid <= Allowed
+    Allowed <= maxUInt256
     Stopped == 0
     VCallDepth < 1024
     VCallValue == 0
@@ -5677,6 +5767,7 @@ iff in range uint256
     Bal_usr + Bid_was
     Bal_gal + bid - Bid_was
     Bal_caller  - bid
+    Allowed - bid
 
 iff in range uint48
 
@@ -5805,7 +5896,7 @@ storage
 storage Gem
   balances[ACCT_ID] |-> Gem_a => Gem_a - Bid
   balances[Guy]     |-> Gem_g => Gem_g + Bid
-  owner_stopped     |-> #WordPackAddrUInt8(Owner, Stopped)
+  owner_stopped     |-> Stopped * pow160 + Owner
 
 iff
   Live == 0
@@ -5819,8 +5910,7 @@ iff in range uint256
   Gem_g + Bid
 
 calls
-  DSToken.transferFrom-max-approve
-  DSToken.transferFrom
+  DSToken.transferFrom-self
 
 if
   ACCT_ID =/= Guy
@@ -6227,7 +6317,7 @@ storage
   bids[1 + Kicks].bid         |-> Old_bit => bid
   bids[1 + Kicks].lot         |-> Old_lot => lot
   bids[1 + Kicks].gal         |-> Old_gal => gal
-  bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, 0, TIME + Tau)
+  bids[1 + Kicks].usr_tic_end |-> #WordPackAddrUInt48UInt48(Old_usr, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, Old_tic, TIME + Tau)
 
 iff
   Ward == 1
@@ -6289,7 +6379,7 @@ iff
   End > TIME
   bid == Bid
   lot <  Lot
-  Beg * lot / #Ray <= Lot
+  (Beg * lot) / #Ray <= Lot
   CanMove == 1
   VCallValue == 0
   VCallDepth < 1024
@@ -6297,6 +6387,7 @@ iff
 iff in range uint256
   Dai_a - bid
   Dai_a + bid
+  Beg * lot
 
 iff in range uint48
   TIME + Ttl
@@ -7604,38 +7695,6 @@ returns 1
 ```
 
 ```act
-behaviour transferFrom-max-approve of DSToken
-interface transferFrom(address src, address dst, uint wad)
-
-for all
-  Gem_s     : uint256
-  Gem_d     : uint256
-  Allowance : uint256
-  Owner     : address
-  Stopped   : bool
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src] |-> Gem_s => Gem_s - wad
-  balances[dst] |-> Gem_d => Gem_d + wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s - wad
-  Gem_d + wad
-
-iff
-  VCallValue == 0
-  Stopped == 0
-
-if
-  src =/= dst
-  src == CALLER_ID or Allowance == maxUInt256
-
-returns 1
-```
-
-```act
 behaviour transferFrom of DSToken
 interface transferFrom(address src, address dst, uint wad)
 
@@ -7665,6 +7724,70 @@ if
   src =/= dst
   src =/= CALLER_ID
   Allowance =/= maxUInt256
+
+returns 1
+```
+
+```act
+behaviour transferFrom-max-approve of DSToken
+interface transferFrom(address src, address dst, uint wad)
+
+for all
+  Gem_s     : uint256
+  Gem_d     : uint256
+  Allowance : uint256
+  Owner     : address
+  Stopped   : bool
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
+  balances[src] |-> Gem_s => Gem_s - wad
+  balances[dst] |-> Gem_d => Gem_d + wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s - wad
+  Gem_d + wad
+
+iff
+  VCallValue == 0
+  Stopped == 0
+
+if
+  src =/= dst
+  Allowance == maxUInt256
+
+returns 1
+```
+
+```act
+behaviour transferFrom-self of DSToken
+interface transferFrom(address src, address dst, uint wad)
+
+for all
+  Gem_s     : uint256
+  Gem_d     : uint256
+  Allowance : uint256
+  Owner     : address
+  Stopped   : bool
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
+  balances[src] |-> Gem_s => Gem_s - wad
+  balances[dst] |-> Gem_d => Gem_d + wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s - wad
+  Gem_d + wad
+
+iff
+  VCallValue == 0
+  Stopped == 0
+
+if
+  src =/= dst
+  src == CALLER_ID
 
 returns 1
 ```
@@ -7710,6 +7833,72 @@ types
 
 storage
   allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
+  balances[src]             |-> Gem_s  => Gem_s  - wad
+  supply                    |-> Supply => Supply - wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s  - wad
+  Supply - wad
+
+iff
+  wad <= Allowance or src == CALLER_ID
+  VCallValue == 0
+  VCallDepth < 1024
+  Stopped == 0
+
+if
+  Owner == CALLER_ID
+  ACCT_ID =/= CALLER_ID
+  Allowance =/= maxUInt256
+```
+
+```act
+behaviour burn-max-approve of DSToken
+interface burn(address src, uint wad)
+
+types
+  Gem_s     : uint256
+  Supply    : uint256
+  Allowance : uint256
+  Stopped   : bool
+  Owner     : address
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
+  balances[src]             |-> Gem_s  => Gem_s  - wad
+  supply                    |-> Supply => Supply - wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s  - wad
+  Supply - wad
+
+iff
+  wad <= Allowance or src == CALLER_ID
+  VCallValue == 0
+  VCallDepth < 1024
+  Stopped == 0
+
+if
+  Owner == CALLER_ID
+  ACCT_ID =/= CALLER_ID
+  Allowance == maxUInt256
+```
+
+```act
+behaviour burn-self of DSToken
+interface burn(address src, uint wad)
+
+types
+  Gem_s     : uint256
+  Supply    : uint256
+  Allowance : uint256
+  Stopped   : bool
+  Owner     : address
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
