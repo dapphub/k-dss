@@ -7846,7 +7846,6 @@ iff in range uint256
 
 iff
   VCallValue == 0
-  VCallDepth < 1024
   Stopped == 0
 
 if
@@ -7879,7 +7878,6 @@ iff in range uint256
 
 iff
   VCallValue == 0
-  VCallDepth < 1024
   Stopped == 0
 
 if
@@ -7913,7 +7911,6 @@ iff in range uint256
 iff
   wad <= Allowance or src == CALLER_ID
   VCallValue == 0
-  VCallDepth < 1024
   Stopped == 0
 
 if
