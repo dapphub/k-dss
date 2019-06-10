@@ -3190,7 +3190,7 @@ storage
 
 storage Vat
 
-    dai[Flapper]    |-> Dai_f => 0
+    dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => (Dai_v + Dai_f) - Sin_v
     sin[ACCT_ID] |-> Sin_v => 0
     debt |-> Debt => Debt - Sin_v
@@ -3198,14 +3198,14 @@ storage Vat
 
 storage Flapper
 
-    vat |-> Vat
     wards[ACCT_ID] |-> MayFlap
+    vat  |-> Vat
     live |-> _ => 0
 
 storage Flopper
 
-    vat |-> Vat
     wards[ACCT_ID] |-> MayFlop
+    vat  |-> Vat
     live |-> _ => 0
 
 iff
@@ -3272,7 +3272,7 @@ storage
 
 storage Vat
 
-    dai[Flapper]    |-> Dai_f => 0
+    dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => Sin_v - (Dai_v + Dai_f)
     debt |-> Debt => Debt - (Dai_v + Dai_f)
@@ -3280,14 +3280,14 @@ storage Vat
 
 storage Flapper
 
-    vat |-> Vat
     wards[ACCT_ID] |-> MayFlap
+    vat  |-> Vat
     live |-> _ => 0
 
 storage Flopper
 
-    vat |-> Vat
     wards[ACCT_ID] |-> MayFlop
+    vat  |-> Vat
     live |-> _ => 0
 
 iff
@@ -3353,7 +3353,7 @@ storage
 
 storage Vat
 
-    dai[Flapper]    |-> Dai_f => 0
+    dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => 0
     debt |-> Debt => Debt - (Dai_v + Dai_f)
@@ -3361,14 +3361,14 @@ storage Vat
 
 storage Flapper
 
-    vat |-> Vat
     wards[ACCT_ID] |-> MayFlap
+    vat  |-> Vat
     live |-> _ => 0
 
 storage Flopper
 
-    vat |-> Vat
     wards[ACCT_ID] |-> MayFlop
+    vat  |-> Vat
     live |-> _ => 0
 
 iff
@@ -4304,11 +4304,11 @@ behaviour tick of Flipper
 interface tick(uint256 id)
 
 for all
-  Usr : address
-  Tic : uint48
-  End : uint48
   Tau : uint48
   Ttl : uint48
+  Guy : address
+  Tic : uint48
+  End : uint48
 
 storage
   ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -5419,19 +5419,20 @@ interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
 
+    Gem      : address DSToken
+    Live     : uint256
     Ttl      : uint48
     Tau      : uint48
-    Guy_was  : address
-    Gal      : address
-    Tic_was  : uint48
-    End      : uint48
-    Gem      : address DSToken
-    Can      : uint256
     Beg      : uint256
-    Bid_was  : uint256
+    Bid      : uint256
+    Lot      : uint256
+    Guy      : address
+    Tic      : uint48
+    End      : uint48
+    Gal      : address
+    Can      : uint256
     Dai_v    : uint256
     Dai_c    : uint256
-    Live     : uint256
     Bal_usr  : uint256
     Bal_gal  : uint256
     Bal_caller : uint256
@@ -5443,9 +5444,9 @@ storage
 
     gem                  |-> Gem
     ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
-    bids[id].bid         |-> Bid_was => bid
+    bids[id].bid         |-> Bid => bid
     bids[id].lot         |-> Lot
-    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
     bids[id].gal         |-> Gal
     live                 |-> Live
     beg                  |-> Beg
@@ -5453,8 +5454,8 @@ storage
 storage Gem
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
-    balances[Guy_was]   |-> Bal_usr => Bal_usr + Bid_was
-    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
+    balances[Guy]       |-> Bal_usr => Bal_usr + Bid
+    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid
     allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
@@ -5462,12 +5463,12 @@ iff
 
     Stopped == 0
     Live    == 1
-    Guy_was =/= 0
-    Tic_was == 0 or Tic_was > TIME
+    Guy =/= 0
+    Tic == 0 or Tic > TIME
     End > TIME
     Lot == lot
-    Bid_was < bid
-    Bid_was * Beg <= bid * #Ray
+    Bid < bid
+    Bid * Beg <= bid * #Ray
     bid <= Allowed
     Allowed == maxUInt256
     Stopped == 0
@@ -5479,11 +5480,10 @@ iff in range uint256
     bid * #Ray
     Dai_v - lot
     Dai_c + lot
-    bid - Bid_was
-    Bal_caller  - Bid_was
-    Bal_usr + Bid_was
-    Bal_gal + bid - Bid_was
-    Bal_caller  - bid
+    bid - Bid
+    Bal_usr + Bid
+    Bal_gal + bid - Bid
+    Bal_caller - bid
 
 iff in range uint48
 
@@ -5491,9 +5491,9 @@ iff in range uint48
 
 if
     ACCT_ID =/= CALLER_ID
-    CALLER_ID =/= Guy_was
+    CALLER_ID =/= Guy
     CALLER_ID =/= Gal
-    Gal =/= Guy_was
+    Gal =/= Guy
     #rangeUInt(48, TIME)
 
 calls
@@ -5509,19 +5509,20 @@ interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
 
+    Gem      : address DSToken
+    Live     : uint256
     Ttl      : uint48
     Tau      : uint48
-    Guy_was  : address
-    Gal      : address
-    Tic_was  : uint48
-    End      : uint48
-    Gem      : address DSToken
-    Can      : uint256
     Beg      : uint256
-    Bid_was  : uint256
+    Bid      : uint256
+    Lot      : uint256
+    Guy      : address
+    Tic      : uint48
+    End      : uint48
+    Gal      : address
+    Can      : uint256
     Dai_v    : uint256
     Dai_c    : uint256
-    Live     : uint256
     Bal_usr  : uint256
     Bal_gal  : uint256
     Bal_caller : uint256
@@ -5533,9 +5534,9 @@ storage
 
     gem                  |-> Gem
     ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
-    bids[id].bid         |-> Bid_was => bid
+    bids[id].bid         |-> Bid => bid
     bids[id].lot         |-> Lot
-    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy_was, Tic_was, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
     bids[id].gal         |-> Gal
     live                 |-> Live
     beg                  |-> Beg
@@ -5543,8 +5544,8 @@ storage
 storage Gem
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
-    balances[Guy_was]   |-> Bal_usr => Bal_usr + Bid_was
-    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid_was
+    balances[Guy]       |-> Bal_usr => Bal_usr + Bid
+    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid
     allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed - bid
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
@@ -5552,12 +5553,12 @@ iff
 
     Stopped == 0
     Live    == 1
-    Guy_was =/= 0
-    Tic_was == 0 or Tic_was > TIME
+    Guy =/= 0
+    Tic == 0 or Tic > TIME
     End > TIME
     Lot == lot
-    Bid_was < bid
-    Bid_was * Beg <= bid * #Ray
+    Bid < bid
+    Bid * Beg <= bid * #Ray
     Allowed <= maxUInt256
     Stopped == 0
     VCallDepth < 1024
@@ -5568,10 +5569,9 @@ iff in range uint256
     bid * #Ray
     Dai_v - lot
     Dai_c + lot
-    bid - Bid_was
-    Bal_caller  - Bid_was
-    Bal_usr + Bid_was
-    Bal_gal + bid - Bid_was
+    bid - Bid
+    Bal_usr + Bid
+    Bal_gal + bid - Bid
     Bal_caller  - bid
     Allowed - bid
 
@@ -5581,9 +5581,9 @@ iff in range uint48
 
 if
     ACCT_ID =/= CALLER_ID
-    CALLER_ID =/= Guy_was
+    CALLER_ID =/= Guy
     CALLER_ID =/= Gal
-    Gal =/= Guy_was
+    Gal =/= Guy
     #rangeUInt(48, TIME)
 
 calls
@@ -5680,14 +5680,14 @@ interface yank(uint256 id)
 for all
   Live    : uint256
   Gem     : address DSToken
+  Bid     : uint256
+  Lot     : uint256
   Guy     : address
   Tic     : uint48
   End     : uint48
-  Bid     : uint256
+  Gal     : address
   Gem_a   : uint256
   Gem_g   : uint256
-  Old_Lot : address
-  Old_Gal : address
   Stopped : bool
   Owner   : address
 
@@ -5695,14 +5695,14 @@ storage
   live |-> Live
   gem  |-> Gem
   bids[id].bid         |-> Bid => 0
-  bids[id].lot         |-> Old_Lot => 0
-  bids[id].gal         |-> Old_Gal => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].gal         |-> Gal => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Gem
   balances[ACCT_ID] |-> Gem_a => Gem_a - Bid
   balances[Guy]     |-> Gem_g => Gem_g + Bid
-  owner_stopped     |-> Stopped * pow160 + Owner
+  owner_stopped     |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
   Live == 0
@@ -6117,7 +6117,7 @@ storage
   live                        |-> Live
   kicks                       |-> Kicks => 1 + Kicks
   ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[1 + Kicks].bid         |-> Old_bit => bid
+  bids[1 + Kicks].bid         |-> Old_bid => bid
   bids[1 + Kicks].lot         |-> Old_lot => lot
   bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(gal, Old_tic, TIME + Tau)
 
@@ -6978,6 +6978,7 @@ for all
   Guy    : address
   Tic    : uint48
   End    : uint48
+  Gal    : address
   Usr    : address
   Rate_i : uint256
   Dai_g  : uint256
@@ -6989,7 +6990,6 @@ for all
   Ink_iu : uint256
   Art_iu : uint256
   Art    : uint256
-  Old_gal : address
 
 storage Cat
   ilks[ilk].flip |-> Flip
@@ -7001,7 +7001,7 @@ storage Flip
   bids[id].tab         |-> Tab => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].usr         |-> Usr => 0
-  bids[id].gal         |-> Old_gal   => 0
+  bids[id].gal         |-> Gal => 0
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
@@ -7191,18 +7191,13 @@ storage Vat
   dai[Vow] |-> Joy
   debt     |-> FinalDebt
 
-storage Vow
-
 iff
   Live == 0
   Debt == 0
   Joy  == 0
   TIME >= When + Wait
   VCallValue == 0
-  VCallDepth < 1023
-
-iff in range uint256
-  When + Wait
+  VCallDepth < 1024
 
 calls
   End.adduu
@@ -7245,8 +7240,8 @@ iff in range int256
 
 iff in range uint256
   Gem_iu + Ink_iu
-  Art_ui * Rate_i
-  Awe + Art_ui * Rate_i
+  Art_iu * Rate_i
+  Awe + Art_iu * Rate_i
 
 calls
   Vat.urns
@@ -7273,7 +7268,7 @@ storage
   gap[ilk] |-> Gap
   Art[ilk] |-> Art
   tag[ilk] |-> Tag
-  fix[ilk] |-> Fix => (((((((Art * Rate_i) / #Ray) * Tag) / #Ray) - Gap) * #Ray) * #Ray) / Debt
+  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i) * Tag) - Gap) * #Ray) * #Ray) / Debt
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
