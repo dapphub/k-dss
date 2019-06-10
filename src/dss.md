@@ -6161,11 +6161,6 @@ for all
   Dai_a   : uint256
   Dai_g   : uint256
 
-storage Vat
-  can[CALLER_ID][ACCT_ID] |-> CanMove
-  dai[ACCT_ID] |-> Dai_a => Dai_a - bid
-  dai[Guy]     |-> Dai_g => Dai_g + bid
-
 storage
   live |-> Live
   vat  |-> Vat
@@ -6174,6 +6169,11 @@ storage
   bids[id].bid         |-> Bid => bid
   bids[id].lot         |-> Lot => lot
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+
+storage Vat
+  can[CALLER_ID][ACCT_ID] |-> CanMove
+  dai[ACCT_ID] |-> Dai_a => Dai_a - bid
+  dai[Guy]     |-> Dai_g => Dai_g + bid
 
 iff
   Live == 1
@@ -6223,6 +6223,7 @@ for all
   Owner   : address
 
 storage
+  gem  |-> Gem
   live |-> Live
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
