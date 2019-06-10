@@ -6365,8 +6365,9 @@ storage Vat
   dai[Guy]     |-> Dai_g => Dai_g + bid
 
 storage
-  vat |-> Vat
-  beg |-> Beg
+  live |-> Live
+  vat  |-> Vat
+  beg  |-> Beg
   ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[id].bid         |-> Bid => bid
   bids[id].lot         |-> Lot => lot
@@ -6421,6 +6422,7 @@ for all
   Owner   : address
 
 storage
+  live |-> Live
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].usr_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
