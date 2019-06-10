@@ -402,17 +402,17 @@ syntax Int ::= "#Flipper.bids" "[" Int "].lot" [function]
 rule #Flipper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flipper.bids" "[" Int "].usr_tic_end" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flipper.bids[N].usr_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
+rule #Flipper.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
-syntax Int ::= "#Flipper.bids" "[" Int "].urn" [function]
+syntax Int ::= "#Flipper.bids" "[" Int "].usr" [function]
 // ------------------------------------------------------
 // doc: CDP owner
 // act:
-rule #Flipper.bids[N].urn => #hashedLocation("Solidity", 1, N) +Int 3
+rule #Flipper.bids[N].usr => #hashedLocation("Solidity", 1, N) +Int 3
 
 syntax Int ::= "#Flipper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
@@ -481,17 +481,11 @@ syntax Int ::= "#Flopper.bids" "[" Int "].lot" [function]
 rule #Flopper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flopper.bids" "[" Int "].usr_tic_end" [function]
+syntax Int ::= "#Flopper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flopper.bids[N].usr_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
-
-syntax Int ::= "#Flopper.bids" "[" Int "].gal" [function]
-// ------------------------------------------------------
-// doc: beneficiary of the auction
-// act:
-rule #Flopper.bids[N].gal => #hashedLocation("Solidity", 1, N) +Int 3
+rule #Flopper.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
 syntax Int ::= "#Flopper.vat" [function]
 // ---------------------------------------
@@ -553,11 +547,11 @@ syntax Int ::= "#Flapper.bids" "[" Int "].lot" [function]
 rule #Flapper.bids[N].lot => #hashedLocation("Solidity", 1, N) +Int 1
 
 // packed, use #WordPackAddrUInt48UInt48 to unpack this
-syntax Int ::= "#Flapper.bids" "[" Int "].usr_tic_end" [function]
+syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
 // --------------------------------------------------------------
 // doc:
 // act:
-rule #Flapper.bids[N].usr_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
+rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
 syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
 // ------------------------------------------------------
