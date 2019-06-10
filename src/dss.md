@@ -7832,7 +7832,7 @@ types
   Owner     : address
 
 storage
-  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
+  allowance[src][CALLER_ID] |-> Allowance => Allowance - wad
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
@@ -7840,9 +7840,9 @@ storage
 iff in range uint256
   Gem_s  - wad
   Supply - wad
+  Allowance - wad
 
 iff
-  wad <= Allowance or src == CALLER_ID
   VCallValue == 0
   VCallDepth < 1024
   Stopped == 0
@@ -7850,6 +7850,7 @@ iff
 if
   Owner == CALLER_ID
   ACCT_ID =/= CALLER_ID
+  src =/= CALLER_ID
   Allowance =/= maxUInt256
 ```
 
@@ -7875,7 +7876,6 @@ iff in range uint256
   Supply - wad
 
 iff
-  wad <= Allowance or src == CALLER_ID
   VCallValue == 0
   VCallDepth < 1024
   Stopped == 0
@@ -7883,6 +7883,7 @@ iff
 if
   Owner == CALLER_ID
   ACCT_ID =/= CALLER_ID
+  src =/= CALLER_ID
   Allowance == maxUInt256
 ```
 
@@ -7916,4 +7917,5 @@ iff
 if
   Owner == CALLER_ID
   ACCT_ID =/= CALLER_ID
+  src == CALLER_ID
 ```
