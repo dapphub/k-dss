@@ -6484,10 +6484,6 @@ if
 behaviour rmul of End
 interface rmul(uint256 x, uint256 y) internal
 
-pc
-
-  8278 => 8318
-
 stack
 
     y : x : JMPTO : WS => JMPTO : (x * y) / #Ray : WS
@@ -6505,10 +6501,6 @@ if
 ```act
 behaviour rdiv of End
 interface rdiv(uint256 x, uint256 y) internal
-
-pc
-
-  8389 => 8429
 
 stack
 
