@@ -6124,7 +6124,6 @@ iff
   Ward == 1
   Live == 1
   VCallValue == 0
-  VCallDepth < 1024
 
 iff in range uint256
   Kicks + 1
