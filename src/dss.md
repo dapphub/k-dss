@@ -7327,6 +7327,7 @@ if
 
 iff in range uint256
   Bag + wad
+  wad * #Ray
   Dai - (wad * #Ray)
   Joy + (wad * #Ray)
 
