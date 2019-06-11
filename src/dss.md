@@ -7268,7 +7268,7 @@ storage
   gap[ilk] |-> Gap
   Art[ilk] |-> Art
   tag[ilk] |-> Tag
-  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i) * Tag) - Gap) * #Ray) * #Ray) / Debt
+  fix[ilk] |-> Fix => (((#rmul(#rmul(Art, Rate_i), Tag) - Gap) * #Ray) * #Ray) / Debt
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
