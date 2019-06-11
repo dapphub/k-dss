@@ -6170,8 +6170,8 @@ storage
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> CanMove
-  dai[ACCT_ID] |-> Dai_a => Dai_a - bid
-  dai[Guy]     |-> Dai_g => Dai_g + bid
+  dai[CALLER_ID] |-> Dai_a => Dai_a - bid
+  dai[Guy]       |-> Dai_g => Dai_g + bid
 
 iff
   Live == 1
