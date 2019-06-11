@@ -3021,7 +3021,6 @@ storage Flop
     live                        |-> FlopLive
     wards[ACCT_ID]              |-> MayFlop
     kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].vow         |-> _ => ACCT_ID
     bids[1 + Kicks].bid         |-> _ => Sump
     bids[1 + Kicks].lot         |-> _ => maxUInt256
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
@@ -3039,7 +3038,7 @@ iff
     (Awe - Sin) - Ash >= Sump
     Joy == 0
     // act: call stack is not too big
-    VCallDepth < 1023
+    VCallDepth < 1024
     VCallValue == 0
 
 iff in range uint48
