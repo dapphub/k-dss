@@ -7356,8 +7356,8 @@ storage
   out[ilk][CALLER_ID] |-> Out => Out + wad
 
 storage Vat
-  gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - ((wad * Fix) / #Ray)
-  gem[ilk][CALLER_ID] |-> Gem_c => Gem_c + ((wad * Fix) / #Ray)
+  gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - #rmul(wad, Fix)
+  gem[ilk][CALLER_ID] |-> Gem_c => Gem_c + #rmul(wad, Fix)
 
 iff
   Fix =/= 0
@@ -7366,7 +7366,6 @@ iff
   VCallDepth < 1024
 
 iff in range uint256
-  Out + wad
   wad * Fix
   Gem_e - ((wad * Fix) / #Ray)
   Gem_c + ((wad * Fix) / #Ray)
