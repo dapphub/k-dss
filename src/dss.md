@@ -4344,6 +4344,7 @@ for all
   Guy : address
   Tic : uint48
   End : uint48
+  Can   : uint256
   Dai_c : uint256
   Dai_u : uint256
   Dai_g : uint256
@@ -4359,12 +4360,14 @@ storage
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
 
 storage Vat
+  can[CALLER_ID][ACCT_ID] |-> Can
   dai[CALLER_ID] |-> Dai_c => Dai_c - bid
   dai[Guy]       |-> Dai_u => Dai_u + bid
   dai[Gal]       |-> Dai_g => Dai_g + bid - Bid
 
 iff
   Guy =/= 0
+  Can == 1
   Tic > TIME or Tic == 0
   End > TIME
   lot == Lot
@@ -4428,6 +4431,7 @@ storage
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
 
 storage Vat
+  can[CALLER_ID][ACCT_ID] |-> Can
   dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
   dai[Guy]          |-> Dai_u => Dai_u + bid
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - Lot)
@@ -4435,6 +4439,7 @@ storage Vat
 
 iff
   Guy =/= 0
+  Can == 1
   Tic > TIME or Tic == 0
   End > TIME
   bid == Bid
@@ -4520,20 +4525,20 @@ interface yank(uint256 id)
 
 for all
   Vat : address VatLike
-  Bid : uint256
-  Lot : uint256
-  Tab : uint256
   Ttl : uint48
   Tau : uint48
+  Bid : uint256
+  Lot : uint256
   Guy : address
   Tic : uint48
   End : uint48
+  Usr : address
+  Gal : address
+  Tab : uint256
   Dai_u : uint256
   Dai_g : uint256
   Gem_a : uint256
   Gem_u : uint256
-  Old_gal : address
-  Old_usr : address
 
 storage
   wards[CALLER_ID]     |-> May
@@ -4543,10 +4548,11 @@ storage
   bids[id].lot         |-> Lot => 0
   bids[id].tab         |-> Tab => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].usr         |-> Old_usr => 0
-  bids[id].gal         |-> Old_gal => 0
+  bids[id].usr         |-> Usr => 0
+  bids[id].gal         |-> Gal => 0
 
 storage Vat
+  can[CALLER_ID][ACCT_ID] |-> Can
   gem[Ilk][ACCT_ID]   |-> Gem_a => Gem_a - Lot
   gem[Ilk][CALLER_ID] |-> Gem_u => Gem_u + Lot
   dai[CALLER_ID]      |-> Dai_u => Dai_u - Bid
@@ -4555,6 +4561,7 @@ storage Vat
 iff
   May == 1
   Guy =/= 0
+  Can == 1
   Bid < Tab
   VCallValue == 0
   VCallDepth < 1024
