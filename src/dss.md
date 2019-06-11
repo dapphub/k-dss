@@ -3090,10 +3090,10 @@ for all
     Can      : uint256
     Dai_a    : uint256
     FlapLive : uint256
-    Old_guy  : address
-    Old_tic  : uint48
-    Old_end  : uint48
-    Old_gal  : address
+    Guy  : address
+    Tic  : uint48
+    End  : uint48
+    Gal  : address
 
 storage
 
@@ -3107,12 +3107,12 @@ storage
 storage Flap
 
     vat                         |-> Vat
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks   => 1 + Kicks
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     bids[1 + Kicks].bid         |-> _ => 0
     bids[1 + Kicks].lot         |-> _ => Bump
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Old_gal => 0
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
+    bids[1 + Kicks].gal         |-> Gal => 0
     live                        |-> FlapLive
 
 storage Vat
@@ -3124,12 +3124,12 @@ storage Vat
 
 iff
 
+    FlapLive == 1
     // doc: there is enough `Joy`
     Joy >= (Awe + Bump) + Hump
     // doc: there is no `Woe`
     (Awe - Sin) - Ash == 0
     Can == 1
-    FlapLive == 1
     VCallDepth < 1023
     VCallValue == 0
 
