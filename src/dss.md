@@ -2992,7 +2992,7 @@ interface flop()
 
 for all
 
-    Flop     : address Flopper
+    Flopper  : address Flopper
     Vat      : address VatLike
     MayFlop  : uint256
     Sin      : uint256
@@ -3010,13 +3010,13 @@ for all
 
 storage
 
-    flopper |-> Flop
+    flopper |-> Flopper
     vat     |-> Vat
     Sin     |-> Sin
     Ash     |-> Ash => Ash + Sump
     sump    |-> Sump
 
-storage Flop
+storage Flopper
 
     live                        |-> FlopLive
     wards[ACCT_ID]              |-> MayFlop
