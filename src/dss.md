@@ -3784,10 +3784,11 @@ for all
     Art     : uint256
     Ttl     : uint48
     Tau     : uint48
-    Old_guy  : address
-    Old_tic  : uint48
-    Old_end  : uint48
-    Old_gal  : address
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+    Gal     : address
+    Usr     : address
 
 storage
 
@@ -3821,9 +3822,9 @@ storage Flip
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> _ => 0
     bids[1 + Kicks].lot         |-> _ => Lot
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    bids[1 + Kicks].usr         |-> _ => usr
-    bids[1 + Kicks].gal         |-> Old_gal => Vow
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
+    bids[1 + Kicks].usr         |-> Usr => usr
+    bids[1 + Kicks].gal         |-> Gal => Vow
     bids[1 + Kicks].tab         |-> _ => #rmul(Chop, Art * Rate)
 
 iff
