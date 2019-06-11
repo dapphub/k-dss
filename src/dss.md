@@ -4240,15 +4240,15 @@ for all
     Tau      : uint48
     Bid      : uint256
     Lot      : uint256
+    Guy      : address
+    Tic      : uint48
+    End      : uint48
+    Usr      : address
+    Gal      : address
     Tab      : uint256
-    Old_guy  : address
-    Old_tic  : uint48
-    Old_end  : uint48
     CanFlux  : uint256
     Gem_v    : uint256
     Gem_c    : uint256
-    Old_gal  : address
-    Old_usr  : address
 
 storage
 
@@ -4258,9 +4258,9 @@ storage
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => bid
     bids[1 + Kicks].lot         |-> Lot => lot
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, Old_tic, TIME + Tau)
-    bids[1 + Kicks].usr         |-> Old_usr => usr
-    bids[1 + Kicks].gal         |-> Old_gal => gal
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic, TIME + Tau)
+    bids[1 + Kicks].usr         |-> Usr => usr
+    bids[1 + Kicks].gal         |-> Gal => gal
     bids[1 + Kicks].tab         |-> Tab => tab
 
 storage Vat
@@ -4360,24 +4360,23 @@ storage
 
 storage Vat
   dai[CALLER_ID] |-> Dai_c => Dai_c - bid
-  dai[Usr]       |-> Dai_u => Dai_u + bid
+  dai[Guy]       |-> Dai_u => Dai_u + bid
   dai[Gal]       |-> Dai_g => Dai_g + bid - Bid
 
 iff
   Guy =/= 0
   Tic > TIME or Tic == 0
   End > TIME
-
   lot == Lot
   bid <= Tab
   bid >  Bid
   (bid * #Ray >= Beg * Bid) or (bid == Tab)
-
   VCallValue == 0
   VCallDepth < 1024
 
 if
-  CALLER_ID =/= Usr
+  CALLER_ID =/= Guy
+  CALLER_ID =/= Gal
 
 iff in range uint256
   Dai_c - bid
@@ -4430,25 +4429,23 @@ storage
 
 storage Vat
   dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
-  dai[Usr]          |-> Dai_u => Dai_u + bid
+  dai[Guy]          |-> Dai_u => Dai_u + bid
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - Lot)
   gem[Ilk][Usr]     |-> Gem_v => Gem_v + (Lot - lot)
 
 iff
-  Usr =/= 0
+  Guy =/= 0
   Tic > TIME or Tic == 0
   End > TIME
-
   bid == Bid
   bid == Tab
   lot <  Lot
   Lot * #Ray >= lot * Beg
-
   VCallValue == 0
   VCallDepth < 1024
 
 if
-  CALLER_ID =/= Usr
+  CALLER_ID =/= Guy
   ACCT_ID   =/= Usr
 
 iff in range uint256
