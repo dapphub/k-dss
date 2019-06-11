@@ -7358,7 +7358,7 @@ storage
 
 storage Vat
   gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - ((wad * Fix) / #Ray)
-  gem[ilk][CALLER_Id] |-> Gem_c => Gem_c + ((wad * Fix) / #Ray)
+  gem[ilk][CALLER_ID] |-> Gem_c => Gem_c + ((wad * Fix) / #Ray)
 
 iff
   Fix =/= 0
