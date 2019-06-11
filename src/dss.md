@@ -6191,7 +6191,7 @@ iff
 
 iff in range uint256
   Dai_a - bid
-  Dai_a + bid
+  Dai_g + bid
   Beg * lot
 
 iff in range uint48
