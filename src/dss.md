@@ -3001,12 +3001,12 @@ for all
     Joy      : uint256
     Sump     : uint256
     Kicks    : uint256
+    FlopLive : uint256
     Ttl      : uint48
     Tau      : uint48
-    FlopLive : uint256
-    Old_guy  : address
-    Old_tic  : uint48
-    Old_end  : uint48
+    Guy      : address
+    Tic      : uint48
+    End      : uint48
 
 storage
 
@@ -3021,10 +3021,10 @@ storage Flopper
     live                        |-> FlopLive
     wards[ACCT_ID]              |-> MayFlop
     kicks                       |-> Kicks => 1 + Kicks
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     bids[1 + Kicks].bid         |-> _ => Sump
     bids[1 + Kicks].lot         |-> _ => maxUInt256
-    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(ACCT_ID, 0, TIME + Tau)
-    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
 
 storage Vat
 
@@ -4366,6 +4366,8 @@ storage Vat
   dai[Gal]       |-> Dai_g => Dai_g + bid - Bid
 
 iff
+  VCallValue == 0
+  VCallDepth < 1024
   Guy =/= 0
   Can == 1
   Tic > TIME or Tic == 0
@@ -4374,8 +4376,6 @@ iff
   bid <= Tab
   bid >  Bid
   (bid * #Ray >= Beg * Bid) or (bid == Tab)
-  VCallValue == 0
-  VCallDepth < 1024
 
 if
   CALLER_ID =/= Guy
