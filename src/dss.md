@@ -4387,6 +4387,7 @@ iff
 if
   CALLER_ID =/= Guy
   CALLER_ID =/= Gal
+  Guy =/= Gal
 
 iff in range uint256
   Dai_c - bid
