@@ -4403,40 +4403,40 @@ interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
   Vat : address VatLike
+  Ttl : uint48
+  Tau : uint48
   Beg : uint256
   Bid : uint256
   Lot : uint256
-  Tab : uint256
-  Gal : address
-  Ttl : uint48
-  Tau : uint48
   Guy : address
   Tic : uint48
   End : uint48
+  Gal : address
   Usr : address
+  Tab : uint256
   Dai_c : uint256
-  Dai_u : uint256
+  Dai_g : uint256
   Gem_a : uint256
-  Gem_v : uint256
+  Gem_u : uint256
 
 storage
   vat          |-> Vat
   ilk          |-> Ilk
   beg          |-> Beg
-  bids[id].bid |-> Bid => bid
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid |-> Bid
   bids[id].lot |-> Lot => lot
   bids[id].tab |-> Tab
   bids[id].usr |-> Usr
   bids[id].gal |-> Gal
-  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
-  dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
-  dai[Guy]          |-> Dai_u => Dai_u + bid
+  dai[CALLER_ID]    |-> Dai_c => Dai_c - Bid
+  dai[Guy]          |-> Dai_g => Dai_g + Bid
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - Lot)
-  gem[Ilk][Usr]     |-> Gem_v => Gem_v + (Lot - lot)
+  gem[Ilk][Usr]     |-> Gem_u => Gem_u + (Lot - lot)
 
 iff
   Guy =/= 0
@@ -4456,9 +4456,9 @@ if
 
 iff in range uint256
   Dai_c - bid
-  Dai_u + bid
+  Dai_g + bid
   Gem_a - (Lot - Lot)
-  Gem_v + (Lot - lot)
+  Gem_u + (Lot - lot)
   Lot * #Ray
   lot * Beg
 
@@ -4536,10 +4536,10 @@ for all
   Usr : address
   Gal : address
   Tab : uint256
-  Dai_u : uint256
+  Dai_c : uint256
   Dai_g : uint256
   Gem_a : uint256
-  Gem_u : uint256
+  Gem_c : uint256
 
 storage
   wards[CALLER_ID]     |-> May
@@ -4555,8 +4555,8 @@ storage
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
   gem[Ilk][ACCT_ID]   |-> Gem_a => Gem_a - Lot
-  gem[Ilk][CALLER_ID] |-> Gem_u => Gem_u + Lot
-  dai[CALLER_ID]      |-> Dai_u => Dai_u - Bid
+  gem[Ilk][CALLER_ID] |-> Gem_c => Gem_c + Lot
+  dai[CALLER_ID]      |-> Dai_c => Dai_c - Bid
   dai[Guy]            |-> Dai_g => Dai_g + Bid
 
 iff
@@ -4574,7 +4574,7 @@ if
 iff in range uint256
   Gem_a - Lot
   Gem_c + Lot
-  Dai_u - Bid
+  Dai_c - Bid
   Dai_g + Bid
 
 calls
@@ -7227,10 +7227,8 @@ storage
 
 storage Vat
   urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
-  urns[ilk][CALLER_ID].art |-> Art_iu => Art_iu
+  urns[ilk][CALLER_ID].art |-> Art_iu
   gem[ilk][CALLER_ID]      |-> Gem_iu => Gem_iu + Ink_iu
-  ilks[ilk].rate           |-> Rate_i
-  sin[Vow]                 |-> Awe => Awe + (Art_iu * Rate_i)
 
 iff
   Live == 0
@@ -7243,8 +7241,6 @@ iff in range int256
 
 iff in range uint256
   Gem_iu + Ink_iu
-  Art_iu * Rate_i
-  Awe + Art_iu * Rate_i
 
 calls
   Vat.urns
