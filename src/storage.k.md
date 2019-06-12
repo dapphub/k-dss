@@ -740,3 +740,32 @@ rule #DSToken.symbol => 5
 syntax Int ::= "#DSToken.decimals" [function]
 rule #DSToken.decimals => 6
 ```
+
+### DSValue
+
+```k
+syntax Int ::= "#DSValue.has" [function]
+rule #DSValue.has => 0
+
+syntax Int ::= "#DSValue.val" [function]
+rule #DSValue.val => 0
+```
+
+### Spotter
+
+```act
+syntax Int ::= "#Spotter.wards" "[" Int "]" [function]
+rule #Spotter.wards[A] => #hashedLocation("Solidity", 0, A)
+
+syntax Int ::= "#Spotter.ilks" "[" Int "].pip" [function]
+rule #Spotter.ilks[Ilk].pip => #hashedLocation("Solidity", 1, Ilk) +Int 0
+
+syntax Int ::= "#Spotter.ilks" "[" Int "].mat" [function]
+rule #Spotter.ilks[Ilk].mat => #hashedLocation("Solidity", 1, Ilk) +Int 1
+
+syntax Int ::= "#Spotter.vat" [function]
+rule #Spotter.vat => 2
+
+syntax Int ::= "#Spotter.par" [function]
+rule #Spotter.par => 3
+```

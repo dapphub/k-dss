@@ -191,6 +191,7 @@ rule chop(N +Int keccakIntList(L)) => keccakIntList(L) +Int N
 ```k
 syntax Int ::= "Mask12_32" [function]
 syntax Int ::= "Mask0_6" [function]
+syntax Int ::= "Mask6_12" [function]
 syntax Int ::= "Mask0_12" [function]
 syntax Int ::= "Mask0_26" [function]
 syntax Int ::= "Mask26_32" [function]
@@ -198,6 +199,8 @@ syntax Int ::= "Mask20_26" [function]
 // -----------------------------------
 // 0x000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffff
 rule Mask0_6 => 411376139330301510538742295639337626245683966408394965837152255                  [macro]
+// 0xffffffffffff000000000000ffffffffffffffffffffffffffffffffffffffff
+rule Mask6_12 => 115792089237315784047431654708638870748305248246218003188207458632603225030655 [macro]
 // 0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff
 rule Mask0_12 => 1461501637330902918203684832716283019655932542975                               [macro]
 // 0xffffffffffffffffffffffff0000000000000000000000000000000000000000
@@ -274,10 +277,20 @@ rule Mask0_6 &Int (X *Int pow208 +Int Y *Int pow160 +Int A) => Y *Int pow160 +In
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
 
-rule (X *Int pow208) |Int (Y *Int pow160 +Int A) => (X *Int pow208 +Int Y *Int pow160 +Int A)
-  requires #rangeUInt(48, X)
+rule Mask6_12 &Int (Y *Int pow208 +Int X *Int pow160 +Int A) => Y *Int pow208 +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
-  andBool #rangeAddress(A)
+
+rule (Y *Int pow208) |Int (X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160 +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
+
+rule (X *Int pow160) |Int (Y *Int pow208 +Int A) => Y *Int pow208 +Int X *Int pow160 +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+  andBool #rangeUInt(48, Y)
 
 rule maxUInt160 &Int (((X *Int pow208) +Int (Y *Int pow160)) +Int A) => A
   requires #rangeAddress(A)
