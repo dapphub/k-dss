@@ -3075,7 +3075,7 @@ interface flap()
 
 for all
 
-    Flap     : address Flapper
+    Flapper  : address Flapper
     Vat      : address VatLike
     Sin      : uint256
     Ash      : uint256
@@ -3098,13 +3098,13 @@ for all
 storage
 
     vat     |-> Vat
-    flapper |-> Flap
+    flapper |-> Flapper
     bump    |-> Bump
     hump    |-> Hump
     Sin     |-> Sin
     Ash     |-> Ash
 
-storage Flap
+storage Flapper
 
     vat                         |-> Vat
     kicks                       |-> Kicks   => 1 + Kicks
@@ -3772,7 +3772,7 @@ for all
 
     Vat     : address VatLike
     Vow     : address VowLike
-    Flip    : address Flipper
+    Flipper : address Flipper
     Live    : uint256
     Rate    : uint256
     Art_i   : uint256
@@ -3801,7 +3801,7 @@ storage
     vat            |-> Vat
     vow            |-> Vow
     live           |-> Live
-    ilks[ilk].flip |-> Flip
+    ilks[ilk].flip |-> Flipper
     ilks[ilk].chop |-> Chop
     ilks[ilk].lump |-> Lump
 
@@ -3812,7 +3812,7 @@ storage Vat
     urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lot
     urns[ilk][urn].art |-> Art_iu => Art_iu - Art
     ilks[ilk].Art      |-> Art_i  => Art_i  - Art
-    gem[ilk][Flip]     |-> Gem_iv => Gem_iv + Lot
+    gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lot
     sin[Vow]           |-> Sin_w  => Sin_w  + Art * Rate
     vice               |-> Vice   => Vice   + Art * Rate
 
@@ -3822,7 +3822,7 @@ storage Vow
     sin[TIME]          |-> Sin_era => Sin_era + Art * Rate
     Sin                |-> Sin     => Sin     + Art * Rate
 
-storage Flip
+storage Flipper
 
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
@@ -4674,7 +4674,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address DSToken
+    DSToken     : address DSToken
     May         : uint256
     Vat_bal     : uint256
     Bal_usr     : uint256
@@ -4687,14 +4687,14 @@ storage
 
     vat |-> Vat
     ilk |-> Ilk
-    gem |-> Gem
+    gem |-> DSToken
 
 storage Vat
 
     wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Vat_bal => Vat_bal + wad
 
-storage Gem
+storage DSToken
 
     balances[CALLER_ID] |-> Bal_usr     => Bal_usr     - wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
@@ -4742,7 +4742,7 @@ for all
 
     Vat         : address VatLike
     Ilk         : bytes32
-    Gem         : address DSToken
+    DSToken     : address DSToken
     May         : uint256
     Wad         : uint256
     Bal_usr     : uint256
@@ -4754,14 +4754,14 @@ storage
 
     vat |-> Vat
     ilk |-> Ilk
-    gem |-> Gem
+    gem |-> DSToken
 
 storage Vat
 
     wards[ACCT_ID]          |-> May
     gem[Ilk][CALLER_ID]     |-> Wad => Wad - wad
 
-storage Gem
+storage DSToken
 
     balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
@@ -5433,7 +5433,7 @@ interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
 
-    Gem      : address DSToken
+    DSToken  : address DSToken
     Live     : uint256
     Ttl      : uint48
     Tau      : uint48
@@ -5456,7 +5456,7 @@ for all
 
 storage
 
-    gem                  |-> Gem
+    gem                  |-> DSToken
     ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
     bids[id].bid         |-> Bid => bid
     bids[id].lot         |-> Lot
@@ -5465,7 +5465,7 @@ storage
     live                 |-> Live
     beg                  |-> Beg
 
-storage Gem
+storage DSToken
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Guy]       |-> Bal_usr => Bal_usr + Bid
@@ -5523,7 +5523,7 @@ interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
 
-    Gem      : address DSToken
+    DSToken  : address DSToken
     Live     : uint256
     Ttl      : uint48
     Tau      : uint48
@@ -5546,7 +5546,7 @@ for all
 
 storage
 
-    gem                  |-> Gem
+    gem                  |-> DSToken
     ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
     bids[id].bid         |-> Bid => bid
     bids[id].lot         |-> Lot
@@ -5555,7 +5555,7 @@ storage
     live                 |-> Live
     beg                  |-> Beg
 
-storage Gem
+storage DSToken
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Guy]       |-> Bal_usr => Bal_usr + Bid
@@ -5693,7 +5693,7 @@ interface yank(uint256 id)
 
 for all
   Live    : uint256
-  Gem     : address DSToken
+  DSToken : address DSToken
   Bid     : uint256
   Lot     : uint256
   Guy     : address
@@ -5707,13 +5707,13 @@ for all
 
 storage
   live |-> Live
-  gem  |-> Gem
+  gem  |-> DSToken
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].gal         |-> Gal => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
-storage Gem
+storage DSToken
   balances[ACCT_ID] |-> Gem_a => Gem_a - Bid
   balances[Guy]     |-> Gem_g => Gem_g + Bid
   owner_stopped     |-> #WordPackAddrUInt8(Owner, Stopped)
@@ -6228,20 +6228,20 @@ for all
   Guy     : address
   Tic     : uint48
   End     : uint48
-  Gem     : address DSToken
+  DSToken : address DSToken
   Gem_g   : uint256
   Stopped : bool
   Supply  : uint256
   Owner   : address
 
 storage
-  gem  |-> Gem
+  gem  |-> DSToken
   live |-> Live
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
-storage Gem
+storage DSToken
   balances[Guy] |-> Gem_g  => Gem_g  + Lot
   supply        |-> Supply => Supply + Lot
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
@@ -6980,9 +6980,9 @@ behaviour skip of End
 interface skip(bytes32 ilk, uint256 id)
 
 for all
-  Vat  : address VatLike
-  Cat  : address Cat
-  Flip : address Flipper
+  Vat        : address VatLike
+  Cat        : address Cat
+  Flipper    : address Flipper
   EndMayYank : uint256
   Bid    : uint256
   Lot    : uint256
@@ -7004,9 +7004,9 @@ for all
   Art    : uint256
 
 storage Cat
-  ilks[ilk].flip |-> Flip
+  ilks[ilk].flip |-> Flipper
 
-storage Flip
+storage Flipper
   wards[CALLER_ID]     |-> EndMayYank
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
@@ -7017,7 +7017,7 @@ storage Flip
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
-  can[ACCT_ID][Flip] |-> _ => 1
+  can[ACCT_ID][Flipper] |-> _ => 1
 
   dai[Guy] |-> Dai_g => Dai_g + Bid
   dai[Vow] |-> Joy   => Joy         + Tab
@@ -7025,7 +7025,7 @@ storage Vat
   sin[Vow] |-> Awe   => Awe   + Bid + Tab - ((Tab / Rate_i) * Rate_i)
   vice     |-> Vice  => Vice  + Bid + Tab - ((Tab / Rate_i) * Rate_i)
 
-  gem[ilk][Flip]     |-> Gem_a  => Gem_a  - Lot
+  gem[ilk][Flipper]  |-> Gem_a  => Gem_a  - Lot
   urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
   urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
@@ -7041,8 +7041,8 @@ iff
   VCallDepth < 1023
 
 if
-  End =/= Flap
-  Flap =/= Guy
+  End =/= Flipper
+  Guy =/= Flipper
 
 iff in range uint256
   Art + (Tab / Rate_i)
