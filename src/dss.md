@@ -6973,6 +6973,56 @@ calls
   Vow.cage
 ```
 
+```act
+behaviour cage-ilk of End
+interface cage(bytes32 ilk)
+
+for all
+  Live    : uint256
+  Tag_i   : uint256
+  Art_i   : uint256
+  Rate_i  : uint256
+  Spot_i  : uint256
+  Line_i  : uint256
+  Dust_i  : uint256
+  Vat     : address VatLike
+  Spotter : address Spotter
+  DSValue : address DSValue
+  Price   : uint256
+
+storage
+  vat      |-> Vat
+  spot     |-> Spotter
+  Art[ilk] |-> Art_i
+  tag[ilk] |-> Tag_i => (#Wad * #Ray) / Price
+
+storage Spotter
+  ilks[ilk].pip |-> DSValue
+
+storage Vat
+  ilks[ilk].Art  |-> Art_i
+  ilks[ilk].rate |-> Rate_i
+  ilks[ilk].spot |-> Spot_i
+  ilks[ilk].line |-> Line_i
+  ilks[ilk].dust |-> Dust_i
+
+storage DSValue
+  val |-> Price
+  has |-> Ok
+
+iff
+  Live == 0
+  Tag_i == 0
+  Ok == 1
+
+iff in range uint256
+  #Wad * #Ray
+
+calls
+  End.rdiv
+  Vat.ilks
+```
+
 // todo: skip: tighten ranges
 
 ```act

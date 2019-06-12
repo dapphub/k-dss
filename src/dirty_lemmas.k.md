@@ -15,3 +15,32 @@ rule (X *Int pow208) |Int (Y *Int pow208 +Int A) => Y *Int pow208 +Int X *Int po
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 ```
+
+### DSValue
+
+```k
+syntax Int ::= "#DSValue.has" [function]
+rule #DSValue.has => 0
+
+syntax Int ::= "#DSValue.val" [function]
+rule #DSValue.val => 0
+```
+
+### Spotter
+
+```act
+syntax Int ::= "#Spotter.wards" "[" Int "]" [function]
+rule #Spotter.wards[A] => #hashedLocation("Solidity", 0, A)
+
+syntax Int ::= "#Spotter.ilks" "[" Int "].pip" [function]
+rule #Spotter.ilks[Ilk].pip => #hashedLocation("Solidity", 1, Ilk) +Int 0
+
+syntax Int ::= "#Spotter.ilks" "[" Int "].mat" [function]
+rule #Spotter.ilks[Ilk].mat => #hashedLocation("Solidity", 1, Ilk) +Int 1
+
+syntax Int ::= "#Spotter.vat" [function]
+rule #Spotter.vat => 2
+
+syntax Int ::= "#Spotter.par" [function]
+rule #Spotter.par => 3
+```

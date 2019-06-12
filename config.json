@@ -43,23 +43,25 @@
       "solc_output": "./dss/out/vow.sol.json"
     },
     "Flipper": {
-      "name" : "Flipper",
       "solc_output": "./dss/out/flip.sol.json"
     },
     "Flopper": {
-      "name" : "Flopper",
       "solc_output": "./dss/out/flop.sol.json"
     },
     "Flapper": {
-      "name" : "Flapper",
       "solc_output": "./dss/out/flap.sol.json"
     },
     "DSToken": {
-      "name" : "DSToken",
       "solc_output": "./dss/out/test/vat.t.sol.json"
     },
     "End": {
       "solc_output": "./dss/out/end.sol.json"
+    },
+    "DSValue": {
+      "solc_output": "./dss/out/test/end.t.sol.json"
+    },
+    "Spotter": {
+      "solc_output": "./dss/out/spot.sol.json"
     }
   },
   "split_fail":[
