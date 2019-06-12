@@ -4919,13 +4919,14 @@ interface exit(address usr, uint256 wad)
 
 for all
 
-    Vat         : address VatLike
-    Dai         : address Dai
-    Rad         : uint256
-    May         : uint256
-    Bal_usr     : uint256
-    Dai_adapter : uint256
-    Supply      : uint256
+    Vat    : address VatLike
+    Dai    : address Dai
+    May    : uint256
+    Can    : uint256
+    Dai_c  : uint256
+    Dai_u  : uint256
+    Dai_a  : uint256
+    Supply : uint256
 
 storage
 
@@ -4934,14 +4935,14 @@ storage
 
 storage Vat
 
-    dai[CALLER_ID]          |-> Rad => Rad - #Ray * wad
-    dai[ACCT_ID]            |-> Dai_adapter => Dai_adapter + #Ray * wad
     can[CALLER_ID][ACCT_ID] |-> Can
+    dai[CALLER_ID] |-> Dai_c => Dai_c - #Ray * wad
+    dai[ACCT_ID]   |-> Dai_a => Dai_a + #Ray * wad
 
 storage Dai
 
     wards[ACCT_ID] |-> May
-    balanceOf[usr] |-> Bal_usr => Bal_usr + wad
+    balanceOf[usr] |-> Dai_u  => Dai_u  + wad
     totalSupply    |-> Supply => Supply + wad
 
 iff
@@ -4956,9 +4957,9 @@ iff
 iff in range uint256
 
     #Ray * wad
-    Rad - #Ray * wad
-    Dai_adapter + #Ray * wad
-    Bal_usr + wad
+    Dai_c - #Ray * wad
+    Dai_a + #Ray * wad
+    Dai_u + wad
     Supply + wad
 
 if
