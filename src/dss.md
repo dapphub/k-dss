@@ -7268,7 +7268,12 @@ for all
   Gap    : uint256
   Art    : uint256
   Tag    : uint256
+  Art_i  : uint256
   Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+
 
 storage
   vat      |-> Vat
@@ -7279,7 +7284,11 @@ storage
   fix[ilk] |-> Fix => (((((((Art * Rate_i) / #Ray) * Tag) / #Ray) - Gap) * #Ray) * #Ray) / Debt
 
 storage Vat
+  ilks[ilk].Art  |-> Art_i
   ilks[ilk].rate |-> Rate_i
+  ilks[ilk].spot |-> Spot_i
+  ilks[ilk].line |-> Line_i
+  ilks[ilk].dust |-> Dust_i
 
 iff
   Debt =/= 0
