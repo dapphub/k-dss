@@ -4385,6 +4385,7 @@ iff
   (bid * #Ray >= Beg * Bid) or (bid == Tab)
 
 if
+  CALLER_ID =/= ACCT_ID
   CALLER_ID =/= Guy
   CALLER_ID =/= Gal
   Guy =/= Gal
@@ -4458,6 +4459,7 @@ iff
   VCallDepth < 1024
 
 if
+  CALLER_ID =/= ACCT_ID
   CALLER_ID =/= Guy
   ACCT_ID   =/= Usr
 
@@ -6205,7 +6207,8 @@ iff in range uint48
   TIME + Ttl
 
 if
-  Guy =/= CALLER_ID
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= Guy
   #rangeUInt(48, TIME)
 
 calls
@@ -7331,6 +7334,7 @@ iff
 
 if
   CALLER_ID =/= Vow
+  CALLER_ID =/= ACCT_ID
 
 iff in range uint256
   Bag + wad
