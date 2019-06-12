@@ -4443,7 +4443,7 @@ storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
   dai[CALLER_ID]    |-> Dai_c => Dai_c - Bid
   dai[Guy]          |-> Dai_g => Dai_g + Bid
-  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - Lot)
+  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - lot)
   gem[Ilk][Usr]     |-> Gem_u => Gem_u + (Lot - lot)
 
 iff
