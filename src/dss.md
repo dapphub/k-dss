@@ -4670,7 +4670,7 @@ returns Gem
 
 ```act
 behaviour join of GemJoin
-interface join(address urn, uint256 wad)
+interface join(address usr, uint256 wad)
 
 for all
 
@@ -4693,25 +4693,23 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> May
-    gem[Ilk][CALLER_ID]     |-> Vat_bal => Vat_bal + wad
+    wards[ACCT_ID]      |-> May
+    gem[Ilk][usr]       |-> Vat_bal => Vat_bal + wad
 
 storage DSToken
 
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
     balances[CALLER_ID] |-> Bal_usr     => Bal_usr     - wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter + wad
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
-    wad <= Allowed
-    Stopped == 0
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
+    wad <= Allowed
+    Stopped == 0
+    May == 1
 
 iff in range int256
 
@@ -4760,33 +4758,31 @@ storage
 
 storage Vat
 
-    wards[ACCT_ID]          |-> May
-    gem[Ilk][CALLER_ID]     |-> Wad => Wad - wad
+    wards[ACCT_ID]      |-> May
+    gem[Ilk][CALLER_ID] |-> Wad => Wad - wad
 
 storage DSToken
 
-    balances[CALLER_ID] |-> Bal_usr     => Bal_usr     + wad
     balances[ACCT_ID]   |-> Bal_adapter => Bal_adapter - wad
+    balances[usr]       |-> Bal_usr     => Bal_usr     + wad
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
 
-    Stopped == 0
-    // act: caller is `. ? : not` authorised
-    May == 1
-    // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
+    Stopped == 0
+    May == 1
 
 iff in range uint256
 
     Wad         - wad
-    Bal_usr     + wad
     Bal_adapter - wad
+    Bal_usr     + wad
 
 if
 
-    CALLER_ID =/= ACCT_ID
+    usr =/= ACCT_ID
 
 calls
   Vat.slip
@@ -7543,6 +7539,33 @@ if
 
 iff in range uint256
   Gem_c - wad
+  Gem_u + wad
+
+iff
+  Stopped == 0
+  VCallValue == 0
+
+returns 1
+```
+
+```act
+behaviour transfer-self of DSToken
+interface transfer(address usr, uint256 wad)
+
+for all
+  Gem_u : uint256
+  Owner : address
+  Stopped : bool
+
+storage
+  balances[usr] |-> Gem_u => Gem_u
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+if
+  usr == CALLER_ID
+
+iff in range uint256
+  Gem_u - wad
   Gem_u + wad
 
 iff
