@@ -7076,7 +7076,7 @@ interface skim(bytes32 ilk, address urn)
 
 for all
   Vat : address VatLike
-  Vow : address VowLike
+  Vow : address
   Tag : uint256
   Awe : uint256
   Art_iu : uint256
@@ -7127,7 +7127,7 @@ interface skim(bytes32 ilk, address urn)
 
 for all
   Vat : address VatLike
-  Vow : address VowLike
+  Vow : address
   Tag : uint256
   Gap : uint256
   Awe : uint256
@@ -7180,7 +7180,7 @@ interface thaw()
 
 for all
   Vat  : address VatLike
-  Vow  : address VowLike
+  Vow  : address
   Live : uint256
   Debt : uint256
   When : uint256
@@ -7220,7 +7220,7 @@ interface free(bytes32 ilk)
 
 for all
   Vat    : address VatLike
-  Vow    : address VowLike
+  Vow    : address
   Live   : uint256
   Ink_iu : uint256
   Art_iu : uint256
@@ -7305,7 +7305,7 @@ interface pack(uint256 wad)
 
 for all
   Vat  : address VatLike
-  Vow  : address VowLike
+  Vow  : address
   Debt : uint256
   Bag  : uint256
   Joy  : uint256
