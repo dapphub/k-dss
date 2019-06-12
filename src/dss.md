@@ -3700,20 +3700,26 @@ iff
 
 #### setting liquidator address
 
-TODO: add Vat storage
 ```
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
+    Vat  : address VatLike
     May  : uint256
     Flip : address
+    Hope : uint256
 
 storage
 
+    vat |-> Vat
     wards[CALLER_ID] |-> May
     ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+
+storage Vat
+
+    can[ACCT_ID][data] |-> Hope => (#if what == #string2Word("flip") #then 1 #else Hope #fi)
 
 iff
 
@@ -6098,8 +6104,6 @@ if
 ```
 
 #### starting an auction
-
-// todo: update storage / dss again
 
 ```act
 behaviour kick of Flopper
