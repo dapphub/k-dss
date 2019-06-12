@@ -1114,6 +1114,7 @@ calls
 #### annihilating system debt and surplus
 
 `dai` and `sin` are two sides of the same coin. When the system has surplus `dai`, it can be cancelled with `sin`.
+
 ```act
 behaviour heal of Vat
 interface heal(uint256 rad)
@@ -1187,7 +1188,6 @@ calls
     Vat.adduu
 ```
 
-
 #### applying interest to an `ilk`
 
 Interest is charged on an `ilk` `i` by adjusting the debt unit `Rate`, which says how many units of `dai` correspond to a unit of `art`. To preserve a key invariant, dai must be created or destroyed, depending on whether `Rate` is increasing or decreasing. The beneficiary/benefactor of the dai is `u`.
@@ -1236,6 +1236,7 @@ calls
     Vat.addui
     Vat.mului
 ```
+
 # Dai
 
 The `Dai` contract is the user facing ERC20 contract maintaining the accounting for external Dai balances. Most functions are standard for a token with changing supply, but it also notably features the ability to issue approvals for transferFroms based on signed messages, called `Permit`s.
@@ -3668,6 +3669,7 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    VCallDepth < 1024
 
 calls
   Vat.hope
