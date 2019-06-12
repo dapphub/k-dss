@@ -7361,9 +7361,9 @@ for all
   Gem_c : uint256
 
 storage
-  vat      |-> Vat
-  fix[ilk] |-> Fix
-  bag[ilk] |-> Bag
+  vat                 |-> Vat
+  fix[ilk]            |-> Fix
+  bag[CALLER_ID]      |-> Bag
   out[ilk][CALLER_ID] |-> Out => Out + wad
 
 storage Vat
