@@ -5481,8 +5481,6 @@ iff
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
-    bid <= Allowed
-    Allowed == maxUInt256
     Stopped == 0
     VCallDepth < 1024
     VCallValue == 0
@@ -5507,9 +5505,9 @@ if
     CALLER_ID =/= Gal
     Gal =/= Guy
     #rangeUInt(48, TIME)
+    Allowed == maxUInt256
 
 calls
-    DSToken.transferFrom
     DSToken.transferFrom-max-approve
     Flapper.muluu
     Flapper.addu48u48
@@ -5571,7 +5569,6 @@ iff
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
-    Allowed <= maxUInt256
     Stopped == 0
     VCallDepth < 1024
     VCallValue == 0
@@ -5597,10 +5594,10 @@ if
     CALLER_ID =/= Gal
     Gal =/= Guy
     #rangeUInt(48, TIME)
+    Allowed < maxUInt256
 
 calls
     DSToken.transferFrom
-    DSToken.transferFrom-max-approve
     Flapper.muluu
     Flapper.addu48u48
 ```
