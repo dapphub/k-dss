@@ -4366,7 +4366,7 @@ storage
   bids[id].tab |-> Tab
   bids[id].gal |-> Gal
   ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
@@ -4400,7 +4400,7 @@ iff in range uint256
   Beg * Bid
 
 iff in range uint48
-  Tic + Ttl
+  TIME + Ttl
 
 calls
   Flipper.muluu
@@ -4439,7 +4439,7 @@ storage
   bids[id].tab |-> Tab
   bids[id].usr |-> Usr
   bids[id].gal |-> Gal
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, Tic + Ttl, End)
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
@@ -4474,7 +4474,7 @@ iff in range uint256
   lot * Beg
 
 iff in range uint48
-  Tic + Ttl
+  TIME + Ttl
 
 calls
   Flipper.muluu
