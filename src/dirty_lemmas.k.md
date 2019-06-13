@@ -26,5 +26,7 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
     rule keccak(WS) => keccakIntList(bytesToWords(WS))
       requires ( notBool #isConcrete(WS) )
        andBool notBool( #sizeWordStack(WS) modInt 32 ==Int 0)
-    
+
+rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
+
 ```
