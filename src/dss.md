@@ -4563,6 +4563,7 @@ for all
   Vat : address VatLike
   Ttl : uint48
   Tau : uint48
+  Ilk : bytes32
   Bid : uint256
   Lot : uint256
   Guy : address
