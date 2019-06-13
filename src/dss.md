@@ -4780,6 +4780,10 @@ iff in range uint256
     Bal_adapter - wad
     Bal_usr     + wad
 
+iff in range int256
+
+    wad
+
 if
 
     usr =/= ACCT_ID
