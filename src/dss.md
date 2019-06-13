@@ -3669,7 +3669,7 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
-    VCallDepth < 1024
+    what =/= #string2Word("flip") or VCallDepth < 1024
 
 calls
   Vat.hope
