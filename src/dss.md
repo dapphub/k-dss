@@ -3064,6 +3064,7 @@ returns 1 + Kicks
 
 calls
 
+  Vow.subuu
   Vow.adduu
   Vat.sin
   Vat.dai
@@ -7002,6 +7003,7 @@ iff
     VowMayFlop == 1
     VCallValue == 0
     VCallDepth < 1022
+    Price =/= 0
 
 calls
 
