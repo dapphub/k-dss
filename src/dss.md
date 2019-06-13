@@ -3005,6 +3005,8 @@ for all
     FlopLive : uint256
     Ttl      : uint48
     Tau      : uint48
+    Bid      : uint256
+    Lot      : uint256
     Guy      : address
     Tic      : uint48
     End      : uint48
@@ -3023,8 +3025,8 @@ storage Flopper
     wards[ACCT_ID]              |-> MayFlop
     kicks                       |-> Kicks => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    bids[1 + Kicks].bid         |-> _ => Sump
-    bids[1 + Kicks].lot         |-> _ => maxUInt256
+    bids[1 + Kicks].bid         |-> Bid => Sump
+    bids[1 + Kicks].lot         |-> Lot => maxUInt256
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
 
 storage Vat
@@ -3091,6 +3093,8 @@ for all
     Can      : uint256
     Dai_a    : uint256
     FlapLive : uint256
+    Bid  : uint256
+    Lot  : uint256
     Guy  : address
     Tic  : uint48
     End  : uint48
@@ -3110,8 +3114,8 @@ storage Flapper
     vat                         |-> Vat
     kicks                       |-> Kicks   => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-    bids[1 + Kicks].bid         |-> _ => 0
-    bids[1 + Kicks].lot         |-> _ => Bump
+    bids[1 + Kicks].bid         |-> Bid => 0
+    bids[1 + Kicks].lot         |-> Lot => Bump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
     bids[1 + Kicks].gal         |-> Gal => 0
     live                        |-> FlapLive
@@ -3167,16 +3171,21 @@ interface cage()
 
 for all
 
-   Vat     : address VatLike
-   Flapper : address Flapper
-   Flopper : address Flopper
-   MayFlap : uint256
-   MayFlop : uint256
-   Dai_v   : uint256
-   Sin_v   : uint256
-   Dai_f   : uint256
-   Debt    : uint256
-   Vice    : uint256
+   Vat      : address VatLike
+   Flapper  : address Flapper
+   Flopper  : address Flopper
+   MayFlap  : uint256
+   MayFlop  : uint256
+   Dai_v    : uint256
+   Sin_v    : uint256
+   Dai_f    : uint256
+   Debt     : uint256
+   Vice     : uint256
+   Live     : uint256
+   Sin      : uint256
+   Ash      : uint256
+   FlapLive : uint256
+   FlopLive : uint256
 
 storage
 
@@ -3184,9 +3193,9 @@ storage
     vat |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> _ => 0
-    Sin  |-> _ => 0
-    Ash  |-> _ => 0
+    live |-> Live => 0
+    Sin  |-> Sin  => 0
+    Ash  |-> Ash  => 0
 
 storage Vat
 
@@ -3200,13 +3209,13 @@ storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
     vat  |-> Vat
-    live |-> _ => 0
+    live |-> FlapLive => 0
 
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
     vat  |-> Vat
-    live |-> _ => 0
+    live |-> FlopLive => 0
 
 iff
 
@@ -3259,6 +3268,11 @@ for all
    Dai_f   : uint256
    Debt    : uint256
    Vice    : uint256
+   Live     : uint256
+   Sin      : uint256
+   Ash      : uint256
+   FlapLive : uint256
+   FlopLive : uint256
 
 storage
 
@@ -3266,9 +3280,9 @@ storage
     vat |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> _ => 0
-    Sin  |-> _ => 0
-    Ash  |-> _ => 0
+    live |-> Live => 0
+    Sin  |-> Sin => 0
+    Ash  |-> Ash => 0
 
 storage Vat
 
@@ -3282,13 +3296,13 @@ storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
     vat  |-> Vat
-    live |-> _ => 0
+    live |-> FlapLive => 0
 
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
     vat  |-> Vat
-    live |-> _ => 0
+    live |-> FlopLive => 0
 
 iff
 
@@ -3340,6 +3354,11 @@ for all
    Dai_f   : uint256
    Debt    : uint256
    Vice    : uint256
+   Live     : uint256
+   Sin      : uint256
+   Ash      : uint256
+   FlapLive : uint256
+   FlopLive : uint256
 
 storage
 
@@ -3347,9 +3366,9 @@ storage
    vat |-> Vat
    flopper |-> Flopper
    flapper |-> Flapper
-   live |-> _ => 0
-   Sin  |-> _ => 0
-   Ash  |-> _ => 0
+   live |-> Live => 0
+   Sin  |-> Sin => 0
+   Ash  |-> Ash => 0
 
 storage Vat
 
@@ -3363,13 +3382,13 @@ storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
     vat  |-> Vat
-    live |-> _ => 0
+    live |-> FlapLive => 0
 
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
     vat  |-> Vat
-    live |-> _ => 0
+    live |-> FlopLive => 0
 
 iff
 
@@ -3653,6 +3672,7 @@ for all
     Vat  : address VatLike
     May  : uint256
     Flip : address
+    Can  : uint256
 
 storage
 
@@ -3662,7 +3682,7 @@ storage
 
 storage Vat
 
-    can[ACCT_ID][Flip] |-> _ => 1
+    can[ACCT_ID][Flip] |-> Can => 1
 
 iff
 
@@ -3792,10 +3812,13 @@ for all
     Art     : uint256
     Ttl     : uint48
     Tau     : uint48
+    Bid     : uint256
+    Lot     : uint256
     Guy     : address
     Tic     : uint48
     End     : uint48
     Gal     : address
+    Tab     : uint256
     Usr     : address
 
 storage
@@ -3828,12 +3851,12 @@ storage Flipper
 
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
-    bids[1 + Kicks].bid         |-> _ => 0
-    bids[1 + Kicks].lot         |-> _ => Lot
+    bids[1 + Kicks].bid         |-> Bid => 0
+    bids[1 + Kicks].lot         |-> Lot => Lot
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
     bids[1 + Kicks].usr         |-> Usr => usr
     bids[1 + Kicks].gal         |-> Gal => Vow
-    bids[1 + Kicks].tab         |-> _ => #rmul(Chop, Art * Rate)
+    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art * Rate)
 
 iff
 
@@ -3880,14 +3903,15 @@ behaviour cage of Cat
 interface cage()
 
 for all
-  Auth : uint256
+  Ward : uint256
+  Live : uint256
 
 storage
-  wards[CALLER_ID] |-> Auth
-  live |-> _ => 0
+  wards[CALLER_ID] |-> Ward
+  live |-> Live => 0
 
 iff
-  Auth == 1
+  Ward == 1
   VCallValue == 0
 ```
 
@@ -5657,17 +5681,18 @@ interface cage(uint256 rad)
 
 for all
   Vat   : address VatLike
-  Auth  : uint256
+  Ward  : uint256
+  Live  : uint256
   Dai_a : uint256
   Dai_u : uint256
 
 storage
-  wards[CALLER_ID] |-> Auth
+  wards[CALLER_ID] |-> Ward
   vat              |-> Vat
-  live             |-> _ => 0
+  live             |-> Live => 0
 
 iff
-  Auth == 1
+  Ward == 1
   VCallDepth < 1024
   VCallValue == 0
 
@@ -6269,14 +6294,15 @@ behaviour cage of Flopper
 interface cage()
 
 for all
-  Auth : uint256
+  Ward : uint256
+  Live : uint256
 
 storage
-  wards[CALLER_ID] |-> Auth
-  live |-> _ => 0
+  wards[CALLER_ID] |-> Ward
+  live |-> Live => 0
 
 iff
-  Auth == 1
+  Ward == 1
   VCallValue == 0
 ```
 
@@ -6902,6 +6928,13 @@ for all
     Flopper : address Flopper
 
     Live : uint256
+    When : uint256
+
+    VatLive  : uint256
+    CatLive  : uint256
+    VowLive  : uint256
+    FlapLive : uint256
+    FlopLive : uint256
 
     CallerMay : uint256
     EndMayVat : uint256
@@ -6913,11 +6946,13 @@ for all
     FlapDai : uint256
     Awe : uint256
     Joy : uint256
+    Sin : uint256
+    Ash : uint256
 
 storage
 
     live |-> Live => 0
-    when |-> _ => TIME
+    when |-> When => TIME
     vat |-> Vat
     cat |-> Cat
     vow |-> Vow
@@ -6925,7 +6960,7 @@ storage
 
 storage Vat
 
-    live |-> _ => 0
+    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
     dai[Flap] |-> FlapDai => 0
     sin[Vow]  |-> Awe => #if Joy + FlapDai > Awe #then 0 #else Awe - Joy - FlapDai #fi
@@ -6933,27 +6968,27 @@ storage Vat
 
 storage Cat
 
-    live |-> _ => 0
+    live |-> CatLive => 0
     wards[ACCT_ID] |-> EndMayCat
 
 storage Vow
 
-    live |-> _ => 0
+    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> _ => 0
-    Ash |-> _ => 0
+    Sin |-> Sin => 0
+    Ash |-> Ash => 0
 
 storage Flapper
 
     wards[Vow] |-> VowMayFlap
-    live |-> _ => 0
+    live |-> FlapLive => 0
 
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> _ => 0
+    live |-> FlopLive => 0
 
 iff
 
@@ -7043,6 +7078,7 @@ for all
   Cat        : address Cat
   Flipper    : address Flipper
   EndMayYank : uint256
+  FlipCan    : uint256
   Bid    : uint256
   Lot    : uint256
   Tab    : uint256
@@ -7076,7 +7112,7 @@ storage Flipper
 
 storage Vat
   ilks[ilk].rate |-> Rate_i
-  can[ACCT_ID][Flipper] |-> _ => 1
+  can[ACCT_ID][Flipper] |-> FlipCan => 1
 
   dai[Guy] |-> Dai_g => Dai_g + Bid
   dai[Vow] |-> Joy   => Joy         + Tab
@@ -7519,11 +7555,12 @@ behaviour approve of DSToken
 interface approve(address usr, uint256 wad)
 
 for all
+  Allowed : uint256
   Stopped : bool
   Owner   : address
 
 storage
-  allowance[CALLER_ID][usr] |-> _ => wad
+  allowance[CALLER_ID][usr] |-> Allowed => wad
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
