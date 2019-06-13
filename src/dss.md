@@ -7563,11 +7563,8 @@ storage
 if
   usr == CALLER_ID
 
-iff in range uint256
-  Gem_u - wad
-  Gem_u + wad
-
 iff
+  wad <= Gem_u
   Stopped == 0
   VCallValue == 0
 
