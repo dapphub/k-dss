@@ -29,4 +29,8 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
 
 rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
 
+rule (chop(chop(A *Int B) /Int B) ==K A) => A *Int B <=Int maxUInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
 ```
