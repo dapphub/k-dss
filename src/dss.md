@@ -1880,7 +1880,7 @@ storage
 
 iff
 
-    holder == #symEcrec(#buf(32, keccak(#parseHexWord("0x19") : #parseHexWord("0x1") : #buf(32, Domain_separator) ++ #buf(32, keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) holder spender nonce expiry allowed)))) ++ #buf(32, v) ++ #buf(32, r) ++ #buf(32, s))
+    holder == #symEcrec(#buf(32, keccak(#asWord(#parseHexWord("0x19") : #parseHexWord("0x1")) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) holder spender nonce expiry allowed))) ++ #buf(32, v) ++ #buf(32, r) ++ #buf(32, s))
     expiry == 0 or TIME <= expiry
     VCallValue == 0
     nonce == Nonce
