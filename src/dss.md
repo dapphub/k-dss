@@ -6246,13 +6246,15 @@ iff
   Tic < TIME or End < TIME
   Tic =/= 0  or End < TIME
   Stopped == 0
-  Owner   == ACCT_ID
   VCallValue == 0
   VCallDepth < 1024
 
 iff in range uint256
   Gem_g  + Lot
   Supply + Lot
+
+if
+  Owner == ACCT_ID
 
 calls
   DSToken.mint
