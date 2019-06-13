@@ -6982,10 +6982,13 @@ for all
   Spot_i  : uint256
   Line_i  : uint256
   Dust_i  : uint256
+  Mat_i   : uint256
   Vat     : address VatLike
   Spotter : address Spotter
   DSValue : address DSValue
   Price   : uint256
+  Owner   : address
+  Ok      : bool
 
 storage
   vat      |-> Vat
@@ -6995,6 +6998,7 @@ storage
 
 storage Spotter
   ilks[ilk].pip |-> DSValue
+  ilks[ilk].mat |-> Mat_i
 
 storage Vat
   ilks[ilk].Art  |-> Art_i
@@ -7004,10 +7008,12 @@ storage Vat
   ilks[ilk].dust |-> Dust_i
 
 storage DSValue
-  val |-> Price
-  has |-> Ok
+  1 |-> #WordPackAddrUInt8(Owner, Ok)
+  2 |-> Price
 
 iff
+  VCallValue == 0
+  VCallDepth < 1024
   Live == 0
   Tag_i == 0
   Ok == 1
@@ -7018,6 +7024,8 @@ iff in range uint256
 calls
   End.rdiv
   Vat.ilks
+  Spotter.ilks
+  DSValue.read
 ```
 
 // todo: skip: tighten ranges
@@ -7792,4 +7800,65 @@ if
   Owner == CALLER_ID
   ACCT_ID =/= CALLER_ID
   src == CALLER_ID
+```
+
+# DSValue
+
+```act
+behaviour peek of DSValue
+interface peek()
+
+types
+  Owner : address
+  Value : bytes32
+  Ok    : bool
+
+storage
+  1 |-> #WordPackAddrUInt8(Owner, Ok)
+  2 |-> Value
+
+iff
+  VCallValue == 0
+
+returns Value : Ok
+```
+
+```act
+behaviour read of DSValue
+interface read()
+
+types
+  Owner : address
+  Value : bytes32
+  Ok    : bool
+
+storage
+  1 |-> #WordPackAddrUInt8(Owner, Ok)
+  2 |-> Value
+
+iff
+  VCallValue == 0
+  Ok == 1
+
+returns Value
+```
+
+# Spotter
+
+```act
+behaviour ilks of Spotter
+interface ilks(bytes32 ilk)
+
+for all
+  Pip : address
+  Mat : uint256
+
+storage
+  ilks[ilk].pip |-> Pip
+  ilks[ilk].mat |-> Mat
+
+iff
+  VCallValue == 0
+
+returns Pip : Mat
 ```
