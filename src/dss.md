@@ -7279,6 +7279,7 @@ interface free(bytes32 ilk)
 for all
   Vat    : address VatLike
   Vow    : address
+  Ward   : uint256
   Live   : uint256
   Ink_iu : uint256
   Art_iu : uint256
@@ -7290,12 +7291,14 @@ storage
   vat  |-> Vat
 
 storage Vat
+  wards[CALLER_ID]         |-> Ward
   urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
   urns[ilk][CALLER_ID].art |-> Art_iu
   gem[ilk][CALLER_ID]      |-> Gem_iu => Gem_iu + Ink_iu
 
 iff
   Live == 0
+  Ward == 1
   Art_iu == 0
   VCallValue == 0
   VCallDepth < 1024
