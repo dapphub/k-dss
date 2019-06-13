@@ -3682,7 +3682,7 @@ storage
 
 storage Vat
 
-    can[ACCT_ID][Flip] |-> Can => 1
+    can[ACCT_ID][data] |-> Can => (#if what == #string2Word("flip") #then 1 #else Can #fi)
 
 iff
 
