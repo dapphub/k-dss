@@ -7030,6 +7030,7 @@ for all
   Ok      : bool
 
 storage
+  live     |-> Live
   vat      |-> Vat
   spot     |-> Spotter
   Art[ilk] |-> Art_i
