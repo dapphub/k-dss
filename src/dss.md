@@ -7726,6 +7726,98 @@ returns 1
 ```
 
 ```act
+behaviour move of DSToken
+interface move(address src, address dst, uint wad)
+
+for all
+  Gem_s     : uint256
+  Gem_d     : uint256
+  Allowance : uint256
+  Owner     : address
+  Stopped   : bool
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance - wad
+  balances[src] |-> Gem_s => Gem_s - wad
+  balances[dst] |-> Gem_d => Gem_d + wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s - wad
+  Gem_d + wad
+  Allowance - wad
+
+iff
+  VCallValue == 0
+  Stopped == 0
+
+if
+  src =/= dst
+  src =/= CALLER_ID
+  Allowance =/= maxUInt256
+```
+
+```act
+behaviour move-max-approve of DSToken
+interface move(address src, address dst, uint wad)
+
+for all
+  Gem_s     : uint256
+  Gem_d     : uint256
+  Allowance : uint256
+  Owner     : address
+  Stopped   : bool
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
+  balances[src] |-> Gem_s => Gem_s - wad
+  balances[dst] |-> Gem_d => Gem_d + wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s - wad
+  Gem_d + wad
+
+iff
+  VCallValue == 0
+  Stopped == 0
+
+if
+  src =/= dst
+  Allowance == maxUInt256
+```
+
+```act
+behaviour move-self of DSToken
+interface move(address src, address dst, uint wad)
+
+for all
+  Gem_s     : uint256
+  Gem_d     : uint256
+  Allowance : uint256
+  Owner     : address
+  Stopped   : bool
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
+  balances[src] |-> Gem_s => Gem_s - wad
+  balances[dst] |-> Gem_d => Gem_d + wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff in range uint256
+  Gem_s - wad
+  Gem_d + wad
+
+iff
+  VCallValue == 0
+  Stopped == 0
+
+if
+  src =/= dst
+  src == CALLER_ID
+```
+
+```act
 behaviour mint of DSToken
 interface mint(address dst, uint wad)
 
