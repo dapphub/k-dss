@@ -7200,17 +7200,18 @@ behaviour skim of End
 interface skim(bytes32 ilk, address urn)
 
 for all
-  Vat : address VatLike
-  Vow : address
-  Tag : uint256
-  Awe : uint256
-  Art_iu : uint256
-  Ink_iu : uint256
+  Vat    : address VatLike
+  Vow    : address
+  Tag    : uint256
   Art_i  : uint256
   Rate_i : uint256
   Spot_i : uint256
   Line_i : uint256
   Dust_i : uint256
+  Gem_a  : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+  Awe    : uint256
 
 storage
   vat      |-> Vat
@@ -7257,18 +7258,19 @@ behaviour bail of End
 interface skim(bytes32 ilk, address urn)
 
 for all
-  Vat : address VatLike
-  Vow : address
-  Tag : uint256
-  Gap : uint256
-  Awe : uint256
-  Art_iu : uint256
-  Ink_iu : uint256
+  Vat    : address VatLike
+  Vow    : address
+  Tag    : uint256
+  Gap    : uint256
   Art_i  : uint256
   Rate_i : uint256
   Spot_i : uint256
   Line_i : uint256
   Dust_i : uint256
+  Gem_a  : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+  Awe    : uint256
 
 storage
   vat      |-> Vat
