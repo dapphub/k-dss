@@ -4401,7 +4401,7 @@ storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
   dai[CALLER_ID] |-> Dai_c => Dai_c - bid
   dai[Guy]       |-> Dai_u => Dai_u + bid
-  dai[Gal]       |-> Dai_g => Dai_g + bid - Bid
+  dai[Gal]       |-> Dai_g => Dai_g + (bid - Bid)
 
 iff
   VCallValue == 0
@@ -4424,7 +4424,7 @@ if
 iff in range uint256
   Dai_c - bid
   Dai_u + bid
-  Dai_g + bid - Bid
+  Dai_g + (bid - Bid)
   bid * #Ray
   Beg * Bid
 
@@ -5584,7 +5584,7 @@ storage DSToken
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Guy]       |-> Bal_usr => Bal_usr + Bid
-    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid
+    balances[Gal]       |-> Bal_gal => Bal_gal + (bid - Bid)
     allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed - bid
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
@@ -5608,7 +5608,7 @@ iff in range uint256
     Dai_c + lot
     bid - Bid
     Bal_usr + Bid
-    Bal_gal + bid - Bid
+    Bal_gal + (bid - Bid)
     Bal_caller - bid
     Allowed - bid
 
