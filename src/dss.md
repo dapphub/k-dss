@@ -5530,7 +5530,7 @@ if
     Allowed == maxUInt256
 
 calls
-    DSToken.transferFrom-max-approve
+    DSToken.move-max-approve
     Flapper.muluu
     Flapper.addu48u48
 ```
@@ -5619,7 +5619,7 @@ if
     Allowed < maxUInt256
 
 calls
-    DSToken.transferFrom
+    DSToken.move
     Flapper.muluu
     Flapper.addu48u48
 ```
@@ -5748,7 +5748,7 @@ iff in range uint256
   Gem_g + Bid
 
 calls
-  DSToken.transferFrom-self
+  DSToken.move-self
 
 if
   ACCT_ID =/= Guy
