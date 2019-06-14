@@ -33,6 +33,7 @@ rule (chop(chop(A *Int B) /Int B) ==K A) => A *Int B <=Int maxUInt256
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
+syntax Int ::= "posMinSInt256"
 rule posMinSInt256      => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
 
 
