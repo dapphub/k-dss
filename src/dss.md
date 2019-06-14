@@ -7136,7 +7136,7 @@ storage Vat
   urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
 storage
-  art[ilk] |-> Art => Art + (Tab / Rate_i)
+  Art[ilk] |-> Art => Art + (Tab / Rate_i)
 
 iff
   Tag =/= 0
