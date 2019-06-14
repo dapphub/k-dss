@@ -3797,8 +3797,11 @@ for all
     Vow     : address VowLike
     Flipper : address Flipper
     Live    : uint256
-    Rate    : uint256
-    Art_i   : uint256
+    Art_i  : uint256
+    Rate_i : uint256
+    Spot_i : uint256
+    Line_i : uint256
+    Dust_i : uint256
     Ink_iu  : uint256
     Art_iu  : uint256
     Gem_iv  : uint256
@@ -3832,21 +3835,24 @@ storage
     ilks[ilk].lump |-> Lump
 
 storage Vat
+    ilks[ilk].Art      |-> Art_i  => Art_i  - Art
+    ilks[ilk].rate     |-> Rate_i
+    ilks[ilk].spot     |-> Spot_i
+    ilks[ilk].line     |-> Line_i
+    ilks[ilk].dust     |-> Dust_i
 
     wards[ACCT_ID]     |-> CatMayVat
-    ilks[ilk].rate     |-> Rate
     urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lot
     urns[ilk][urn].art |-> Art_iu => Art_iu - Art
-    ilks[ilk].Art      |-> Art_i  => Art_i  - Art
     gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lot
-    sin[Vow]           |-> Sin_w  => Sin_w  + Art * Rate
-    vice               |-> Vice   => Vice   + Art * Rate
+    sin[Vow]           |-> Sin_w  => Sin_w  + Art * Rate_i
+    vice               |-> Vice   => Vice   + Art * Rate_i
 
 storage Vow
 
     wards[ACCT_ID]     |-> CatMayVow
-    sin[TIME]          |-> Sin_era => Sin_era + Art * Rate
-    Sin                |-> Sin     => Sin     + Art * Rate
+    sin[TIME]          |-> Sin_era => Sin_era + Art * Rate_i
+    Sin                |-> Sin     => Sin     + Art * Rate_i
 
 storage Flipper
 
@@ -3857,14 +3863,14 @@ storage Flipper
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
     bids[1 + Kicks].usr         |-> Usr => usr
     bids[1 + Kicks].gal         |-> Gal => Vow
-    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art * Rate)
+    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art * Rate_i)
 
 iff
 
     CatMayVat == 1
     CatMayVow == 1
     Live == 1
-    Ink_iu * Spot_i < Art_iu * Rate
+    Ink_iu * Spot_i < Art_iu * Rate_i
     (Ink_iu >= Lump and Lot == Lump) or (Ink_iu < Lump and Lot == Ink_iu)
     Art == Lot * Art_iu / Ink_iu
     Art <= posMinSInt256
@@ -3879,9 +3885,9 @@ iff in range uint256
     Art_iu - Art
     Art_i  - Art
     Gem_iv + Lot
-    Sin_w  + Art * Rate
-    Vice   + Art * Rate
-    Chop * Art * Rate
+    Sin_w  + Art * Rate_i
+    Vice   + Art * Rate_i
+    Chop * Art * Rate_i
 
 
 returns 1 + Kicks
@@ -7082,7 +7088,11 @@ for all
   End    : uint48
   Gal    : address
   Usr    : address
+  Art_i  : uint256
   Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
   Dai_g  : uint256
   Joy    : uint256
   Debt   : uint256
@@ -7106,7 +7116,12 @@ storage Flipper
   bids[id].gal         |-> Gal => 0
 
 storage Vat
+  ilks[ilk].Art  |-> Art_i
   ilks[ilk].rate |-> Rate_i
+  ilks[ilk].spot |-> Spot_i
+  ilks[ilk].line |-> Line_i
+  ilks[ilk].dust |-> Dust_i
+
   can[ACCT_ID][Flipper] |-> FlipCan => 1
 
   dai[Guy] |-> Dai_g => Dai_g + Bid
@@ -7172,7 +7187,11 @@ for all
   Awe : uint256
   Art_iu : uint256
   Ink_iu : uint256
+  Art_i  : uint256
   Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
 
 storage
   vat      |-> Vat
@@ -7180,7 +7199,12 @@ storage
   tag[ilk] |-> Tag
 
 storage Vat
+  ilks[ilk].Art      |-> Art_i
   ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
   gem[ACCT_ID]       |-> Gem_a  => Gem_a  + #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].ink |-> Ink_iu => Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].art |-> Art_iu => 0
@@ -7221,7 +7245,11 @@ for all
   Awe : uint256
   Art_iu : uint256
   Ink_iu : uint256
+  Art_i  : uint256
   Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
 
 storage
   vat      |-> Vat
@@ -7230,7 +7258,12 @@ storage
   gap[ilk] |-> Gap => Gap + (#rmul(#rmul(Art_iu, Rate_i), Tag) - Ink_iu)
 
 storage Vat
+  ilks[ilk].Art      |-> Art_i
   ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
   gem[ACCT_ID]       |-> Gem_a  => Gem_a  + Ink_iu
   urns[ilk][urn].ink |-> Ink_iu => 0
   urns[ilk][urn].art |-> Art_iu => 0
