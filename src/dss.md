@@ -6995,7 +6995,6 @@ iff
     VowMayFlop == 1
     VCallValue == 0
     VCallDepth < 1022
-    Price =/= 0
 
 calls
 
@@ -7052,6 +7051,7 @@ iff
   Live == 0
   Tag_i == 0
   Ok == 1
+  Price =/= 0
 
 iff in range uint256
   #Wad * #Ray
