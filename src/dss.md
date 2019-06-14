@@ -7069,8 +7069,6 @@ calls
   DSValue.read
 ```
 
-// todo: skip: tighten ranges
-
 ```act
 behaviour skip of End
 interface skip(bytes32 ilk, uint256 id)
@@ -7095,26 +7093,32 @@ for all
   Line_i : uint256
   Dust_i : uint256
   Dai_g  : uint256
+  Dai_a  : uint256
   Joy    : uint256
   Debt   : uint256
   Awe    : uint256
   Vice   : uint256
   Gem_a  : uint256
+  Gem_f  : uint256
   Ink_iu : uint256
   Art_iu : uint256
   Art    : uint256
+  Lump   : uint256
+  Chop   : uint256
 
 storage Cat
   ilks[ilk].flip |-> Flipper
+  ilks[ilk].lump |-> Lump
+  ilks[ilk].chop |-> Chop
 
 storage Flipper
   wards[CALLER_ID]     |-> EndMayYank
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
-  bids[id].tab         |-> Tab => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
   bids[id].usr         |-> Usr => 0
   bids[id].gal         |-> Gal => 0
+  bids[id].tab         |-> Tab => 0
 
 storage Vat
   ilks[ilk].Art  |-> Art_i
@@ -7125,13 +7129,15 @@ storage Vat
 
   can[ACCT_ID][Flipper] |-> FlipCan => 1
 
+  dai[ACCT_ID] |-> Dai_a
   dai[Guy] |-> Dai_g => Dai_g + Bid
-  dai[Vow] |-> Joy   => Joy         + Tab
-  debt     |-> Debt  => Debt  + Bid + Tab
-  sin[Vow] |-> Awe   => Awe   + Bid + Tab - ((Tab / Rate_i) * Rate_i)
-  vice     |-> Vice  => Vice  + Bid + Tab - ((Tab / Rate_i) * Rate_i)
+  dai[Vow] |-> Joy   => (Joy  + Tab)
+  debt     |-> Debt  => ((Debt + Tab) + Bid)
+  sin[Vow] |-> Awe   => ((Awe  + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
+  vice     |-> Vice  => ((Vice + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
 
-  gem[ilk][Flipper]  |-> Gem_a  => Gem_a  - Lot
+  gem[ilk][ACCT_ID]  |-> Gem_a
+  gem[ilk][Flipper]  |-> Gem_f  => Gem_f  - Lot
   urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
   urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
@@ -7139,32 +7145,38 @@ storage
   Art[ilk] |-> Art => Art + (Tab / Rate_i)
 
 iff
+  VCallValue == 0
+  VCallDepth < 1023
   Tag =/= 0
   EndMayYank == 1
   Guy =/= 0
   Bid < Tab
-  VCallValue == 0
-  VCallDepth < 1023
+  Lot <= posMinSInt256
+  Tab / Rate_i <= posMinSInt256
 
 if
   End =/= Flipper
   Guy =/= Flipper
 
 iff in range uint256
-  Art + (Tab / Rate_i)
-  (Tab / Rate_i) * Rate_i
+  Awe + Tab
+  Joy + Tab
+  Vice + Tab
+  Debt + Tab
+  (Awe + Tab) + Bid
+  Dai_a + Bid
+  (Vice + Tab) + Bid
+  (Debt + Tab) + Bid
+  Gem_f - Lot
+  Gem_a + Lot
   Dai_g + Bid
-  Joy         + Tab
-  Debt  + Bid + Tab
-  Awe   + Bid + Tab
-  Vice  + Bid + Tab
-  Awe   + Bid + Tab - ((Tab / Rate_i) * Rate_i)
-  Vice  + Bid + Tab - ((Tab / Rate_i) * Rate_i)
-  Gem_a  - Lot
+  Art + (Tab / Rate_i)
   Ink_iu + Lot
   Art_iu + (Tab / Rate_i)
-  Lot <= posMinSInt256
-  Tab / Rate_i <= posMinSInt256
+  Art_i + (Tab / Rate_i)
+  (Tab / Rate_i) * Rate_i
+  ((Awe + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
+  ((Vice + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
 
 calls
   End.adduu
@@ -7206,7 +7218,7 @@ storage Vat
   ilks[ilk].line     |-> Line_i
   ilks[ilk].dust     |-> Dust_i
 
-  gem[ACCT_ID]       |-> Gem_a  => Gem_a  + #rmul(#rmul(Art_iu, Rate_i), Tag)
+  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].ink |-> Ink_iu => Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
@@ -7265,7 +7277,7 @@ storage Vat
   ilks[ilk].line     |-> Line_i
   ilks[ilk].dust     |-> Dust_i
 
-  gem[ACCT_ID]       |-> Gem_a  => Gem_a  + Ink_iu
+  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + Ink_iu
   urns[ilk][urn].ink |-> Ink_iu => 0
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
