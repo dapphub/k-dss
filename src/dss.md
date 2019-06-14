@@ -6195,7 +6195,7 @@ storage
   vat  |-> Vat
   beg  |-> Beg
   ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[id].bid         |-> Bid => bid
+  bids[id].bid         |-> Bid
   bids[id].lot         |-> Lot => lot
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
 
