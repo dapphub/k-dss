@@ -7076,35 +7076,37 @@ interface skip(bytes32 ilk, uint256 id)
 for all
   Vat        : address VatLike
   Cat        : address Cat
+  Vow        : address
   Flipper    : address Flipper
+  Lump       : uint256
+  Chop       : uint256
   EndMayYank : uint256
+  Bid        : uint256
+  Lot        : uint256
+  Guy        : address
+  Tic        : uint48
+  End        : uint48
+  Gal        : address
+  Usr        : address
+  Tab        : uint256
+  Art_i      : uint256
+  Rate_i     : uint256
+  Spot_i     : uint256
+  Line_i     : uint256
+  Dust_i     : uint256
   FlipCan    : uint256
-  Bid    : uint256
-  Lot    : uint256
-  Tab    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Gal    : address
-  Usr    : address
-  Art_i  : uint256
-  Rate_i : uint256
-  Spot_i : uint256
-  Line_i : uint256
-  Dust_i : uint256
-  Dai_g  : uint256
-  Dai_a  : uint256
-  Joy    : uint256
-  Debt   : uint256
-  Awe    : uint256
-  Vice   : uint256
-  Gem_a  : uint256
-  Gem_f  : uint256
-  Ink_iu : uint256
-  Art_iu : uint256
-  Art    : uint256
-  Lump   : uint256
-  Chop   : uint256
+  Dai_a      : uint256
+  Dai_g      : uint256
+  Joy        : uint256
+  Debt       : uint256
+  Awe        : uint256
+  Vice       : uint256
+  Gem_a      : uint256
+  Gem_f      : uint256
+  Ink_iu     : uint256
+  Art_iu     : uint256
+  Art        : uint256
+  Tag        : uint256
 
 storage Cat
   ilks[ilk].flip |-> Flipper
@@ -7142,6 +7144,10 @@ storage Vat
   urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
 storage
+  vat      |-> Vat
+  cat      |-> Cat
+  vow      |-> Vow
+  tag[ilk] |-> Tag
   Art[ilk] |-> Art => Art + (Tab / Rate_i)
 
 iff
