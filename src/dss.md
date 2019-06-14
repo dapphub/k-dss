@@ -4442,6 +4442,7 @@ interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
   Vat : address VatLike
+  Ilk : bytes32
   Ttl : uint48
   Tau : uint48
   Beg : uint256
