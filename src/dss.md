@@ -7204,7 +7204,7 @@ calls
   End.adduu
   End.subuu
   End.rmul
-  End.min
+  End.minuu
   Vat.urns
   Vat.ilks
   Vat.grab
@@ -7255,7 +7255,7 @@ calls
   End.adduu
   End.subuu
   End.rmul
-  End.min
+  End.minuu
   Vat.urns
   Vat.ilks
   Vat.grab
