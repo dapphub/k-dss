@@ -3867,8 +3867,8 @@ iff
     Ink_iu * Spot_i < Art_iu * Rate
     (Ink_iu >= Lump and Lot == Lump) or (Ink_iu < Lump and Lot == Ink_iu)
     Art == Lot * Art_iu / Ink_iu
-    Art <= -minSInt256
-    Lot <= -minSInt256
+    Art <= 0 - minSInt256
+    Lot <= 0 - minSInt256
     VCallDepth < 1023
     VCallValue == 0
 
@@ -4794,7 +4794,7 @@ iff
     VCallValue == 0
     Stopped == 0
     May == 1
-    wad <= -minSInt256
+    wad <= 0 - minSInt256
 
 iff in range uint256
 
@@ -7148,8 +7148,8 @@ iff in range uint256
   Gem_a  - Lot
   Ink_iu + Lot
   Art_iu + (Tab / Rate_i)
-  Lot <= -minSInt256
-  Tab / Rate_i <= -minSInt256
+  Lot <= 0 - minSInt256
+  Tab / Rate_i <= 0 - minSInt256
 
 calls
   End.adduu
@@ -7189,9 +7189,9 @@ storage Vat
 
 iff
   Tag =/= 0
-  Art_iu <= -minSInt256
+  Art_iu <= 0 - minSInt256
   Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag) >= 0
-  Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag) <= -minSInt256
+  Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag) <= 0 - minSInt256
   VCallDepth < 1024
   VCallValue == 0
 
@@ -7240,8 +7240,8 @@ storage Vat
 iff
   Tag =/= 0
   Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #Ray)
-  Art_iu <= -minSInt256
-  Ink_iu <= -minSInt256
+  Art_iu <= 0 - minSInt256
+  Ink_iu <= 0 - minSInt256
   VCallDepth < 1024
   VCallValue == 0
 
@@ -7331,7 +7331,7 @@ iff
   Art_iu == 0
   VCallValue == 0
   VCallDepth < 1024
-  Ink_iu <= -minSInt256
+  Ink_iu <= 0 - minSInt256
 
 iff in range uint256
   Gem_iu + Ink_iu
