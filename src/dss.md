@@ -5586,12 +5586,11 @@ iff
     Stopped == 0
     Live    == 1
     Guy =/= 0
-    Tic == 0 or Tic > TIME
+    Tic > TIME or Tic == 0
     End > TIME
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
-    Stopped == 0
     VCallDepth < 1024
     VCallValue == 0
 
@@ -5603,7 +5602,7 @@ iff in range uint256
     bid - Bid
     Bal_usr + Bid
     Bal_gal + bid - Bid
-    Bal_caller  - bid
+    Bal_caller - bid
     Allowed - bid
 
 iff in range uint48
