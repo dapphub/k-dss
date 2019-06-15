@@ -4498,7 +4498,7 @@ if
 iff in range uint256
   Dai_c - bid
   Dai_g + bid
-  Gem_a - (Lot - Lot)
+  Gem_a - (Lot - lot)
   Gem_u + (Lot - lot)
   Lot * #Ray
   lot * Beg
