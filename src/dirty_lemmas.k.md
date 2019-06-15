@@ -40,5 +40,6 @@ rule 0 -Word X => 0 -Int X
 requires 0 <=Int X
 andBool X <=Int posMinSInt256
 
-
+rule ((X *Int pow160) +Int A) /Int pow160 => X
+  requires #rangeAddress(A)
 ```

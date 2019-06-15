@@ -4797,8 +4797,8 @@ storage DSToken
 
 iff
 
-    VCallDepth < 1024
     VCallValue == 0
+    VCallDepth < 1024
     Stopped == 0
     May == 1
     wad <= posMinSInt256
@@ -5496,7 +5496,7 @@ storage DSToken
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Guy]       |-> Bal_usr => Bal_usr + Bid
-    balances[Gal]       |-> Bal_gal => Bal_gal + bid - Bid
+    balances[Gal]       |-> Bal_gal => Bal_gal + (bid - Bid)
     allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
@@ -5521,7 +5521,7 @@ iff in range uint256
     Dai_c + lot
     bid - Bid
     Bal_usr + Bid
-    Bal_gal + bid - Bid
+    Bal_gal + (bid - Bid)
     Bal_caller - bid
 
 iff in range uint48
@@ -5529,11 +5529,11 @@ iff in range uint48
     TIME + Ttl
 
 if
+    #rangeUInt(48, TIME)
     ACCT_ID =/= CALLER_ID
     CALLER_ID =/= Guy
     CALLER_ID =/= Gal
     Gal =/= Guy
-    #rangeUInt(48, TIME)
     Allowed == maxUInt256
 
 calls
@@ -5617,11 +5617,11 @@ iff in range uint48
     TIME + Ttl
 
 if
+    #rangeUInt(48, TIME)
     ACCT_ID =/= CALLER_ID
     CALLER_ID =/= Guy
     CALLER_ID =/= Gal
     Gal =/= Guy
-    #rangeUInt(48, TIME)
     Allowed < maxUInt256
 
 calls
