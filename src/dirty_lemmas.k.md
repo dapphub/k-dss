@@ -38,7 +38,7 @@ rule posMinSInt256      => 57896044618658097711785492504343953926634992332820282
 
 rule 0 -Word X => 0 -Int X
 requires 0 <=Int X
-andBool X <= posMinSInt256
+andBool X <=Int posMinSInt256
 
 
 ```
