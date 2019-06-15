@@ -5505,7 +5505,7 @@ iff
     Stopped == 0
     Live    == 1
     Guy =/= 0
-    Tic == 0 or Tic > TIME
+    Tic > TIME or Tic == 0
     End > TIME
     Lot == lot
     Bid < bid
@@ -5590,6 +5590,8 @@ storage DSToken
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1024
     Stopped == 0
     Live    == 1
     Guy =/= 0
@@ -5598,8 +5600,6 @@ iff
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
-    VCallDepth < 1024
-    VCallValue == 0
 
 iff in range uint256
 
