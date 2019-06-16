@@ -4390,11 +4390,11 @@ for all
 storage
   vat          |-> Vat
   beg          |-> Beg
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[id].bid |-> Bid => bid
   bids[id].lot |-> Lot => lot
   bids[id].tab |-> Tab
   bids[id].gal |-> Gal
-  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
 
 storage Vat
@@ -4414,6 +4414,7 @@ iff
   bid <= Tab
   bid >  Bid
   (bid * #Ray >= Beg * Bid) or (bid == Tab)
+  Dai_c >= bid
 
 if
   CALLER_ID =/= ACCT_ID
@@ -4422,7 +4423,6 @@ if
   Guy =/= Gal
 
 iff in range uint256
-  Dai_c - bid
   Dai_u + bid
   Dai_g + (bid - Bid)
   bid * #Ray
@@ -4473,12 +4473,14 @@ storage
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
-  dai[CALLER_ID]    |-> Dai_c => Dai_c - Bid
-  dai[Guy]          |-> Dai_g => Dai_g + Bid
+  dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
+  dai[Guy]          |-> Dai_g => Dai_g + bid
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - lot)
   gem[Ilk][Usr]     |-> Gem_u => Gem_u + (Lot - lot)
 
 iff
+  VCallValue == 0
+  VCallDepth < 1024
   Guy =/= 0
   Can == 1
   Tic > TIME or Tic == 0
@@ -4487,8 +4489,8 @@ iff
   bid == Tab
   lot <  Lot
   Lot * #Ray >= lot * Beg
-  VCallValue == 0
-  VCallDepth < 1024
+  Dai_c >= bid
+  Gem_a >= (Lot - lot)
 
 if
   CALLER_ID =/= ACCT_ID
@@ -4496,9 +4498,7 @@ if
   ACCT_ID   =/= Usr
 
 iff in range uint256
-  Dai_c - bid
   Dai_g + bid
-  Gem_a - (Lot - lot)
   Gem_u + (Lot - lot)
   Lot * #Ray
   lot * Beg
@@ -5472,8 +5472,6 @@ for all
     End      : uint48
     Gal      : address
     Can      : uint256
-    Dai_v    : uint256
-    Dai_c    : uint256
     Bal_usr  : uint256
     Bal_gal  : uint256
     Bal_caller : uint256
@@ -5502,6 +5500,8 @@ storage DSToken
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1024
     Stopped == 0
     Live    == 1
     Guy =/= 0
@@ -5510,19 +5510,13 @@ iff
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
-    Stopped == 0
-    VCallDepth < 1024
-    VCallValue == 0
+    bid <= Bal_caller
 
 iff in range uint256
 
     bid * #Ray
-    Dai_v - lot
-    Dai_c + lot
-    bid - Bid
     Bal_usr + Bid
     Bal_gal + (bid - Bid)
-    Bal_caller - bid
 
 iff in range uint48
 
@@ -5560,8 +5554,6 @@ for all
     End      : uint48
     Gal      : address
     Can      : uint256
-    Dai_v    : uint256
-    Dai_c    : uint256
     Bal_usr  : uint256
     Bal_gal  : uint256
     Bal_caller : uint256
@@ -5600,17 +5592,14 @@ iff
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
+    bid <= Allowed
+    bid <= Bal_caller
 
 iff in range uint256
 
     bid * #Ray
-    Dai_v - lot
-    Dai_c + lot
-    bid - Bid
     Bal_usr + Bid
     Bal_gal + (bid - Bid)
-    Bal_caller - bid
-    Allowed - bid
 
 iff in range uint48
 
