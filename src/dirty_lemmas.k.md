@@ -42,4 +42,10 @@ andBool X <=Int posMinSInt256
 
 rule ((X *Int pow160) +Int A) /Int pow160 => X
   requires #rangeAddress(A)
+
+rule (Y *Int pow208 +Int A) /Int pow208 => Y
+  requires #rangeAddress(A)
+
+rule (Y *Int pow208 +Int X *Int pow160) /Int pow208 => Y
+  requires #rangeUInt(48, X)
 ```
