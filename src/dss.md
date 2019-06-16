@@ -5504,7 +5504,6 @@ iff
     VCallDepth < 1024
     Stopped == 0
     Live    == 1
-    Guy =/= 0
     Tic > TIME or Tic == 0
     End > TIME
     Lot == lot
