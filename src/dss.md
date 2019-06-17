@@ -4400,7 +4400,7 @@ storage
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
   dai[CALLER_ID] |-> Dai_c => Dai_c - bid
-  dai[Guy]       |-> Dai_u => Dai_u + bid
+  dai[Guy]       |-> Dai_u => Dai_u + Bid
   dai[Gal]       |-> Dai_g => Dai_g + (bid - Bid)
 
 iff
@@ -4423,7 +4423,7 @@ if
   Guy =/= Gal
 
 iff in range uint256
-  Dai_u + bid
+  Dai_u + Bid
   Dai_g + (bid - Bid)
   bid * #Ray
   Beg * Bid
@@ -5606,7 +5606,7 @@ iff in range uint48
 
 if
     #rangeUInt(48, TIME)
-    ACCT_ID =/= CALLER_ID
+    CALLER_ID =/= ACCT_ID
     CALLER_ID =/= Guy
     CALLER_ID =/= Gal
     Gal =/= Guy
