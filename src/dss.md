@@ -4406,7 +4406,6 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
-  Guy =/= 0
   Can == 1
   Tic > TIME or Tic == 0
   End > TIME
@@ -4414,7 +4413,6 @@ iff
   bid <= Tab
   bid >  Bid
   (bid * #Ray >= Beg * Bid) or (bid == Tab)
-  Dai_c >= bid
 
 if
   CALLER_ID =/= ACCT_ID
@@ -4423,10 +4421,13 @@ if
   Guy =/= Gal
 
 iff in range uint256
-  Dai_u + Bid
-  Dai_g + (bid - Bid)
   bid * #Ray
   Beg * Bid
+  Dai_c - Bid
+  Dai_u + Bid
+  Dai_c - (bid - Bid)
+  Dai_g + (bid - Bid)
+
 
 iff in range uint48
   TIME + Ttl
@@ -5509,13 +5510,14 @@ iff
     Lot == lot
     Bid < bid
     Bid * Beg <= bid * #Ray
-    bid <= Bal_caller
 
 iff in range uint256
 
     bid * #Ray
-    Bal_usr + Bid
-    Bal_gal + (bid - Bid)
+    Bal_caller - Bid
+    Bal_usr    + Bid
+    Bal_caller - (bid - Bid)
+    Bal_gal    + (bid - Bid)
 
 iff in range uint48
 
@@ -5523,7 +5525,7 @@ iff in range uint48
 
 if
     #rangeUInt(48, TIME)
-    ACCT_ID =/= CALLER_ID
+    CALLER_ID =/= ACCT_ID
     CALLER_ID =/= Guy
     CALLER_ID =/= Gal
     Gal =/= Guy
@@ -5585,7 +5587,6 @@ iff
     VCallDepth < 1024
     Stopped == 0
     Live    == 1
-    Guy =/= 0
     Tic > TIME or Tic == 0
     End > TIME
     Lot == lot
@@ -5597,8 +5598,10 @@ iff
 iff in range uint256
 
     bid * #Ray
-    Bal_usr + Bid
-    Bal_gal + (bid - Bid)
+    Bal_caller - Bid
+    Bal_usr    + Bid
+    Bal_caller - (bid - Bid)
+    Bal_gal    + (bid - Bid)
 
 iff in range uint48
 
