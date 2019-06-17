@@ -4490,8 +4490,6 @@ iff
   bid == Tab
   lot <  Lot
   Lot * #Ray >= lot * Beg
-  Dai_c >= bid
-  Gem_a >= (Lot - lot)
 
 if
   CALLER_ID =/= ACCT_ID
@@ -4499,7 +4497,9 @@ if
   ACCT_ID   =/= Usr
 
 iff in range uint256
+  Dai_c - bid
   Dai_g + bid
+  Gem_a - (Lot - lot)
   Gem_u + (Lot - lot)
   Lot * #Ray
   lot * Beg
