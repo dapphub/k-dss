@@ -36,9 +36,25 @@ rule (chop(chop(A *Int B) /Int B) ==K A) => A *Int B <=Int maxUInt256
 syntax Int ::= "posMinSInt256"
 rule posMinSInt256      => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
 
-rule 0 -Word X => 0 -Int X
+rule 0 -Word X => #if X ==Int 0 #then 0 #else pow256 -Int X #fi
 requires 0 <=Int X
 andBool X <=Int posMinSInt256
+/*
+  proof:
+
+  1) rule W0 -Word W1 => chop( (W0 +Int pow256) -Int W1 ) requires W0 <Int W1
+  2) rule chop ( I:Int ) => I modInt pow256 [concrete, smt-lemma]
+  3) rule W0 -Word W1 => chop( W0 -Int W1 ) requires W0 >=Int W1
+
+  Assume X != 0:
+
+  0 < X                   : 0 -W X =(1)=> chop( pow256 - X )
+  0 < pow256 - X < pow256 : chop( pow256 - X ) =(2)=> pow256 - X
+
+  Assume X == 0:
+
+  0 == X                  : 0 -W 0 =(3)=> chop( 0 - 0 )
+*/
 
 rule ((X *Int pow160) +Int A) /Int pow160 => X
   requires #rangeAddress(A)
