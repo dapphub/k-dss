@@ -4425,7 +4425,7 @@ iff in range uint256
   Beg * Bid
   Dai_c - Bid
   Dai_u + Bid
-  Dai_c - (bid - Bid)
+  Dai_c - bid
   Dai_g + (bid - Bid)
 
 
@@ -5516,7 +5516,7 @@ iff in range uint256
     bid * #Ray
     Bal_caller - Bid
     Bal_usr    + Bid
-    Bal_caller - (bid - Bid)
+    Bal_caller - bid
     Bal_gal    + (bid - Bid)
 
 iff in range uint48
@@ -5600,7 +5600,7 @@ iff in range uint256
     bid * #Ray
     Bal_caller - Bid
     Bal_usr    + Bid
-    Bal_caller - (bid - Bid)
+    Bal_caller - bid
     Bal_gal    + (bid - Bid)
 
 iff in range uint48
