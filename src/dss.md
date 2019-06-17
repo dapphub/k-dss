@@ -4812,7 +4812,7 @@ iff in range uint256
 
 if
 
-    usr =/= ACCT_ID
+    ACCT_ID =/= usr
 
 calls
   Vat.slip
