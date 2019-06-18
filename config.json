@@ -71,7 +71,10 @@
     "Vat_fork-diff",
     "Flipper_dent",
     "Flipper_tend",
-    "Flapper_tend"
+    "Flapper_tend",
+    "Flipper_tend-split",
+    "Flipper_dent-split",
+    "Flapper_tend-split"
     ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
