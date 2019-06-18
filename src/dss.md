@@ -870,6 +870,74 @@ calls
 ```
 
 ```act
+behaviour lock of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iv   : uint256
+    Dai_w    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Can_v    : uint256
+    Can_w    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    can[v][CALLER_ID] |-> Can_v
+    can[w][CALLER_ID] |-> Can_w
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
+    urns[i][u].art    |-> Urn_art  => Urn_art
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
+    dai[w]            |-> Dai_w    => Dai_w
+    debt              |-> Debt     => Debt
+    live              |-> Live
+
+iff
+    VCallValue == 0
+    Gem_iv >= dink
+    Urn_art <= maxSInt256
+    Ilk_rate <= maxSInt256
+    Urn_ink + dink <= maxSInt256
+    (Urn_ink + ABI_dink) * Ilk_spot <= maxUInt256
+    (Urn_art * Ilk_rate) <= maxUInt256
+    v == CALLER_ID or Can_v == 1
+    ((Urn_art * Ilk_rate) >= Ilk_dust) or (Urn_art == 0)
+    Ilk_rate =/= 0
+    Live == 1
+
+if
+    dart == 0
+    dink >= 0
+    u =/= v
+    v =/= w
+    u =/= w
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
 behaviour frob-same of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
