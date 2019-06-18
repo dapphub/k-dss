@@ -56,6 +56,43 @@ andBool X <=Int posMinSInt256
   0 == X                  : 0 -W 0 =(3)=> chop( 0 - 0 )
 */
 
+
+rule 0 <Int #signed(#if X ==K 0 #then 0 #else pow256 -Int X #fi) => false
+requires 0 <=Int X
+andBool X <=Int posMinSInt256
+
+/*
+  4) rule #signed(DATA) => DATA
+     requires 0 <=Int DATA andBool DATA <=Int maxSInt256
+
+  5) rule #signed(DATA) => DATA -Int pow256
+     requires maxSInt256 <Int DATA andBool DATA <=Int maxUInt256
+
+
+  Assume X == 0:
+    s(0) =(4)=> 0
+
+  Assume 0 < X <= posMinSInt256(2^255):
+
+  a) posMinSInt256(2^255) = maxSInt256(2^255 - 1) + 1
+
+  proof pow255  - 1 <  pow256(2^256) - X <= pow256 - 1:
+  proof pow255  - 1 <  pow256 - X
+      -pow255 - 1   <  - X                               |-pow256
+        X           <  pow255 + 1                        |*-1
+        X           <= pow255
+        X           <= posMinSInt256
+
+  proof pow256 - X <= pow256 - 1
+    -X <= -1                                          |-pow256
+     1 <=  X                                          |*-1
+
+
+  need: 0 <= X < maxSInt256
+
+
+*/
+
 rule ((X *Int pow160) +Int A) /Int pow160 => X
   requires #rangeAddress(A)
 
