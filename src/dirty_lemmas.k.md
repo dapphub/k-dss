@@ -112,4 +112,10 @@ rule #sizeWordStack(#range(WS, Y, Z, WSS), 0) => Z
 // rule #range( WS [ X := #padToWidth(32, #asByteStack(DATA))], Y, Z, WSS) => #range( WS, Y - 32, Z -Int 32, #padToWidth(32, #asByteStack(DATA)) : WSS)
 // requires X +Int 31 ==Int Y
 
+//assume ecrec returns an address
+rule maxUInt160 &Int #symEcrec(A) => #symEcrec(A)
+
+    rule 0 <=Int #symEcrec(V)             => true
+    rule         #symEcrec(V) <Int pow256 => true
+
 ```
