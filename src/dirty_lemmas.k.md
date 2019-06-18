@@ -101,4 +101,15 @@ rule (Y *Int pow208 +Int A) /Int pow208 => Y
 
 rule (Y *Int pow208 +Int X *Int pow160) /Int pow208 => Y
   requires #rangeUInt(48, X)
+
+rule #range(WS [ X := #padToWidth(32, Y) ], Z, 32, WSS) => #range(WS, Z, 32, WSS)
+  requires Z +Int 32 <Int X
+
+// possibly wrong but i'll keep using it as a hack
+rule #sizeWordStack(#range(WS, Y, Z, WSS), 0) => Z
+
+// wrong but something like this is needed
+// rule #range( WS [ X := #padToWidth(32, #asByteStack(DATA))], Y, Z, WSS) => #range( WS, Y - 32, Z -Int 32, #padToWidth(32, #asByteStack(DATA)) : WSS)
+// requires X +Int 31 ==Int Y
+
 ```
