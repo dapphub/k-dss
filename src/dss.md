@@ -4434,79 +4434,10 @@ calls
   Flipper.addu48u48
 ```
 
+note: currently failing due to timeout
+
 ```act
 behaviour tend of Flipper
-interface tend(uint256 id, uint256 lot, uint256 bid)
-
-for all
-  Vat : address VatLike
-  Beg : uint256
-  Bid : uint256
-  Lot : uint256
-  Tab : uint256
-  Gal : address
-  Ttl : uint48
-  Tau : uint48
-  Guy : address
-  Tic : uint48
-  End : uint48
-  Can   : uint256
-  Dai_c : uint256
-  Dai_u : uint256
-  Dai_g : uint256
-
-storage
-  vat          |-> Vat
-  beg          |-> Beg
-  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[id].bid |-> Bid => bid
-  bids[id].lot |-> Lot => lot
-  bids[id].tab |-> Tab
-  bids[id].gal |-> Gal
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-
-storage Vat
-  can[CALLER_ID][ACCT_ID] |-> Can
-  dai[CALLER_ID] |-> Dai_c => Dai_c - bid
-  dai[Guy]       |-> Dai_u => Dai_u + Bid
-  dai[Gal]       |-> Dai_g => Dai_g + (bid - Bid)
-
-iff
-  VCallValue == 0
-  VCallDepth < 1024
-  Can == 1
-  Tic > TIME or Tic == 0
-  End > TIME
-  lot == Lot
-  bid <= Tab
-  bid >  Bid
-  (bid * #Ray >= Beg * Bid) or (bid == Tab)
-
-if
-  CALLER_ID =/= ACCT_ID
-  CALLER_ID =/= Guy
-  CALLER_ID =/= Gal
-  Guy =/= Gal
-
-iff in range uint256
-  bid * #Ray
-  Beg * Bid
-  Dai_c - Bid
-  Dai_u + Bid
-  Dai_c - bid
-  Dai_g + (bid - Bid)
-
-
-iff in range uint48
-  TIME + Ttl
-
-calls
-  Flipper.muluu
-  Vat.move-diff
-```
-
-```act
-behaviour tend-split of Flipper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -4568,84 +4499,10 @@ calls
   Vat.move-diff
 ```
 
+note: currently failing due to timeout
+
 ```act
 behaviour dent of Flipper
-interface dent(uint256 id, uint256 lot, uint256 bid)
-
-for all
-  Vat : address VatLike
-  Ilk : bytes32
-  Ttl : uint48
-  Tau : uint48
-  Beg : uint256
-  Bid : uint256
-  Lot : uint256
-  Guy : address
-  Tic : uint48
-  End : uint48
-  Gal : address
-  Usr : address
-  Tab : uint256
-  Dai_c : uint256
-  Dai_g : uint256
-  Gem_a : uint256
-  Gem_u : uint256
-
-storage
-  vat          |-> Vat
-  ilk          |-> Ilk
-  beg          |-> Beg
-  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[id].bid |-> Bid
-  bids[id].lot |-> Lot => lot
-  bids[id].tab |-> Tab
-  bids[id].usr |-> Usr
-  bids[id].gal |-> Gal
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-
-storage Vat
-  can[CALLER_ID][ACCT_ID] |-> Can
-  dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
-  dai[Guy]          |-> Dai_g => Dai_g + bid
-  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - lot)
-  gem[Ilk][Usr]     |-> Gem_u => Gem_u + (Lot - lot)
-
-iff
-  VCallValue == 0
-  VCallDepth < 1024
-  Guy =/= 0
-  Can == 1
-  Tic > TIME or Tic == 0
-  End > TIME
-  bid == Bid
-  bid == Tab
-  lot <  Lot
-  Lot * #Ray >= lot * Beg
-
-if
-  CALLER_ID =/= ACCT_ID
-  CALLER_ID =/= Guy
-  ACCT_ID   =/= Usr
-
-iff in range uint256
-  Dai_c - bid
-  Dai_g + bid
-  Gem_a - (Lot - lot)
-  Gem_u + (Lot - lot)
-  Lot * #Ray
-  lot * Beg
-
-iff in range uint48
-  TIME + Ttl
-
-calls
-  Flipper.muluu
-  Vat.move-diff
-  Vat.flux-diff
-```
-
-```act
-behaviour dent-split of Flipper
 interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -5656,88 +5513,7 @@ calls
 
 #### Bidding on an auction (tend phase)
 
-
-```act
-behaviour tend-max-approve of Flapper
-interface tend(uint256 id, uint256 lot, uint256 bid)
-
-for all
-
-    DSToken  : address DSToken
-    Live     : uint256
-    Ttl      : uint48
-    Tau      : uint48
-    Beg      : uint256
-    Bid      : uint256
-    Lot      : uint256
-    Guy      : address
-    Tic      : uint48
-    End      : uint48
-    Gal      : address
-    Can      : uint256
-    Bal_usr  : uint256
-    Bal_gal  : uint256
-    Bal_caller : uint256
-    Owner      : address
-    Stopped    : bool
-    Allowed    : uint256
-
-storage
-
-    gem                  |-> DSToken
-    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
-    bids[id].bid         |-> Bid => bid
-    bids[id].lot         |-> Lot
-    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-    bids[id].gal         |-> Gal
-    live                 |-> Live
-    beg                  |-> Beg
-
-storage DSToken
-
-    balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
-    balances[Guy]       |-> Bal_usr => Bal_usr + Bid
-    balances[Gal]       |-> Bal_gal => Bal_gal + (bid - Bid)
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed
-    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff
-
-    VCallValue == 0
-    VCallDepth < 1024
-    Stopped == 0
-    Live    == 1
-    Tic > TIME or Tic == 0
-    End > TIME
-    Lot == lot
-    Bid < bid
-    Bid * Beg <= bid * #Ray
-
-iff in range uint256
-
-    bid * #Ray
-    Bal_caller - Bid
-    Bal_usr    + Bid
-    Bal_caller - bid
-    Bal_gal    + (bid - Bid)
-
-iff in range uint48
-
-    TIME + Ttl
-
-if
-    #rangeUInt(48, TIME)
-    CALLER_ID =/= ACCT_ID
-    CALLER_ID =/= Guy
-    CALLER_ID =/= Gal
-    Gal =/= Guy
-    Allowed == maxUInt256
-
-calls
-    DSToken.move-max-approve
-    Flapper.muluu
-    Flapper.addu48u48
-```
+note: currently failing due to timeout
 
 ```act
 behaviour tend of Flapper
@@ -5780,91 +5556,7 @@ storage DSToken
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Guy]       |-> Bal_usr => Bal_usr + Bid
     balances[Gal]       |-> Bal_gal => Bal_gal + (bid - Bid)
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed - bid
-    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff
-
-    VCallValue == 0
-    VCallDepth < 1024
-    Stopped == 0
-    Live    == 1
-    Tic > TIME or Tic == 0
-    End > TIME
-    Lot == lot
-    Bid < bid
-    Bid * Beg <= bid * #Ray
-    bid <= Allowed
-    bid <= Bal_caller
-
-iff in range uint256
-
-    bid * #Ray
-    Bal_caller - Bid
-    Bal_usr    + Bid
-    Bal_caller - bid
-    Bal_gal    + (bid - Bid)
-
-iff in range uint48
-
-    TIME + Ttl
-
-if
-    #rangeUInt(48, TIME)
-    CALLER_ID =/= ACCT_ID
-    CALLER_ID =/= Guy
-    CALLER_ID =/= Gal
-    Gal =/= Guy
-    Allowed < maxUInt256
-
-calls
-    DSToken.move
-    Flapper.muluu
-    Flapper.addu48u48
-```
-
-```act
-behaviour tend-split of Flapper
-interface tend(uint256 id, uint256 lot, uint256 bid)
-
-for all
-
-    DSToken  : address DSToken
-    Live     : uint256
-    Ttl      : uint48
-    Tau      : uint48
-    Beg      : uint256
-    Bid      : uint256
-    Lot      : uint256
-    Guy      : address
-    Tic      : uint48
-    End      : uint48
-    Gal      : address
-    Can      : uint256
-    Bal_usr  : uint256
-    Bal_gal  : uint256
-    Bal_caller : uint256
-    Owner      : address
-    Stopped    : bool
-    Allowed    : uint256
-
-storage
-
-    gem                  |-> DSToken
-    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
-    bids[id].bid         |-> Bid => bid
-    bids[id].lot         |-> Lot
-    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-    bids[id].gal         |-> Gal
-    live                 |-> Live
-    beg                  |-> Beg
-
-storage DSToken
-
-    balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
-    balances[Guy]       |-> Bal_usr => Bal_usr + Bid
-    balances[Gal]       |-> Bal_gal => Bal_gal + (bid - Bid)
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => Allowed - bid
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - bid #fi
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
@@ -5879,7 +5571,7 @@ iff
     Bal_usr + Bid <= maxUInt256
     Bal_gal + (bid - Bid) <= maxUInt256
     bid > Bid
-    bid <= Allowed
+    (Allowed == maxUInt256) or (bid <= Allowed)
     bid <= Bal_caller
     bid * #Ray >= Bid * Beg
     bid * #Ray <= maxUInt256
@@ -5890,7 +5582,6 @@ if
     CALLER_ID =/= Guy
     CALLER_ID =/= Gal
     Gal =/= Guy
-    Allowed < maxUInt256
 
 calls
     DSToken.move
