@@ -1936,9 +1936,9 @@ interface permit(address holder, address spender, uint256 nonce, uint256 expiry,
 
 types
 
-   Nonce   : uint256
-   Allowed : uint256
-   Domain_separator : bytes32
+    Nonce   : uint256
+    Allowed : uint256
+    Domain_separator : bytes32
 
 storage
 
@@ -1954,8 +1954,8 @@ iff
     nonce == Nonce
     VCallDepth < 1024
 
-iff in range uint256
-    Nonce + 1
+if
+    #rangeUInt(256, Nonce + 1)
 ```
 
 # Jug
