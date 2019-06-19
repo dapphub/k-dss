@@ -7634,6 +7634,9 @@ for all
   Ink_iu : uint256
   Art_iu : uint256
   Gem_iu : uint256
+  Rate_i : uint256
+  Sin_w  : uint256
+  Vice   : uint256
 
 storage
   live |-> Live
@@ -7641,10 +7644,13 @@ storage
   vat  |-> Vat
 
 storage Vat
-  wards[CALLER_ID]         |-> Ward
+  wards[ACCT_ID]           |-> Ward
   urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
   urns[ilk][CALLER_ID].art |-> Art_iu
   gem[ilk][CALLER_ID]      |-> Gem_iu => Gem_iu + Ink_iu
+  ilks[ilk].rate           |-> Rate_i
+  sin[Vow]                 |-> Sin_w
+  vice                     |-> Vice
 
 iff
   Live == 0
@@ -7656,6 +7662,9 @@ iff
 
 iff in range uint256
   Gem_iu + Ink_iu
+
+iff in range int256
+  Rate_i
 
 calls
   Vat.urns
