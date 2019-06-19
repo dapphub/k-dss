@@ -869,6 +869,8 @@ calls
     Vat.muluu
 ```
 
+note: failing due to timeout. A single path through `frob`.
+
 ```act
 behaviour lock of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
