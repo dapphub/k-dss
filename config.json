@@ -65,17 +65,9 @@
     }
   },
   "split_fail":[
-    "Vat_lock",
     "Vat_grab",
-    "Vat_fold",
     "Vat_fork-diff",
-    "Vat_fork-same",
-    "Flipper_dent",
-    "Flipper_tend",
-    "Flapper_tend",
-    "Flipper_tend-split",
-    "Flipper_dent-split",
-    "Flapper_tend-split"
+    "Vat_fork-same"
     ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
