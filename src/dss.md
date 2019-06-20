@@ -1938,7 +1938,7 @@ returns 1
 
 ```act
 behaviour permit of Dai
-interface permit(address holder, address spender, uint256 nonce, uint256 expiry, bool allowed, uint8 v, bytes32 r, bytes32 s)
+interface permit(address hodler, address ombudsman, uint256 n, uint256 ttl, bool may, uint8 v, bytes32 r, bytes32 s)
 
 types
 
@@ -1948,19 +1948,20 @@ types
 
 storage
 
-    nonces[holder]             |-> Nonce => Nonce + 1
-    DOMAIN_SEPARATOR           |-> Domain_separator
-    allowance[holder][spender] |-> Allowed => (#if allowed == 1 #then maxUInt256 #else 0 #fi)
+    nonces[hodler]               |-> Nonce => Nonce + 1
+    DOMAIN_SEPARATOR             |-> Domain_separator
+    allowance[hodler][ombudsman] |-> Allowed => (#if may == 1 #then maxUInt256 #else 0 #fi)
 
 iff
 
-    holder == #symEcrec(#buf(32, keccakIntList(#asWord(#parseHexWord("0x19") : #parseHexWord("0x1") : .WordStack) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) holder spender nonce expiry allowed))) ++ #buf(32, v) ++ #buf(32, r) ++ #buf(32, s))
-    expiry == 0 or TIME <= expiry
+    hodler == #symEcrec(#buf(32, keccakIntList(#asWord(#parseHexWord("0x19") : #parseHexWord("0x1") : .WordStack) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) hodler ombudsman n ttl may))) ++ #buf(32, v) ++ #buf(32, r) ++ #buf(32, s))
+    ttl == 0 or TIME <= ttl
     VCallValue == 0
-    nonce == Nonce
+    n == Nonce
     VCallDepth < 1024
 
 if
+
     #rangeUInt(256, Nonce + 1)
 ```
 
