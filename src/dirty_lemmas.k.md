@@ -13,7 +13,7 @@ rule (chop(chop(A *Int B) /Int B) ==K A) => A *Int B <=Int maxUInt256
 syntax Int ::= "posMinSInt256"
 rule posMinSInt256 => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
 
-rule 0 -Word X => #if X ==Int 0 #then 0 #else pow256 -Int X #fi
+rule 0 -Word X => #unsigned(0 -Int X)
   requires 0 <=Int X
   andBool X <=Int posMinSInt256
 /*
@@ -34,9 +34,9 @@ rule 0 -Word X => #if X ==Int 0 #then 0 #else pow256 -Int X #fi
 */
 
 
-rule 0 <Int #signed(#if X ==K 0 #then 0 #else pow256 -Int X #fi) => false
-requires 0 <=Int X
-andBool X <=Int posMinSInt256
+// rule 0 <Int #signed(#if X ==K 0 #then 0 #else pow256 -Int X #fi) => false
+// requires 0 <=Int X
+// andBool X <=Int posMinSInt256
 
 /*
   4) rule #signed(DATA) => DATA
