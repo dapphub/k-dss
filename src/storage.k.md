@@ -744,11 +744,15 @@ rule #DSToken.decimals => 6
 ### DSValue
 
 ```k
-syntax Int ::= "#DSValue.has" [function]
-rule #DSValue.has => 0
+syntax Int ::= "#DSValue.authority" [function]
+rule #DSValue.authority => 0
+
+syntax Int ::= "#DSValue.owner_has" [function]
+rule #DSValue.owner_has => 1
 
 syntax Int ::= "#DSValue.val" [function]
-rule #DSValue.val => 0
+rule #DSValue.val => 2
+
 ```
 
 ### Spotter
