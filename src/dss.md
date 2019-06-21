@@ -7118,8 +7118,11 @@ iff
   Tab / Rate_i <= posMinSInt256
 
 if
-  End =/= Flipper
-  Guy =/= Flipper
+  Flipper =/= ACCT_ID
+  Flipper =/= Guy
+  Guy =/= Vow
+  Guy =/= ACCT_ID
+  Vow =/= ACCT_ID
 
 iff in range uint256
   Awe + Tab
