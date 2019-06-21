@@ -26,6 +26,7 @@ SPEC_MANIFEST = $(SPECS_DIR)/specs.manifest
 all: dapp spec
 
 dapp:
+	dapp --version
 	git submodule update --init --recursive
 	cd $(DAPP_DIR) && dapp --use solc:0.5.9 build && cd ../
 
