@@ -2389,7 +2389,7 @@ lemma
 //  0d63    0da7
 pc
 
-    3322 => 3390
+    2618 => 2686
 
 for all
     Half   : uint256
