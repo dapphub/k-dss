@@ -850,8 +850,8 @@ iff
     (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
     (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)) and (Urn_ink + ABI_dink) * Ilk_spot <= maxSInt256)
     (dart <= 0 and dink >= 0) or (u == CALLER_ID or Can_u == 1)
-    (dink < 0) or (v == CALLER_ID or Can_v == 1)
-    (dart > 0) or (w == CALLER_ID or Can_w == 1)
+    (dink <= 0) or (v == CALLER_ID or Can_v == 1)
+    (dart >= 0) or (w == CALLER_ID or Can_w == 1)
     ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
     Ilk_rate =/= 0
     Live == 1
@@ -914,7 +914,6 @@ iff
     Urn_ink + dink <= maxSInt256
     (Urn_art * Ilk_rate) <= maxUInt256
     v == CALLER_ID or Can_v == 1
-    w == CALLER_ID or Can_w == 1
     (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
     Ilk_rate =/= 0
     Live == 1
