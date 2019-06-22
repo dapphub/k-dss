@@ -4473,6 +4473,7 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
+  Guy =/= 0
   Can == 1
   Tic > TIME or Tic == 0
   End > TIME
@@ -4543,6 +4544,7 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
+  Guy =/= 0
   Can == 1
   Tic > TIME or Tic == 0
   End > TIME
@@ -5559,6 +5561,7 @@ storage DSToken
 iff
     VCallValue == 0
     VCallDepth < 1024
+    Guy =/= 0
     Stopped == 0
     Live    == 1
     Tic > TIME or Tic == 0
