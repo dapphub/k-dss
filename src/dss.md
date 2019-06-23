@@ -7860,14 +7860,14 @@ types
   Gem_s     : uint256
   Supply    : uint256
   Allowance : uint256
-  Stopped   : bool
+  Stoppedd   : bool
   Owner     : address
 
 storage
   allowance[src][CALLER_ID] |-> Allowance => Allowance - wad
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stoppedd)
 
 iff in range uint256
   Gem_s  - wad
@@ -7876,7 +7876,7 @@ iff in range uint256
 
 iff
   VCallValue == 0
-  Stopped == 0
+  Stoppedd == 0
 
 if
   Owner == CALLER_ID
