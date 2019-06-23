@@ -1095,10 +1095,10 @@ storage
 iff
     VCallValue == 0
 
-    (dink >= 0) or ((Ink_u - dink <= maxUInt256) and (Ink_u + dink >= 0))
-    (dink <= 0) or ((Ink_u - dink >= 0) and (Ink_u + dink <= maxUInt256))
-    (dart >= 0) or ((Art_u - dart <= maxUInt256) and (Art_u + dart >= 0))
-    (dart <= 0) or ((Art_u - dart >= 0) and (Art_u + dart <= maxUInt256))
+    (dink >= 0) or (Ink_u - dink <= maxUInt256)
+    (dink <= 0) or (Ink_u - dink >= 0)
+    (dart >= 0) or (Art_u - dart <= maxUInt256)
+    (dart <= 0) or (Art_u - dart >= 0)
 
     Ink_u * Spot <= maxUInt256
 
