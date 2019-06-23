@@ -1262,38 +1262,37 @@ interface fold(bytes32 i, address u, int256 rate)
 
 for all
 
-    May   : uint256
-    Rate  : uint256
-    Dai   : uint256
-    Art_i : uint256
-    Debt  : uint256
+    May    : uint256
+    Rate_i : uint256
+    Dai_u  : uint256
+    Art_i  : uint256
+    Debt   : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[i].rate     |-> Rate => Rate + rate
+    ilks[i].rate     |-> Rate_i => Rate_i + rate
     ilks[i].Art      |-> Art_i
-    dai[u]           |-> Dai  => Dai  + Art_i * rate
-    debt             |-> Debt => Debt + Art_i * rate
+    dai[u]           |-> Dai_u => Dai_u + Art_i * rate
+    debt             |-> Debt  => Debt  + Art_i * rate
     live             |-> Live
 
 iff
 
-    // act: caller is `. ? : not` authorised
+    VCallValue == 0
     May == 1
     Live == 1
-    VCallValue == 0
+    (rate <= 0) or (Rate_i + rate <= maxUInt256)
+    (rate >= 0) or (Rate_i + rate >= 0)
+    Art_i <= maxSInt256
+    (rate <= 0) or (Art_i * rate <= maxSInt256)
+    (rate >= 0) or (Art_i * rate >= minSInt256)
 
 iff in range uint256
 
-    Rate + rate
-    Dai  + Art_i * rate
-    Debt + Art_i * rate
-
-iff in range int256
-
-    Art_i
-    Art_i * rate
+    Rate_i + rate
+    Dai_u  + (Art_i * rate)
+    Debt   + (Art_i * rate)
 
 calls
 
