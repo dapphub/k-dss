@@ -1899,7 +1899,7 @@ iff in range uint256
 
 iff
 
-    wad <= Allowed or src == CALLER_ID
+    (Allowed == maxUInt256) or (wad <= Allowed) or (src == CALLER_ID)
     VCallValue == 0
 
 calls
@@ -4955,13 +4955,13 @@ interface join(address usr, uint256 wad)
 
 for all
 
-    Vat         : address VatLike
-    Dai         : address Dai
-    Rad         : uint256
-    Supply      : uint256
-    Bal_caller  : uint256
-    Dai_adapter : uint256
-    Allowed     : uint256
+    Vat     : address VatLike
+    Dai     : address Dai
+    Supply  : uint256
+    Dai_c   : uint256
+    Dai_a   : uint256
+    Dai_u   : uint256
+    Allowed : uint256
 
 storage
 
@@ -4970,34 +4970,34 @@ storage
 
 storage Vat
 
-    dai[usr]     |-> Rad => Rad + #Ray * wad
-    dai[ACCT_ID] |-> Dai_adapter => Dai_adapter - #Ray * wad
+    dai[usr]     |-> Dai_u => Dai_u + (#Ray * wad)
+    dai[ACCT_ID] |-> Dai_a => Dai_a - (#Ray * wad)
 
 storage Dai
 
-    balanceOf[CALLER_ID]          |-> Bal_caller => Bal_caller - wad
-    totalSupply                   |-> Supply     => Supply - wad
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed    => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
+    balanceOf[CALLER_ID]          |-> Dai_c   => Dai_c - wad
+    totalSupply                   |-> Supply  => Supply - wad
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
-    wad <= Allowed
+    (Allowed == maxUInt256) or (wad <= Allowed)
 
 iff in range uint256
 
     #Ray * wad
-    Rad + #Ray * wad
-    Dai_adapter - #Ray * wad
+    Dai_a - #Ray * wad
+    Dai_u + #Ray * wad
+    Dai_c - wad
     Supply - wad
-    Bal_caller - wad
 
 if
 
-    CALLER_ID =/= ACCT_ID
-    usr =/= ACCT_ID
+    ACCT_ID =/= CALLER_ID
+    ACCT_ID =/= usr
 
 calls
 
