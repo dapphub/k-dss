@@ -913,7 +913,7 @@ iff
     Ilk_rate <= maxSInt256
     Urn_ink + dink <= maxSInt256
     (Urn_art * Ilk_rate) <= maxUInt256
-    v == CALLER_ID or Can_v == 1
+    (dink == 0) or (v == CALLER_ID or Can_v == 1)
     (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
     Ilk_rate =/= 0
     Live == 1
