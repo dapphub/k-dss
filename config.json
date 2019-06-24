@@ -67,7 +67,9 @@
   "split_fail":[
     "Vat_grab",
     "Vat_lock",
-    "Vat_fold"
+    "Vat_fold",
+    "Vow_cage-surplus",
+    "Vow_cage-balance"
     ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
