@@ -87,4 +87,14 @@ rule maxUInt160 &Int #symEcrec(A) => #symEcrec(A)
     rule 0 <=Int #symEcrec(V)             => true
     rule         #symEcrec(V) <Int pow256 => true
 
+syntax IntList ::= bytesToWords ( WordStack )       [function]
+ // --------------------------------------------------------------
+    rule bytesToWords ( WS )
+         => #asWord(#take(#sizeWordStack(WS) modInt 32, WS)) byteStack2IntList(#drop(#sizeWordStack(WS) modInt 32, WS))
+         requires #sizeWordStack(WS) modInt 32 >Int 0
+    rule bytesToWords ( WS ) => byteStack2IntList(WS)
+    requires #sizeWordStack(WS) modInt 32 ==Int 0
+    rule keccak(WS) => keccakIntList(bytesToWords(WS))
+      requires ( notBool #isConcrete(WS) )
+       andBool notBool( #sizeWordStack(WS) modInt 32 ==Int 0)
 ```
