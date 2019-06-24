@@ -3235,6 +3235,9 @@ calls
 
 #### system lock down
 
+note: most likely correct, but timing out on fail_rough and splitting
+causes out-of-memory
+
 ```act
 behaviour cage-surplus of Vow
 interface cage()
@@ -3322,6 +3325,9 @@ calls
   Flopper.cage
 ```
 
+note: most likely correct, but timing out on fail_rough and splitting
+causes out-of-memory
+
 ```act
 behaviour cage-deficit of Vow
 interface cage()
@@ -3407,6 +3413,9 @@ calls
   Flapper.cage
   Flopper.cage
 ```
+
+note: most likely correct, but timing out on fail_rough and splitting
+causes out-of-memory
 
 ```act
 behaviour cage-balance of Vow
@@ -3494,6 +3503,7 @@ calls
   Flapper.cage
   Flopper.cage
 ```
+
 # Cat
 
 The `Cat` is the system's liquidation agent: it decides when a position is unsafe and allows it to be seized and sent off to auction.
