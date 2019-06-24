@@ -66,8 +66,6 @@
   },
   "split_fail":[
     "Vat_grab",
-    "Vat_fork-diff",
-    "Vat_fork-same",
     "Vat_lock",
     "Vat_fold"
     ],
