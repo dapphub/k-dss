@@ -1308,7 +1308,6 @@ The `Dai` contract is the user facing ERC20 contract maintaining the accounting 
 
 ### Accessors
 
-<-- TODO: Name, symbol, domain separator (requires dynamic types) -->
 ```act
 behaviour wards of Dai
 interface wards(address usr)
