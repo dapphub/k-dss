@@ -1282,11 +1282,11 @@ iff
     VCallValue == 0
     May == 1
     Live == 1
-    (rate <= 0) or (Rate_i + rate <= maxUInt256)
-    (rate >= 0) or (Rate_i + rate >= 0)
     Art_i <= maxSInt256
-    (rate <= 0) or (Art_i * rate <= maxSInt256)
-    (rate >= 0) or (Art_i * rate >= minSInt256)
+
+iff in range int256
+
+    Art_i * rate
 
 iff in range uint256
 
