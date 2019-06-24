@@ -3291,7 +3291,6 @@ storage Flopper
 iff
 
     Can == 1
-    Dai_v + Dai_f > Sin_v
     MayFlap == 1
     MayFlop == 1
     VCallValue == 0
@@ -3305,6 +3304,7 @@ iff in range uint256
 
 if
 
+    Dai_v + Dai_f > Sin_v
     Flapper =/= ACCT_ID
     Flapper =/= Vat
     Flopper =/= ACCT_ID
@@ -3378,7 +3378,6 @@ storage Flopper
 iff
 
     Can == 1
-    Dai_v + Dai_f < Sin_v
     MayFlap == 1
     MayFlop == 1
     VCallValue == 0
@@ -3391,6 +3390,7 @@ iff in range uint256
 
 if
 
+    Dai_v + Dai_f < Sin_v
     Flapper =/= ACCT_ID
     Flapper =/= Vat
     Flopper =/= ACCT_ID
@@ -3464,7 +3464,6 @@ storage Flopper
 iff
 
     Can == 1
-    Dai_v + Dai_f == Sin_v
     MayFlap == 1
     MayFlop == 1
     VCallValue == 0
@@ -3478,6 +3477,7 @@ iff in range uint256
 
 if
 
+    Dai_v + Dai_f == Sin_v
     Flapper =/= ACCT_ID
     Flapper =/= Vat
     Flopper =/= ACCT_ID
