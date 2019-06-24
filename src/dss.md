@@ -3217,6 +3217,12 @@ iff in range uint256
     Joy   - Bump
     Dai_a + Bump
 
+if
+
+    Vat =/= Flapper
+    Vat =/= ACCT_ID
+    Flapper =/= ACCT_ID
+
 returns 1 + Kicks
 
 calls
