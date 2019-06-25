@@ -7048,7 +7048,9 @@ calls
 
   Vat.cage
   Cat.cage
-  Vow.cage
+  Vow.cage-surplus
+  Vow.cage-balance
+  Vow.cage-deficit
 ```
 
 ```act
