@@ -115,8 +115,8 @@ storage
 
 iff in range uint256
 
-    Urn_ink + dink
-    Urn_art + dart
+
+
     Ilk_Art + dart
     Gem_iv  - dink
     Dai_w + (Ilk_rate * dart)
