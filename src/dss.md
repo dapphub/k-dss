@@ -117,13 +117,13 @@ iff in range uint256
 
 
 
-    Ilk_Art + dart
+
     Gem_iv  - dink
     Dai_w + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
     (Ilk_Art + dart) * Ilk_rate
-    (Urn_ink + ABI_dink) * Ilk_spot
-
+    (Urn_ink + dink) * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
 
 
 
