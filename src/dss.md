@@ -3297,9 +3297,6 @@ returns 1 + Kicks
 
 #### system lock down
 
-note: most likely correct, but timing out on fail_rough and splitting
-causes out-of-memory
-
 ```act
 behaviour cage-surplus of Vow
 interface cage()
@@ -3385,9 +3382,6 @@ calls
   Flopper.cage
 ```
 
-note: most likely correct, but timing out on fail_rough and splitting
-causes out-of-memory
-
 ```act
 behaviour cage-deficit of Vow
 interface cage()
@@ -3471,9 +3465,6 @@ calls
   Flapper.cage
   Flopper.cage
 ```
-
-note: most likely correct, but timing out on fail_rough and splitting
-causes out-of-memory
 
 ```act
 behaviour cage-balance of Vow
