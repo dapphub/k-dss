@@ -5042,9 +5042,9 @@ storage
 
 storage Vat
 
-    can[usr][ACCT_ID] |-> Can
-    dai[usr]     |-> Dai_u => Dai_u + (#Ray * wad)
+    can[ACCT_ID][ACCT_ID] |-> Can
     dai[ACCT_ID] |-> Dai_a => Dai_a - (#Ray * wad)
+    dai[usr]     |-> Dai_u => Dai_u + (#Ray * wad)
 
 storage Dai
 
