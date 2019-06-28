@@ -3219,19 +3219,18 @@ for all
     Joy      : uint256
     Bump     : uint256
     Hump     : uint256
-    Kicks    : uint256
-    Ttl      : uint48
-    Tau      : uint48
-
     Can      : uint256
     Dai_a    : uint256
     FlapLive : uint256
-    Bid  : uint256
-    Lot  : uint256
-    Guy  : address
-    Tic  : uint48
-    End  : uint48
-    Gal  : address
+    Kicks    : uint256
+    Ttl      : uint48
+    Tau      : uint48
+    Bid      : uint256
+    Lot      : uint256
+    Guy      : address
+    Tic      : uint48
+    End      : uint48
+    Gal      : address
 
 storage
 
@@ -3264,37 +3263,36 @@ iff
 
     VCallValue == 0
     VCallDepth < 1023
-    // doc: there is enough `Joy`
     Joy >= (Awe + Bump) + Hump
-    // doc: there is no `Woe`
     (Awe - Sin) - Ash == 0
     FlapLive == 1
     Can == 1
 
 iff in range uint256
 
-    Awe + Bump
-    (Awe + Bump) + Hump
-    Awe - Sin
     1 + Kicks
     Dai_a + Bump
 
+iff in range uint48
+
+    TIME + Tau
+
 if
 
-    rangeUInt(48, TIME + Tau)
-    Vat =/= Flapper
-    Vat =/= ACCT_ID
-    Flapper =/= ACCT_ID
-
-returns 1 + Kicks
+    #rangeUInt(48, TIME)
+    Flapper =/= Vat
+    ACCT_ID =/= Vat
+    ACCT_ID =/= Flapper
 
 calls
 
-  Vow.subuu
-  Vow.adduu
-  Vat.dai
-  Vat.sin
-  Flapper.kick
+    Vow.subuu
+    Vow.adduu
+    Vat.dai
+    Vat.sin
+    Flapper.kick
+
+returns 1 + Kicks
 ```
 
 #### system lock down
