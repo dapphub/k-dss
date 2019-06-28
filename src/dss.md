@@ -5044,6 +5044,7 @@ for all
     Dai_a   : uint256
     Dai_u   : uint256
     Allowed : uint256
+    Can     : uint256
 
 storage
 
@@ -5052,6 +5053,7 @@ storage
 
 storage Vat
 
+    can[usr][ACCT_ID] |-> Can
     dai[usr]     |-> Dai_u => Dai_u + (#Ray * wad)
     dai[ACCT_ID] |-> Dai_a => Dai_a - (#Ray * wad)
 
@@ -5063,9 +5065,8 @@ storage Dai
 
 iff
 
-    // act: call stack is not too big
-    VCallDepth < 1024
     VCallValue == 0
+    VCallDepth < 1024
     (Allowed == maxUInt256) or (wad <= Allowed)
 
 iff in range uint256
