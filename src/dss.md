@@ -3255,10 +3255,10 @@ storage Flapper
 
 storage Vat
 
-    can[ACCT_ID][Flap] |-> Can
-    dai[ACCT_ID]       |-> Joy => Joy - Bump
-    sin[ACCT_ID]       |-> Awe
-    dai[Flap]          |-> Dai_a => Dai_a + Bump
+    can[ACCT_ID][Flapper] |-> Can
+    dai[ACCT_ID]          |-> Joy => Joy - Bump
+    sin[ACCT_ID]          |-> Awe
+    dai[Flapper]             |-> Dai_a => Dai_a + Bump
 
 iff
 
