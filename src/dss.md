@@ -6952,7 +6952,7 @@ returns Wad
 ## Behaviours
 
 ```act
-behaviour cage of End
+behaviour cage-surplus of End
 interface cage()
 
 for all
@@ -6979,11 +6979,11 @@ for all
     VowMayFlap : uint256
     VowMayFlop : uint256
 
-    FlapDai : uint256
-    Awe : uint256
-    Joy : uint256
-    Sin : uint256
-    Ash : uint256
+    Dai_f : uint256
+    Awe   : uint256
+    Joy   : uint256
+    Sin   : uint256
+    Ash   : uint256
 
 storage
 
@@ -6998,9 +6998,9 @@ storage Vat
 
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
-    dai[Flap] |-> FlapDai => 0
-    sin[Vow]  |-> Awe => #if Joy + FlapDai > Awe #then 0 #else Awe - Joy - FlapDai #fi
-    dai[Vow]  |-> Joy => #if Joy + FlapDai > Awe #then Joy + FlapDai - Awe #else 0 #fi
+    dai[Flap] |-> Dai_f => 0
+    sin[Vow]  |-> Awe   => 0
+    dai[Vow]  |-> Joy   => (Joy + Dai_f) - Awe
 
 storage Cat
 
@@ -7038,13 +7038,208 @@ iff
     VCallValue == 0
     VCallDepth < 1022
 
+if
+    Joy + Dai_f > Awe
+
 calls
 
   Vat.cage
   Cat.cage
   Vow.cage-surplus
-  Vow.cage-balance
+```
+
+```act
+behaviour cage-deficit of End
+interface cage()
+
+for all
+
+    Vat : address VatLike
+    Cat : address Cat
+    Vow : address VowLike
+    Flapper : address Flapper
+    Flopper : address Flopper
+
+    Live : uint256
+    When : uint256
+
+    VatLive  : uint256
+    CatLive  : uint256
+    VowLive  : uint256
+    FlapLive : uint256
+    FlopLive : uint256
+
+    CallerMay : uint256
+    EndMayVat : uint256
+    EndMayCat : uint256
+    EndMayVow : uint256
+    VowMayFlap : uint256
+    VowMayFlop : uint256
+
+    Dai_f : uint256
+    Awe   : uint256
+    Joy   : uint256
+    Sin   : uint256
+    Ash   : uint256
+
+storage
+
+    live |-> Live => 0
+    when |-> When => TIME
+    vat |-> Vat
+    cat |-> Cat
+    vow |-> Vow
+    wards[CALLER_ID] |-> CallerMay
+
+storage Vat
+
+    live |-> VatLive => 0
+    wards[ACCT_ID] |-> EndMayVat
+    dai[Flap] |-> Dai_f => 0
+    sin[Vow]  |-> Awe   => (Awe - Joy) - Dai_f
+    dai[Vow]  |-> Joy   => 0
+
+storage Cat
+
+    live |-> CatLive => 0
+    wards[ACCT_ID] |-> EndMayCat
+
+storage Vow
+
+    live |-> VowLive => 0
+    wards[ACCT_ID] |-> EndMayVow
+    flapper |-> Flapper
+    flopper |-> Flopper
+    Sin |-> Sin => 0
+    Ash |-> Ash => 0
+
+storage Flapper
+
+    wards[Vow] |-> VowMayFlap
+    live |-> FlapLive => 0
+
+storage Flopper
+
+    wards[Vow] |-> VowMayFlop
+    live |-> FlopLive => 0
+
+iff
+
+    Live == 1
+    CallerMay == 1
+    EndMayVat == 1
+    EndMayCat == 1
+    EndMayVow == 1
+    VowMayFlap == 1
+    VowMayFlop == 1
+    VCallValue == 0
+    VCallDepth < 1022
+
+if
+    Joy + Dai_f < Awe
+
+calls
+
+  Vat.cage
+  Cat.cage
   Vow.cage-deficit
+```
+
+```act
+behaviour cage-balance of End
+interface cage()
+
+for all
+
+    Vat : address VatLike
+    Cat : address Cat
+    Vow : address VowLike
+    Flapper : address Flapper
+    Flopper : address Flopper
+
+    Live : uint256
+    When : uint256
+
+    VatLive  : uint256
+    CatLive  : uint256
+    VowLive  : uint256
+    FlapLive : uint256
+    FlopLive : uint256
+
+    CallerMay : uint256
+    EndMayVat : uint256
+    EndMayCat : uint256
+    EndMayVow : uint256
+    VowMayFlap : uint256
+    VowMayFlop : uint256
+
+    Dai_f : uint256
+    Awe   : uint256
+    Joy   : uint256
+    Sin   : uint256
+    Ash   : uint256
+
+storage
+
+    live |-> Live => 0
+    when |-> When => TIME
+    vat |-> Vat
+    cat |-> Cat
+    vow |-> Vow
+    wards[CALLER_ID] |-> CallerMay
+
+storage Vat
+
+    live |-> VatLive => 0
+    wards[ACCT_ID] |-> EndMayVat
+    dai[Flap] |-> Dai_f => 0
+    sin[Vow]  |-> Awe   => 0
+    dai[Vow]  |-> Joy   => 0
+
+storage Cat
+
+    live |-> CatLive => 0
+    wards[ACCT_ID] |-> EndMayCat
+
+storage Vow
+
+    live |-> VowLive => 0
+    wards[ACCT_ID] |-> EndMayVow
+    flapper |-> Flapper
+    flopper |-> Flopper
+    Sin |-> Sin => 0
+    Ash |-> Ash => 0
+
+storage Flapper
+
+    wards[Vow] |-> VowMayFlap
+    live |-> FlapLive => 0
+
+storage Flopper
+
+    wards[Vow] |-> VowMayFlop
+    live |-> FlopLive => 0
+
+iff
+
+    Live == 1
+    CallerMay == 1
+    EndMayVat == 1
+    EndMayCat == 1
+    EndMayVow == 1
+    VowMayFlap == 1
+    VowMayFlop == 1
+    VCallValue == 0
+    VCallDepth < 1022
+
+if
+    Joy + Dai_f == Awe
+
+calls
+
+  Vat.cage
+  Cat.cage
+  Vow.cage-balance
 ```
 
 ```act
