@@ -4899,7 +4899,6 @@ calls
 
   Vat.slip
   DSToken.transferFrom
-  DSToken.transferFrom-max-approve
 ```
 
 #### withdrawing from the system
@@ -5796,7 +5795,7 @@ iff in range uint256
   Gem_g + Bid
 
 calls
-  DSToken.move-self
+  DSToken.move
 
 if
   ACCT_ID =/= Guy
@@ -7731,7 +7730,7 @@ for all
   Stopped   : bool
 
 storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance - wad
+  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src] |-> Gem_s => Gem_s - wad
   balances[dst] |-> Gem_d => Gem_d + wad
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
@@ -7739,80 +7738,15 @@ storage
 iff in range uint256
   Gem_s - wad
   Gem_d + wad
-  Allowance - wad
 
 iff
+  (Allowance == maxUInt256) or (wad <= Allowance)
   VCallValue == 0
   Stopped == 0
 
 if
   src =/= dst
   src =/= CALLER_ID
-  Allowance =/= maxUInt256
-
-returns 1
-```
-
-```act
-behaviour transferFrom-max-approve of DSToken
-interface transferFrom(address src, address dst, uint wad)
-
-for all
-  Gem_s     : uint256
-  Gem_d     : uint256
-  Allowance : uint256
-  Owner     : address
-  Stopped   : bool
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src] |-> Gem_s => Gem_s - wad
-  balances[dst] |-> Gem_d => Gem_d + wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s - wad
-  Gem_d + wad
-
-iff
-  VCallValue == 0
-  Stopped == 0
-
-if
-  src =/= dst
-  Allowance == maxUInt256
-
-returns 1
-```
-
-```act
-behaviour transferFrom-self of DSToken
-interface transferFrom(address src, address dst, uint wad)
-
-for all
-  Gem_s     : uint256
-  Gem_d     : uint256
-  Allowance : uint256
-  Owner     : address
-  Stopped   : bool
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src] |-> Gem_s => Gem_s - wad
-  balances[dst] |-> Gem_d => Gem_d + wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s - wad
-  Gem_d + wad
-
-iff
-  VCallValue == 0
-  Stopped == 0
-
-if
-  src =/= dst
-  src == CALLER_ID
 
 returns 1
 ```
@@ -7829,7 +7763,7 @@ for all
   Stopped   : bool
 
 storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance - wad
+  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src] |-> Gem_s => Gem_s - wad
   balances[dst] |-> Gem_d => Gem_d + wad
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
@@ -7837,76 +7771,15 @@ storage
 iff in range uint256
   Gem_s - wad
   Gem_d + wad
-  Allowance - wad
 
 iff
+  (Allowance == maxUInt256) or (wad <= Allowance)
   VCallValue == 0
   Stopped == 0
 
 if
   src =/= dst
   src =/= CALLER_ID
-  Allowance =/= maxUInt256
-```
-
-```act
-behaviour move-max-approve of DSToken
-interface move(address src, address dst, uint wad)
-
-for all
-  Gem_s     : uint256
-  Gem_d     : uint256
-  Allowance : uint256
-  Owner     : address
-  Stopped   : bool
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src] |-> Gem_s => Gem_s - wad
-  balances[dst] |-> Gem_d => Gem_d + wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s - wad
-  Gem_d + wad
-
-iff
-  VCallValue == 0
-  Stopped == 0
-
-if
-  src =/= dst
-  Allowance == maxUInt256
-```
-
-```act
-behaviour move-self of DSToken
-interface move(address src, address dst, uint wad)
-
-for all
-  Gem_s     : uint256
-  Gem_d     : uint256
-  Allowance : uint256
-  Owner     : address
-  Stopped   : bool
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src] |-> Gem_s => Gem_s - wad
-  balances[dst] |-> Gem_d => Gem_d + wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s - wad
-  Gem_d + wad
-
-iff
-  VCallValue == 0
-  Stopped == 0
-
-if
-  src =/= dst
-  src == CALLER_ID
 ```
 
 ```act
@@ -7949,7 +7822,7 @@ types
   Owner     : address
 
 storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance - wad
+  allowance[src][CALLER_ID] |-> Allowance => #if (src == CALLER_ID or Allowance == maxUInt256) #then Allowance #else Allowance - wad #fi
   balances[src]             |-> Gem_s  => Gem_s  - wad
   supply                    |-> Supply => Supply - wad
   owner_stopped |-> #WordPackAddrUInt8(Owner, Stoppedd)
@@ -7957,81 +7830,16 @@ storage
 iff in range uint256
   Gem_s  - wad
   Supply - wad
-  Allowance - wad
 
 iff
+  (Allowance == maxUInt256) or (wad <= Allowance)
   VCallValue == 0
   Stoppedd == 0
 
 if
-  Owner == CALLER_ID
-  ACCT_ID =/= CALLER_ID
-  src =/= CALLER_ID
-  Allowance =/= maxUInt256
-```
-
-```act
-behaviour burn-max-approve of DSToken
-interface burn(address src, uint wad)
-
-types
-  Gem_s     : uint256
-  Supply    : uint256
-  Allowance : uint256
-  Stopped   : bool
-  Owner     : address
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src]             |-> Gem_s  => Gem_s  - wad
-  supply                    |-> Supply => Supply - wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s  - wad
-  Supply - wad
-
-iff
-  VCallValue == 0
-  Stopped == 0
-
-if
-  Owner == CALLER_ID
-  ACCT_ID =/= CALLER_ID
-  src =/= CALLER_ID
-  Allowance == maxUInt256
-```
-
-```act
-behaviour burn-self of DSToken
-interface burn(address src, uint wad)
-
-types
-  Gem_s     : uint256
-  Supply    : uint256
-  Allowance : uint256
-  Stopped   : bool
-  Owner     : address
-
-storage
-  allowance[src][CALLER_ID] |-> Allowance => Allowance
-  balances[src]             |-> Gem_s  => Gem_s  - wad
-  supply                    |-> Supply => Supply - wad
-  owner_stopped |-> #WordPackAddrUInt8(Owner, Stopped)
-
-iff in range uint256
-  Gem_s  - wad
-  Supply - wad
-
-iff
-  wad <= Allowance or src == CALLER_ID
-  VCallValue == 0
-  Stopped == 0
-
-if
-  Owner == CALLER_ID
-  ACCT_ID =/= CALLER_ID
-  src == CALLER_ID
+  CALLER_ID == Owner
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= src
 ```
 
 # DSValue
