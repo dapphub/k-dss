@@ -3384,8 +3384,6 @@ if
 
 calls
 
-  Vow.subuu
-  Vow.adduu
   Vow.minuu
   Vat.dai
   Vat.sin
@@ -3473,8 +3471,6 @@ if
 
 calls
 
-  Vow.subuu
-  Vow.adduu
   Vow.minuu
   Vat.dai
   Vat.sin
@@ -3563,8 +3559,6 @@ if
 
 calls
 
-  Vow.subuu
-  Vow.adduu
   Vow.minuu
   Vat.dai
   Vat.sin
