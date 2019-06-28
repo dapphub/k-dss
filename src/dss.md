@@ -3256,37 +3256,32 @@ storage Flapper
 storage Vat
 
     can[ACCT_ID][Flapper] |-> Can
-    dai[ACCT_ID]          |-> Joy => Joy - Bump
     sin[ACCT_ID]          |-> Awe
-    dai[Flapper]             |-> Dai_a => Dai_a + Bump
+    dai[ACCT_ID]          |-> Joy   => Joy   - Bump
+    dai[Flapper]          |-> Dai_a => Dai_a + Bump
 
 iff
 
-    FlapLive == 1
+    VCallValue == 0
+    VCallDepth < 1023
     // doc: there is enough `Joy`
     Joy >= (Awe + Bump) + Hump
     // doc: there is no `Woe`
     (Awe - Sin) - Ash == 0
+    FlapLive == 1
     Can == 1
-    VCallDepth < 1023
-    VCallValue == 0
-
-iff in range uint48
-
-    TIME + Tau
 
 iff in range uint256
 
     Awe + Bump
     (Awe + Bump) + Hump
     Awe - Sin
-    (Awe - Sin) - Ash
     1 + Kicks
-    Joy   - Bump
     Dai_a + Bump
 
 if
 
+    rangeUInt(48, TIME + Tau)
     Vat =/= Flapper
     Vat =/= ACCT_ID
     Flapper =/= ACCT_ID
