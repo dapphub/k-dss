@@ -66,7 +66,8 @@
   },
   "split_fail":[
     "Vat_grab",
-    "Vat_lock"
+    "Vat_lock",
+    "Vat_fold"
     ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
