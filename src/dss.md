@@ -7371,8 +7371,8 @@ iff
   VCallValue == 0
   VCallDepth < 1023
   Tag =/= 0
-  EndMayYank == 1
   Guy =/= 0
+  EndMayYank == 1
   Bid < Tab
   Lot <= posMinSInt256
   Tab / Rate_i <= posMinSInt256
@@ -7385,23 +7385,19 @@ if
   Vow =/= ACCT_ID
 
 iff in range uint256
-  Awe + Tab
   Joy + Tab
-  Vice + Tab
-  Debt + Tab
-  (Awe + Tab) + Bid
-  Dai_a + Bid
+  (Awe  + Tab) + Bid
   (Vice + Tab) + Bid
   (Debt + Tab) + Bid
   Gem_f - Lot
   Gem_a + Lot
+  Dai_a + Bid
   Dai_g + Bid
-  Art + (Tab / Rate_i)
   Ink_iu + Lot
+  Art    + (Tab / Rate_i)
   Art_iu + (Tab / Rate_i)
-  Art_i + (Tab / Rate_i)
-  (Tab / Rate_i) * Rate_i
-  ((Awe + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
+  Art_i  + (Tab / Rate_i)
+  ((Awe  + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
   ((Vice + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
 
 calls
@@ -7423,6 +7419,7 @@ for all
   Vat    : address VatLike
   Vow    : address
   Tag    : uint256
+  Gap    : uint256
   Art_i  : uint256
   Rate_i : uint256
   Spot_i : uint256
@@ -7432,11 +7429,13 @@ for all
   Ink_iu : uint256
   Art_iu : uint256
   Awe    : uint256
+  Vice   : uint256
 
 storage
   vat      |-> Vat
   vow      |-> Vow
   tag[ilk] |-> Tag
+  gap[ilk] |-> Gap
 
 storage Vat
   ilks[ilk].Art      |-> Art_i
@@ -7449,6 +7448,7 @@ storage Vat
   urns[ilk][urn].ink |-> Ink_iu => Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
+  vice               |-> Vice
 
 iff
   Tag =/= 0
@@ -7491,6 +7491,7 @@ for all
   Ink_iu : uint256
   Art_iu : uint256
   Awe    : uint256
+  Vice   : uint256
 
 storage
   vat      |-> Vat
@@ -7509,6 +7510,7 @@ storage Vat
   urns[ilk][urn].ink |-> Ink_iu => 0
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
+  vice               |-> Vice
 
 iff
   Tag =/= 0
