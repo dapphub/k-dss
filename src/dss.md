@@ -3987,7 +3987,7 @@ storage Flipper
     bids[1 + Kicks].bid         |-> Bid => 0
     bids[1 + Kicks].lot         |-> Lot => Lot
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
-    bids[1 + Kicks].usr         |-> Usr => usr
+    bids[1 + Kicks].usr         |-> Usr => urn
     bids[1 + Kicks].gal         |-> Gal => Vow
     bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art * Rate_i)
 
