@@ -66,8 +66,7 @@
   },
   "split_fail":[
     "Vat_grab",
-    "Vat_fork-diff",
-    "Vat_frob-diff"
+    "Vat_fork-diff"
     ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
