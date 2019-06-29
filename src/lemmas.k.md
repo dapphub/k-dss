@@ -367,6 +367,16 @@ rule notBool((Mask0_26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
 rule #unsigned(X) ==K 0 => X ==Int 0
   requires #rangeSInt(256, X)
 
+rule chop(A +Int #unsigned(B)) => A +Int B
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeUInt(256, A +Int B)
+
+rule chop(A +Int B) >Int A => false
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+  andBool notBool #rangeUInt(256, A +Int B)
+
 // mului
 // lemmas for sufficiency
 rule A *Int #unsigned(B) => #unsigned(A *Int B)
@@ -398,7 +408,8 @@ rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int sgn(#unsigned(B)), chop(abs
   andBool B =/=Int 0
   andBool notBool #rangeSInt(256, A *Int B)
 
-rule (chop(A *Int B) /Int B ==K A) => A *Int B <=Int maxUInt256
+rule (chop(A *Int B) /Int B ==K A) => false
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
+  andBool notBool #rangeUInt(256, A *Int B)
 ```
