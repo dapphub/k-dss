@@ -328,6 +328,15 @@ rule ((X *Int pow208) +Int A) /Int pow160 => X *Int pow48
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
 
+rule ((X *Int pow160) +Int A) /Int pow160 => X
+  requires #rangeAddress(A)
+
+rule (Y *Int pow208 +Int X *Int pow160) /Int pow208 => Y
+  requires #rangeUInt(48, X)
+
+rule (Y *Int pow208 +Int A) /Int pow208 => Y
+  requires #rangeAddress(A)
+
 rule maxUInt48 &Int (X *Int pow48) => 0
   requires #rangeUInt(48, X)
 ```
@@ -367,15 +376,60 @@ rule notBool((Mask0_26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
 rule #unsigned(X) ==K 0 => X ==Int 0
   requires #rangeSInt(256, X)
 
+// rule 0 <Int #unsigned(X) => 0 <Int X
+//   requires #rangeSInt(256, X)
+
+// uadd
+// lemmas for necessity
+rule notBool(chop(A +Int B) <Int A) => A +Int B <=Int maxUInt256
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+// usub
+// lemmas for necessity
+rule notBool(A -Word B >Int A) => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+// addui
+// lemmas for sufficiency
 rule chop(A +Int #unsigned(B)) => A +Int B
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool #rangeUInt(256, A +Int B)
 
-rule chop(A +Int B) >Int A => false
+// lemmas for necessity
+// rule chop(A +Int #unsigned(B)) >Int A => (A +Int B <=Int maxUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeSInt(256, B)
+//   andBool B >=Int 0
+
+// rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeUInt(256, B)
+
+// rule (A +Int #unsigned(B) <=Int maxUInt256) => (A +Int B <=Int maxUInt256)
+//   requires #rangeUInt(256, A)
+//   andBool #rangeSInt(256, B)
+//   andBool B >=Int 0
+
+rule chop(A +Int (pow256 +Int B)) <Int A => 0 <=Int A +Int B
   requires #rangeUInt(256, A)
-  andBool #rangeUInt(256, B)
-  andBool notBool #rangeUInt(256, A +Int B)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
+
+// subui
+// lemmas for sufficiency
+rule A -Word #unsigned(B) => A -Int B
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool #rangeUInt(256, A -Int B)
+
+// lemmas for necessity
+rule notBool(chop(A -Int (pow256 +Int B)) >Int A) => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
 
 // mului
 // lemmas for sufficiency
@@ -402,14 +456,15 @@ rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)), A) => A
 rule #signed(X) <Int 0 => notBool #rangeSInt(256, X)
    requires #rangeUInt(256, X)
 
-rule (#sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int sgn(#unsigned(B)), chop(abs(chop(A *Int #unsigned(B))) /Int abs(#unsigned(B)))) ==K A) => false
-  requires #rangeUInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool B =/=Int 0
-  andBool notBool #rangeSInt(256, A *Int B)
+rule #sgnInterp(sgn(chop(A *Int B)), chop(abs(chop(A *Int B)) /Int B)) ==K A => #rangeSInt(256, A *Int B)
+requires #rangeUInt(256, A)
+andBool  #rangeSInt(256, B)
 
-rule (chop(A *Int B) /Int B ==K A) => false
+rule #sgnInterp(sgn(chop(A *Int (pow256 +Int B))) *Int -1, chop(abs(chop(A *Int (pow256 +Int B))) /Int (pow256 -Int (pow256 +Int B)))) ==K A => #rangeSInt(256, A *Int B)
+requires #rangeUInt(256, A)
+andBool  #rangeSInt(256, B)
+
+rule (chop(A *Int B) /Int B ==K A) => #rangeUInt(256, A *Int B)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
-  andBool notBool #rangeUInt(256, A *Int B)
 ```
