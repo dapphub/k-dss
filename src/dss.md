@@ -4003,6 +4003,7 @@ iff
     Lot <= posMinSInt256
     VCallDepth < 1023
     VCallValue == 0
+    Ink_iu != 0
 
 
 iff in range uint256
@@ -4014,6 +4015,9 @@ iff in range uint256
     Sin_w  + Art * Rate_i
     Vice   + Art * Rate_i
     Chop * Art * Rate_i
+    Art_iu * Rate_i
+    Lump * Art_iu
+    Ink_iu * Art_iu
 
 
 returns 1 + Kicks

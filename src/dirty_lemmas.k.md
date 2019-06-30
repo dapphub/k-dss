@@ -102,4 +102,8 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
 // another gas optimisation
 rule ((A -Int (X +Int C)) +Int ((C -Int D) -Int Y)) => ((A -Int X) -Int Y) -Int D
 
+rule (#if C #then A #else B #fi *Int X) <=Int maxUInt256 => true
+  requires A *Int X <=Int maxUInt256
+  andBool B *Int X <=Int maxUInt256
+
 ```
