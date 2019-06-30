@@ -7599,6 +7599,7 @@ for all
   Ink_iu : uint256
   Art_iu : uint256
   Gem_iu : uint256
+  Art_i  : uint256
   Rate_i : uint256
   Sin_w  : uint256
   Vice   : uint256
@@ -7613,16 +7614,17 @@ storage Vat
   urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
   urns[ilk][CALLER_ID].art |-> Art_iu
   gem[ilk][CALLER_ID]      |-> Gem_iu => Gem_iu + Ink_iu
+  ilks[i].Art              |-> Art_i
   ilks[ilk].rate           |-> Rate_i
   sin[Vow]                 |-> Sin_w
   vice                     |-> Vice
 
 iff
+  VCallValue == 0
+  VCallDepth < 1024
   Live == 0
   Ward == 1
   Art_iu == 0
-  VCallValue == 0
-  VCallDepth < 1024
   Ink_iu <= posMinSInt256
 
 iff in range uint256
