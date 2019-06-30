@@ -7647,7 +7647,6 @@ iff
 iff in range uint256
   Art_iu * Rate_i
   ((Art_iu * Rate_i) / #Ray) * Tag
-  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu
   (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu) + Gap
   Awe  + (Art_iu * Rate_i)
   Vice + (Art_iu * Rate_i)
