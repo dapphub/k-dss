@@ -7614,7 +7614,7 @@ storage Vat
   urns[ilk][CALLER_ID].ink |-> Ink_iu => 0
   urns[ilk][CALLER_ID].art |-> Art_iu
   gem[ilk][CALLER_ID]      |-> Gem_iu => Gem_iu + Ink_iu
-  ilks[i].Art              |-> Art_i
+  ilks[ilk].Art            |-> Art_i
   ilks[ilk].rate           |-> Rate_i
   sin[Vow]                 |-> Sin_w
   vice                     |-> Vice
