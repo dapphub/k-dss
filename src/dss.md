@@ -7438,7 +7438,7 @@ storage
   gap[ilk] |-> Gap
 
 storage Vat
-  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
   ilks[ilk].rate     |-> Rate_i
   ilks[ilk].spot     |-> Spot_i
   ilks[ilk].line     |-> Line_i
@@ -7447,21 +7447,24 @@ storage Vat
   gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].ink |-> Ink_iu => Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag)
   urns[ilk][urn].art |-> Art_iu => 0
-  sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
-  vice               |-> Vice
+  sin[Vow]           |-> Awe  => Awe  + (Art_iu * Rate_i)
+  vice               |-> Vice => Vice + (Art_iu * Rate_i)
 
 iff
-  Tag =/= 0
-  Art_iu <= posMinSInt256
-  Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag) >= 0
-  Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag) <= posMinSInt256
-  VCallDepth < 1024
   VCallValue == 0
+  VCallDepth < 1024
+  Tag =/= 0
+  Rate_i <= maxSInt256
+  Art_iu <= posMinSInt256
+  #rmul(#rmul(Art_iu, Rate_i), Tag) <= posMinSInt256
+  Ink_iu >= #rmul(#rmul(Art_iu, Rate_i), Tag)
 
 iff in range uint256
-  Art_iu * Rate_i
   ((Art_iu * Rate_i) / #Ray) * Tag
   Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Awe  + (Art_iu * Rate_i)
+  Vice + (Art_iu * Rate_i)
+  Art_i - Art_iu
 
 calls
   End.adduu
@@ -7500,7 +7503,7 @@ storage
   gap[ilk] |-> Gap => Gap + (#rmul(#rmul(Art_iu, Rate_i), Tag) - Ink_iu)
 
 storage Vat
-  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
   ilks[ilk].rate     |-> Rate_i
   ilks[ilk].spot     |-> Spot_i
   ilks[ilk].line     |-> Line_i
@@ -7509,22 +7512,26 @@ storage Vat
   gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + Ink_iu
   urns[ilk][urn].ink |-> Ink_iu => 0
   urns[ilk][urn].art |-> Art_iu => 0
-  sin[Vow]           |-> Awe => Awe + (Art_iu * Rate_i)
-  vice               |-> Vice
+  sin[Vow]           |-> Awe  => Awe + (Art_iu * Rate_i)
+  vice               |-> Vice => Vice + (Art_iu * Rate_i)
 
 iff
+  VCallValue == 0
+  VCallDepth < 1024
   Tag =/= 0
-  Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #Ray)
+  Rate_i <= maxSInt256
   Art_iu <= posMinSInt256
   Ink_iu <= posMinSInt256
-  VCallDepth < 1024
-  VCallValue == 0
+  Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #Ray)
 
 iff in range uint256
   Art_iu * Rate_i
   ((Art_iu * Rate_i) / #Ray) * Tag
   ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu
   (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu) + Gap
+  Awe  + (Art_iu * Rate_i)
+  Vice + (Art_iu * Rate_i)
+  Art_i - Art_iu
 
 calls
   End.adduu
