@@ -3914,7 +3914,7 @@ if
 ```
 
 ```act
-behaviour bite of Cat
+behaviour bite-full of Cat
 interface bite(bytes32 ilk, address urn)
 
 for all
@@ -3923,11 +3923,11 @@ for all
     Vow     : address VowLike
     Flipper : address Flipper
     Live    : uint256
-    Art_i  : uint256
-    Rate_i : uint256
-    Spot_i : uint256
-    Line_i : uint256
-    Dust_i : uint256
+    Art_i   : uint256
+    Rate_i  : uint256
+    Spot_i  : uint256
+    Line_i  : uint256
+    Dust_i  : uint256
     Ink_iu  : uint256
     Art_iu  : uint256
     Gem_iv  : uint256
@@ -3938,8 +3938,6 @@ for all
     Chop    : uint256
     Lump    : uint256
     Kicks   : uint256
-    Lot     : uint256
-    Art     : uint256
     Ttl     : uint48
     Tau     : uint48
     Bid     : uint256
@@ -3961,64 +3959,182 @@ storage
     ilks[ilk].lump |-> Lump
 
 storage Vat
-    ilks[ilk].Art      |-> Art_i  => Art_i  - Art
+    ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
     ilks[ilk].rate     |-> Rate_i
     ilks[ilk].spot     |-> Spot_i
     ilks[ilk].line     |-> Line_i
     ilks[ilk].dust     |-> Dust_i
 
     wards[ACCT_ID]     |-> CatMayVat
-    urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lot
-    urns[ilk][urn].art |-> Art_iu => Art_iu - Art
-    gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lot
-    sin[Vow]           |-> Sin_w  => Sin_w  + Art * Rate_i
-    vice               |-> Vice   => Vice   + Art * Rate_i
+    urns[ilk][urn].ink |-> Ink_iu => 0
+    urns[ilk][urn].art |-> Art_iu => 0
+    gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Ink_iu
+    sin[Vow]           |-> Sin_w  => Sin_w  + (Art_iu  * Rate_i)
+    vice               |-> Vice   => Vice   + (Art_iu  * Rate_i)
 
 storage Vow
 
     wards[ACCT_ID]     |-> CatMayVow
-    sin[TIME]          |-> Sin_era => Sin_era + Art * Rate_i
-    Sin                |-> Sin     => Sin     + Art * Rate_i
+    sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate_i
+    Sin                |-> Sin     => Sin     + Art_iu * Rate_i
 
 storage Flipper
 
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
-    bids[1 + Kicks].lot         |-> Lot => Lot
+    bids[1 + Kicks].lot         |-> Lot => Ink_iu
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
     bids[1 + Kicks].usr         |-> Usr => urn
     bids[1 + Kicks].gal         |-> Gal => Vow
-    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art * Rate_i)
+    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art_iu * Rate_i)
+
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1023
     CatMayVat == 1
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    (Ink_iu >= Lump and Lot == Lump) or (Ink_iu < Lump and Lot == Ink_iu)
-    Art == Lot * Art_iu / Ink_iu
-    Art <= posMinSInt256
-    Lot <= posMinSInt256
-    VCallDepth < 1023
+    Ink_iu < Lump
+    Art_iu <= posMinSInt256
+    Ink_iu <= posMinSInt256
+    Ink_iu =/= 0
+
+iff in range uint256
+
+    Art_i  - Art_iu
+    Gem_iv + Ink_iu
+    Sin_w  + Art_iu * Rate_i
+    Vice   + Art_iu * Rate_i
+    Sin_era + Art_iu * Rate_i
+    Sin     + Art_iu * Rate_i
+    Chop * (Art_iu * Rate_i)
+    Lump * Art_iu
+    Ink_iu * Art_iu
+
+
+returns 1 + Kicks
+
+calls
+
+  Cat.muluu
+  Cat.minuu
+  Vat.grab
+  Vat.ilks
+  Vat.urns
+  Vow.fess
+  Flipper.kick
+```
+
+```act
+behaviour bite-lump of Cat
+interface bite(bytes32 ilk, address urn)
+
+for all
+
+    Vat     : address VatLike
+    Vow     : address VowLike
+    Flipper : address Flipper
+    Live    : uint256
+    Art_i   : uint256
+    Rate_i  : uint256
+    Spot_i  : uint256
+    Line_i  : uint256
+    Dust_i  : uint256
+    Ink_iu  : uint256
+    Art_iu  : uint256
+    Gem_iv  : uint256
+    Sin_w   : uint256
+    Vice    : uint256
+    Sin     : uint256
+    Sin_era : uint256
+    Chop    : uint256
+    Lump    : uint256
+    Kicks   : uint256
+    Ttl     : uint48
+    Tau     : uint48
+    Bid     : uint256
+    Lot     : uint256
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+    Gal     : address
+    Tab     : uint256
+    Usr     : address
+
+storage
+
+    vat            |-> Vat
+    vow            |-> Vow
+    live           |-> Live
+    ilks[ilk].flip |-> Flipper
+    ilks[ilk].chop |-> Chop
+    ilks[ilk].lump |-> Lump
+
+storage Vat
+
+    ilks[ilk].Art      |-> Art_i  => Art_i - ((Lump * Art_iu) / Ink_iu)
+    ilks[ilk].rate     |-> Rate_i
+    ilks[ilk].spot     |-> Spot_i
+    ilks[ilk].line     |-> Line_i
+    ilks[ilk].dust     |-> Dust_i
+
+    wards[ACCT_ID]     |-> CatMayVat
+    urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lump
+    urns[ilk][urn].art |-> Art_iu => Art_iu - ((Lump * Art_iu) / Ink_iu)
+    gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lump
+    sin[Vow]           |-> Sin_w  => Sin_w  + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    vice               |-> Vice   => Vice   + ((Lump * Art_iu) / Ink_iu) * Rate_i
+
+storage Vow
+
+    wards[ACCT_ID]     |-> CatMayVow
+    sin[TIME]          |-> Sin_era => Sin_era + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    Sin                |-> Sin     => Sin     + ((Lump * Art_iu) / Ink_iu) * Rate_i
+
+storage Flipper
+
+    ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks => 1 + Kicks
+    bids[1 + Kicks].bid         |-> Bid => 0
+    bids[1 + Kicks].lot         |-> Lot => Lump
+    bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
+    bids[1 + Kicks].usr         |-> Usr => urn
+    bids[1 + Kicks].gal         |-> Gal => Vow
+    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, ((Lump * Art_iu) / Ink_iu) * Rate_i)
+
+
+iff
+
     VCallValue == 0
+    VCallDepth < 1023
+    CatMayVat == 1
+    CatMayVow == 1
+    Live == 1
+    Ink_iu * Spot_i < Art_iu * Rate_i
+    Ink_iu >= Lump
+    (Lump * Art_iu) / Ink_iu <= posMinSInt256
+    Lump <= posMinSInt256
     Ink_iu =/= 0
 
 
 iff in range uint256
 
-    Ink_iu - Lot
-    Art_iu - Art
-    Art_i  - Art
-    Gem_iv + Lot
-    Sin_w  + Art * Rate_i
-    Vice   + Art * Rate_i
-    Chop * Art * Rate_i
+    Chop * (((Lump * Art_iu) / Ink_iu) * Rate_i)
     Art_iu * Rate_i
     Lump * Art_iu
     Ink_iu * Art_iu
-
+    Art_i - ((Lump * Art_iu) / Ink_iu)
+    Ink_iu - Lump
+    Art_iu - ((Lump * Art_iu) / Ink_iu)
+    Gem_iv + Lump
+    Sin_w  + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    Vice   + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    Sin_era + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    Sin     + ((Lump * Art_iu) / Ink_iu) * Rate_i
 
 returns 1 + Kicks
 
