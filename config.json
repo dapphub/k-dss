@@ -69,7 +69,9 @@
     "Vat_lock",
     "Vat_fold",
     "Vat_fork-diff",
-    "Vat_fork-same"
+    "Vat_fork-same",
+    "End_skim",
+    "End_bail"
   ],
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
