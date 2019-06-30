@@ -6537,7 +6537,7 @@ interface min(uint256 x, uint256 y) internal
 
 stack
 
-    y : x : JMPTO : WS => JMPTO : #if x > y #then y #else x #fi : WS
+    y : x : JMPTO : WS => JMPTO : #if x <= y #then x #else y #fi : WS
 
 if
 
@@ -7448,8 +7448,8 @@ storage Vat
   ilks[ilk].line     |-> Line_i
   ilks[ilk].dust     |-> Dust_i
 
-  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + #rmul(#rmul(Art_iu, Rate_i), Tag)
-  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - #rmul(#rmul(Art_iu, Rate_i), Tag)
+  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe  => Awe  + (Art_iu * Rate_i)
   vice               |-> Vice => Vice + (Art_iu * Rate_i)
@@ -7460,8 +7460,8 @@ iff
   Tag =/= 0
   Rate_i <= maxSInt256
   Art_iu <= posMinSInt256
-  #rmul(#rmul(Art_iu, Rate_i), Tag) <= posMinSInt256
-  Ink_iu >= #rmul(#rmul(Art_iu, Rate_i), Tag)
+  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= posMinSInt256
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 iff in range uint256
   ((Art_iu * Rate_i) / #Ray) * Tag
@@ -7504,7 +7504,7 @@ storage
   vat      |-> Vat
   vow      |-> Vow
   tag[ilk] |-> Tag
-  gap[ilk] |-> Gap => Gap + (#rmul(#rmul(Art_iu, Rate_i), Tag) - Ink_iu)
+  gap[ilk] |-> Gap => Gap + (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu)
 
 storage Vat
   ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
@@ -7526,7 +7526,7 @@ iff
   Rate_i <= maxSInt256
   Art_iu <= posMinSInt256
   Ink_iu <= posMinSInt256
-  Ink_iu < (#rmul(#rmul(Art_iu, Rate_i), Tag) / #Ray)
+  Ink_iu <= ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 iff in range uint256
   Art_iu * Rate_i
