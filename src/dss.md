@@ -4003,7 +4003,7 @@ iff
     Lot <= posMinSInt256
     VCallDepth < 1023
     VCallValue == 0
-    Ink_iu != 0
+    Ink_iu =/= 0
 
 
 iff in range uint256
