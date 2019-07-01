@@ -3969,14 +3969,14 @@ storage Vat
     urns[ilk][urn].ink |-> Ink_iu => 0
     urns[ilk][urn].art |-> Art_iu => 0
     gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Ink_iu
-    sin[Vow]           |-> Sin_w  => Sin_w  + (Art_iu  * Rate_i)
-    vice               |-> Vice   => Vice   + (Art_iu  * Rate_i)
+    sin[Vow]           |-> Sin_w  => Sin_w  + (Rate_i * Art_iu)
+    vice               |-> Vice   => Vice   + (Rate_i * Art_iu)
 
 storage Vow
 
     wards[ACCT_ID]     |-> CatMayVow
-    sin[TIME]          |-> Sin_era => Sin_era + Art_iu * Rate_i
-    Sin                |-> Sin     => Sin     + Art_iu * Rate_i
+    sin[TIME]          |-> Sin_era => Sin_era + Rate_i * Art_iu
+    Sin                |-> Sin     => Sin     + Rate_i * Art_iu
 
 storage Flipper
 
@@ -3987,7 +3987,7 @@ storage Flipper
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
     bids[1 + Kicks].usr         |-> Usr => urn
     bids[1 + Kicks].gal         |-> Gal => Vow
-    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, Art_iu * Rate_i)
+    bids[1 + Kicks].tab         |-> Tab => (Chop * (Rate_i * Art_iu)) / #Ray
 
 
 iff
@@ -4002,15 +4002,20 @@ iff
     Ink_iu <= posMinSInt256
     Ink_iu =/= 0
 
+iff in range int256
+
+    Rate_i
+    Rate_i * Art_iu
+
 iff in range uint256
 
     Art_i  - Art_iu
     Gem_iv + Ink_iu
-    Sin_w  + Art_iu * Rate_i
-    Vice   + Art_iu * Rate_i
-    Sin_era + Art_iu * Rate_i
-    Sin     + Art_iu * Rate_i
-    Chop * (Art_iu * Rate_i)
+    Sin_w   + Rate_i * Art_iu
+    Vice    + Rate_i * Art_iu
+    Sin_era + Rate_i * Art_iu
+    Sin     + Rate_i * Art_iu
+    Chop * (Rate_i * Art_iu)
     Lump * Art_iu
     Ink_iu * Art_iu
 
@@ -4089,14 +4094,14 @@ storage Vat
     urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lump
     urns[ilk][urn].art |-> Art_iu => Art_iu - ((Lump * Art_iu) / Ink_iu)
     gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lump
-    sin[Vow]           |-> Sin_w  => Sin_w  + ((Lump * Art_iu) / Ink_iu) * Rate_i
-    vice               |-> Vice   => Vice   + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    sin[Vow]           |-> Sin_w  => Sin_w  + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    vice               |-> Vice   => Vice   + Rate_i * ((Lump * Art_iu) / Ink_iu)
 
 storage Vow
 
     wards[ACCT_ID]     |-> CatMayVow
-    sin[TIME]          |-> Sin_era => Sin_era + ((Lump * Art_iu) / Ink_iu) * Rate_i
-    Sin                |-> Sin     => Sin     + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    sin[TIME]          |-> Sin_era => Sin_era + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    Sin                |-> Sin     => Sin     + Rate_i * ((Lump * Art_iu) / Ink_iu)
 
 storage Flipper
 
@@ -4107,7 +4112,7 @@ storage Flipper
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
     bids[1 + Kicks].usr         |-> Usr => urn
     bids[1 + Kicks].gal         |-> Gal => Vow
-    bids[1 + Kicks].tab         |-> Tab => #rmul(Chop, ((Lump * Art_iu) / Ink_iu) * Rate_i)
+    bids[1 + Kicks].tab         |-> Tab => (Chop * (Rate_i * ((Lump * Art_iu) / Ink_iu)) / #Ray)
 
 
 iff
@@ -4122,21 +4127,25 @@ iff
     Lump <= posMinSInt256
     Ink_iu =/= 0
 
+iff in range int256
+
+    Rate_i
+    Rate_i * ((Lump * Art_iu) / Ink_iu)
 
 iff in range uint256
 
-    Chop * (((Lump * Art_iu) / Ink_iu) * Rate_i)
-    Art_iu * Rate_i
+    Rate_i * Art_iu
     Lump * Art_iu
     Ink_iu * Art_iu
     Art_i - ((Lump * Art_iu) / Ink_iu)
     Ink_iu - Lump
     Art_iu - ((Lump * Art_iu) / Ink_iu)
     Gem_iv + Lump
-    Sin_w  + ((Lump * Art_iu) / Ink_iu) * Rate_i
-    Vice   + ((Lump * Art_iu) / Ink_iu) * Rate_i
-    Sin_era + ((Lump * Art_iu) / Ink_iu) * Rate_i
-    Sin     + ((Lump * Art_iu) / Ink_iu) * Rate_i
+    Sin_w   + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    Vice    + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    Sin_era + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    Sin     + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    Chop * (Rate_i * ((Lump * Art_iu) / Ink_iu))
 
 if
 
@@ -7572,17 +7581,17 @@ storage Vat
   ilks[ilk].line     |-> Line_i
   ilks[ilk].dust     |-> Dust_i
 
-  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
-  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
   urns[ilk][urn].art |-> Art_iu => 0
-  sin[Vow]           |-> Awe  => Awe  + (Art_iu * Rate_i)
-  vice               |-> Vice => Vice + (Art_iu * Rate_i)
+  sin[Vow]           |-> Awe  => Awe  + (Rate_i * Art_iu)
+  vice               |-> Vice => Vice + (Rate_i * Art_iu)
 
 iff
   VCallValue == 0
   VCallDepth < 1024
   Tag =/= 0
-  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= posMinSInt256
+  ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= posMinSInt256
   Art_iu <= posMinSInt256
   Ward == 1
 
@@ -7593,14 +7602,14 @@ iff in range int256
 
 iff in range uint256
   Art_i - Art_iu
-  ((Art_iu * Rate_i) / #Ray) * Tag
-  Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
-  Awe  + (Art_iu * Rate_i)
-  Vice + (Art_iu * Rate_i)
+  ((Rate_i * Art_iu) / #Ray) * Tag
+  Gem_a  + ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  Awe  + (Rate_i * Art_iu)
+  Vice + (Rate_i * Art_iu)
 
 if
 
-  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Ink_iu > ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
 
 calls
   End.adduu
@@ -7650,8 +7659,8 @@ storage Vat
   gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + Ink_iu
   urns[ilk][urn].ink |-> Ink_iu => 0
   urns[ilk][urn].art |-> Art_iu => 0
-  sin[Vow]           |-> Awe  => Awe + (Art_iu * Rate_i)
-  vice               |-> Vice => Vice + (Art_iu * Rate_i)
+  sin[Vow]           |-> Awe  => Awe  + (Rate_i * Art_iu)
+  vice               |-> Vice => Vice + (Rate_i * Art_iu)
 
 iff
   VCallValue == 0
@@ -7667,16 +7676,16 @@ iff in range int256
   Rate_i * Art_iu
 
 iff in range uint256
-  Gap + (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu)
+  Gap + (((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) - Ink_iu)
   Art_i - Art_iu
-  ((Art_iu * Rate_i) / #Ray) * Tag
+  ((Rate_i * Art_iu) / #Ray) * Tag
   Gem_a + Ink_iu
-  Awe  + (Art_iu * Rate_i)
-  Vice + (Art_iu * Rate_i)
+  Awe  + (Rate_i * Art_iu)
+  Vice + (Rate_i * Art_iu)
 
 if
 
-  Ink_iu <= ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Ink_iu <= ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
 
 calls
   End.adduu
