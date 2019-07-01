@@ -7546,6 +7546,7 @@ for all
   Vow    : address
   Tag    : uint256
   Gap    : uint256
+  Ward   : uint256
   Art_i  : uint256
   Rate_i : uint256
   Spot_i : uint256
@@ -7564,6 +7565,7 @@ storage
   gap[ilk] |-> Gap
 
 storage Vat
+  wards[ACCT_ID]     |-> Ward
   ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
   ilks[ilk].rate     |-> Rate_i
   ilks[ilk].spot     |-> Spot_i
@@ -7580,17 +7582,25 @@ iff
   VCallValue == 0
   VCallDepth < 1024
   Tag =/= 0
-  Rate_i <= maxSInt256
-  Art_iu <= posMinSInt256
   ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= posMinSInt256
-  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Art_iu <= posMinSInt256
+  Ward == 1
+
+iff in range int256
+
+  Rate_i
+  Rate_i * Art_iu
 
 iff in range uint256
+  Art_i - Art_iu
   ((Art_iu * Rate_i) / #Ray) * Tag
   Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
   Awe  + (Art_iu * Rate_i)
   Vice + (Art_iu * Rate_i)
-  Art_i - Art_iu
+
+if
+
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 calls
   End.adduu
@@ -7611,6 +7621,7 @@ for all
   Vow    : address
   Tag    : uint256
   Gap    : uint256
+  Ward   : uint256
   Art_i  : uint256
   Rate_i : uint256
   Spot_i : uint256
@@ -7629,6 +7640,7 @@ storage
   gap[ilk] |-> Gap => Gap + (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu)
 
 storage Vat
+  wards[ACCT_ID]     |-> Ward
   ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
   ilks[ilk].rate     |-> Rate_i
   ilks[ilk].spot     |-> Spot_i
@@ -7645,18 +7657,26 @@ iff
   VCallValue == 0
   VCallDepth < 1024
   Tag =/= 0
-  Rate_i <= maxSInt256
-  Art_iu <= posMinSInt256
   Ink_iu <= posMinSInt256
-  Ink_iu <= ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Art_iu <= posMinSInt256
+  Ward == 1
+
+iff in range int256
+
+  Rate_i
+  Rate_i * Art_iu
 
 iff in range uint256
-  Art_iu * Rate_i
+  Gap + (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu)
+  Art_i - Art_iu
   ((Art_iu * Rate_i) / #Ray) * Tag
-  (((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) - Ink_iu) + Gap
+  Gem_a + Ink_iu
   Awe  + (Art_iu * Rate_i)
   Vice + (Art_iu * Rate_i)
-  Art_i - Art_iu
+
+if
+
+  Ink_iu <= ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 calls
   End.adduu
