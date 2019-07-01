@@ -7429,6 +7429,8 @@ for all
   Vat        : address VatLike
   Cat        : address Cat
   Vow        : address
+  Tag        : uint256
+  Art        : uint256
   Flipper    : address Flipper
   Lump       : uint256
   Chop       : uint256
@@ -7438,16 +7440,17 @@ for all
   Guy        : address
   Tic        : uint48
   End        : uint48
-  Gal        : address
   Usr        : address
+  Gal        : address
   Tab        : uint256
+  EndMayVat  : uint256
   Art_i      : uint256
   Rate_i     : uint256
   Spot_i     : uint256
   Line_i     : uint256
   Dust_i     : uint256
   FlipCan    : uint256
-  Dai_a      : uint256
+  Dai_e      : uint256
   Dai_g      : uint256
   Joy        : uint256
   Debt       : uint256
@@ -7457,43 +7460,6 @@ for all
   Gem_f      : uint256
   Ink_iu     : uint256
   Art_iu     : uint256
-  Art        : uint256
-  Tag        : uint256
-
-storage Cat
-  ilks[ilk].flip |-> Flipper
-  ilks[ilk].lump |-> Lump
-  ilks[ilk].chop |-> Chop
-
-storage Flipper
-  wards[CALLER_ID]     |-> EndMayYank
-  bids[id].bid         |-> Bid => 0
-  bids[id].lot         |-> Lot => 0
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].usr         |-> Usr => 0
-  bids[id].gal         |-> Gal => 0
-  bids[id].tab         |-> Tab => 0
-
-storage Vat
-  ilks[ilk].Art  |-> Art_i
-  ilks[ilk].rate |-> Rate_i
-  ilks[ilk].spot |-> Spot_i
-  ilks[ilk].line |-> Line_i
-  ilks[ilk].dust |-> Dust_i
-
-  can[ACCT_ID][Flipper] |-> FlipCan => 1
-
-  dai[ACCT_ID] |-> Dai_a
-  dai[Guy] |-> Dai_g => Dai_g + Bid
-  dai[Vow] |-> Joy   => (Joy  + Tab)
-  debt     |-> Debt  => ((Debt + Tab) + Bid)
-  sin[Vow] |-> Awe   => ((Awe  + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
-  vice     |-> Vice  => ((Vice + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
-
-  gem[ilk][ACCT_ID]  |-> Gem_a
-  gem[ilk][Flipper]  |-> Gem_f  => Gem_f  - Lot
-  urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
-  urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
 storage
   vat      |-> Vat
@@ -7502,22 +7468,52 @@ storage
   tag[ilk] |-> Tag
   Art[ilk] |-> Art => Art + (Tab / Rate_i)
 
+storage Cat
+  ilks[ilk].flip |-> Flipper
+  ilks[ilk].lump |-> Lump
+  ilks[ilk].chop |-> Chop
+
+storage Flipper
+  wards[ACCT_ID]       |-> EndMayYank
+  bids[id].bid         |-> Bid => 0
+  bids[id].lot         |-> Lot => 0
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+  bids[id].usr         |-> Usr => 0
+  bids[id].gal         |-> Gal => 0
+  bids[id].tab         |-> Tab => 0
+
+storage Vat
+  wards[ACCT_ID] |-> EndMayVat
+  ilks[ilk].Art  |-> Art_i
+  ilks[ilk].rate |-> Rate_i
+  ilks[ilk].spot |-> Spot_i
+  ilks[ilk].line |-> Line_i
+  ilks[ilk].dust |-> Dust_i
+
+  can[ACCT_ID][Flipper] |-> FlipCan => 1
+
+  dai[ACCT_ID] |-> Dai_e
+  dai[Guy] |-> Dai_g => Dai_g + Bid
+  dai[Vow] |-> Joy   => (Joy  + Tab)
+  debt     |-> Debt  => (Debt + Tab) + Bid
+  sin[Vow] |-> Awe   => (Awe  + Bid)
+  vice     |-> Vice  => (Vice + Bid)
+
+  gem[ilk][ACCT_ID]  |-> Gem_a
+  gem[ilk][Flipper]  |-> Gem_f  => Gem_f  - Lot
+  urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
+  urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
+
 iff
   VCallValue == 0
   VCallDepth < 1023
   Tag =/= 0
-  Guy =/= 0
+  EndMayVat == 1
   EndMayYank == 1
+  Guy =/= 0
   Bid < Tab
   Lot <= posMinSInt256
   Tab / Rate_i <= posMinSInt256
-
-if
-  Flipper =/= ACCT_ID
-  Flipper =/= Guy
-  Guy =/= Vow
-  Guy =/= ACCT_ID
-  Vow =/= ACCT_ID
 
 iff in range uint256
   Joy + Tab
@@ -7526,14 +7522,24 @@ iff in range uint256
   (Debt + Tab) + Bid
   Gem_f - Lot
   Gem_a + Lot
-  Dai_a + Bid
+  Dai_e + Bid
+  Dai_e - Bid
   Dai_g + Bid
-  Ink_iu + Lot
   Art    + (Tab / Rate_i)
+  Ink_iu + Lot
   Art_iu + (Tab / Rate_i)
   Art_i  + (Tab / Rate_i)
-  ((Awe  + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
-  ((Vice + Tab) + Bid) - ((Tab / Rate_i) * Rate_i)
+
+iff in range int256
+  Rate_i
+  Rate_i * (Tab / Rate_i)
+
+if
+  Flipper =/= ACCT_ID
+  Flipper =/= Guy
+  Guy =/= Vow
+  Guy =/= ACCT_ID
+  Vow =/= ACCT_ID
 
 calls
   End.adduu
