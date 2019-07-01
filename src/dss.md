@@ -3998,7 +3998,6 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    Ink_iu < Lump
     Art_iu <= posMinSInt256
     Ink_iu <= posMinSInt256
     Ink_iu =/= 0
@@ -4014,6 +4013,10 @@ iff in range uint256
     Chop * (Art_iu * Rate_i)
     Lump * Art_iu
     Ink_iu * Art_iu
+
+if
+
+    Ink_iu < Lump
 
 
 returns 1 + Kicks
@@ -4115,7 +4118,6 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    Ink_iu >= Lump
     (Lump * Art_iu) / Ink_iu <= posMinSInt256
     Lump <= posMinSInt256
     Ink_iu =/= 0
@@ -4135,6 +4137,10 @@ iff in range uint256
     Vice   + ((Lump * Art_iu) / Ink_iu) * Rate_i
     Sin_era + ((Lump * Art_iu) / Ink_iu) * Rate_i
     Sin     + ((Lump * Art_iu) / Ink_iu) * Rate_i
+
+if
+
+    Ink_iu >= Lump
 
 returns 1 + Kicks
 
