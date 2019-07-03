@@ -82,10 +82,10 @@ rule #sizeWordStack(#range(WS, Y, Z, WSS), 0) => Z
 // requires X +Int 31 ==Int Y
 
 //assume ecrec returns an address
-rule maxUInt160 &Int #symEcrec(A) => #symEcrec(A)
+rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
 
-    rule 0 <=Int #symEcrec(V)             => true
-    rule         #symEcrec(V) <Int pow256 => true
+    rule 0 <=Int #symEcrec(MSG, V, R, S)             => true
+    rule         #symEcrec(MSG, V, R, S) <Int pow256 => true
 
 
 syntax IntList ::= bytesToWords ( WordStack )       [function]
