@@ -2007,7 +2007,7 @@ storage
 
     nonces[hodler]               |-> Nonce => Nonce + 1
     DOMAIN_SEPARATOR             |-> Domain_separator
-    allowance[hodler][ombudsman] |-> Allowed => (#if may == 1 #then maxUInt256 #else 0 #fi)
+    allowance[hodler][ombudsman] |-> Allowed => (#if may == 0 #then 0 #else maxUInt256 #fi)
 
 iff
 
