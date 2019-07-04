@@ -7602,7 +7602,6 @@ iff
   Ward == 1
 
 iff in range int256
-
   Rate_i
   Rate_i * Art_iu
 
@@ -7614,7 +7613,6 @@ iff in range uint256
   Vice + (Rate_i * Art_iu)
 
 if
-
   Ink_iu > ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
 
 calls
