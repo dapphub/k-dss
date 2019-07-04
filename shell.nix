@@ -11,6 +11,7 @@ stdenv.mkDerivation {
     nodejs
     openjdk8
     parallel
+    wget
     zip
     z3
   ];
