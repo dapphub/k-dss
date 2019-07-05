@@ -5810,6 +5810,7 @@ storage
   bids[id].gal         |-> Gal => 0
 
 storage Vat
+  can[ACCT_ID][ACCT_ID] |-> _
   dai[ACCT_ID] |-> Dai_a => Dai_a - Lot
   dai[Guy]     |-> Dai_g => Dai_g + Lot
 
@@ -5855,6 +5856,7 @@ if
   CALLER_ID =/= ACCT_ID
 
 storage Vat
+  can[ACCT_ID][ACCT_ID] |-> _
   dai[ACCT_ID]   |-> Dai_a => Dai_a - rad
   dai[CALLER_ID] |-> Dai_u => Dai_u + rad
 
@@ -6484,6 +6486,7 @@ storage
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Vat
+  can[ACCT_ID][ACCT_ID] |-> _
   dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
   dai[Guy]     |-> Dai_g => Dai_g + Bid
 
