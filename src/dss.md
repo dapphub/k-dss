@@ -4797,6 +4797,7 @@ storage
   bids[id].tab         |-> Tab => 0
 
 storage Vat
+  can[ACCT_ID][ACCT_ID] |-> _
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - Lot
   gem[Ilk][Guy]     |-> Gem_u => Gem_u + Lot
 
@@ -7916,6 +7917,7 @@ storage
   out[ilk][CALLER_ID] |-> Out => Out + wad
 
 storage Vat
+  can[ACCT_ID][ACCT_ID] |-> _
   gem[ilk][ACCT_ID]   |-> Gem_e => Gem_e - #rmul(wad, Fix)
   gem[ilk][CALLER_ID] |-> Gem_c => Gem_c + #rmul(wad, Fix)
 
