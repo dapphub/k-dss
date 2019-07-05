@@ -3332,6 +3332,7 @@ storage
 
 storage Vat
 
+    can[Flapper][Flapper] |-> _
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => (Dai_v + Dai_f) - Sin_v
     sin[ACCT_ID] |-> Sin_v => 0
@@ -3417,6 +3418,7 @@ storage
 
 storage Vat
 
+    can[Flapper][Flapper] |-> _
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => Sin_v - (Dai_v + Dai_f)
@@ -3501,6 +3503,7 @@ storage
 
 storage Vat
 
+    can[Flapper][Flapper] |-> _
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => 0
@@ -4733,6 +4736,7 @@ storage
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
+  can[ACCT_ID][ACCT_ID]   |-> _
   dai[CALLER_ID]    |-> Dai_c => Dai_c - bid
   dai[Guy]          |-> Dai_g => Dai_g + bid
   gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - lot)
@@ -4853,6 +4857,7 @@ storage
 
 storage Vat
   can[CALLER_ID][ACCT_ID] |-> Can
+  can[ACCT_ID][ACCT_ID]   |-> _
   gem[Ilk][ACCT_ID]   |-> Gem_a => Gem_a - Lot
   gem[Ilk][CALLER_ID] |-> Gem_c => Gem_c + Lot
   dai[CALLER_ID]      |-> Dai_c => Dai_c - Bid
@@ -7120,11 +7125,12 @@ storage
 
 storage Vat
 
+    can[Flapper][Flapper] |-> _
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
-    dai[Flap] |-> Dai_f => 0
-    sin[Vow]  |-> Awe   => 0
-    dai[Vow]  |-> Joy   => (Joy + Dai_f) - Awe
+    dai[Flapper]   |-> Dai_f => 0
+    sin[Vow]       |-> Awe   => 0
+    dai[Vow]       |-> Joy   => (Joy + Dai_f) - Awe
 
 storage Cat
 
@@ -7314,11 +7320,12 @@ storage
 
 storage Vat
 
+    can[Flapper][Flapper] |-> _
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
-    dai[Flap] |-> Dai_f => 0
-    sin[Vow]  |-> Awe   => 0
-    dai[Vow]  |-> Joy   => 0
+    dai[Flapper]   |-> Dai_f => 0
+    sin[Vow]       |-> Awe   => 0
+    dai[Vow]       |-> Joy   => 0
 
 storage Cat
 
