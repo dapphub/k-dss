@@ -7,8 +7,14 @@ this should be "flushed" once in a while to the real lemmas.k file
 rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
 
 rule 1 |Int X => 1
+  requires #range(0 <= X <= 1)
+rule X |Int 1 => 1
+  requires #range(0 <= X <= 1)
 
 rule 1 &Int X => X
+  requires #range(0 <= X <= 1)
+rule X &Int 1 => X
+  requires #range(0 <= X <= 1)
 
 syntax Int ::= "posMinSInt256"
 rule posMinSInt256 => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
