@@ -65,11 +65,17 @@
     }
   },
   "split_fail":[
-    "Vat_grab",
-    "Vat_lock",
-    "Vat_fork-diff",
-    "Vat_fork-same"
   ],
+  "timeouts": {
+    "Vat_lock_pass_rough": "3h",
+    "Vat_lock_fail_rough": "3h",
+    "Vat_grab_pass_rough": "3h",
+    "Vat_grab_pass_rough": "3h",
+    "Vat_fork-diff_pass_rough": "3h",
+    "Vat_fork-diff_fail_rough": "3h",
+    "Vat_fork-same_pass_rough": "3h",
+    "Vat_fork-same_fail_rough": "3h"
+  },
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
 }
