@@ -2013,6 +2013,7 @@ iff
 if
 
     #rangeUInt(256, Nonce + 1)
+    #rangeUInt(256, ECREC_BAL)
 ```
 
 # Jug
