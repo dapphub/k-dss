@@ -855,13 +855,6 @@ iff
     ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
     Ilk_rate =/= 0
     Live == 1
-
-calls
-
-    Vat.addui
-    Vat.subui
-    Vat.mului
-    Vat.muluu
 ```
 
 note: failing due to timeout. A single path through `frob`.
@@ -2005,7 +1998,7 @@ types
 
 storage
 
-    nonces[hodler]               |-> Nonce => Nonce + 1
+    nonces[hodler]               |-> Nonce => 1 + Nonce
     DOMAIN_SEPARATOR             |-> Domain_separator
     allowance[hodler][ombudsman] |-> Allowed => (#if may == 0 #then 0 #else maxUInt256 #fi)
 
