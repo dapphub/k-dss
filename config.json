@@ -71,6 +71,8 @@
     "Vat_lock_fail_rough": "3h",
     "Vat_grab_pass_rough": "3h",
     "Vat_grab_fail_rough": "5h",
+    "Vat_lock_pass_rough": "5h",
+    "Vat_lock_fail_rough": "5h",
     "Vat_frob-diff_pass_rough": "6h",
     "Vat_frob-diff_fail_rough": "6h",
     "Vat_fork-diff_pass_rough": "3h",
