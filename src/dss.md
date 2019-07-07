@@ -840,11 +840,6 @@ iff in range int256
     Ilk_rate
     Ilk_rate * dart
 
-if
-
-    u =/= v
-    v =/= w
-    u =/= w
 iff
     VCallValue == 0
     (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
@@ -855,6 +850,12 @@ iff
     ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
     Ilk_rate =/= 0
     Live == 1
+
+if
+
+    u =/= v
+    v =/= w
+    u =/= w
 
 calls
 
@@ -921,75 +922,6 @@ iff
 if
     dart == 0
     dink >= 0
-    u =/= v
-    v =/= w
-    u =/= w
-
-calls
-
-    Vat.addui
-    Vat.subui
-    Vat.mului
-    Vat.muluu
-```
-
-```act
-behaviour wipe of Vat
-interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
-
-for all
-
-    Ilk_rate : uint256
-    Ilk_line : uint256
-    Ilk_spot : uint256
-    Ilk_dust : uint256
-    Ilk_Art  : uint256
-    Urn_ink  : uint256
-    Urn_art  : uint256
-    Gem_iv   : uint256
-    Dai_w    : uint256
-    Debt     : uint256
-    Line     : uint256
-    Can_u    : uint256
-    Can_v    : uint256
-    Can_w    : uint256
-    Live     : uint256
-
-storage
-
-    ilks[i].rate      |-> Ilk_rate
-    ilks[i].line      |-> Ilk_line
-    ilks[i].spot      |-> Ilk_spot
-    ilks[i].dust      |-> Ilk_dust
-    Line              |-> Line
-    can[u][CALLER_ID] |-> Can_u
-    can[v][CALLER_ID] |-> Can_v
-    can[w][CALLER_ID] |-> Can_w
-    urns[i][u].ink    |-> Urn_ink  => Urn_ink
-    urns[i][u].art    |-> Urn_art  => Urn_art - dart
-    ilks[i].Art       |-> Ilk_Art  => Ilk_Art - dart
-    gem[i][v]         |-> Gem_iv   => Gem_iv
-    dai[w]            |-> Dai_w    => Dai_w - (Ilk_rate * dart)
-    debt              |-> Debt     => Debt  - (Ilk_rate * dart)
-    live              |-> Live
-
-iff
-    VCallValue == 0
-    Urn_art >= dart
-    Urn_art <= maxSInt256
-    Ilk_Art >= dart
-    Ilk_Art <= maxSInt256
-    Ilk_rate <= maxSInt256
-    (dart == 0) or ((Ilk_rate * dart) >= 0 and (Ilk_rate * dart) <= maxSInt256)
-    (Urn_art * Ilk_rate) <= maxUInt256
-    (dart == 0) or (w == CALLER_ID or Can_w == 1)
-    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
-    Live == 1
-
-if
-    dart <= 0
-    dink == 0
     u =/= v
     v =/= w
     u =/= w
