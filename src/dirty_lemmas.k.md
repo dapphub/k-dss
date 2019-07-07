@@ -112,3 +112,55 @@ rule (#if C #then A #else B #fi *Int X) <=Int maxUInt256 => true
   andBool B *Int X <=Int maxUInt256
 
 ```
+
+### Pot storage
+
+```k
+syntax Int ::= "#Pot.wards" "[" Int "]" [function]
+// -----------------------------------------------
+// doc: whether `$0` is an owner of `Pot`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #Pot.wards[A] => #hashedLocation("Solidity", 0, A)
+
+syntax Int ::= "#Pot.pie" "[" Int "]" [function]
+// ----------------------------------------------------
+// doc: balance that `$0` has locked in this pot
+// act:
+rule #Pot.pie[Usr] => #hashedLocation("Solidity", 1, Usr)
+
+syntax Int ::= "#Pot.Pie" [function]
+// ----------------------------------
+// doc: total amount of dai locked in this `Pot`
+// act: this Pot points to Vat `.`
+rule #Pot.Pie => 2
+
+syntax Int ::= "#Pot.dsr" [function]
+// ----------------------------------
+// doc: the current deposit interest rate of this `Pot`
+// act:
+rule #Pot.dsr => 3
+
+syntax Int ::= "#Pot.chi" [function]
+// ----------------------------------
+// doc: `Vat` that this `Pot` points to
+// act: this Pot points to Vat `.`
+rule #Pot.chi => 4
+
+syntax Int ::= "#Pot.vat" [function]
+// ----------------------------------
+// doc: `Vat` that this `Pot` points to
+// act: this Pot points to Vat `.`
+rule #Pot.vat => 5
+
+syntax Int ::= "#Pot.vow" [function]
+// ----------------------------------
+// doc: `Vow` that this `Pot` points to
+// act: this Pot points to Vow `.`
+rule #Pot.vow => 6
+
+syntax Int ::= "#Pot.rho" [function]
+// ----------------------------------
+// doc:
+// act:
+rule #Pot.rho => 7
+```

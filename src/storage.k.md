@@ -179,56 +179,44 @@ syntax Int ::= "#Jug.base" [function]
 rule #Jug.base => 4
 ```
 
-### Pot
+### Drip
 
 ```k
-syntax Int ::= "#Pot.wards" "[" Int "]" [function]
+syntax Int ::= "#Drip.wards" "[" Int "]" [function]
 // -----------------------------------------------
-// doc: whether `$0` is an owner of `Pot`
+// doc: whether `$0` is an owner of `Drip`
 // act: address `$0` is `. == 1 ? authorised : unauthorised`
-rule #Pot.wards[A] => #hashedLocation("Solidity", 0, A)
+rule #Drip.wards[A] => #hashedLocation("Solidity", 0, A)
 
-syntax Int ::= "#Pot.pie" "[" Int "]" [function]
+syntax Int ::= "#Drip.ilks" "[" Int "].tax" [function]
 // ----------------------------------------------------
-// doc: balance that `$0` has locked in this pot
-// act:
-rule #Pot.pie[Usr] => #hashedLocation("Solidity", 1, Usr)
+// doc: stability fee of `$0`
+// act: `$0` has stability fee `.`
+rule #Drip.ilks[Ilk].tax => #hashedLocation("Solidity", 1, Ilk) +Int 0
 
-syntax Int ::= "#Pot.Pie" [function]
-// ----------------------------------
-// doc: total amount of dai locked in this `Pot`
-// act: this Pot points to Vat `.`
-rule #Pot.Pie => 2
+syntax Int ::= "#Drip.ilks" "[" Int "].rho" [function]
+// ----------------------------------------------------
+// doc: last drip time of `$0`
+// act: `$0` was dripped at `.`
+rule #Drip.ilks[Ilk].rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
 
-syntax Int ::= "#Pot.dsr" [function]
+syntax Int ::= "#Drip.vat" [function]
 // ----------------------------------
-// doc: the current deposit interest rate of this `Pot`
-// act:
-rule #Pot.dsr => 3
+// doc: `Vat` that this `Drip` points to
+// act: this Drip points to Vat `.`
+rule #Drip.vat => 2
 
-syntax Int ::= "#Pot.chi" [function]
+syntax Int ::= "#Drip.vow" [function]
 // ----------------------------------
-// doc: `Vat` that this `Pot` points to
-// act: this Pot points to Vat `.`
-rule #Pot.chi => 4
+// doc: `Vow` that this `Drip` points to
+// act: this Drip points to Vow `.`
+rule #Drip.vow => 3
 
-syntax Int ::= "#Pot.vat" [function]
-// ----------------------------------
-// doc: `Vat` that this `Pot` points to
-// act: this Pot points to Vat `.`
-rule #Pot.vat => 5
-
-syntax Int ::= "#Pot.vow" [function]
-// ----------------------------------
-// doc: `Vow` that this `Pot` points to
-// act: this Pot points to Vow `.`
-rule #Pot.vow => 6
-
-syntax Int ::= "#Pot.rho" [function]
-// ----------------------------------
-// doc:
-// act:
-rule #Pot.rho => 7
+syntax Int ::= "#Drip.repo" [function]
+// -----------------------------------
+// doc: base interest rate
+// act: the base interest rate is `.`
+rule #Drip.repo => 4
 ```
 
 ### Vow
