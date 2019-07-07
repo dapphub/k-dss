@@ -1,8 +1,6 @@
 This is an example for rules that won't affect the proof hashes
 this should be "flushed" once in a while to the real lemmas.k file
 
-### DSValue
-
 ```k
 rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
 
@@ -13,7 +11,6 @@ rule bool2Word(X) |Int 1 => 1
 rule 1 &Int bool2Word(X) => bool2Word(X)
 
 rule bool2Word(X) &Int 1 => bool2Word(X)
-
 
 syntax Int ::= "posMinSInt256"
 rule posMinSInt256 => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
@@ -82,10 +79,6 @@ rule #range(WS [ X := #padToWidth(32, Y) ], Z, 32, WSS) => #range(WS, Z, 32, WSS
 // possibly wrong but i'll keep using it as a hack
 rule #sizeWordStack(#range(WS, Y, Z, WSS), 0) => Z
 
-// wrong but something like this is needed
-// rule #range( WS [ X := #padToWidth(32, #asByteStack(DATA))], Y, Z, WSS) => #range( WS, Y - 32, Z -Int 32, #padToWidth(32, #asByteStack(DATA)) : WSS)
-// requires X +Int 31 ==Int Y
-
 //assume ecrec returns an address
 rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
 
@@ -103,64 +96,4 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
     rule keccak(WS) => keccakIntList(bytesToWords(WS))
       requires ( notBool #isConcrete(WS) )
        andBool notBool( #sizeWordStack(WS) modInt 32 ==Int 0)
-
-// another gas optimisation
-rule ((A -Int (X +Int C)) +Int ((C -Int D) -Int Y)) => ((A -Int X) -Int Y) -Int D
-
-rule (#if C #then A #else B #fi *Int X) <=Int maxUInt256 => true
-  requires A *Int X <=Int maxUInt256
-  andBool B *Int X <=Int maxUInt256
-
-```
-
-### Pot storage
-
-```k
-syntax Int ::= "#Pot.wards" "[" Int "]" [function]
-// -----------------------------------------------
-// doc: whether `$0` is an owner of `Pot`
-// act: address `$0` is `. == 1 ? authorised : unauthorised`
-rule #Pot.wards[A] => #hashedLocation("Solidity", 0, A)
-
-syntax Int ::= "#Pot.pie" "[" Int "]" [function]
-// ----------------------------------------------------
-// doc: balance that `$0` has locked in this pot
-// act:
-rule #Pot.pie[Usr] => #hashedLocation("Solidity", 1, Usr)
-
-syntax Int ::= "#Pot.Pie" [function]
-// ----------------------------------
-// doc: total amount of dai locked in this `Pot`
-// act: this Pot points to Vat `.`
-rule #Pot.Pie => 2
-
-syntax Int ::= "#Pot.dsr" [function]
-// ----------------------------------
-// doc: the current deposit interest rate of this `Pot`
-// act:
-rule #Pot.dsr => 3
-
-syntax Int ::= "#Pot.chi" [function]
-// ----------------------------------
-// doc: `Vat` that this `Pot` points to
-// act: this Pot points to Vat `.`
-rule #Pot.chi => 4
-
-syntax Int ::= "#Pot.vat" [function]
-// ----------------------------------
-// doc: `Vat` that this `Pot` points to
-// act: this Pot points to Vat `.`
-rule #Pot.vat => 5
-
-syntax Int ::= "#Pot.vow" [function]
-// ----------------------------------
-// doc: `Vow` that this `Pot` points to
-// act: this Pot points to Vow `.`
-rule #Pot.vow => 6
-
-syntax Int ::= "#Pot.rho" [function]
-// ----------------------------------
-// doc:
-// act:
-rule #Pot.rho => 7
 ```

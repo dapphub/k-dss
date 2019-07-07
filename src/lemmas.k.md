@@ -35,6 +35,13 @@ rule num1(N) => 0
 rule (A -Int B) +Int B => A
 
 rule (A -Int B) -Int (C -Int B) => A -Int C
+
+// useful for gas simplification
+rule ((A -Int (X +Int C)) +Int ((C -Int D) -Int Y)) => ((A -Int X) -Int Y) -Int D
+
+rule (#if C #then A #else B #fi *Int X) <=Int maxUInt256 => true
+  requires A *Int X <=Int maxUInt256
+  andBool B *Int X <=Int maxUInt256
 ```
 
 ### Solidity Word Packing
