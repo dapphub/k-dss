@@ -22,6 +22,9 @@
     "Jug": {
       "solc_output": "./dss/out/jug.sol.json"
     },
+    "Pot": {
+      "solc_output": "./dss/out/pot.sol.json"
+    },
     "Vow": {
       "solc_output": "./dss/out/vow.sol.json"
     },
