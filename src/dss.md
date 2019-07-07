@@ -3848,21 +3848,22 @@ interface cage()
 
 for all
 
-   Vat      : address VatLike
-   Flapper  : address Flapper
-   Flopper  : address Flopper
-   MayFlap  : uint256
-   MayFlop  : uint256
-   Dai_v    : uint256
-   Sin_v    : uint256
-   Dai_f    : uint256
-   Debt     : uint256
-   Vice     : uint256
-   Live     : uint256
-   Sin      : uint256
-   Ash      : uint256
-   FlapLive : uint256
-   FlopLive : uint256
+    Vat      : address VatLike
+    Flapper  : address Flapper
+    Flopper  : address Flopper
+    FlapVat  : address
+    MayFlap  : uint256
+    MayFlop  : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_f    : uint256
+    Debt     : uint256
+    Vice     : uint256
+    Live     : uint256
+    Sin      : uint256
+    Ash      : uint256
+    FlapLive : uint256
+    FlopLive : uint256
 
 storage
 
@@ -3896,11 +3897,11 @@ storage Flopper
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1023
     Can == 1
     MayFlap == 1
     MayFlop == 1
-    VCallValue == 0
-    VCallDepth < 1023
 
 iff in range uint256
 
@@ -3934,21 +3935,22 @@ interface cage()
 
 for all
 
-   Vat     : address VatLike
-   Flapper : address Flapper
-   Flopper : address Flopper
-   MayFlap : uint256
-   MayFlop : uint256
-   Dai_v   : uint256
-   Sin_v   : uint256
-   Dai_f   : uint256
-   Debt    : uint256
-   Vice    : uint256
-   Live     : uint256
-   Sin      : uint256
-   Ash      : uint256
-   FlapLive : uint256
-   FlopLive : uint256
+    Vat     : address VatLike
+    Flapper : address Flapper
+    Flopper : address Flopper
+    FlapVat : address
+    MayFlap : uint256
+    MayFlop : uint256
+    Dai_v   : uint256
+    Sin_v   : uint256
+    Dai_f   : uint256
+    Debt    : uint256
+    Vice    : uint256
+    Live     : uint256
+    Sin      : uint256
+    Ash      : uint256
+    FlapLive : uint256
+    FlopLive : uint256
 
 storage
 
@@ -3972,22 +3974,21 @@ storage Vat
 storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
-    vat  |-> Vat
+    vat  |-> FlapVat
     live |-> FlapLive => 0
 
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    vat  |-> Vat
     live |-> FlopLive => 0
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1023
     Can == 1
     MayFlap == 1
     MayFlop == 1
-    VCallValue == 0
-    VCallDepth < 1023
 
 iff in range uint256
 
@@ -4002,6 +4003,7 @@ if
     Flopper =/= ACCT_ID
     Flopper =/= Vat
     Flopper =/= Flapper
+    FlapVat ==  Vat
 
 calls
 
@@ -4019,31 +4021,32 @@ interface cage()
 
 for all
 
-   Vat     : address VatLike
-   Flapper : address Flapper
-   Flopper : address Flopper
-   MayFlap : uint256
-   MayFlop : uint256
-   Dai_v   : uint256
-   Sin_v   : uint256
-   Dai_f   : uint256
-   Debt    : uint256
-   Vice    : uint256
-   Live     : uint256
-   Sin      : uint256
-   Ash      : uint256
-   FlapLive : uint256
-   FlopLive : uint256
+    Vat     : address VatLike
+    Flapper : address Flapper
+    Flopper : address Flopper
+    FlapVat : address
+    MayFlap : uint256
+    MayFlop : uint256
+    Dai_v   : uint256
+    Sin_v   : uint256
+    Dai_f   : uint256
+    Debt    : uint256
+    Vice    : uint256
+    Live     : uint256
+    Sin      : uint256
+    Ash      : uint256
+    FlapLive : uint256
+    FlopLive : uint256
 
 storage
 
-   wards[CALLER_ID] |-> Can
-   vat |-> Vat
-   flopper |-> Flopper
-   flapper |-> Flapper
-   live |-> Live => 0
-   Sin  |-> Sin => 0
-   Ash  |-> Ash => 0
+    wards[CALLER_ID] |-> Can
+    vat |-> Vat
+    flopper |-> Flopper
+    flapper |-> Flapper
+    live |-> Live => 0
+    Sin  |-> Sin => 0
+    Ash  |-> Ash => 0
 
 storage Vat
 
@@ -4057,22 +4060,21 @@ storage Vat
 storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
-    vat  |-> Vat
+    vat  |-> FlapVat
     live |-> FlapLive => 0
 
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    vat  |-> Vat
     live |-> FlopLive => 0
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1023
     Can == 1
     MayFlap == 1
     MayFlop == 1
-    VCallValue == 0
-    VCallDepth < 1023
 
 iff in range uint256
 
@@ -4088,6 +4090,7 @@ if
     Flopper =/= ACCT_ID
     Flopper =/= Vat
     Flopper =/= Flapper
+    FlapVat ==  Vat
 
 calls
 
@@ -7635,6 +7638,7 @@ for all
     Vow : address VowLike
     Flapper : address Flapper
     Flopper : address Flopper
+    FlapVat : address
 
     Live : uint256
     When : uint256
@@ -7693,6 +7697,7 @@ storage Vow
 storage Flapper
 
     wards[Vow] |-> VowMayFlap
+    vat  |-> FlapVat
     live |-> FlapLive => 0
 
 storage Flopper
@@ -7702,6 +7707,8 @@ storage Flopper
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1022
     Live == 1
     CallerMay == 1
     EndMayVat == 1
@@ -7709,11 +7716,10 @@ iff
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
-    VCallValue == 0
-    VCallDepth < 1022
 
 if
     Joy + Dai_f > Awe
+    FlapVat == Vat
 
 calls
 
@@ -7733,6 +7739,7 @@ for all
     Vow : address VowLike
     Flapper : address Flapper
     Flopper : address Flopper
+    FlapVat : address
 
     Live : uint256
     When : uint256
@@ -7790,6 +7797,7 @@ storage Vow
 storage Flapper
 
     wards[Vow] |-> VowMayFlap
+    vat  |-> FlapVat
     live |-> FlapLive => 0
 
 storage Flopper
@@ -7799,6 +7807,8 @@ storage Flopper
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1022
     Live == 1
     CallerMay == 1
     EndMayVat == 1
@@ -7806,11 +7816,10 @@ iff
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
-    VCallValue == 0
-    VCallDepth < 1022
 
 if
     Joy + Dai_f < Awe
+    FlapVat == Vat
 
 calls
 
@@ -7830,6 +7839,7 @@ for all
     Vow : address VowLike
     Flapper : address Flapper
     Flopper : address Flopper
+    FlapVat : address
 
     Live : uint256
     When : uint256
@@ -7888,6 +7898,7 @@ storage Vow
 storage Flapper
 
     wards[Vow] |-> VowMayFlap
+    vat  |-> FlapVat
     live |-> FlapLive => 0
 
 storage Flopper
@@ -7897,6 +7908,8 @@ storage Flopper
 
 iff
 
+    VCallValue == 0
+    VCallDepth < 1022
     Live == 1
     CallerMay == 1
     EndMayVat == 1
@@ -7904,11 +7917,10 @@ iff
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
-    VCallValue == 0
-    VCallDepth < 1022
 
 if
     Joy + Dai_f == Awe
+    FlapVat ==  Vat
 
 calls
 
