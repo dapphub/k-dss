@@ -3343,13 +3343,11 @@ storage Vat
 storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
-    vat  |-> Vat
     live |-> FlapLive => 0
 
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    vat  |-> Vat
     live |-> FlopLive => 0
 
 iff
