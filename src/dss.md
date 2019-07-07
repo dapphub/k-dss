@@ -1110,14 +1110,6 @@ storage
 iff
     VCallValue == 0
 
-    (dink >= 0) or ((Ink_u - dink <= maxUInt256) and (Ink_v + dink >= 0))
-    (dink <= 0) or ((Ink_u - dink >= 0) and (Ink_v + dink <= maxUInt256))
-    (dart >= 0) or ((Art_u - dart <= maxUInt256) and (Art_v + dart >= 0))
-    (dart <= 0) or ((Art_u - dart >= 0) and (Art_v + dart <= maxUInt256))
-
-    ((Ink_u - dink) * Spot) <= maxUInt256
-    ((Ink_v + dink) * Spot) <= maxUInt256
-
     (src == CALLER_ID) or (Can_src == 1)
     (dst == CALLER_ID) or (Can_dst == 1)
 
@@ -1126,6 +1118,15 @@ iff
 
     ((Art_u - dart) * Rate >= Dust) or (Art_u - dart == 0)
     ((Art_v + dart) * Rate >= Dust) or (Art_v + dart == 0)
+
+iff in range uint256
+
+    Ink_u - dink
+    Ink_v + dink
+    Art_u - dart
+    Art_v + dart
+    (Ink_u - dink) * Spot
+    (Ink_v + dink) * Spot
 
 if
 
