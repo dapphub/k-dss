@@ -2893,7 +2893,7 @@ interface file(bytes32 what, address addr)
 for all
 
     May : uint256
-    Vow : uint256
+    Vow : address
 
 storage
 
