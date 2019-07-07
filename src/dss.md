@@ -3955,6 +3955,7 @@ storage Vat
 storage Flapper
 
     wards[ACCT_ID] |-> MayFlap
+    vat  |-> FlapVat
     live |-> FlapLive => 0
 
 storage Flopper
@@ -3984,6 +3985,7 @@ if
     Flopper =/= ACCT_ID
     Flopper =/= Vat
     Flopper =/= Flapper
+    FlapVat ==  Vat
 
 calls
 
