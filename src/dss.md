@@ -833,6 +833,7 @@ iff in range uint256
     Dai_w + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
     (Urn_art + dart) * Ilk_rate
+    (Urn_ink + dink) * Ilk_spot
 
 iff in range int256
 
@@ -844,11 +845,10 @@ if
     u =/= v
     v =/= w
     u =/= w
-
 iff
     VCallValue == 0
     (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
-    (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)) and (Urn_ink + ABI_dink) * Ilk_spot <= maxSInt256)
+    (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
     (dart <= 0 and dink >= 0) or (u == CALLER_ID or Can_u == 1)
     (dink <= 0) or (v == CALLER_ID or Can_v == 1)
     (dart >= 0) or (w == CALLER_ID or Can_w == 1)
