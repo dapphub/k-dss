@@ -2404,7 +2404,7 @@ calls
     Jug.rpow
 ```
 
-## Rpow
+## `rpow`
 
 ```act
 behaviour adduu of Jug
@@ -2424,7 +2424,7 @@ if
     #sizeWordStack(WS) <= 100
 ```
 
-This is the coiductive lemma.
+This is the coinductive lemma.
 ```
 0.    n % 2 == 0
       case: n >= 2
@@ -2454,12 +2454,13 @@ gas = 194 + num0(n) * 178 + num1(n) * 293
 behaviour rpow-loop of Jug
 lemma
 
-//  0d63    0da7
+//  0a3a => 0a7e
 pc
 
     2618 => 2686
 
 for all
+
     Half   : uint256
     Z      : uint256
     Base   : uint256
