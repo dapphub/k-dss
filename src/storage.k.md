@@ -231,46 +231,6 @@ syntax Int ::= "#Pot.rho" [function]
 rule #Pot.rho => 7
 ```
 
-### Drip
-
-```k
-syntax Int ::= "#Drip.wards" "[" Int "]" [function]
-// -----------------------------------------------
-// doc: whether `$0` is an owner of `Drip`
-// act: address `$0` is `. == 1 ? authorised : unauthorised`
-rule #Drip.wards[A] => #hashedLocation("Solidity", 0, A)
-
-syntax Int ::= "#Drip.ilks" "[" Int "].tax" [function]
-// ----------------------------------------------------
-// doc: stability fee of `$0`
-// act: `$0` has stability fee `.`
-rule #Drip.ilks[Ilk].tax => #hashedLocation("Solidity", 1, Ilk) +Int 0
-
-syntax Int ::= "#Drip.ilks" "[" Int "].rho" [function]
-// ----------------------------------------------------
-// doc: last drip time of `$0`
-// act: `$0` was dripped at `.`
-rule #Drip.ilks[Ilk].rho => #hashedLocation("Solidity", 1, Ilk) +Int 1
-
-syntax Int ::= "#Drip.vat" [function]
-// ----------------------------------
-// doc: `Vat` that this `Drip` points to
-// act: this Drip points to Vat `.`
-rule #Drip.vat => 2
-
-syntax Int ::= "#Drip.vow" [function]
-// ----------------------------------
-// doc: `Vow` that this `Drip` points to
-// act: this Drip points to Vow `.`
-rule #Drip.vow => 3
-
-syntax Int ::= "#Drip.repo" [function]
-// -----------------------------------
-// doc: base interest rate
-// act: the base interest rate is `.`
-rule #Drip.repo => 4
-```
-
 ### Vow
 
 ```k
