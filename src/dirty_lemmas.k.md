@@ -101,13 +101,9 @@ rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
-rule X *Int Y <=Int maxUInt256 => true
-  requires chop(chop(X *Int Y) /Int Y) ==Int X
-
-rule 0 <= Int X *Int Y => true
-  requires rangeUInt(256, X)
-  andBool rangeUInt(256, Y)
-
+rule chop(chop(X *Int Y) /Int Y) ==K X => X *Int Y <= maxUInt256
+  requires #rangeUInt(256, X)
+  andBool #rangeUInt(256, Y)
 
 // better gas handling
 
