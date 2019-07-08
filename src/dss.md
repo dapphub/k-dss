@@ -2994,14 +2994,15 @@ storage
 
 storage Vat
 
-    can[ACCT_ID][CALLER_ID] |-> Can
+    can[CALLER_ID][ACCT_ID] |-> Can
     dai[CALLER_ID]          |-> Dai_u => Dai_u - Chi * wad
     dai[ACCT_ID]            |-> Dai_p => Dai_p + Chi * wad
 
 iff
 
-    Can == 1
     VCallValue == 0
+    VCallDepth < 1024
+    Can == 1
 
 iff in range uint256
 
@@ -3011,10 +3012,14 @@ iff in range uint256
     Dai_u - Chi * wad
     Dai_p + Chi * wad
 
+if
+    ACCT_ID =/= CALLER_ID
+
 calls
 
     Pot.adduu
     Pot.muluu
+    Vat.move-diff
 ```
 
 ```act
@@ -3039,12 +3044,14 @@ storage
 
 storage Vat
 
-    dai[CALLER_ID]          |-> Dai_u => Dai_u + Chi * wad
-    dai[ACCT_ID]            |-> Dai_p => Dai_p - Chi * wad
+    can[ACCT_ID][ACCT_ID] |-> _
+    dai[ACCT_ID]          |-> Dai_p => Dai_p - Chi * wad
+    dai[CALLER_ID]        |-> Dai_u => Dai_u + Chi * wad
 
 iff
 
     VCallValue == 0
+    VCallDepth < 1024
 
 iff in range uint256
 
@@ -3054,10 +3061,14 @@ iff in range uint256
     Dai_u + Chi * wad
     Dai_p - Chi * wad
 
+if
+    ACCT_ID =/= CALLER_ID
+
 calls
 
     Pot.subuu
     Pot.muluu
+    Vat.move-diff
 ```
 
 # Vow
