@@ -834,7 +834,7 @@ iff in range uint256
     Debt  + (Ilk_rate * dart)
     (Urn_art + dart) * Ilk_rate
     (Urn_ink + dink) * Ilk_spot
-    (Ilk_Art + dart) * Ilk_rate
+    (Ilk_art + dart) * Ilk_rate
 
 iff in range int256
 
