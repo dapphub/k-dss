@@ -96,4 +96,8 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
     rule keccak(WS) => keccakIntList(bytesToWords(WS))
       requires ( notBool #isConcrete(WS) )
        andBool notBool( #sizeWordStack(WS) modInt 32 ==Int 0)
+
+rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 ```
