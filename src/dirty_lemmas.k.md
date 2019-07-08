@@ -107,4 +107,25 @@ rule X *Int Y <=Int maxUInt256 => true
 rule 0 <= Int X *Int Y => true
   requires rangeUInt(256, X)
   andBool rangeUInt(256, Y)
+
+
+// better gas handling
+
+// This should be used instead of the one in `klab/resoures/rules.tmp.k`
+// rule #if C #then G -Int X #else G -Int Y #fi => G -Int (#if C #then X #else Y #fi)
+//  requires #isVariable(G)
+
+rule (G -Int A) -Int (#if C #then P #else Q #fi) =>
+      G -Int (#if C #then A +Int P #else A +Int Q #fi)
+  requires #isConcrete(A)
+  andBool  #isConcrete(P)
+  andBool  #isConcrete(Q)
+
+rule (G -Int (#if C #then P #else Q #fi)) -Int A =>
+      G -Int (#if C #then P +Int A #else Q +Int A #fi)
+  requires #isConcrete(A)
+  andBool  #isConcrete(P)
+  andBool  #isConcrete(Q)
+
+rule (A andBool B) ==K false => (A ==K false) orBool (B ==K false)
 ```
