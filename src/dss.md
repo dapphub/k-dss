@@ -834,6 +834,7 @@ iff in range uint256
     Debt  + (Ilk_rate * dart)
     (Urn_art + dart) * Ilk_rate
     (Urn_ink + dink) * Ilk_spot
+    (Ilk_Art + dart) * Ilk_rate
 
 iff in range int256
 
@@ -979,27 +980,29 @@ iff in range uint256
     Dai_w + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
     (Urn_art + dart) * Ilk_rate
+    (Urn_ink + dink) * Ilk_spot
+    (Ilk_Art + dart) * Ilk_rate
 
 iff in range int256
 
     Ilk_rate
     Ilk_rate * dart
 
+iff
+
+    VCallValue == 0
+    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
+    (dart <= 0 and dink >= 0) or (((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot))
+    u == CALLER_ID or Can_u == 1
+    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
+    Ilk_rate =/= 0
+    Live == 1
+
 if
 
     u == v
     v == w
     u == w
-
-iff
-
-    VCallValue == 0
-    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
-    (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)) and (Urn_ink + ABI_dink) * Ilk_spot <= maxSInt256)
-    u == CALLER_ID or Can_u == 1
-    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
-    Live == 1
 
 calls
 
