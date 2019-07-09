@@ -2283,7 +2283,7 @@ for all
 
     Vat    : address VatLike
     Base   : uint256
-    Vow    : bytes32
+    Vow    : address
     Duty   : uint256
     Rho    : uint48
     May    : uint256
@@ -2291,6 +2291,9 @@ for all
     Art_i  : uint256
     Dai    : uint256
     Debt   : uint256
+    Ilk_spot : uint256
+    Ilk_line : uint256
+    Ilk_dust : uint256
 
 storage
 
@@ -2302,16 +2305,21 @@ storage
 
 storage Vat
 
+    live           |-> Live
     wards[ACCT_ID] |-> May
-    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    ilks[ilk].rate |-> Rate => Rate + (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
     ilks[ilk].Art  |-> Art_i
-    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
-    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    ilks[ilk].spot |-> Ilk_spot
+    ilks[ilk].line |-> Ilk_line
+    ilks[ilk].dust |-> Ilk_dust
+    dai[Vow]       |-> Dai  => Dai  + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    debt           |-> Debt => Debt + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
@@ -2320,22 +2328,37 @@ iff in range uint256
 
     Base + Duty
     TIME - Rho
-    #rpow(Base + Duty, TIME - Rho, #Ray) * #Ray
-    #rpow(Base + Duty, TIME - Rho, #Ray) * Rate
-    Rate + (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
-    Dai  + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
-    Debt + Art_i * (#rmul(#rpow(Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * #Ray
+    #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * Rate
+    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate)
+    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
+    Rate + (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    Dai  + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    Debt + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 iff in range int256
 
+    Rate
     Art_i
-    #rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate
-    Art_i * (#rmul(#rpow(Repo + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
+    Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+
+gas
+
+    4000000000 + (#if ( (Base + Duty) == 0 ) #then (#if ( (TIME - Rho) == 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) == 0 ) #then (#if ( ( (TIME - Rho) / 2 ) == 0 ) #then 150 #else ( 437 + ( ( ( num0(TIME - Rho) - 1 ) * 172 ) + ( num1(TIME - Rho) * 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) / 2 ) == 0 ) #then 160 #else ( 447 + ( ( num0(TIME - Rho) * 172 ) +Int ( ( num1(TIME - Rho) - 1 ) * 287 ) ) ) #fi) #fi) #fi)
+
+if
+
+    num0(TIME - Rho) >= 0
+    num1(TIME - Rho) >= 0
 
 calls
 
     Jug.adduu
     Jug.rpow
+    Vat.fold
+    Vat.addui
+    Vat.mului
 ```
 
 ## `rpow`
@@ -2432,7 +2455,7 @@ stack
 
 gas
 
-    3000000 +Int ((num0(ABI_n) *Int 172) +Int (num1(ABI_n) *Int 287))
+    (#if ( ABI_x ==K 0 ) #then (#if ( ABI_n ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( ABI_n modInt 2 ) ==K 0 ) #then (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(ABI_n) -Int 1 ) *Int 172 ) +Int ( num1(ABI_n) *Int 287 ) ) ) #fi) #else (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(ABI_n) *Int 172 ) +Int ( ( num1(ABI_n) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi)
 
 if
 

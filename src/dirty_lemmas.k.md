@@ -101,12 +101,13 @@ rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
-rule X *Int Y <=Int maxUInt256 => true
-  requires chop(chop(X *Int Y) /Int Y) ==Int X
+// TODO - bad style - rewrite
+// rule X *Int Y <=Int maxUInt256 => true
+//  requires chop(chop(X *Int Y) /Int Y) ==Int X
 
-rule 0 <= Int X *Int Y => true
-  requires rangeUInt(256, X)
-  andBool rangeUInt(256, Y)
+// rule 0 <=Int X *Int Y => true
+//   requires rangeUInt(256, X)
+//  andBool rangeUInt(256, Y)
 
 
 // better gas handling
@@ -127,5 +128,9 @@ rule (G -Int (#if C #then P #else Q #fi)) -Int A =>
   andBool  #isConcrete(P)
   andBool  #isConcrete(Q)
 
-rule (A andBool B) ==K false => (A ==K false) orBool (B ==K false)
+rule notBool(A -Word (pow256 +Int B) <Int A) => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
+
 ```
