@@ -122,7 +122,7 @@ rule X -Word Y <Int X => Y <Int X
   andBool #rangeUInt(256, Y)
 
 // todo: useful?
-rule (X -Word (Y *Int (pow256 +Int Z)) <Int X => (X -Int (Y *Int (pow256 +Int Z)) >=Int 0)
+rule (X -Word (Y *Int (pow256 +Int Z)) <Int X) => (X -Int (Y *Int (pow256 +Int Z)) >=Int 0)
   requires #rangeUInt(256, X)
   andBool #rangeUInt(256, Y *Int (pow256 +Int Z))
 
