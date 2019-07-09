@@ -97,31 +97,46 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
       requires ( notBool #isConcrete(WS) )
        andBool notBool( #sizeWordStack(WS) modInt 32 ==Int 0)
 
+
 rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
+// todo: useful?
+rule chop(A -Int B) <Int A => (A -Int B <=Int maxUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
+
+rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int (pow256 +Int Y) <Int 0
+  requires #rangeUInt(256, X)
+  andBool #rangeSInt(256, Y)
+  andBool Y <Int 0
+
+rule chop((X *Int (pow256 +Int Y))) => X *Int (pow256 +Int Y)
+  requires #rangeSInt(256, X *Int Y)
+  andBool #rangeUInt(256, X)
+  andBool #rangeSInt(256, Y)
+
+// todo: useful?
+rule 0 <Int #signed(X) => #rangeSInt(256, X)
+  requires #rangeUInt(256, X)
+
+// todo: useful?
+rule X -Word Y <Int X => Y <Int X
+  requires #rangeUInt(256, X)
+  andBool #rangeUInt(256, Y)
+
+// todo: useful?
+rule X -Word (Y *Int (pow256 +Int Z) <Int X => (X -Int (Y *Int (pow256 +Int Z)) >=Int 0
+  requires #rangeUInt(256, X)
+  andBool #rangeUInt(256, Y *Int (pow256 +Int Z))
+
+// todo: useful?
+rule X -Word Y >Int X => Y >Int X
+  requires #rangeUInt(256, X)
+  andBool #rangeUInt(256, Y)
 
 rule chop(chop(X *Int Y) /Int Y) ==K X => X *Int Y <=Int maxUInt256
   requires #rangeUInt(256, X)
   andBool #rangeUInt(256, Y)
-
-// better gas handling
-
-// This should be used instead of the one in `klab/resoures/rules.tmp.k`
-// rule #if C #then G -Int X #else G -Int Y #fi => G -Int (#if C #then X #else Y #fi)
-//  requires #isVariable(G)
-
-rule (G -Int A) -Int (#if C #then P #else Q #fi) =>
-      G -Int (#if C #then A +Int P #else A +Int Q #fi)
-  requires #isConcrete(A)
-  andBool  #isConcrete(P)
-  andBool  #isConcrete(Q)
-
-rule (G -Int (#if C #then P #else Q #fi)) -Int A =>
-      G -Int (#if C #then P +Int A #else Q +Int A #fi)
-  requires #isConcrete(A)
-  andBool  #isConcrete(P)
-  andBool  #isConcrete(Q)
-
-rule (A andBool B) ==K false => (A ==K false) orBool (B ==K false)
 ```
