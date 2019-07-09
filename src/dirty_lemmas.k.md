@@ -139,4 +139,9 @@ rule X -Word Y >Int X => Y >Int X
 rule chop(chop(X *Int Y) /Int Y) ==K X => X *Int Y <=Int maxUInt256
   requires #rangeUInt(256, X)
   andBool #rangeUInt(256, Y)
+
+rule notBool(A -Word (pow256 +Int B) <Int A) => (A -Int B >=Int minUInt256)
+  requires #rangeUInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool B <Int 0
 ```
