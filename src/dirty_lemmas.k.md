@@ -101,18 +101,13 @@ syntax IntList ::= bytesToWords ( WordStack )       [function]
 rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
-// todo: useful?
-rule chop(A -Int B) <Int A => (A -Int B <=Int maxUInt256)
-  requires #rangeUInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool B <Int 0
 
 rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int (pow256 +Int Y) <Int 0
   requires #rangeUInt(256, X)
   andBool #rangeSInt(256, Y)
   andBool Y <Int 0
 
-rule chop((X *Int (pow256 +Int Y))) => X *Int (pow256 +Int Y)
+rule chop(X *Int (pow256 +Int Y)) => X *Int (pow256 +Int Y)
   requires #rangeSInt(256, X *Int Y)
   andBool #rangeUInt(256, X)
   andBool #rangeSInt(256, Y)
@@ -127,7 +122,7 @@ rule X -Word Y <Int X => Y <Int X
   andBool #rangeUInt(256, Y)
 
 // todo: useful?
-rule X -Word (Y *Int (pow256 +Int Z) <Int X => (X -Int (Y *Int (pow256 +Int Z)) >=Int 0
+rule (X -Word (Y *Int (pow256 +Int Z)) <Int X => (X -Int (Y *Int (pow256 +Int Z)) >=Int 0)
   requires #rangeUInt(256, X)
   andBool #rangeUInt(256, Y *Int (pow256 +Int Z))
 
