@@ -555,12 +555,6 @@ syntax Int ::= "#Flapper.bids" "[" Int "].guy_tic_end" [function]
 // act:
 rule #Flapper.bids[N].guy_tic_end => #hashedLocation("Solidity", 1, N) +Int 2
 
-syntax Int ::= "#Flapper.bids" "[" Int "].gal" [function]
-// ------------------------------------------------------
-// doc: beneficiary of the auction
-// act:
-rule #Flapper.bids[N].gal => #hashedLocation("Solidity", 1, N) +Int 3
-
 syntax Int ::= "#Flapper.vat" [function]
 // ---------------------------------------
 // doc: dai token

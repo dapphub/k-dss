@@ -5878,20 +5878,18 @@ for all
     Guy : address
     Tic : uint48
     End : uint48
-    Gal : address
 
 storage
 
     bids[n].bid         |-> Bid
     bids[n].lot         |-> Lot
     bids[n].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End)
-    bids[n].gal         |-> Gal
 
 iff
 
   VCallValue == 0
 
-returns Bid : Lot : Guy : Tic : End : Gal
+returns Bid : Lot : Guy : Tic : End
 ```
 
 #### CDP Engine
@@ -6210,7 +6208,7 @@ if
 
 ```act
 behaviour kick of Flapper
-interface kick(address gal, uint256 lot, uint256 bid)
+interface kick(uint256 lot, uint256 bid)
 
 for all
 
@@ -6223,7 +6221,6 @@ for all
     Old_guy  : address
     Old_tic  : uint48
     Old_end  : uint48
-    Old_gal  : address
     CanMove  : uint256
     Dai_v    : uint256
     Dai_c    : uint256
@@ -6237,7 +6234,6 @@ storage
     bids[1 + Kicks].bid         |-> Bid => bid
     bids[1 + Kicks].lot         |-> Lot => lot
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Old_guy, Old_tic, Old_end) => #WordPackAddrUInt48UInt48(CALLER_ID, Old_tic, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Old_gal => gal
     live                        |-> Live
 
 storage Vat
@@ -6296,7 +6292,6 @@ for all
     Guy      : address
     Tic      : uint48
     End      : uint48
-    Gal      : address
     Can      : uint256
     Bal_usr  : uint256
     Bal_gal  : uint256
@@ -6312,7 +6307,6 @@ storage
     bids[id].bid         |-> Bid => bid
     bids[id].lot         |-> Lot
     bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-    bids[id].gal         |-> Gal
     live                 |-> Live
     beg                  |-> Beg
 
@@ -6320,7 +6314,7 @@ storage DSToken
 
     balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
     balances[Guy]       |-> Bal_usr => Bal_usr + Bid
-    balances[Gal]       |-> Bal_gal => Bal_gal + (bid - Bid)
+    balances[ACCT_ID]   |-> Bal_gal => Bal_gal + (bid - Bid)
     allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - bid #fi
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
@@ -6346,8 +6340,7 @@ if
     #rangeUInt(48, TIME)
     CALLER_ID =/= ACCT_ID
     CALLER_ID =/= Guy
-    CALLER_ID =/= Gal
-    Gal =/= Guy
+    ACCT_ID   =/= Guy
 
 calls
     DSToken.move
@@ -6360,45 +6353,60 @@ behaviour deal of Flapper
 interface deal(uint256 id)
 
 for all
-  Vat   : address VatLike
-  Live  : uint256
-  Bid   : uint256
-  Lot   : uint256
-  Guy   : address
-  Tic   : uint48
-  End   : uint48
-  Gal   : address
-  Dai_a : uint256
-  Dai_g : uint256
+  DSToken : address DSToken
+  Vat     : address VatLike
+  Live    : uint256
+  Bid     : uint256
+  Lot     : uint256
+  Guy     : address
+  Tic     : uint48
+  End     : uint48
+  Dai_a   : uint256
+  Dai_g   : uint256
+  Gem_a   : uint256
+  Supply  : uint256
+  Owner   : address
+  Stopped : bool
 
 storage
   vat                  |-> Vat
+  gem                  |-> DSToken
   live                 |-> Live
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
-  bids[id].gal         |-> Gal => 0
 
 storage Vat
   can[ACCT_ID][ACCT_ID] |-> _
   dai[ACCT_ID] |-> Dai_a => Dai_a - Lot
   dai[Guy]     |-> Dai_g => Dai_g + Lot
 
+storage DSToken
+  allowance[ACCT_ID][ACCT_ID] |-> _
+  owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+  balances[ACCT_ID]   |-> Gem_a  => Gem_a  - bid
+  supply              |-> Supply => Supply - bid
+
 iff
-  Live == 1
-  (Tic < TIME and Tic =/= 0) or (End < TIME)
   VCallValue == 0
   VCallDepth < 1024
+  Live == 1
+  Stopped == 0
+  (Tic < TIME and Tic =/= 0) or (End < TIME)
 
 if
+  ACCT_ID == Owner
   ACCT_ID =/= Guy
 
 iff in range uint256
   Dai_a - Lot
   Dai_g + Lot
+  Gem_a - bid
+  Supply - bid
 
 calls
   Vat.move-diff
+  DSToken.burn-self
 ```
 
 ```act
@@ -6450,7 +6458,6 @@ for all
   Guy     : address
   Tic     : uint48
   End     : uint48
-  Gal     : address
   Gem_a   : uint256
   Gem_g   : uint256
   Stopped : bool
@@ -6461,7 +6468,6 @@ storage
   gem  |-> DSToken
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
-  bids[id].gal         |-> Gal => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage DSToken
@@ -8746,7 +8752,7 @@ types
   Gem_s     : uint256
   Supply    : uint256
   Allowance : uint256
-  Stoppedd   : bool
+  Stoppedd  : bool
   Owner     : address
 
 storage
@@ -8768,6 +8774,37 @@ if
   CALLER_ID == Owner
   CALLER_ID =/= ACCT_ID
   CALLER_ID =/= src
+```
+
+```act
+behaviour burn-self of DSToken
+interface burn(address src, uint wad)
+
+types
+  Gem_s     : uint256
+  Supply    : uint256
+  Allowance : uint256
+  Stoppedd  : bool
+  Owner     : address
+
+storage
+  allowance[src][CALLER_ID] |-> Allowance => Allowance
+  balances[src]             |-> Gem_s  => Gem_s  - wad
+  supply                    |-> Supply => Supply - wad
+  owner_stopped |-> #WordPackAddrUInt8(Owner, Stoppedd)
+
+iff in range uint256
+  Gem_s  - wad
+  Supply - wad
+
+iff
+  VCallValue == 0
+  Stoppedd == 0
+
+if
+  CALLER_ID == Owner
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID == src
 ```
 
 # DSValue
