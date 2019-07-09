@@ -3772,6 +3772,7 @@ for all
 
     Flapper  : address Flapper
     Vat      : address VatLike
+    FlapVat  : address
     Sin      : uint256
     Ash      : uint256
     Awe      : uint256
@@ -3802,7 +3803,7 @@ storage
 
 storage Flapper
 
-    vat                         |-> Vat
+    vat                         |-> FlapVat
     kicks                       |-> Kicks   => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     bids[1 + Kicks].bid         |-> Bid => 0
@@ -3842,6 +3843,7 @@ if
     Flapper =/= Vat
     ACCT_ID =/= Vat
     ACCT_ID =/= Flapper
+    FlapVat ==  Vat
 
 calls
 
