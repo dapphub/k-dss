@@ -102,7 +102,7 @@ rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
   requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
 
-rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int (pow256 +Int Y) <Int 0
+rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int Y <Int 0
   requires #rangeUInt(256, X)
   andBool #rangeSInt(256, Y)
   andBool Y <Int 0
