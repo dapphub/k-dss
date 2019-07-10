@@ -86,57 +86,22 @@ rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
     rule         #symEcrec(MSG, V, R, S) <Int pow256 => true
 
 
-syntax IntList ::= bytesToWords ( WordStack )       [function]
- // --------------------------------------------------------------
-    rule bytesToWords ( WS )
-         => #asWord(#take(#sizeWordStack(WS) modInt 32, WS)) byteStack2IntList(#drop(#sizeWordStack(WS) modInt 32, WS))
-         requires #sizeWordStack(WS) modInt 32 >Int 0
-    rule bytesToWords ( WS ) => byteStack2IntList(WS)
-    requires #sizeWordStack(WS) modInt 32 ==Int 0
-    rule keccak(WS) => keccakIntList(bytesToWords(WS))
-      requires ( notBool #isConcrete(WS) )
-       andBool notBool( #sizeWordStack(WS) modInt 32 ==Int 0)
+// rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int Y <Int 0
+//   requires #rangeUInt(256, X)
+//   andBool #rangeSInt(256, Y)
+//   andBool Y <Int 0
 
+// rule chop(X *Int (pow256 +Int Y)) => X *Int (pow256 +Int Y)
+//   requires #rangeSInt(256, X *Int Y)
+//   andBool #rangeUInt(256, X)
+//   andBool #rangeSInt(256, Y)
 
-rule chop(A +Int B) >Int A => (A +Int B <=Int maxUInt256)
-  requires #rangeUInt(256, A)
-  andBool #rangeUInt(256, B)
-
-rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int Y <Int 0
-  requires #rangeUInt(256, X)
-  andBool #rangeSInt(256, Y)
-  andBool Y <Int 0
-
-rule chop(X *Int (pow256 +Int Y)) => X *Int (pow256 +Int Y)
-  requires #rangeSInt(256, X *Int Y)
-  andBool #rangeUInt(256, X)
-  andBool #rangeSInt(256, Y)
-
+// rule #signed(A *Int (pow256 +Int B)) => A *Int B
+// requires #rangeUInt(256, A)
+// andBool  #rangeSInt(256, B)
+// andBool  #rangeSInt(256, A *Int B)
+// andBool  0 <Int B
 // todo: useful?
-rule 0 <Int #signed(X) => #rangeSInt(256, X)
-  requires #rangeUInt(256, X)
-
-// todo: useful?
-rule X -Word Y <Int X => Y <Int X
-  requires #rangeUInt(256, X)
-  andBool #rangeUInt(256, Y)
-
-// todo: useful?
-rule (X -Word (Y *Int (pow256 +Int Z)) <Int X) => (X -Int (Y *Int (pow256 +Int Z)) >=Int 0)
-  requires #rangeUInt(256, X)
-  andBool #rangeUInt(256, Y *Int (pow256 +Int Z))
-
-// todo: useful?
-rule X -Word Y >Int X => Y >Int X
-  requires #rangeUInt(256, X)
-  andBool #rangeUInt(256, Y)
-
-rule chop(chop(X *Int Y) /Int Y) ==K X => X *Int Y <=Int maxUInt256
-  requires #rangeUInt(256, X)
-  andBool #rangeUInt(256, Y)
-
-rule notBool(A -Word (pow256 +Int B) <Int A) => (A -Int B >=Int minUInt256)
-  requires #rangeUInt(256, A)
-  andBool #rangeSInt(256, B)
-  andBool B <Int 0
+// rule 0 <Int #signed(X) => #rangeSInt(256, X)
+//    requires #rangeUInt(256, X)
 ```
