@@ -5125,8 +5125,6 @@ calls
   Flipper.addu48u48
 ```
 
-note: currently failing due to timeout
-
 ```act
 behaviour tend of Flipper
 interface tend(uint256 id, uint256 lot, uint256 bid)
@@ -5190,8 +5188,6 @@ calls
   Flipper.muluu
   Vat.move-diff
 ```
-
-note: currently failing due to timeout
 
 ```act
 behaviour dent of Flipper
@@ -6204,8 +6200,6 @@ calls
 ```
 
 #### Bidding on an auction (tend phase)
-
-note: currently failing due to timeout
 
 ```act
 behaviour tend of Flapper
