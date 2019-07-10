@@ -3743,7 +3743,6 @@ for all
     Guy      : address
     Tic      : uint48
     End      : uint48
-    Gal      : address
 
 storage
 
@@ -3762,7 +3761,6 @@ storage Flapper
     bids[1 + Kicks].bid         |-> Bid => 0
     bids[1 + Kicks].lot         |-> Lot => Bump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
-    bids[1 + Kicks].gal         |-> Gal => 0
     live                        |-> FlapLive
 
 storage Vat
