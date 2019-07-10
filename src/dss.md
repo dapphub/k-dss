@@ -2868,12 +2868,12 @@ interface drip()
 
 for all
 
-    Rho  : uint256
+    Rho  : uint48
     Chi  : uint256
     Dsr  : uint256
     Pie  : uint256
     Vow  : address
-    Vat  : address
+    Vat  : address VatLike
     May  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -2883,7 +2883,7 @@ for all
 storage
 
     rho |-> Rho => TIME
-    chi |-> Chi => #rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi)
+    chi |-> Chi => #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi)
     dsr |-> Dsr
     Pie |-> Pie
     vow |-> Vow
@@ -2892,26 +2892,38 @@ storage
 storage Vat
 
     wards[ACCT_ID] |-> May
-    dai[ACCT_ID]   |-> Dai  => Dai + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    sin[Vow]       |-> Sin  => Sin + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    vice           |-> Vice => Vice + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    debt           |-> Debt => Debt + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    dai[ACCT_ID]   |-> Dai  => Dai + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    sin[Vow]       |-> Sin  => Sin + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    vice           |-> Vice => Vice + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    debt           |-> Debt => Debt + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
 
 iff
 
-    Rho <= TIME
     May == 1
+    VCallValue == 0
+    VCallDepth < 1024
+
+gas
+
+    ( ( 5068 + ( ( ( ( ( #if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) + ( #if ( ( Sin ==K 0 ) andBool (notBool ( ( Sin + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Vice ==K 0 ) andBool (notBool ( ( Vice + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + 26564 ) ) + ( ( ( ( 819 + ( #if ( Dsr ==K 0 ) #then ( #if ( ( TIME - Rho ) ==K 0 ) #then 82 #else 92 #fi) #else ( #if ( ( ( TIME - Rho ) modInt 2 ) ==K 0 ) #then ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 150 #else ( 437 + ( ( ( num0(( TIME - Rho )) - 1 ) * 172 ) + ( num1(( TIME - Rho )) * 287 ) ) ) #fi) #else ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 160 #else ( 447 + ( ( num0(( TIME - Rho )) * 172 ) + ( ( num1(( TIME - Rho )) - 1 ) * 287 ) ) ) #fi) #fi) #fi) ) + ( #if ( Chi ==K 0 ) #then 5946 #else 5998 #fi) ) + ( 5711 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) ) + ( #if ( ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ==K 0 ) #then 951 #else 1003 #fi) ) )
+
+if
+
+    num0(TIME - Rho) >= 0
+    num1(TIME - Rho) >= 0
 
 iff in range uint256
 
-    #rpow(Dsr, TIME - Rho, #Ray) * Chi
-    #rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi)
-    #rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi
-    Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    Dai + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    Sin + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    Vice + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
-    Debt + Pie * (#rmul(#rpow(Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    TIME - Rho
+    #rpow(#Ray, Dsr, TIME - Rho, #Ray) * #Ray
+    #rpow(#Ray, Dsr, TIME - Rho, #Ray) * Chi
+    #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi)
+    #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi
+    Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    Dai + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    Sin + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    Vice + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
+    Debt + Pie * (#rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi)
 
 calls
 
@@ -2920,6 +2932,7 @@ calls
     Pot.adduu
     Pot.subuu
     Pot.muluu
+    Vat.suck
 ```
 
 #### deposits and withdrawals
