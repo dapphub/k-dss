@@ -6315,8 +6315,8 @@ storage Vat
 storage DSToken
   allowance[ACCT_ID][ACCT_ID] |-> _
   owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
-  balances[ACCT_ID]   |-> Gem_a  => Gem_a  - bid
-  supply              |-> Supply => Supply - bid
+  balances[ACCT_ID]   |-> Gem_a  => Gem_a  - Bid
+  supply              |-> Supply => Supply - Bid
 
 iff
   VCallValue == 0
@@ -6330,10 +6330,10 @@ if
   ACCT_ID =/= Guy
 
 iff in range uint256
-  Dai_a - Lot
-  Dai_g + Lot
-  Gem_a - bid
-  Supply - bid
+  Dai_a  - Lot
+  Dai_g  + Lot
+  Gem_a  - Bid
+  Supply - Bid
 
 calls
   Vat.move-diff
