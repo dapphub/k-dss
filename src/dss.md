@@ -2259,7 +2259,6 @@ iff in range uint256
 
     Base + Duty
     TIME - Rho
-    #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * #Ray
     #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * Rate
     #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate)
     #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
@@ -2282,6 +2281,10 @@ if
 
     num0(TIME - Rho) >= 0
     num1(TIME - Rho) >= 0
+    #sizeWordStack(WS) <= 999
+    #Ray =/= 0
+    0 <= #rpow(#Ray, Base + Duty, TIME - Rho, #Ray)
+    #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * #Ray < pow256
 
 calls
 
@@ -2911,11 +2914,14 @@ if
 
     num0(TIME - Rho) >= 0
     num1(TIME - Rho) >= 0
+    #sizeWordStack(WS) <= 999
+    #Ray =/= 0
+    0 <= #rpow(#Ray, Dsr, TIME - Rho, #Ray)
+    #rpow(#Ray, Dsr, TIME - Rho, #Ray) * #Ray < pow256
 
 iff in range uint256
 
     TIME - Rho
-    #rpow(#Ray, Dsr, TIME - Rho, #Ray) * #Ray
     #rpow(#Ray, Dsr, TIME - Rho, #Ray) * Chi
     #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi)
     #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi) - Chi
