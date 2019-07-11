@@ -4,14 +4,6 @@ this should be "flushed" once in a while to the real lemmas.k file
 ```k
 rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
 
-rule 1 |Int bool2Word(X) => 1
-
-rule bool2Word(X) |Int 1 => 1
-
-rule 1 &Int bool2Word(X) => bool2Word(X)
-
-rule bool2Word(X) &Int 1 => bool2Word(X)
-
 syntax Int ::= "posMinSInt256"
 rule posMinSInt256 => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
 
@@ -35,44 +27,6 @@ rule 0 -Word X => #unsigned(0 -Int X)
   0 == X                  : 0 -W 0 =(3)=> chop( 0 - 0 )
 */
 
-
-// rule 0 <Int #signed(#if X ==K 0 #then 0 #else pow256 -Int X #fi) => false
-// requires 0 <=Int X
-// andBool X <=Int posMinSInt256
-
-/*
-  4) rule #signed(DATA) => DATA
-     requires 0 <=Int DATA andBool DATA <=Int maxSInt256
-
-  5) rule #signed(DATA) => DATA -Int pow256
-     requires maxSInt256 <Int DATA andBool DATA <=Int maxUInt256
-
-
-  Assume X == 0:
-    s(0) =(4)=> 0
-
-  Assume 0 < X <= posMinSInt256(2^255):
-
-  a) posMinSInt256(2^255) = maxSInt256(2^255 - 1) + 1
-
-  proof pow255  - 1 <  pow256(2^256) - X <= pow256 - 1:
-  proof pow255  - 1 <  pow256 - X
-      -pow255 - 1   <  - X                               |-pow256
-        X           <  pow255 + 1                        |*-1
-        X           <= pow255
-        X           <= posMinSInt256
-
-  proof pow256 - X <= pow256 - 1
-    -X <= -1                                          |-pow256
-     1 <=  X                                          |*-1
-
-
-  need: 0 <= X < maxSInt256
-
-
-*/
-
-
 rule #range(WS [ X := #padToWidth(32, Y) ], Z, 32, WSS) => #range(WS, Z, 32, WSS)
   requires Z +Int 32 <Int X
 
@@ -84,24 +38,4 @@ rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
 
     rule 0 <=Int #symEcrec(MSG, V, R, S)             => true
     rule         #symEcrec(MSG, V, R, S) <Int pow256 => true
-
-
-// rule chop(X +Int (pow256 +Int Y)) >Int X => X +Int Y <Int 0
-//   requires #rangeUInt(256, X)
-//   andBool #rangeSInt(256, Y)
-//   andBool Y <Int 0
-
-// rule chop(X *Int (pow256 +Int Y)) => X *Int (pow256 +Int Y)
-//   requires #rangeSInt(256, X *Int Y)
-//   andBool #rangeUInt(256, X)
-//   andBool #rangeSInt(256, Y)
-
-// rule #signed(A *Int (pow256 +Int B)) => A *Int B
-// requires #rangeUInt(256, A)
-// andBool  #rangeSInt(256, B)
-// andBool  #rangeSInt(256, A *Int B)
-// andBool  0 <Int B
-// todo: useful?
-// rule 0 <Int #signed(X) => #rangeSInt(256, X)
-//    requires #rangeUInt(256, X)
 ```
