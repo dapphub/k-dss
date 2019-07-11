@@ -377,17 +377,6 @@ rule notBool((Mask0_26 &Int (A +Int B)) <Int A) => A +Int B <=Int maxUInt48
   andBool #rangeUInt(48, B)
 ```
 
-
-Operator direction normalization rules. Required to reduce the number of forms of inequalities that can be matched by general lemmas. We chose to keep <Int and <=Int because those operators are used in all range lemmas and in #range macros. Operators >Int and >=Int are still allowed anywhere except rules LHS. In all other places they will be matched and rewritten by rules below.
-```k
-    rule X >Int Y => Y <Int X
-    rule X >=Int Y => Y <=Int X
-
-    rule notBool (X <Int Y) => Y <=Int X
-    rule notBool (X <=Int Y) => Y <Int X
-```
-
-
 ### signed 256-bit integer arithmetic
 
 ```k
