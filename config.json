@@ -90,8 +90,8 @@
     "Flipper_tend_fail_rough": "8h",
     "Flapper_tend_fail_rough": "8h",
     "Flapper_deal_fail_rough": "8h",
-    "Pot_drip_fail_rough": "8h",
-    "Jug_drip_fail_rough": "8h",
+    "Pot_drip_fail_rough": "5m",
+    "Jug_drip_fail_rough": "5m",
     "Vow_cage-surplus_fail_rough": "8h",
     "Vow_cage-deficit_fail_rough": "8h",
     "Vow_cage-balance_fail_rough": "8h"
