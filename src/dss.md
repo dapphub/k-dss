@@ -5220,6 +5220,7 @@ if
   Guy =/= Gal
 
 calls
+  Flipper.addu48u48
   Flipper.muluu
   Vat.move-diff
 ```
@@ -6242,40 +6243,39 @@ interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
 
-    DSToken  : address DSToken
-    Live     : uint256
-    Ttl      : uint48
-    Tau      : uint48
-    Beg      : uint256
-    Bid      : uint256
-    Lot      : uint256
-    Guy      : address
-    Tic      : uint48
-    End      : uint48
-    Can      : uint256
-    Bal_usr  : uint256
-    Bal_gal  : uint256
-    Bal_caller : uint256
-    Owner      : address
-    Stopped    : bool
-    Allowed    : uint256
+    DSToken : address DSToken
+    Live    : uint256
+    Ttl     : uint48
+    Tau     : uint48
+    Beg     : uint256
+    Bid     : uint256
+    Lot     : uint256
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+    Allowed : uint256
+    Gem_g   : uint256
+    Gem_a   : uint256
+    Gem_u   : uint256
+    Owner   : address
+    Stopped : bool
 
 storage
 
     gem                  |-> DSToken
+    live                 |-> Live
     ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    beg                  |-> Beg
     bids[id].bid         |-> Bid => bid
     bids[id].lot         |-> Lot
     bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-    live                 |-> Live
-    beg                  |-> Beg
 
 storage DSToken
 
-    balances[CALLER_ID] |-> Bal_caller  => Bal_caller - bid
-    balances[Guy]       |-> Bal_usr => Bal_usr + Bid
-    balances[ACCT_ID]   |-> Bal_gal => Bal_gal + (bid - Bid)
     allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - bid #fi
+    balances[CALLER_ID] |-> Gem_u => Gem_u - bid
+    balances[Guy]       |-> Gem_g => Gem_g + Bid
+    balances[ACCT_ID]   |-> Gem_a => Gem_a + (bid - Bid)
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
 
 iff
@@ -6283,18 +6283,20 @@ iff
     VCallDepth < 1024
     Guy =/= 0
     Stopped == 0
-    Live    == 1
+    (Allowed == maxUInt256) or (bid <= Allowed)
+    Live == 1
     Tic > TIME or Tic == 0
     End > TIME
-    Lot == lot
     TIME + Ttl <= maxUInt48
-    Bal_usr + Bid <= maxUInt256
-    Bal_gal + (bid - Bid) <= maxUInt256
+    lot == Lot
     bid > Bid
-    (Allowed == maxUInt256) or (bid <= Allowed)
-    bid <= Bal_caller
-    bid * #Ray >= Bid * Beg
     bid * #Ray <= maxUInt256
+    bid * #Ray >= Beg * Bid
+
+iff in range uint256
+    Gem_u - bid
+    Gem_g + Bid
+    Gem_a + (bid - Bid)
 
 if
     #rangeUInt(48, TIME)
@@ -6303,9 +6305,9 @@ if
     ACCT_ID   =/= Guy
 
 calls
-    DSToken.move
-    Flapper.muluu
     Flapper.addu48u48
+    Flapper.muluu
+    DSToken.move
 ```
 
 ```act
