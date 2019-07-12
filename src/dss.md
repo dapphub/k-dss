@@ -7704,12 +7704,6 @@ iff
 if
     Joy + Dai_f > Awe
     FlapVat == Vat
-
-calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage-surplus
 ```
 
 ```act
@@ -7804,12 +7798,6 @@ iff
 if
     Joy + Dai_f < Awe
     FlapVat == Vat
-
-calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage-deficit
 ```
 
 ```act
@@ -7905,12 +7893,6 @@ iff
 if
     Joy + Dai_f == Awe
     FlapVat ==  Vat
-
-calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage-balance
 ```
 
 ```act
