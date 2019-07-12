@@ -2212,7 +2212,7 @@ interface drip(bytes32 ilk)
 
 for all
 
-    Vat    : address VatLike
+    Vat    : address Vat
     Base   : uint256
     Vow    : address
     Duty   : uint256
@@ -2878,7 +2878,7 @@ for all
     Dsr  : uint256
     Pie  : uint256
     Vow  : address
-    Vat  : address VatLike
+    Vat  : address Vat
     May  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -2956,7 +2956,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
-    Vat     : address VatLike
+    Vat     : address Vat
     Can     : uint256
     Dai_u   : uint256
     Dai_p   : uint256
@@ -3007,7 +3007,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
-    Vat     : address VatLike
+    Vat     : address Vat
     Dai_u   : uint256
     Dai_p   : uint256
 
@@ -3492,7 +3492,7 @@ interface heal(uint256 rad)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     Ash  : uint256
     Sin  : uint256
     Joy  : uint256
@@ -3542,7 +3542,7 @@ interface kiss(uint256 rad)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     Ash  : uint256
     Joy  : uint256
     Awe  : uint256
@@ -3661,7 +3661,7 @@ interface flop()
 for all
 
     Flopper  : address Flopper
-    Vat      : address VatLike
+    Vat      : address Vat
     MayFlop  : uint256
     Sin      : uint256
     Ash      : uint256
@@ -3747,7 +3747,7 @@ interface flap()
 for all
 
     Flapper  : address Flapper
-    Vat      : address VatLike
+    Vat      : address Vat
     FlapVat  : address
     Sin      : uint256
     Ash      : uint256
@@ -3838,7 +3838,7 @@ interface cage()
 
 for all
 
-    Vat      : address VatLike
+    Vat      : address Vat
     Flapper  : address Flapper
     Flopper  : address Flopper
     FlapVat  : address
@@ -3925,7 +3925,7 @@ interface cage()
 
 for all
 
-    Vat     : address VatLike
+    Vat     : address Vat
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -4011,7 +4011,7 @@ interface cage()
 
 for all
 
-    Vat     : address VatLike
+    Vat     : address Vat
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -4337,7 +4337,7 @@ interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     May  : uint256
     Flip : address
     Can  : uint256
@@ -4396,7 +4396,7 @@ interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     May  : uint256
     Flip : address
     Hope : uint256
@@ -4460,8 +4460,8 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address VatLike
-    Vow     : address VowLike
+    Vat     : address Vat
+    Vow     : address Vow
     Flipper : address Flipper
     Live    : uint256
     Art_i   : uint256
@@ -4590,8 +4590,8 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address VatLike
-    Vow     : address VowLike
+    Vat     : address Vat
+    Vow     : address Vow
     Flipper : address Flipper
     Live    : uint256
     Art_i   : uint256
@@ -5085,7 +5085,7 @@ interface kick(address usr, address gal, uint256 tab, uint256 lot, uint256 bid)
 
 for all
 
-    Vat      : address VatLike
+    Vat      : address Vat
     Ilk      : uint256
     Kicks    : uint256
     Ttl      : uint48
@@ -5185,7 +5185,7 @@ behaviour tend of Flipper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Beg : uint256
   Bid : uint256
   Lot : uint256
@@ -5250,7 +5250,7 @@ behaviour dent of Flipper
 interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Ilk : bytes32
   Ttl : uint48
   Tau : uint48
@@ -5323,7 +5323,7 @@ behaviour deal of Flipper
 interface deal(uint256 id)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Ilk : bytes32
   Bid : uint256
   Lot : uint256
@@ -5373,7 +5373,7 @@ behaviour yank of Flipper
 interface yank(uint256 id)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Ttl : uint48
   Tau : uint48
   Ilk : bytes32
@@ -5448,7 +5448,7 @@ interface vat()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
 
 storage
 
@@ -5513,7 +5513,7 @@ interface join(address usr, uint256 wad)
 
 for all
 
-    Vat         : address VatLike
+    Vat         : address Vat
     Ilk         : bytes32
     DSToken     : address DSToken
     May         : uint256
@@ -5575,7 +5575,7 @@ interface exit(address usr, uint256 wad)
 
 for all
 
-    Vat         : address VatLike
+    Vat         : address Vat
     Ilk         : bytes32
     DSToken     : address DSToken
     May         : uint256
@@ -5641,7 +5641,7 @@ interface vat()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
 
 storage
 
@@ -5703,7 +5703,7 @@ interface join(address usr, uint256 wad)
 
 for all
 
-    Vat     : address VatLike
+    Vat     : address Vat
     Dai     : address Dai
     Supply  : uint256
     Dai_c   : uint256
@@ -5763,7 +5763,7 @@ interface exit(address usr, uint256 wad)
 
 for all
 
-    Vat    : address VatLike
+    Vat    : address Vat
     Dai    : address Dai
     May    : uint256
     Can    : uint256
@@ -6195,7 +6195,7 @@ interface kick(uint256 lot, uint256 bid)
 
 for all
 
-    Vat      : address VatLike
+    Vat      : address Vat
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
@@ -6336,7 +6336,7 @@ interface deal(uint256 id)
 
 for all
   DSToken : address DSToken
-  Vat     : address VatLike
+  Vat     : address Vat
   Live    : uint256
   Bid     : uint256
   Lot     : uint256
@@ -6396,7 +6396,7 @@ behaviour cage of Flapper
 interface cage(uint256 rad)
 
 for all
-  Vat   : address VatLike
+  Vat   : address Vat
   Ward  : uint256
   Live  : uint256
   Dai_a : uint256
@@ -6898,7 +6898,7 @@ interface dent(uint id, uint lot, uint bid)
 
 for all
   Live : uint256
-  Vat  : address VatLike
+  Vat  : address Vat
   Beg  : uint256
   Ttl  : uint48
   Tau  : uint48
@@ -7027,7 +7027,7 @@ interface yank(uint256 id)
 
 for all
   Live   : uint256
-  Vat    : address VatLike
+  Vat    : address Vat
   Bid    : uint256
   Lot    : uint256
   Guy    : address
@@ -7637,9 +7637,9 @@ interface cage()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
     Cat : address Cat
-    Vow : address VowLike
+    Vow : address Vow
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -7757,9 +7757,9 @@ interface cage()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
     Cat : address Cat
-    Vow : address VowLike
+    Vow : address Vow
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -7875,9 +7875,9 @@ interface cage()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
     Cat : address Cat
-    Vow : address VowLike
+    Vow : address Vow
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8002,7 +8002,7 @@ for all
   Line_i  : uint256
   Dust_i  : uint256
   Mat_i   : uint256
-  Vat     : address VatLike
+  Vat     : address Vat
   Spotter : address Spotter
   DSValue : address DSValue
   Price   : uint256
@@ -8054,7 +8054,7 @@ behaviour skip of End
 interface skip(bytes32 ilk, uint256 id)
 
 for all
-  Vat        : address VatLike
+  Vat        : address Vat
   Cat        : address Cat
   Vow        : address
   Tag        : uint256
@@ -8191,7 +8191,7 @@ behaviour skim of End
 interface skim(bytes32 ilk, address urn)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Vow    : address
   Tag    : uint256
   Gap    : uint256
@@ -8264,7 +8264,7 @@ behaviour bail of End
 interface skim(bytes32 ilk, address urn)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Vow    : address
   Tag    : uint256
   Gap    : uint256
@@ -8340,7 +8340,7 @@ behaviour thaw of End
 interface thaw()
 
 for all
-  Vat  : address VatLike
+  Vat  : address Vat
   Vow  : address
   Live : uint256
   Debt : uint256
@@ -8380,7 +8380,7 @@ behaviour free of End
 interface free(bytes32 ilk)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Vow    : address
   Ward   : uint256
   Live   : uint256
@@ -8432,7 +8432,7 @@ behaviour flow of End
 interface flow(bytes32 ilk)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Debt   : uint256
   Fix    : uint256
   Gap    : uint256
@@ -8486,7 +8486,7 @@ behaviour pack of End
 interface pack(uint256 wad)
 
 for all
-  Vat  : address VatLike
+  Vat  : address Vat
   Vow  : address
   Debt : uint256
   Bag  : uint256
@@ -8532,7 +8532,7 @@ behaviour cash of End
 interface cash(bytes32 ilk, uint wad)
 
 for all
-  Vat   : address VatLike
+  Vat   : address Vat
   Fix   : uint256
   Bag   : uint256
   Out   : uint256
