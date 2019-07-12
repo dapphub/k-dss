@@ -7659,23 +7659,23 @@ for all
 
 storage
 
+    wards[CALLER_ID] |-> CallerMay
     live |-> Live => 0
     when |-> When => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
+    vat  |-> Vat
+    cat  |-> Cat
+    vow  |-> Vow
 
 storage Vat
 
-    can[Flapper][Flapper] |-> _
-    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
+    live           |-> VatLive => 0
     dai[Flapper]   |-> Dai_f => 0
     sin[Vow]       |-> Sin_v => 0
     dai[Vow]       |-> Dai_v => (Dai_v + Dai_f) - Sin_v
     debt           |-> Debt  => Debt - Sin_v
     vice           |-> Vice  => Vice - Sin_v
+    can[Flapper][Flapper] |-> _
 
 storage Cat
 
@@ -7730,6 +7730,8 @@ if
     Flopper =/= Flapper
     FlapVat == Vat
     VowVat  == Vat
+    VowVat  =/= Vow
+    FlapVat =/= Vow
 
 calls
     Vat.cage
@@ -7846,6 +7848,8 @@ if
     Flopper =/= Flapper
     FlapVat == Vat
     VowVat  == Vat
+    VowVat  =/= Vow
+    FlapVat =/= Vow
 
 calls
     Vat.cage
@@ -7964,6 +7968,8 @@ if
     Flopper =/= Flapper
     FlapVat == Vat
     VowVat  == Vat
+    VowVat  =/= Vow
+    FlapVat =/= Vow
 
 calls
     Vat.cage
