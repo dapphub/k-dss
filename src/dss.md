@@ -8051,6 +8051,8 @@ for all
   Lump       : uint256
   Chop       : uint256
   EndMayYank : uint256
+  FlipVat    : address
+  FlipIlk    : bytes32
   Bid        : uint256
   Lot        : uint256
   Guy        : address
@@ -8091,6 +8093,8 @@ storage Cat
 
 storage Flipper
   wards[ACCT_ID]       |-> EndMayYank
+  vat                  |-> FlipVat
+  ilk                  |-> FlipIlk
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
@@ -8156,6 +8160,8 @@ if
   Guy =/= Vow
   Guy =/= ACCT_ID
   Vow =/= ACCT_ID
+  Vat == FlipVat
+  ilk == FlipIlk
 
 calls
   End.adduu
