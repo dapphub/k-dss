@@ -3850,12 +3850,12 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
-    vat |-> Vat
+    vat     |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> Live => 0
-    Sin  |-> Sin  => 0
-    Ash  |-> Ash  => 0
+    live    |-> Live => 0
+    Sin     |-> Sin  => 0
+    Ash     |-> Ash  => 0
 
 storage Vat
 
@@ -3937,12 +3937,12 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
-    vat |-> Vat
+    vat     |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> Live => 0
-    Sin  |-> Sin => 0
-    Ash  |-> Ash => 0
+    live    |-> Live => 0
+    Sin     |-> Sin  => 0
+    Ash     |-> Ash  => 0
 
 storage Vat
 
@@ -4023,12 +4023,12 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
-    vat |-> Vat
+    vat     |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> Live => 0
-    Sin  |-> Sin => 0
-    Ash  |-> Ash => 0
+    live    |-> Live => 0
+    Sin     |-> Sin  => 0
+    Ash     |-> Ash  => 0
 
 storage Vat
 
@@ -7623,6 +7623,7 @@ for all
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
+    VowVat  : address
 
     Live : uint256
     When : uint256
@@ -7675,12 +7676,13 @@ storage Cat
 
 storage Vow
 
-    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
+    vat     |-> VowVat
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> Sin => 0
-    Ash |-> Ash => 0
+    live    |-> VowLive => 0
+    Sin     |-> Sin     => 0
+    Ash     |-> Ash     => 0
 
 storage Flapper
 
@@ -7719,6 +7721,7 @@ if
     Flopper =/= Vat
     Flopper =/= Flapper
     FlapVat == Vat
+    VowVat  == Vat
 
 calls
     Vat.cage
@@ -7738,6 +7741,7 @@ for all
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
+    VowVat  : address
 
     Live : uint256
     When : uint256
@@ -7789,12 +7793,13 @@ storage Cat
 
 storage Vow
 
-    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
+    vat     |-> VowVat
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> Sin => 0
-    Ash |-> Ash => 0
+    live    |-> VowLive => 0
+    Sin     |-> Sin     => 0
+    Ash     |-> Ash     => 0
 
 storage Flapper
 
@@ -7832,6 +7837,7 @@ if
     Flopper =/= Vat
     Flopper =/= Flapper
     FlapVat == Vat
+    VowVat  == Vat
 
 calls
     Vat.cage
@@ -7851,6 +7857,7 @@ for all
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
+    VowVat  : address
 
     Live : uint256
     When : uint256
@@ -7903,12 +7910,13 @@ storage Cat
 
 storage Vow
 
-    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
+    vat     |-> VowVat
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> Sin => 0
-    Ash |-> Ash => 0
+    live    |-> VowLive => 0
+    Sin     |-> Sin     => 0
+    Ash     |-> Ash     => 0
 
 storage Flapper
 
@@ -7947,6 +7955,7 @@ if
     Flopper =/= Vat
     Flopper =/= Flapper
     FlapVat == Vat
+    VowVat  == Vat
 
 calls
     Vat.cage
