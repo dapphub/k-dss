@@ -7641,8 +7641,10 @@ for all
     VowMayFlop : uint256
 
     Dai_f : uint256
-    Awe   : uint256
-    Joy   : uint256
+    Sin_v : uint256
+    Dai_v : uint256
+    Debt  : uint256
+    Vice  : uint256
     Sin   : uint256
     Ash   : uint256
 
@@ -7661,8 +7663,10 @@ storage Vat
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
     dai[Flapper]   |-> Dai_f => 0
-    sin[Vow]       |-> Awe   => 0
-    dai[Vow]       |-> Joy   => (Joy + Dai_f) - Awe
+    sin[Vow]       |-> Sin_v => 0
+    dai[Vow]       |-> Dai_v => (Dai_v + Dai_f) - Sin_v
+    debt           |-> Debt  => Debt - Sin_v
+    vice           |-> Vice  => Vice - Sin_v
 
 storage Cat
 
@@ -7701,8 +7705,14 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
 
+iff in range uint256
+
+    Dai_v + Dai_f
+    Debt - Sin_v
+    Vice - Sin_v
+
 if
-    Joy + Dai_f > Awe
+    Dai_v + Dai_f > Sin_v
     Flapper =/= Vow
     Flapper =/= Vat
     Flopper =/= Vow
@@ -7746,8 +7756,10 @@ for all
     VowMayFlop : uint256
 
     Dai_f : uint256
-    Awe   : uint256
-    Joy   : uint256
+    Sin_v : uint256
+    Dai_v : uint256
+    Debt  : uint256
+    Vice  : uint256
     Sin   : uint256
     Ash   : uint256
 
@@ -7765,8 +7777,10 @@ storage Vat
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
     dai[Flapper] |-> Dai_f => 0
-    sin[Vow]     |-> Awe   => (Awe - Joy) - Dai_f
-    dai[Vow]     |-> Joy   => 0
+    dai[Vow]     |-> Dai_v => 0
+    sin[Vow]     |-> Sin_v => (Sin_v - Dai_v) - Dai_f
+    debt         |-> Debt => Debt - (Dai_v + Dai_f)
+    vice         |-> Vice => Vice - (Dai_v + Dai_f)
 
 storage Cat
 
@@ -7805,8 +7819,13 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
 
+iff in range uint256
+
+    Debt - (Dai_v + Dai_f)
+    Vice - (Dai_v + Dai_f)
+
 if
-    Joy + Dai_f < Awe
+    Dai_v + Dai_f < Sin_v
     Flapper =/= Vow
     Flapper =/= Vat
     Flopper =/= Vow
@@ -7850,8 +7869,10 @@ for all
     VowMayFlop : uint256
 
     Dai_f : uint256
-    Awe   : uint256
-    Joy   : uint256
+    Sin_v : uint256
+    Dai_v : uint256
+    Debt  : uint256
+    Vice  : uint256
     Sin   : uint256
     Ash   : uint256
 
@@ -7870,8 +7891,10 @@ storage Vat
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
     dai[Flapper]   |-> Dai_f => 0
-    sin[Vow]       |-> Awe   => 0
-    dai[Vow]       |-> Joy   => 0
+    sin[Vow]       |-> Sin_v => 0
+    dai[Vow]       |-> Dai_v => 0
+    debt           |-> Debt => Debt - (Dai_v + Dai_f)
+    vice           |-> Vice => Vice - Sin_v
 
 storage Cat
 
@@ -7910,8 +7933,14 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
 
+iff in range uint256
+
+    Dai_v + Dai_f
+    Debt - (Dai_v + Dai_f)
+    Vice - Sin_v
+
 if
-    Joy + Dai_f == Awe
+    Dai_v + Dai_f == Sin_v
     Flapper =/= Vow
     Flapper =/= Vat
     Flopper =/= Vow
