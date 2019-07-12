@@ -7760,9 +7760,9 @@ storage Vat
 
     live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
-    dai[Flap] |-> Dai_f => 0
-    sin[Vow]  |-> Awe   => (Awe - Joy) - Dai_f
-    dai[Vow]  |-> Joy   => 0
+    dai[Flapper] |-> Dai_f => 0
+    sin[Vow]     |-> Awe   => (Awe - Joy) - Dai_f
+    dai[Vow]     |-> Joy   => 0
 
 storage Cat
 
