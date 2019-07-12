@@ -7703,7 +7703,17 @@ iff
 
 if
     Joy + Dai_f > Awe
+    Flapper =/= Vow
+    Flapper =/= Vat
+    Flopper =/= Vow
+    Flopper =/= Vat
+    Flopper =/= Flapper
     FlapVat == Vat
+
+calls
+    Vat.cage
+    Cat.cage
+    Vow.cage-surplus
 ```
 
 ```act
@@ -7797,7 +7807,17 @@ iff
 
 if
     Joy + Dai_f < Awe
+    Flapper =/= Vow
+    Flapper =/= Vat
+    Flopper =/= Vow
+    Flopper =/= Vat
+    Flopper =/= Flapper
     FlapVat == Vat
+
+calls
+    Vat.cage
+    Cat.cage
+    Vow.cage-deficit
 ```
 
 ```act
@@ -7892,7 +7912,17 @@ iff
 
 if
     Joy + Dai_f == Awe
-    FlapVat ==  Vat
+    Flapper =/= Vow
+    Flapper =/= Vat
+    Flopper =/= Vow
+    Flopper =/= Vat
+    Flopper =/= Flapper
+    FlapVat == Vat
+
+calls
+    Vat.cage
+    Cat.cage
+    Vow.cage-surplus
 ```
 
 ```act
