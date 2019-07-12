@@ -4478,6 +4478,8 @@ for all
     Sin_era : uint256
     Chop    : uint256
     Lump    : uint256
+    FlipVat : address
+    FlipIlk : bytes32
     Kicks   : uint256
     Ttl     : uint48
     Tau     : uint48
@@ -4521,6 +4523,8 @@ storage Vow
 
 storage Flipper
 
+    vat                         |-> FlipVat
+    ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
@@ -4563,6 +4567,8 @@ iff in range uint256
 if
 
     Ink_iu < Lump
+    Vat == FlipVat
+    ilk == FlipIlk
 
 
 returns 1 + Kicks
@@ -4602,6 +4608,8 @@ for all
     Sin_era : uint256
     Chop    : uint256
     Lump    : uint256
+    FlipVat : address
+    FlipIlk : bytes32
     Kicks   : uint256
     Ttl     : uint48
     Tau     : uint48
@@ -4646,6 +4654,8 @@ storage Vow
 
 storage Flipper
 
+    vat                         |-> FlipVat
+    ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
@@ -4691,6 +4701,8 @@ iff in range uint256
 if
 
     Ink_iu >= Lump
+    Vat == FlipVat
+    ilk == FlipIlk
 
 returns 1 + Kicks
 
