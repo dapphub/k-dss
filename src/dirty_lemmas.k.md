@@ -4,12 +4,9 @@ this should be "flushed" once in a while to the real lemmas.k file
 ```k
 rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
 
-syntax Int ::= "posMinSInt256"
-rule posMinSInt256 => 57896044618658097711785492504343953926634992332820282019728792003956564819968  [macro]  /*  2^255      */
-
 rule 0 -Word X => #unsigned(0 -Int X)
   requires 0 <=Int X
-  andBool X <=Int posMinSInt256
+  andBool X <=Int pow255
 /*
   proof:
 
