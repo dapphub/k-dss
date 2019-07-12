@@ -4543,8 +4543,8 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    Art_iu <= posMinSInt256
-    Ink_iu <= posMinSInt256
+    Art_iu <= pow255
+    Ink_iu <= pow255
     Ink_iu =/= 0
 
 iff in range int256
@@ -4674,8 +4674,8 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    (Lump * Art_iu) / Ink_iu <= posMinSInt256
-    Lump <= posMinSInt256
+    (Lump * Art_iu) / Ink_iu <= pow255
+    Lump <= pow255
     Ink_iu =/= 0
 
 iff in range int256
@@ -5608,7 +5608,7 @@ iff
     VCallDepth < 1024
     Stopped == 0
     May == 1
-    wad <= posMinSInt256
+    wad <= pow255
 
 iff in range uint256
 
@@ -8144,8 +8144,8 @@ iff
   EndMayYank == 1
   Guy =/= 0
   Bid < Tab
-  Lot <= posMinSInt256
-  Tab / Rate_i <= posMinSInt256
+  Lot <= pow255
+  Tab / Rate_i <= pow255
 
 iff in range uint256
   Joy + Tab
@@ -8231,8 +8231,8 @@ iff
   VCallValue == 0
   VCallDepth < 1024
   Tag =/= 0
-  ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= posMinSInt256
-  Art_iu <= posMinSInt256
+  ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= pow255
+  Art_iu <= pow255
   Ward == 1
 
 iff in range int256
@@ -8304,8 +8304,8 @@ iff
   VCallValue == 0
   VCallDepth < 1024
   Tag =/= 0
-  Ink_iu <= posMinSInt256
-  Art_iu <= posMinSInt256
+  Ink_iu <= pow255
+  Art_iu <= pow255
   Ward == 1
 
 iff in range int256
@@ -8413,7 +8413,7 @@ iff
   Live == 0
   Ward == 1
   Art_iu == 0
-  Ink_iu <= posMinSInt256
+  Ink_iu <= pow255
 
 iff in range uint256
   Gem_iu + Ink_iu
