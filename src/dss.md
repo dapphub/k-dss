@@ -907,8 +907,8 @@ iff in range uint256
     Urn_ink + dink
     Urn_art + dart
     Ilk_Art + dart
-    Gem_iv  - dink
-    Dai_w + (Ilk_rate * dart)
+    Gem_iu  - dink
+    Dai_u + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
     (Urn_art + dart) * Ilk_rate
     (Urn_ink + dink) * Ilk_spot
