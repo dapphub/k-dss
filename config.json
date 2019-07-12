@@ -94,7 +94,10 @@
     "Jug_drip_fail_rough": "5m",
     "Vow_cage-surplus_fail_rough": "8h",
     "Vow_cage-deficit_fail_rough": "8h",
-    "Vow_cage-balance_fail_rough": "8h"
+    "Vow_cage-balance_fail_rough": "8h",
+    "End_cage-surplus_fail_rough": "8h",
+    "End_cage-deficit_fail_rough": "8h",
+    "End_cage-balance_fail_rough": "8h"
   },
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
