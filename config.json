@@ -66,6 +66,7 @@
     "Vat_grab_fail_rough": "16h",
     "Vat_frob-diff_pass_rough": "16h",
     "Vat_frob-diff_fail_rough": "16h",
+    "Vat_frob-same_fail_rough": "16h",
     "Vat_fork-diff_pass_rough": "16h",
     "Vat_fork-diff_fail_rough": "16h",
     "Vat_fork-same_pass_rough": "16h",
