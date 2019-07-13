@@ -73,7 +73,6 @@ rule #WordPackAddrUInt8(X, Y) => Y *Int pow160 +Int X
   andBool #rangeUInt(8, Y)
 ```
 
-
 # dss lemmas
 
 ### string literal syntax
