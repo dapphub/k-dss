@@ -43,4 +43,9 @@ rule A -Word B <=Int A => 0 <=Int A -Int B
 rule A <=Int chop(A +Int B) => A +Int B <=Int maxUInt256
  requires #rangeUInt(256, A)
   andBool #rangeUInt(256, B)
+
+rule #sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int -1, abs(chop(A *Int #unsigned(B))) /Int (pow256 -Int #unsigned(B))) ==K A => #rangeSInt(256, A *Int B)
+ requires #rangeUInt(256, A)
+ andBool #rangeSInt(256, B)
+ andBool B <Int 0
 ```
