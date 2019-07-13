@@ -35,4 +35,12 @@ rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
 
     rule 0 <=Int #symEcrec(MSG, V, R, S)             => true
     rule         #symEcrec(MSG, V, R, S) <Int pow256 => true
+
+rule A -Word B <=Int A => 0 <=Int A -Int B
+ requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
+
+rule A <=Int chop(A +Int B) => A +Int B <=Int maxUInt256
+ requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, B)
 ```
