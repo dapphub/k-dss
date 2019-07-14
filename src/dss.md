@@ -8118,7 +8118,7 @@ storage Flipper
 
 storage Vat
   wards[ACCT_ID] |-> EndMayVat
-  ilks[ilk].Art  |-> Art_i
+  ilks[ilk].Art  |-> Art_i + Tab / Rate_i
   ilks[ilk].rate |-> Rate_i
   ilks[ilk].spot |-> Spot_i
   ilks[ilk].line |-> Line_i
@@ -8130,13 +8130,13 @@ storage Vat
   dai[Guy] |-> Dai_g => Dai_g + Bid
   dai[Vow] |-> Joy   => (Joy  + Tab)
   debt     |-> Debt  => (Debt + Tab) + Bid
-  sin[Vow] |-> Awe   => (Awe  + Bid)
-  vice     |-> Vice  => (Vice + Bid)
+  sin[Vow] |-> Awe   => ((Awe + Tab) + Bid) - Rate_i * (Tab / Rate_i)
+  vice     |-> Vice  => ((Vice + Tab) + Bid) - Rate_i * (Tab / Rate_i)
 
   gem[ilk][ACCT_ID]  |-> Gem_a
   gem[ilk][Flipper]  |-> Gem_f  => Gem_f  - Lot
-  urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
-  urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
+  urns[ilk][Usr].ink |-> Ink_iu => Ink_iu + Lot
+  urns[ilk][Usr].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
 iff
   VCallValue == 0
@@ -8157,7 +8157,6 @@ iff in range uint256
   Gem_f - Lot
   Gem_a + Lot
   Dai_e + Bid
-  Dai_e - Bid
   Dai_g + Bid
   Art    + (Tab / Rate_i)
   Ink_iu + Lot
@@ -8165,7 +8164,7 @@ iff in range uint256
   Art_i  + (Tab / Rate_i)
 
 iff in range int256
-  Rate_i
+  Lot
   Rate_i * (Tab / Rate_i)
 
 if
