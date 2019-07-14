@@ -466,9 +466,9 @@ rule #sgnInterp(sgn(#unsigned(A *Int B)) *Int sgn(#unsigned(B)), A) => A
 rule #signed(X) <Int 0 => notBool #rangeSInt(256, X)
    requires #rangeUInt(256, X)
 
-rule #sgnInterp(sgn(chop(A *Int B)), abs(chop(A *Int B)) /Int B) ==K A => #rangeSInt(256, A *Int B)
-requires #rangeUInt(256, A)
-andBool  #rangeSInt(256, B)
+// rule #sgnInterp(sgn(chop(A *Int B)), abs(chop(A *Int B)) /Int B) ==K A => #rangeSInt(256, A *Int B)
+// requires #rangeUInt(256, A)
+// andBool  #rangeSInt(256, B)
 
 // rule #sgnInterp(sgn(chop(A *Int (pow256 +Int B))) *Int -1, chop(abs(chop(A *Int (pow256 +Int B))) /Int (pow256 -Int (pow256 +Int B)))) ==K A => #rangeSInt(256, A *Int B)
 // requires #rangeUInt(256, A)
