@@ -7683,8 +7683,8 @@ storage Vat
     wards[ACCT_ID] |-> EndMayVat
     live           |-> VatLive => 0
     dai[Flapper]   |-> Dai_f => 0
-    sin[Vow]       |-> Sin_v => 0
     dai[Vow]       |-> Dai_v => (Dai_v + Dai_f) - Sin_v
+    sin[Vow]       |-> Sin_v => 0
     debt           |-> Debt  => Debt - Sin_v
     vice           |-> Vice  => Vice - Sin_v
     can[Flapper][Flapper] |-> _
@@ -7791,22 +7791,23 @@ for all
 
 storage
 
+    wards[CALLER_ID] |-> CallerMay
     live |-> Live => 0
     when |-> When => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
+    vat  |-> Vat
+    cat  |-> Cat
+    vow  |-> Vow
 
 storage Vat
 
-    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
-    dai[Flapper] |-> Dai_f => 0
-    dai[Vow]     |-> Dai_v => 0
-    sin[Vow]     |-> Sin_v => (Sin_v - Dai_v) - Dai_f
-    debt         |-> Debt => Debt - (Dai_v + Dai_f)
-    vice         |-> Vice => Vice - (Dai_v + Dai_f)
+    live           |-> VatLive => 0
+    dai[Flapper]   |-> Dai_f => 0
+    dai[Vow]       |-> Dai_v => 0
+    sin[Vow]       |-> Sin_v => (Sin_v - Dai_v) - Dai_f
+    debt           |-> Debt => Debt - (Dai_v + Dai_f)
+    vice           |-> Vice => Vice - (Dai_v + Dai_f)
+    can[Flapper][Flapper] |-> _
 
 storage Cat
 
@@ -7848,6 +7849,7 @@ iff
 
 iff in range uint256
 
+    Dai_v + Dai_f
     Debt - (Dai_v + Dai_f)
     Vice - (Dai_v + Dai_f)
 
@@ -7909,23 +7911,23 @@ for all
 
 storage
 
+    wards[CALLER_ID] |-> CallerMay
     live |-> Live => 0
     when |-> When => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
+    vat  |-> Vat
+    cat  |-> Cat
+    vow  |-> Vow
 
 storage Vat
 
-    can[Flapper][Flapper] |-> _
-    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
+    live           |-> VatLive => 0
     dai[Flapper]   |-> Dai_f => 0
-    sin[Vow]       |-> Sin_v => 0
     dai[Vow]       |-> Dai_v => 0
+    sin[Vow]       |-> Sin_v => 0
     debt           |-> Debt => Debt - (Dai_v + Dai_f)
     vice           |-> Vice => Vice - Sin_v
+    can[Flapper][Flapper] |-> _
 
 storage Cat
 
@@ -7986,7 +7988,7 @@ if
 calls
     Vat.cage
     Cat.cage
-    Vow.cage-surplus
+    Vow.cage-balance
 ```
 
 ```act
