@@ -8165,6 +8165,7 @@ iff in range uint256
 
 iff in range int256
   Lot
+  Rate_i
   Rate_i * (Tab / Rate_i)
 
 if
