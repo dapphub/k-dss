@@ -2279,7 +2279,7 @@ gas
 
 fail_gas
 
-  300000000 + ((#if ( ABI_x ==K 0 ) #then (#if ( ABI_n ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( ABI_n modInt 2 ) ==K 0 ) #then (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(ABI_n) -Int 1 ) *Int 172 ) +Int ( num1(ABI_n) *Int 287 ) ) ) #fi) #else (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(ABI_n) *Int 172 ) +Int ( ( num1(ABI_n) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
+  300000000 + ((#if ( (Base + Duty) ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
 
 if
 
@@ -2914,7 +2914,7 @@ gas
 
 fail_gas
 
-  300000000 + ((#if ( ABI_x ==K 0 ) #then (#if ( ABI_n ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( ABI_n modInt 2 ) ==K 0 ) #then (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(ABI_n) -Int 1 ) *Int 172 ) +Int ( num1(ABI_n) *Int 287 ) ) ) #fi) #else (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(ABI_n) *Int 172 ) +Int ( ( num1(ABI_n) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
+  300000000 + ((#if ( Dsr ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
 
 if
 
