@@ -4511,6 +4511,7 @@ storage Vat
     wards[ACCT_ID]     |-> CatMayVat
     urns[ilk][urn].ink |-> Ink_iu => 0
     urns[ilk][urn].art |-> Art_iu => 0
+    gem[ilk][ACCT_ID]  |-> _
     gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Ink_iu
     sin[Vow]           |-> Sin_w  => Sin_w  + (Rate_i * Art_iu)
     vice               |-> Vice   => Vice   + (Rate_i * Art_iu)
@@ -4550,7 +4551,7 @@ iff
 iff in range int256
 
     Rate_i
-    Rate_i * Art_iu
+    Rate_i * (0 - Art_iu)
 
 iff in range uint256
 
@@ -4642,6 +4643,7 @@ storage Vat
     wards[ACCT_ID]     |-> CatMayVat
     urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lump
     urns[ilk][urn].art |-> Art_iu => Art_iu - ((Lump * Art_iu) / Ink_iu)
+    gem[ilk][ACCT_ID]  |-> _
     gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lump
     sin[Vow]           |-> Sin_w  => Sin_w  + Rate_i * ((Lump * Art_iu) / Ink_iu)
     vice               |-> Vice   => Vice   + Rate_i * ((Lump * Art_iu) / Ink_iu)
@@ -4681,7 +4683,7 @@ iff
 iff in range int256
 
     Rate_i
-    Rate_i * ((Lump * Art_iu) / Ink_iu)
+    Rate_i * (0 - ((Lump * Art_iu) / Ink_iu))
 
 iff in range uint256
 
