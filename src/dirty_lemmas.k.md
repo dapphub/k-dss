@@ -48,4 +48,10 @@ rule #sgnInterp(sgn(chop(A *Int #unsigned(B))) *Int -1, abs(chop(A *Int #unsigne
  requires #rangeUInt(256, A)
  andBool #rangeSInt(256, B)
  andBool B <Int 0
+
+rule #sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /Int #unsigned(B)) ==K A => #rangeSInt(256, A *Int B)
+ requires #rangeUInt(256, A)
+ andBool #rangeSInt(256, B)
+ andBool 0 <Int B
+  
 ```
