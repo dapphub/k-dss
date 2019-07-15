@@ -92,6 +92,11 @@
     "End_cage-deficit_fail_rough": "16h",
     "End_cage-balance_fail_rough": "16h"
   },
+  "memory" : {
+    "Vat_frob-diff_fail_rough": "20G",
+    "Vat_frob-same_fail_rough": "20G",
+    "Flapper_tend_fail_rough": "20G"
+  },
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
 }
