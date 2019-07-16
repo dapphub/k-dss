@@ -4471,6 +4471,7 @@ for all
     Dust_i  : uint256
     Ink_iu  : uint256
     Art_iu  : uint256
+    CanFlux : uint256
     Gem_iv  : uint256
     Gem_if  : uint256
     Sin_w   : uint256
@@ -4516,6 +4517,7 @@ storage Vat
     gem[ilk][Flipper]  |-> Gem_if => Gem_if + Ink_iu
     sin[Vow]           |-> Sin_w  => Sin_w  + (Rate_i * Art_iu)
     vice               |-> Vice   => Vice   + (Rate_i * Art_iu)
+    can[ACCT_ID][Flipper] |-> CanFlux
 
 storage Vow
 
@@ -4548,6 +4550,7 @@ iff
     Art_iu <= pow255
     Ink_iu <= pow255
     Ink_iu =/= 0
+    CanFlux == 1
 
 iff in range int256
 
@@ -4566,13 +4569,19 @@ iff in range uint256
     Chop * (Rate_i * Art_iu)
     Lump * Art_iu
     Ink_iu * Art_iu
+    Kicks + 1
+
+iff in range uint48
+
+    TIME + Tau
 
 if
 
     Ink_iu < Lump
     Vat == FlipVat
     ilk == FlipIlk
-
+    #rangeUInt(48, TIME)
+    ACCT_ID =/= Flipper
 
 returns 1 + Kicks
 
@@ -4604,6 +4613,7 @@ for all
     Dust_i  : uint256
     Ink_iu  : uint256
     Art_iu  : uint256
+    CanFlux : uint256
     Gem_iv  : uint256
     Gem_if  : uint256
     Sin_w   : uint256
@@ -4650,6 +4660,7 @@ storage Vat
     gem[ilk][Flipper]  |-> Gem_if => Gem_if + Lump
     sin[Vow]           |-> Sin_w  => Sin_w  + Rate_i * ((Lump * Art_iu) / Ink_iu)
     vice               |-> Vice   => Vice   + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    can[ACCT_ID][Flipper] |-> CanFlux
 
 storage Vow
 
@@ -4682,6 +4693,7 @@ iff
     (Lump * Art_iu) / Ink_iu <= pow255
     Lump <= pow255
     Ink_iu =/= 0
+    CanFlux == 1
 
 iff in range int256
 
@@ -4703,12 +4715,19 @@ iff in range uint256
     Sin_era + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Sin     + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Chop * (Rate_i * ((Lump * Art_iu) / Ink_iu))
+    Kicks + 1
+
+iff in range uint48
+
+    TIME + Tau
 
 if
 
     Ink_iu >= Lump
     Vat == FlipVat
     ilk == FlipIlk
+    #rangeUInt(48, TIME)
+    ACCT_ID =/= Flipper
 
 returns 1 + Kicks
 
