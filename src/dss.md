@@ -8745,13 +8745,12 @@ iff in range uint256
   Gem_d + wad
 
 iff
-  (Allowance == maxUInt256) or (wad <= Allowance)
+  (Allowance == maxUInt256 or src == CALLER_ID) or (wad <= Allowance)
   VCallValue == 0
   Stopped == 0
 
 if
   src =/= dst
-  src =/= CALLER_ID
 
 returns 1
 ```
