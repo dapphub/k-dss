@@ -53,5 +53,30 @@ rule #sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /
  requires #rangeUInt(256, A)
  andBool #rangeSInt(256, B)
  andBool 0 <Int B
-  
+
+// Lemmas for Vat_frob_fail
+rule A +Int #unsigned(B) => A +Int B
+  requires #rangeUInt(256, A)
+  andBool  #rangeUInt(256, B)
+  andBool  #rangeUInt(256, A +Int B)
+
+rule A +Int #unsigned(B) => A
+  requires B ==K 0
+
+// lemma for Jug_drip
+rule A -Word B => #unsigned(A -Int B)
+  requires #inRangeSInt(256, A)
+  andBool #inRangeSInt(256, B)
+  andBool 0 <Int B
+
+// lemmas for End_skim
+rule (A +Int (0 -Int B)) => A -Int B
+rule (A *Int (0 -Int B)) => (0 -Int (A *Int B))
+rule (A -Int (0 -Int B)) => A +Int B
+//lemmas for End_bail
+rule (0 -Int A) <Int B => B <Int A
+rule (0 -Int A) <=Int B => B <=Int A
+rule A <=Int (0 -Int B) => B <=Int A
+rule A <Int (0 -Int B) => B <Int A
+
 ```
