@@ -430,7 +430,7 @@ rule A -Word #unsigned(B) => A -Int B
    andBool #rangeSInt(256, B)
    andBool 0 <=Int B
 
- rule A <Int A -Word #unsigned(B) => minUInt256 <=Int A -Int B
+ rule A <Int A -Word #unsigned(B) => A -Int B <=Int maxUInt256
    requires #rangeUInt(256, A)
    andBool #rangeSInt(256, B)
    andBool B <Int 0
@@ -440,6 +440,11 @@ rule A -Word #unsigned(B) <Int A => maxUInt256 <Int A -Int B
    andBool #rangeSInt(256, B)
    andBool B <Int 0
 
+rule (A +Int pow256) -Int #unsigned(B) => A -Int B
+   requires #rangeUInt(256, A)
+   andBool #rangeSInt(256, B)
+   andBool #rangeUInt(256, A -Int B)
+   andBool B <Int 0
 
 // mului
 // lemmas for sufficiency
