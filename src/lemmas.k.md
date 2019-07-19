@@ -32,13 +32,6 @@ rule num0(N) => 0
 rule num1(N) => 0
   requires N ==Int 1
 
-rule (A -Int B) +Int B => A
-
-rule (A -Int B) -Int (C -Int B) => A -Int C
-
-// useful for gas simplification
-rule ((A -Int (X +Int C)) +Int ((C -Int D) -Int Y)) => ((A -Int X) -Int Y) -Int D
-
 rule (#if C #then A #else B #fi *Int X) <=Int maxUInt256 => true
   requires A *Int X <=Int maxUInt256
   andBool B *Int X <=Int maxUInt256
@@ -259,7 +252,7 @@ rule chop(A |Int B) => A |Int B
   andBool #rangeUInt(256, B)
 
 // Masking for packed words
-rule Mask12_32 &Int (Y *Int pow208 +Int X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160
+rule Mask12_32 &Int (Y *Int pow208 +Int (X *Int pow160 +Int A)) => Y *Int pow208 +Int X *Int pow160
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -269,7 +262,7 @@ rule B |Int (Y *Int pow208 +Int X *Int pow160) => Y *Int pow208 +Int X *Int pow1
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-rule (Y *Int pow208 +Int X *Int pow160 +Int A) /Int pow208 => Y
+rule (Y *Int pow208 +Int ( X *Int pow160 +Int A ) ) /Int pow208 => Y
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -278,12 +271,12 @@ rule (Y *Int pow48 +Int X) /Int pow48 => Y
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-rule Mask0_6 &Int (X *Int pow208 +Int Y *Int pow160 +Int A) => Y *Int pow160 +Int A
+rule Mask0_6 &Int (X *Int pow208 +Int ( Y *Int pow160 +Int A ) ) => Y *Int pow160 +Int A
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
   andBool #rangeAddress(A)
 
-rule Mask6_12 &Int (Y *Int pow208 +Int X *Int pow160 +Int A) => Y *Int pow208 +Int A
+rule Mask6_12 &Int (Y *Int pow208 +Int ( X *Int pow160 +Int A) ) => Y *Int pow208 +Int A
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -298,7 +291,7 @@ rule (X *Int pow160) |Int (Y *Int pow208 +Int A) => Y *Int pow208 +Int X *Int po
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
-rule maxUInt160 &Int (((X *Int pow208) +Int (Y *Int pow160)) +Int A) => A
+rule maxUInt160 &Int ((X *Int pow208) +Int ((Y *Int pow160) +Int A)) => A
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -321,7 +314,7 @@ rule maxUInt160 &Int (X *Int pow208) => 0
 rule maxUInt160 &Int (X *Int pow160) => 0
   requires #rangeUInt(48, X)
 
-rule ((((X *Int pow208) +Int (Y *Int pow160)) +Int A) /Int pow160) => (X *Int pow48) +Int Y
+rule (((X *Int pow208) +Int ( (Y *Int pow160) +Int A)) /Int pow160) => (X *Int pow48) +Int Y
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
