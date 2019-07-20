@@ -73,9 +73,10 @@ rule A +Int #unsigned(B) => A
 
 // lemma for Jug_drip
 rule A -Word B => #unsigned(A -Int B)
-  requires #inRangeSInt(256, A)
-  andBool #inRangeSInt(256, B)
-  andBool 0 <Int B
+ requires #rangeSInt(256, A)
+  andBool #rangeSInt(256, B)
+  andBool 0 <=Int B
+  andBool 0 <=Int A
 
 // lemmas for End_skim
 rule (A +Int (0 -Int B)) => A -Int B
