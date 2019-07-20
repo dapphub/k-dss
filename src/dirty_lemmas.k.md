@@ -56,10 +56,10 @@ rule #sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /
 
 //transitivity mf
 rule X <=Int 0 => X ==Int 0
-  requires 0 <=Int X
+  requires 0 ==Int X
 
 rule 0 <=Int X => X ==Int 0
-  requires X <=Int 0
+  requires X ==Int 0
 
 
 // Lemmas for Vat_frob_fail
