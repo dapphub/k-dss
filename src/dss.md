@@ -8249,7 +8249,7 @@ iff
   VCallValue == 0
   VCallDepth < 1024
   Tag =/= 0
-  ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= pow255
+  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= pow255
   Art_iu <= pow255
   Ward == 1
 
@@ -8260,12 +8260,12 @@ iff in range int256
 iff in range uint256
   Art_i - Art_iu
   ((Rate_i * Art_iu) / #Ray) * Tag
-  Gem_a  + ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
-  Awe  + (Rate_i * Art_iu)
-  Vice + (Rate_i * Art_iu)
+  Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  Awe  + (Art_iu * Rate_i)
+  Vice + (Art_iu * Rate_i)
 
 if
-  Ink_iu > ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 calls
   End.adduu
