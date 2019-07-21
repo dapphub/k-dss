@@ -92,7 +92,6 @@ rule A <Int (0 -Int B) => B <Int 0 -Int A
 rule (0 -Int X) *Int Y => 0 -Int (X *Int Y)
 rule (0 -Int X) /Int Y => 0 -Int (X /Int Y)
 
-rule minSInt256 <=Int 0 -Int X => X <=Int pow255
 rule 0 -Int X <=Int maxSInt256 => 0 <=Int X
 
 #unsigned( X *Int Y ) /Int #unsigned( Y ) => X
