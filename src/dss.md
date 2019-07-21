@@ -2260,9 +2260,9 @@ iff in range uint256
     Base + Duty
     TIME - Rho
     #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * Rate
-    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate)
+    // #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) // can be inferred
     #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
-    Rate + (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
+    // Rate + (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate) // A + (B - A) is B ?!?
     Dai  + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
     Debt + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
@@ -4585,15 +4585,6 @@ if
 
 returns 1 + Kicks
 
-calls
-
-  Cat.muluu
-  Cat.minuu
-  Vat.grab
-  Vat.ilks
-  Vat.urns
-  Vow.fess
-  Flipper.kick
 ```
 
 ```act
