@@ -54,14 +54,6 @@ rule #sgnInterp(sgn(chop(A *Int #unsigned(B))), abs(chop(A *Int #unsigned(B))) /
  andBool #rangeSInt(256, B)
  andBool 0 <Int B
 
-//transitivity mf
-rule X <=Int 0 => X ==Int 0
-  requires 0 ==Int X
-
-rule 0 <=Int X => X ==Int 0
-  requires X ==Int 0
-
-
 // Lemmas for Vat_frob_fail
 rule A +Int #unsigned(B) => A +Int B
   requires #rangeUInt(256, A)
@@ -83,9 +75,21 @@ rule (A +Int (0 -Int B)) => A -Int B
 rule (A *Int (0 -Int B)) => (0 -Int (A *Int B))
 rule (A -Int (0 -Int B)) => A +Int B
 //lemmas for End_bail
-rule (0 -Int A) <Int B => B <Int A
-rule (0 -Int A) <=Int B => B <=Int A
-rule A <=Int (0 -Int B) => B <=Int A
-rule A <Int (0 -Int B) => B <Int A
+rule (0 -Int A) <Int B => (0 -Int B) <Int A
+  requires #isVariable(A)
+  andBool #isConcrete(B)
+rule (0 -Int A) <=Int B => (0 -Int B) <=Int A
+  requires #isVariable(A)
+  andBool #isConcrete(B)
+rule A <=Int (0 -Int B) => B <=Int 0 -Int A
+  requires #isVariable(B)
+  andBool #isConcrete(A)
+rule A <Int (0 -Int B) => B <Int 0 -Int A
+  requires #isVariable(B)
+  andBool #isConcrete(A)
+
+// Lemmas dealing with stupid 0
+rule (0 -Int X) *Int Y => 0 -Int (X *Int Y)
+rule (0 -Int X) /Int Y => 0 -Int (X /Int Y)
 
 ```
