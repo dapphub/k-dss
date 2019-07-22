@@ -76,16 +76,16 @@ rule (A *Int (0 -Int B)) => (0 -Int (A *Int B))
 rule (A -Int (0 -Int B)) => A +Int B
 //lemmas for End_bail
 rule (0 -Int A) <Int B => (0 -Int B) <Int A
-  requires #isVariable(A)
+  requires (notBool #isConcrete(A))
   andBool #isConcrete(B)
 rule (0 -Int A) <=Int B => (0 -Int B) <=Int A
-  requires #isVariable(A)
+  requires (notBool #isConcrete(A))
   andBool #isConcrete(B)
 rule A <=Int (0 -Int B) => B <=Int 0 -Int A
-  requires #isVariable(B)
+  requires (notBool #isConcrete(B))
   andBool #isConcrete(A)
 rule A <Int (0 -Int B) => B <Int 0 -Int A
-  requires #isVariable(B)
+  requires (notBool #isConcrete(B))
   andBool #isConcrete(A)
 
 // Lemmas dealing with stupid 0
