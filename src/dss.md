@@ -8187,6 +8187,7 @@ iff in range int256
 if
   Flipper =/= ACCT_ID
   Flipper =/= Guy
+  Flipper =/= Vat
   Guy =/= Vow
   Guy =/= ACCT_ID
   Vow =/= ACCT_ID
