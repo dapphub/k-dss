@@ -98,4 +98,14 @@ rule #unsigned( X *Int Y ) /Int #unsigned( Y ) => X
   andBool #rangeSInt(256, Y)
   andBool 0 <=Int X
   andBool 0 <Int Y
+
+rule A +Int B => A
+  requires B ==K 0
+  andBool #isVariable(A)
+  andBool #isVariable(B)
+
+rule A +Int B => B
+  requires A ==K 0
+  andBool #isVariable(A)
+  andBool #isVariable(B)
 ```
