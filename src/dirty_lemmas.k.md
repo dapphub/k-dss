@@ -92,8 +92,6 @@ rule A <Int (0 -Int B) => B <Int 0 -Int A
 rule (0 -Int X) *Int Y => 0 -Int (X *Int Y)
 rule (0 -Int X) /Int Y => 0 -Int (X /Int Y)
 
-rule 0 -Int X <=Int maxSInt256 => 0 <=Int X
-
 rule #unsigned( X *Int Y ) /Int #unsigned( Y ) => X
   requires #rangeSInt(256, X *Int Y)
   andBool #rangeSInt(256, X)
