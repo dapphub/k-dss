@@ -8136,6 +8136,7 @@ storage Vat
   ilks[ilk].dust |-> Dust_i
 
   can[ACCT_ID][Flipper] |-> FlipCan => 1
+  can[Flipper][Flipper] |-> _ => _
 
   dai[ACCT_ID] |-> Dai_e
   dai[Guy] |-> Dai_g => Dai_g + Bid
