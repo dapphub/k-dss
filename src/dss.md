@@ -8244,18 +8244,18 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
-  Tag =/= 0
-  ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= pow255
-  Art_iu <= pow255
   Ward == 1
+  Tag =/= 0
+  Art_iu <= pow255
+  // ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= pow255 // (met as #Ray is large)
+  Rate_i * Art_iu <= pow255
 
 iff in range int256
   Rate_i
-  Rate_i * Art_iu
 
 iff in range uint256
-  Art_i - Art_iu
   ((Rate_i * Art_iu) / #Ray) * Tag
+  Art_i - Art_iu
   Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
   Awe  + (Art_iu * Rate_i)
   Vice + (Art_iu * Rate_i)
@@ -8317,20 +8317,19 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
-  Tag =/= 0
-  Ink_iu <= pow255
-  Art_iu <= pow255
   Ward == 1
+  Tag =/= 0
+  Art_iu <= pow255
+  Ink_iu <= pow255
+  Rate_i * Art_iu <= pow255
 
 iff in range int256
-
   Rate_i
-  Rate_i * Art_iu
 
 iff in range uint256
   Gap + (((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) - Ink_iu)
-  Art_i - Art_iu
   ((Rate_i * Art_iu) / #Ray) * Tag
+  Art_i - Art_iu
   Gem_a + Ink_iu
   Awe  + (Rate_i * Art_iu)
   Vice + (Rate_i * Art_iu)
