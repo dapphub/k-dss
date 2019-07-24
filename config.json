@@ -71,10 +71,10 @@
     "Vat_fork-diff_fail_rough": "16h",
     "Vat_fork-same_pass_rough": "16h",
     "Vat_fork-same_fail_rough": "16h",
-    "Cat_bite-full_pass_rough": "16h",
-    "Cat_bite-full_fail_rough": "16h",
-    "Cat_bite-lump_pass_rough": "16h",
-    "Cat_bite-lump_fail_rough": "16h",
+    "Cat_bite-full_pass_rough": "2d",
+    "Cat_bite-full_fail_rough": "2d",
+    "Cat_bite-lump_pass_rough": "2d",
+    "Cat_bite-lump_fail_rough": "2d",
     "End_free_pass_rough": "16h",
     "End_skim_pass_rough": "16h",
     "End_skim_fail_rough": "16h",
@@ -92,14 +92,18 @@
     "Vow_cage-surplus_fail_rough": "16h",
     "Vow_cage-deficit_fail_rough": "16h",
     "Vow_cage-balance_fail_rough": "16h",
-    "End_cage-surplus_fail_rough": "16h",
-    "End_cage-deficit_fail_rough": "16h",
-    "End_cage-balance_fail_rough": "16h"
+    "End_cage-surplus_fail_rough": "2d",
+    "End_cage-deficit_fail_rough": "2d",
+    "End_cage-balance_fail_rough": "2d"
   },
   "memory" : {
     "Vat_frob-diff_fail_rough": "20G",
     "Vat_frob-same_fail_rough": "20G",
-    "Flapper_tend_fail_rough": "20G"
+    "Flapper_tend_fail_rough": "20G",
+    "Cat_bite-full_pass_rough": "20G",
+    "Cat_bite-full_fail_rough": "20G",
+    "Cat_bite-lump_pass_rough": "20G",
+    "Cat_bite-lump_fail_rough": "20G"
   },
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
