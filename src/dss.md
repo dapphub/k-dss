@@ -2248,21 +2248,16 @@ storage Vat
 
 iff
 
-    // act: caller is `. ? : not` authorised
+    VCallValue == 0
+    VCallDepth < 1024
     May == 1
     Live == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
-    VCallValue == 0
 
 iff in range uint256
 
-    Base + Duty
     TIME - Rho
+    Base + Duty
     #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * Rate
-    // #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) // can be inferred
-    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
-    // Rate + (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate) // A + (B - A) is B ?!?
     Dai  + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
     Debt + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
@@ -2270,7 +2265,6 @@ iff in range int256
 
     Rate
     Art_i
-    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 gas
@@ -2292,6 +2286,7 @@ calls
 
     Jug.adduu
     Jug.rpow
+    Vat.fold
 ```
 
 ## `rpow`
