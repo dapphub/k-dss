@@ -5,8 +5,7 @@ this should be "flushed" once in a while to the real lemmas.k file
 rule WM[ N := #take(X, WS) ] => WM [ N := #asByteStackInWidth(#asWord(#take(X, WS)), X) ]
 
 rule 0 -Word X => #unsigned(0 -Int X)
-  requires 0 <=Int X
-  andBool X <=Int pow255
+  requires 0 <=Int X andBool X <=Int pow255
 /*
   proof:
 
@@ -108,4 +107,8 @@ rule A +Int B => B
   requires A ==K 0
   andBool #isVariable(A)
   andBool #isVariable(B)
+
+// lemma for Cat_bite-full to prevent unsigned(0 - X) devision
+rule pow256 -Int #unsigned(0 -Int X) => X
+  requires X >Int 0
 ```

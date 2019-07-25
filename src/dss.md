@@ -4577,6 +4577,7 @@ if
     ilk == FlipIlk
     #rangeUInt(48, TIME)
     ACCT_ID =/= Flipper
+    Vat =/= Flipper
 
 returns 1 + Kicks
 
