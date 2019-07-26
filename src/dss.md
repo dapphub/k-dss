@@ -4546,11 +4546,11 @@ iff
     Ink_iu <= pow255
     Ink_iu =/= 0
     CanFlux == 1
+    Rate * Art_iu <= pow255
 
 iff in range int256
 
     Rate_i
-    Rate_i * (0 - Art_iu)
 
 iff in range uint256
 
@@ -4572,7 +4572,8 @@ iff in range uint48
 
 if
 
-    Ink_iu < Lump
+    Ink_iu <= Lump
+    Ink_iu > 0
     Vat == FlipVat
     ilk == FlipIlk
     #rangeUInt(48, TIME)
@@ -4677,15 +4678,14 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    (Lump * Art_iu) / Ink_iu <= pow255
     Lump <= pow255
     Ink_iu =/= 0
     CanFlux == 1
+    Rate_i * ((Lump * Art_iu) / Ink_iu) <= pow255
 
 iff in range int256
 
     Rate_i
-    Rate_i * (0 - ((Lump * Art_iu) / Ink_iu))
 
 iff in range uint256
 
@@ -4701,7 +4701,7 @@ iff in range uint256
     Vice    + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Sin_era + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Sin     + Rate_i * ((Lump * Art_iu) / Ink_iu)
-    Chop * (Rate_i * ((Lump * Art_iu) / Ink_iu))
+    Chop  *  (Rate_i * ((Lump * Art_iu) / Ink_iu))
     Kicks + 1
 
 iff in range uint48
@@ -4710,7 +4710,7 @@ iff in range uint48
 
 if
 
-    Ink_iu >= Lump
+    Ink_iu > Lump
     Vat == FlipVat
     Vat =/= Flipper
     ilk == FlipIlk
@@ -8183,6 +8183,7 @@ iff in range int256
   Rate_i * (Tab / Rate_i)
 
 if
+  Rate_i =/= 0
   Flipper =/= ACCT_ID
   Flipper =/= Guy
   Flipper =/= Vat
