@@ -92,9 +92,9 @@
     "Vow_cage-surplus_fail_rough": "16h",
     "Vow_cage-deficit_fail_rough": "16h",
     "Vow_cage-balance_fail_rough": "16h",
-    "End_cage-surplus_fail_rough": "2d",
-    "End_cage-deficit_fail_rough": "2d",
-    "End_cage-balance_fail_rough": "2d"
+    "End_cage-surplus_fail_rough": "35h",
+    "End_cage-deficit_fail_rough": "35h",
+    "End_cage-balance_fail_rough": "35h"
   },
   "memory" : {
     "Vat_frob-diff_fail_rough": "20G",

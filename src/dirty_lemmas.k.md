@@ -111,4 +111,10 @@ rule A +Int B => B
 // lemma for Cat_bite-full to prevent unsigned(0 - X) devision
 rule pow256 -Int #unsigned(0 -Int X) => X
   requires X >Int 0
+
+
+// lemma to deal with deep nested calls - gas stuff
+rule X -Int (A +Int (B +Int (X +Int C))) => 0 -Int (A +Int (B +Int C))
+rule X -Int (A +Int (B +Int (C +Int (X +Int D)))) => 0 -Int (A +Int (B +Int (C +Int D)))
+rule X -Int (A +Int (B +Int (C +Int (D +Int (X +Int E))))) => 0 -Int (A +Int (B +Int (C +Int (D +Int E))))
 ```
