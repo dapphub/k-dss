@@ -4712,6 +4712,7 @@ if
 
     Ink_iu >= Lump
     Vat == FlipVat
+    Vat =/= Flipper
     ilk == FlipIlk
     #rangeUInt(48, TIME)
     ACCT_ID =/= Flipper
