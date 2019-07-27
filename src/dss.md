@@ -4546,7 +4546,7 @@ iff
     Ink_iu <= pow255
     Ink_iu =/= 0
     CanFlux == 1
-    Rate * Art_iu <= pow255
+    Rate_i * Art_iu <= pow255
 
 iff in range int256
 
