@@ -4561,7 +4561,7 @@ iff in range uint256
     Vice    + Rate_i * Art_iu
     Sin_era + Rate_i * Art_iu
     Sin     + Rate_i * Art_iu
-    Chop * (Rate_i * Art_iu)
+    Chop *   (Rate_i * Art_iu)
     Lump * Art_iu
     Ink_iu * Art_iu
     Kicks + 1
