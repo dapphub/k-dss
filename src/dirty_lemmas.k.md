@@ -114,7 +114,16 @@ rule pow256 -Int #unsigned(0 -Int X) => X
 
 
 // lemma to deal with deep nested calls - gas stuff
-rule X -Int (A +Int (B +Int (X +Int C))) => 0 -Int (A +Int (B +Int C))
-rule X -Int (A +Int (B +Int (C +Int (X +Int D)))) => 0 -Int (A +Int (B +Int (C +Int D)))
-rule X -Int (A +Int (B +Int (C +Int (D +Int (X +Int E))))) => 0 -Int (A +Int (B +Int (C +Int (D +Int E))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (A10 +Int (A11 +Int (A12 +Int (X +Int AS))))))))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (A10 +Int (A11 +Int (A12 +Int AS))))))))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (A10 +Int (A11 +Int (X +Int AS)))))))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (A10 +Int (A11 +Int AS)))))))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (A10 +Int (X +Int AS))))))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (A10 +Int AS))))))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int (X +Int AS)))))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (A9 +Int AS)))))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int (X +Int AS))))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (A8 +Int AS))))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int (X +Int AS)))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (A7 +Int AS)))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int (X +Int AS))))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (A6 +Int AS))))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int (X +Int AS)))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (A5 +Int AS)))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int (X +Int AS))))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int (A4 +Int AS))))
+rule X -Int (A1 +Int (A2 +Int (A3 +Int (X +Int AS)))) => 0 -Int (A1 +Int (A2 +Int (A3 +Int AS)))
+rule X -Int (A1 +Int (A2 +Int (X +Int AS))) => 0 -Int (A1 +Int (A2 +Int AS))
+
 ```
