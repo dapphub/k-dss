@@ -8131,7 +8131,7 @@ storage Flipper
 
 storage Vat
   wards[ACCT_ID] |-> EndMayVat
-  ilks[ilk].Art  |-> Art_i + Tab / Rate_i
+  ilks[ilk].Art  |-> Art_i => Art_i + Tab / Rate_i
   ilks[ilk].rate |-> Rate_i
   ilks[ilk].spot |-> Spot_i
   ilks[ilk].line |-> Line_i
