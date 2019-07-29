@@ -785,7 +785,7 @@ calls
 This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
 ```act
-behaviour frob-diff of Vat
+behaviour frob-diff-nonzero of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
@@ -870,7 +870,7 @@ calls
 ```
 
 ```act
-behaviour frob-diff of Vat
+behaviour frob-diff-zero-dart of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
@@ -947,7 +947,7 @@ calls
 ```
 
 ```act
-behaviour frob-diff of Vat
+behaviour frob-diff-zero-dink of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
@@ -1029,7 +1029,7 @@ calls
 ```
 
 ```act
-behaviour frob-diff of Vat
+behaviour frob-diff-zero of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
