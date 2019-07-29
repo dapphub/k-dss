@@ -139,4 +139,10 @@ rule X +Int (pow256 -Int #unsigned(Y)) => X -Int Y
 rule #unsigned(X) -Int (pow256 +Int X) => 0
   requires X <Int 0
 
+// Cat_bite_full_fail_rough lemma
+rule #sgnInterp(sgn(chop(A *Int #unsigned(0 -Int B))) *Int -1, abs(chop(A *Int #unsigned(0 -Int B))) /Int B) ==K A => #rangeSInt(256, A *Int (0 -Int B))
+ requires #rangeUInt(256, A)
+ andBool #rangeSInt(256, B)
+ andBool 0 <Int B
+ andBool B <Int pow255
 ```
