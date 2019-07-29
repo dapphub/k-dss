@@ -84,7 +84,7 @@
     "End_bail_fail_rough": "16h",
     "End_skip_pass_rough": "42h",
     "End_skip_pass": "42h",
-    "End_skip_fail_rough": "42h",
+    "End_skip_fail_rough": "45h",
     "Flipper_dent_fail_rough": "16h",
     "Flopper_dent_fail_rough": "16h",
     "Flipper_tend_fail_rough": "16h",
