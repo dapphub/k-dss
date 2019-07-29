@@ -76,7 +76,7 @@
     "Vat_fork-diff_pass_rough": "16h",
     "Vat_fork-diff_fail_rough": "16h",
     "Vat_fork-same_pass_rough": "16h",
-    "Vat_fork-same_fail_rough": "16h",
+    "Vat_fork-same_fail_rough": "2d",
     "Cat_bite-full_pass_rough": "2d",
     "Cat_bite-full_pass": "2d",
     "Cat_bite-full_fail_rough": "2d",
