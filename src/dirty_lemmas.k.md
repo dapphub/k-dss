@@ -144,5 +144,5 @@ rule #sgnInterp(sgn(chop(A *Int #unsigned(0 -Int B))) *Int -1, abs(chop(A *Int #
  requires #rangeUInt(256, A)
  andBool #rangeSInt(256, B)
  andBool 0 <Int B
- andBool B <Int pow255
+ andBool B <=Int pow255
 ```
