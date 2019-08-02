@@ -1101,7 +1101,7 @@ calls
 ```
 
 ```act
-behaviour frob-same of Vat
+behaviour frob-same-nonzero of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
@@ -1168,6 +1168,79 @@ if
     u == v
     v == w
     u == w
+    dart =/= 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-same-zero of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iu   : uint256
+    Dai_u    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
+    urns[i][u].art    |-> Urn_art  => Urn_art
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art
+    gem[i][u]         |-> Gem_iu   => Gem_iu  - dink
+    dai[u]            |-> Dai_u    => Dai_u
+    debt              |-> Debt     => Debt
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_ink + dink
+    Gem_iu  - dink
+    Urn_art * Ilk_rate
+    (Urn_ink + dink) * Ilk_spot
+    Ilk_Art * Ilk_rate
+
+iff in range int256
+
+    Ilk_rate
+
+iff
+
+    VCallValue == 0
+    (dink >= 0) or ((Urn_art * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot))
+    u == CALLER_ID or Can_u == 1
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
+    Ilk_rate =/= 0
+    Live == 1
+
+if
+
+    u == v
+    v == w
+    u == w
+    dart == 0
 
 calls
 
