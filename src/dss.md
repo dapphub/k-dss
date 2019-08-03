@@ -4886,9 +4886,19 @@ if
     #rangeUInt(48, TIME)
     ACCT_ID =/= Flipper
     Vat =/= Flipper
+    Rate_i =/= 0
 
 returns 1 + Kicks
 
+calls
+
+  Cat.muluu
+  Cat.minuu
+  Vat.grab
+  Vat.ilks
+  Vat.urns
+  Vow.fess
+  Flipper.kick
 ```
 
 ```act
@@ -5023,6 +5033,7 @@ if
     ilk == FlipIlk
     #rangeUInt(48, TIME)
     ACCT_ID =/= Flipper
+    Rate_i =/= 0
 
 returns 1 + Kicks
 
@@ -8572,6 +8583,7 @@ iff in range uint256
   Vice + (Art_iu * Rate_i)
 
 if
+  Rate_i =/= 0
   Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 calls
@@ -8646,7 +8658,7 @@ iff in range uint256
   Vice + (Rate_i * Art_iu)
 
 if
-
+  Rate_i =/= 0
   Ink_iu <= ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
 
 calls
