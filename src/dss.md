@@ -8502,6 +8502,7 @@ iff in range int256
 
 if
   Rate_i =/= 0
+  Tab / Rate_i =/= 0
   Flipper =/= ACCT_ID
   Flipper =/= Guy
   Flipper =/= Vat
