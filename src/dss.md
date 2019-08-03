@@ -988,8 +988,8 @@ storage
 
 iff in range uint256
 
-    Urn_ink + dink
-    Gem_iv  - dink
+    Urn_ink
+    Gem_iv
     Urn_ink * Ilk_spot
     (Urn_art + dart) * Ilk_rate
     (Ilk_Art + dart) * Ilk_rate
@@ -1007,7 +1007,7 @@ iff
     Ilk_rate =/= 0
 
     (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
-    (dart <= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
+    (dart <= 0) or (((Urn_art + dart) * Ilk_rate) <= (Urn_ink * Ilk_spot))
     (dart <= 0) or (u == CALLER_ID or Can_u == 1)
     (dart >= 0) or (w == CALLER_ID or Can_w == 1)
     ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
