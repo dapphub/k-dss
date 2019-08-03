@@ -988,8 +988,6 @@ storage
 
 iff in range uint256
 
-    Urn_ink
-    Gem_iv
     Urn_ink * Ilk_spot
     (Urn_art + dart) * Ilk_rate
     (Ilk_Art + dart) * Ilk_rate
