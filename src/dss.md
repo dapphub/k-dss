@@ -1139,14 +1139,12 @@ storage
 iff in range uint256
 
     Urn_ink + dink
-    Urn_art + dart
-    Ilk_Art + dart
     Gem_iu  - dink
+    (Urn_ink + dink) * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
+    (Ilk_Art + dart) * Ilk_rate
     Dai_u + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
-    (Urn_art + dart) * Ilk_rate
-    (Urn_ink + dink) * Ilk_spot
-    (Ilk_Art + dart) * Ilk_rate
 
 iff in range int256
 
@@ -1156,18 +1154,19 @@ iff in range int256
 iff
 
     VCallValue == 0
-    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
-    (dart <= 0 and dink >= 0) or (((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot))
-    u == CALLER_ID or Can_u == 1
-    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
     Live == 1
+    Ilk_rate =/= 0
+    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
+    (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
+    (u == CALLER_ID or Can_u == 1)
+    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
 
 if
 
     u == v
     v == w
     u == w
+    dink =/= 0
     dart =/= 0
 
 calls
@@ -1218,8 +1217,8 @@ iff in range uint256
 
     Urn_ink + dink
     Gem_iu  - dink
-    Urn_art * Ilk_rate
     (Urn_ink + dink) * Ilk_spot
+    Urn_art * Ilk_rate
     Ilk_Art * Ilk_rate
 
 iff in range int256
@@ -1229,19 +1228,19 @@ iff in range int256
 iff
 
     VCallValue == 0
-    (dink >= 0) or ((Urn_art * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot))
-    u == CALLER_ID or Can_u == 1
-    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
     Live == 1
+    Ilk_rate =/= 0
+    (dink >= 0) or (((Urn_art * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
+    (u == CALLER_ID or Can_u == 1)
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
 
 if
 
     u == v
     v == w
     u == w
-    dart == 0
     dink =/= 0
+    dart == 0
 
 calls
 
@@ -1289,13 +1288,11 @@ storage
 
 iff in range uint256
 
-    Urn_art + dart
-    Ilk_Art + dart
+    Urn_ink * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
+    (Ilk_Art + dart) * Ilk_rate
     Dai_u + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
-    (Urn_art + dart) * Ilk_rate
-    Urn_ink * Ilk_spot
-    (Ilk_Art + dart) * Ilk_rate
 
 iff in range int256
 
@@ -1305,20 +1302,20 @@ iff in range int256
 iff
 
     VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
     (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
     (dart <= 0) or (((Urn_art + dart) * Ilk_rate) <= (Urn_ink * Ilk_spot))
-    u == CALLER_ID or Can_u == 1
+    (u == CALLER_ID or Can_u == 1)
     ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
-    Live == 1
 
 if
 
     u == v
     v == w
     u == w
-    dart =/= 0
     dink == 0
+    dart =/= 0
 
 calls
 
@@ -1366,8 +1363,8 @@ storage
 
 iff in range uint256
 
-    Urn_art * Ilk_rate
     Urn_ink * Ilk_spot
+    Urn_art * Ilk_rate
     Ilk_Art * Ilk_rate
 
 iff in range int256
@@ -1377,18 +1374,17 @@ iff in range int256
 iff
 
     VCallValue == 0
-    u == CALLER_ID or Can_u == 1
-    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
     Live == 1
+    Ilk_rate =/= 0
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
 
 if
 
     u == v
     v == w
     u == w
-    dart == 0
     dink == 0
+    dart == 0
 
 calls
 
