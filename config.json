@@ -14,57 +14,57 @@
   },
   "implementations": {
     "Vat": {
-      "solc_output": "./dss/out/vat.sol.json"
+      "src": "src/vat.sol"
     },
     "Dai": {
-      "solc_output": "./dss/out/dai.sol.json"
+      "src": "src/dai.sol"
     },
     "Jug": {
-      "solc_output": "./dss/out/jug.sol.json"
+      "src": "src/jug.sol"
     },
     "Pot": {
-      "solc_output": "./dss/out/pot.sol.json"
+      "src": "src/pot.sol"
     },
     "Vow": {
-      "solc_output": "./dss/out/vow.sol.json"
+      "src": "src/vow.sol"
     },
     "Cat": {
-      "solc_output": "./dss/out/cat.sol.json"
+      "src": "src/cat.sol"
     },
     "GemJoin": {
-      "solc_output": "./dss/out/join.sol.json"
+      "src": "src/join.sol"
     },
     "DaiJoin": {
-      "solc_output": "./dss/out/join.sol.json"
+      "src": "src/join.sol"
     },
     "VatLike": {
       "name" : "Vat",
-      "solc_output": "./dss/out/vat.sol.json"
+      "src": "src/vat.sol"
     },
     "VowLike": {
       "name" : "Vow",
-      "solc_output": "./dss/out/vow.sol.json"
+      "src": "src/vow.sol"
     },
     "Flipper": {
-      "solc_output": "./dss/out/flip.sol.json"
+      "src": "src/flip.sol"
     },
     "Flopper": {
-      "solc_output": "./dss/out/flop.sol.json"
+      "src": "src/flop.sol"
     },
     "Flapper": {
-      "solc_output": "./dss/out/flap.sol.json"
+      "src": "src/flap.sol"
     },
     "DSToken": {
-      "solc_output": "./dss/out/test/vat.t.sol.json"
+      "src": "lib/ds-token/src/token.sol"
     },
     "End": {
-      "solc_output": "./dss/out/end.sol.json"
+      "src": "src/end.sol"
     },
     "DSValue": {
-      "solc_output": "./dss/out/test/end.t.sol.json"
+      "src": "lib/ds-value/src/value.sol"
     },
     "Spotter": {
-      "solc_output": "./dss/out/spot.sol.json"
+      "src": "src/spot.sol"
     }
   },
   "split_fail":[
