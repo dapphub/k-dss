@@ -8700,8 +8700,8 @@ storage Vat
   ilks[ilk].line     |-> Line_i
   ilks[ilk].dust     |-> Dust_i
 
-  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
-  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe  => Awe  + (Rate_i * Art_iu)
   vice               |-> Vice => Vice + (Rate_i * Art_iu)
@@ -8711,8 +8711,6 @@ iff
   VCallDepth < 1024
   Ward == 1
   Tag =/= 0
-  Art_iu <= pow255
-  // ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray) <= pow255 // (met as #Ray is large)
   Rate_i * Art_iu <= pow255
 
 iff in range int256
@@ -8722,8 +8720,8 @@ iff in range uint256
   ((Rate_i * Art_iu) / #Ray) * Tag
   Art_i - Art_iu
   Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
-  Awe  + (Art_iu * Rate_i)
-  Vice + (Art_iu * Rate_i)
+  Awe  + (Rate_i * Art_iu)
+  Vice + (Rate_i * Art_iu)
 
 if
   Rate_i =/= 0
@@ -8785,7 +8783,6 @@ iff
   VCallDepth < 1024
   Ward == 1
   Tag =/= 0
-  Art_iu <= pow255
   Ink_iu <= pow255
   Rate_i * Art_iu <= pow255
 
