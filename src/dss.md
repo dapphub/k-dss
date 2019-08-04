@@ -8620,8 +8620,6 @@ iff
   EndMayYank == 1
   Guy =/= 0
   Bid < Tab
-  Lot <= pow255
-  Tab / Rate_i <= pow255
 
 iff in range uint256
   Joy + Tab
