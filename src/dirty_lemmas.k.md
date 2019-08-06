@@ -145,4 +145,10 @@ rule #sgnInterp(sgn(chop(A *Int #unsigned(0 -Int B))) *Int -1, abs(chop(A *Int #
  andBool #rangeSInt(256, B)
  andBool 0 <Int B
  andBool B <=Int pow255
+
+// skim/bail Rate * Art <= pow255 (condition for grab)
+rule #signed(chop((A *Int #unsigned((0 -Int B))))) <=Int 0 => A *Int B <=Int pow255
+  requires #rangeUInt(256, A)
+  andBool 0 <Int B
+  andBool B <=Int pow255
 ```
