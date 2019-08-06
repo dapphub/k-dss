@@ -8709,10 +8709,10 @@ iff
   VCallDepth < 1024
   Ward == 1
   Tag =/= 0
-  Rate_i * Art_iu <= pow255
 
 iff in range int256
   Rate_i
+  0 - Rate_i * Art_iu
 
 iff in range uint256
   ((Rate_i * Art_iu) / #Ray) * Tag
@@ -8782,10 +8782,10 @@ iff
   Ward == 1
   Tag =/= 0
   Ink_iu <= pow255
-  Rate_i * Art_iu <= pow255
 
 iff in range int256
   Rate_i
+  0 - Rate_i * Art_iu
 
 iff in range uint256
   Gap + (((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) - Ink_iu)
