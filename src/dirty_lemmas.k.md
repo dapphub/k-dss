@@ -152,7 +152,7 @@ rule #signed(chop((A *Int #unsigned((0 -Int B))))) <=Int 0 => #rangeSInt(256, 0 
   andBool 0 <Int B
   andBool #rangeSInt(256, 0 -Int B)
 
-rule chop(A *Int #unsigned(0 -Int B)) => 0 -Int (A *Int B)
+rule chop(A *Int #unsigned(0 -Int B)) <=Int maxSInt256 andBool minSInt256 <=Int chop(A *Int #unsigned(0 -Int B)) => #rangeSInt(256, A *Int (0 -Int B))
   requires #rangeUInt256(A)
   andBool #rangeUInt256(A *Int B)
   andBool 0 <Int B
