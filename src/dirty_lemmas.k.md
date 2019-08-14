@@ -141,9 +141,9 @@ rule #unsigned(X) -Int (pow256 +Int X) => 0
 
 // Cat_bite_full_fail_rough lemma
 rule #sgnInterp(sgn(chop(A *Int #unsigned(0 -Int B))) *Int -1, abs(chop(A *Int #unsigned(0 -Int B))) /Int B) ==K A => #rangeSInt(256, A *Int (0 -Int B))
-  requires #rangeUInt(256, A)
-  andBool 0 <Int B
-  andBool #rangeSInt(256, 0 -Int B)
+//   requires #rangeUInt(256, A)
+//   andBool 0 <Int B
+//   andBool #rangeSInt(256, 0 -Int B)
 
 // skim/bail Rate * Art <= pow255 (condition for grab)
 rule #signed(chop((A *Int #unsigned((0 -Int B))))) <=Int 0 => #rangeSInt(256, 0 -Int (A *Int B))
