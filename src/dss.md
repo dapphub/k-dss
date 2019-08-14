@@ -4996,10 +4996,9 @@ iff
     Ink_iu <= pow255
     Ink_iu =/= 0
     CanFlux == 1
-    Rate_i * Art_iu <= pow255
 
 iff in range int256
-
+    0 - Rate_i * Art_iu
     Rate_i
 
 iff in range uint256
@@ -5141,10 +5140,9 @@ iff
     Lump <= pow255
     Ink_iu =/= 0
     CanFlux == 1
-    Rate_i * ((Lump * Art_iu) / Ink_iu) <= pow255
 
 iff in range int256
-
+    0 - Rate_i * ((Lump * Art_iu) / Ink_iu)
     Rate_i
 
 iff in range uint256
