@@ -441,7 +441,7 @@ rule (A +Int pow256) -Int #unsigned(B) => A -Int B
 
 // mului
 // lemmas for sufficiency
-rule A *Int #unsigned(B) => #unsigned(A *Int B)
+rule A *Word #unsigned(B) => #unsigned(A *Int B)
   requires #rangeUInt(256, A)
   andBool #rangeSInt(256, B)
   andBool #rangeSInt(256, A *Int B)
