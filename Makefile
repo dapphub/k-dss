@@ -28,7 +28,7 @@ all: dapp spec
 dapp:
 	dapp --version
 	git submodule update --init --recursive
-	cd $(DAPP_DIR) && dapp --use solc:0.5.9 build && cd ../
+	cd $(DAPP_DIR) && SOLC_FLAGS="--optimize --optimize-runs 1000000" dapp --use solc:0.5.9 build && cd ../
 
 dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../

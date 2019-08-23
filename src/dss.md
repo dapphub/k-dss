@@ -785,7 +785,7 @@ calls
 This is the core method that opens, manages, and closes a collateralised debt position. This method has the ability to issue or delete dai while increasing or decreasing the position's debt, and to deposit and withdraw "encumbered" collateral from the position. The caller specifies the ilk `i` to interact with, and identifiers `u`, `v`, and `w`, corresponding to the sources of the debt, unencumbered collateral, and dai, respectively. The collateral and debt unit adjustments `dink` and `dart` are specified incrementally.
 
 ```act
-behaviour frob-diff of Vat
+behaviour frob-diff-nonzero of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
@@ -827,14 +827,12 @@ storage
 iff in range uint256
 
     Urn_ink + dink
-    Urn_art + dart
-    Ilk_Art + dart
     Gem_iv  - dink
+    (Urn_ink + dink) * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
+    (Ilk_Art + dart) * Ilk_rate
     Dai_w + (Ilk_rate * dart)
     Debt  + (Ilk_rate * dart)
-    (Urn_art + dart) * Ilk_rate
-    (Urn_ink + dink) * Ilk_spot
-    (Ilk_Art + dart) * Ilk_rate
 
 iff in range int256
 
@@ -843,20 +841,25 @@ iff in range int256
 
 iff
     VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+
     (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
     (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
     (dart <= 0 and dink >= 0) or (u == CALLER_ID or Can_u == 1)
+
     (dink <= 0) or (v == CALLER_ID or Can_v == 1)
     (dart >= 0) or (w == CALLER_ID or Can_w == 1)
+
     ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
-    Live == 1
 
 if
 
     u =/= v
     v =/= w
     u =/= w
+    dink =/= 0
+    dart =/= 0
 
 calls
 
@@ -867,7 +870,237 @@ calls
 ```
 
 ```act
-behaviour frob-same of Vat
+behaviour frob-diff-zero-dart of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iv   : uint256
+    Dai_w    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Can_v    : uint256
+    Can_w    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    can[v][CALLER_ID] |-> Can_v
+    can[w][CALLER_ID] |-> Can_w
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
+    urns[i][u].art    |-> Urn_art  => Urn_art
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
+    dai[w]            |-> Dai_w    => Dai_w
+    debt              |-> Debt     => Debt
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_ink + dink
+    Gem_iv  - dink
+    (Urn_ink + dink) * Ilk_spot
+    Urn_art * Ilk_rate
+    Ilk_Art * Ilk_rate
+
+iff in range int256
+
+    Ilk_rate
+
+iff
+    VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+    (dink >= 0) or (((Urn_art * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
+    (dink >= 0) or (u == CALLER_ID or Can_u == 1)
+    (dink <= 0) or (v == CALLER_ID or Can_v == 1)
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
+
+if
+
+    u =/= v
+    v =/= w
+    u =/= w
+    dink =/= 0
+    dart == 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-diff-zero-dink of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iv   : uint256
+    Dai_w    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Can_v    : uint256
+    Can_w    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    can[v][CALLER_ID] |-> Can_v
+    can[w][CALLER_ID] |-> Can_w
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink
+    urns[i][u].art    |-> Urn_art  => Urn_art + dart
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
+    gem[i][v]         |-> Gem_iv   => Gem_iv
+    dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_art + dart
+    Urn_ink * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
+    (Ilk_Art + dart) * Ilk_rate
+    Dai_w + (Ilk_rate * dart)
+    Debt  + (Ilk_rate * dart)
+
+iff in range int256
+
+    Ilk_rate
+    Ilk_rate * dart
+
+iff
+    VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+
+    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
+    (dart <= 0) or (((Urn_art + dart) * Ilk_rate) <= (Urn_ink * Ilk_spot))
+    (dart <= 0) or (u == CALLER_ID or Can_u == 1)
+    (dart >= 0) or (w == CALLER_ID or Can_w == 1)
+    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
+
+if
+
+    u =/= v
+    v =/= w
+    u =/= w
+    dink == 0
+    dart =/= 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-diff-zero of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iv   : uint256
+    Dai_w    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Can_v    : uint256
+    Can_w    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    can[v][CALLER_ID] |-> Can_v
+    can[w][CALLER_ID] |-> Can_w
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink
+    urns[i][u].art    |-> Urn_art  => Urn_art
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art
+    gem[i][v]         |-> Gem_iv   => Gem_iv
+    dai[w]            |-> Dai_w    => Dai_w
+    debt              |-> Debt     => Debt
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_ink * Ilk_spot
+    Urn_art * Ilk_rate
+    Ilk_Art * Ilk_rate
+
+iff in range int256
+
+    Ilk_rate
+
+iff
+    VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
+
+if
+
+    u =/= v
+    v =/= w
+    u =/= w
+    dink == 0
+    dart == 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-same-nonzero of Vat
 interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
 
 for all
@@ -905,14 +1138,12 @@ storage
 iff in range uint256
 
     Urn_ink + dink
-    Urn_art + dart
-    Ilk_Art + dart
-    Gem_iv  - dink
-    Dai_w + (Ilk_rate * dart)
-    Debt  + (Ilk_rate * dart)
-    (Urn_art + dart) * Ilk_rate
+    Gem_iu  - dink
     (Urn_ink + dink) * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
     (Ilk_Art + dart) * Ilk_rate
+    Dai_u + (Ilk_rate * dart)
+    Debt  + (Ilk_rate * dart)
 
 iff in range int256
 
@@ -922,18 +1153,237 @@ iff in range int256
 iff
 
     VCallValue == 0
-    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
-    (dart <= 0 and dink >= 0) or (((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot))
-    u == CALLER_ID or Can_u == 1
-    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
-    Ilk_rate =/= 0
     Live == 1
+    Ilk_rate =/= 0
+    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
+    (dart <= 0 and dink >= 0) or ((((Urn_art + dart) * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
+    (u == CALLER_ID or Can_u == 1)
+    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
 
 if
 
     u == v
     v == w
     u == w
+    dink =/= 0
+    dart =/= 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-same-zero-dart of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iu   : uint256
+    Dai_u    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
+    urns[i][u].art    |-> Urn_art  => Urn_art
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art
+    gem[i][u]         |-> Gem_iu   => Gem_iu  - dink
+    dai[u]            |-> Dai_u    => Dai_u
+    debt              |-> Debt     => Debt
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_ink + dink
+    Gem_iu  - dink
+    (Urn_ink + dink) * Ilk_spot
+    Urn_art * Ilk_rate
+    Ilk_Art * Ilk_rate
+
+iff in range int256
+
+    Ilk_rate
+
+iff
+
+    VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+    (dink >= 0) or (((Urn_art * Ilk_rate) <= ((Urn_ink + dink) * Ilk_spot)))
+    (u == CALLER_ID or Can_u == 1)
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
+
+if
+
+    u == v
+    v == w
+    u == w
+    dink =/= 0
+    dart == 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-same-zero-dink of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iu   : uint256
+    Dai_u    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink
+    urns[i][u].art    |-> Urn_art  => Urn_art + dart
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
+    gem[i][u]         |-> Gem_iu   => Gem_iu
+    dai[u]            |-> Dai_u    => Dai_u + (Ilk_rate * dart)
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_ink * Ilk_spot
+    (Urn_art + dart) * Ilk_rate
+    (Ilk_Art + dart) * Ilk_rate
+    Dai_u + (Ilk_rate * dart)
+    Debt  + (Ilk_rate * dart)
+
+iff in range int256
+
+    Ilk_rate
+    Ilk_rate * dart
+
+iff
+
+    VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+    (dart <= 0) or (((Ilk_Art + dart) * Ilk_rate <= Ilk_line) and ((Debt + Ilk_rate * dart) <= Line))
+    (dart <= 0) or (((Urn_art + dart) * Ilk_rate) <= (Urn_ink * Ilk_spot))
+    (u == CALLER_ID or Can_u == 1)
+    ((Urn_art + dart) == 0) or (((Urn_art + dart) * Ilk_rate) >= Ilk_dust)
+
+if
+
+    u == v
+    v == w
+    u == w
+    dink == 0
+    dart =/= 0
+
+calls
+
+    Vat.addui
+    Vat.subui
+    Vat.mului
+    Vat.muluu
+```
+
+```act
+behaviour frob-same-zero of Vat
+interface frob(bytes32 i, address u, address v, address w, int dink, int dart)
+
+for all
+
+    Ilk_rate : uint256
+    Ilk_line : uint256
+    Ilk_spot : uint256
+    Ilk_dust : uint256
+    Ilk_Art  : uint256
+    Urn_ink  : uint256
+    Urn_art  : uint256
+    Gem_iu   : uint256
+    Dai_u    : uint256
+    Debt     : uint256
+    Line     : uint256
+    Can_u    : uint256
+    Live     : uint256
+
+storage
+
+    ilks[i].rate      |-> Ilk_rate
+    ilks[i].line      |-> Ilk_line
+    ilks[i].spot      |-> Ilk_spot
+    ilks[i].dust      |-> Ilk_dust
+    Line              |-> Line
+    can[u][CALLER_ID] |-> Can_u
+    urns[i][u].ink    |-> Urn_ink  => Urn_ink
+    urns[i][u].art    |-> Urn_art  => Urn_art
+    ilks[i].Art       |-> Ilk_Art  => Ilk_Art
+    gem[i][u]         |-> Gem_iu   => Gem_iu
+    dai[u]            |-> Dai_u    => Dai_u
+    debt              |-> Debt     => Debt
+    live              |-> Live
+
+iff in range uint256
+
+    Urn_ink * Ilk_spot
+    Urn_art * Ilk_rate
+    Ilk_Art * Ilk_rate
+
+iff in range int256
+
+    Ilk_rate
+
+iff
+
+    VCallValue == 0
+    Live == 1
+    Ilk_rate =/= 0
+    (Urn_art == 0) or ((Urn_art * Ilk_rate) >= Ilk_dust)
+
+if
+
+    u == v
+    v == w
+    u == w
+    dink == 0
+    dart == 0
 
 calls
 
@@ -2212,7 +2662,7 @@ interface drip(bytes32 ilk)
 
 for all
 
-    Vat    : address VatLike
+    Vat    : address Vat
     Base   : uint256
     Vow    : address
     Duty   : uint256
@@ -2248,21 +2698,16 @@ storage Vat
 
 iff
 
-    // act: caller is `. ? : not` authorised
+    VCallValue == 0
+    VCallDepth < 1024
     May == 1
     Live == 1
-    // act: call stack is not too big
-    VCallDepth < 1024
-    VCallValue == 0
 
 iff in range uint256
 
-    Base + Duty
     TIME - Rho
+    Base + Duty
     #rpow(#Ray, Base + Duty, TIME - Rho, #Ray) * Rate
-    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate)
-    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
-    Rate + (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
     Dai  + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
     Debt + Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
@@ -2270,12 +2715,15 @@ iff in range int256
 
     Rate
     Art_i
-    #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate
     Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
 gas
 
-    ( ( 6466 + ( #if ( ( Base + Duty ) ==K 0 ) #then ( #if ( ( TIME - Rho ) ==K 0 ) #then 82 #else 92 #fi) #else ( #if ( ( ( TIME - Rho ) modInt 2 ) ==K 0 ) #then ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 150 #else ( 437 + ( ( ( num0(( TIME - Rho )) - 1 ) * 172 ) + ( num1(( TIME - Rho )) * 287 ) ) ) #fi) #else ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 160 #else ( 447 + ( ( num0(( TIME - Rho )) * 172 ) + ( ( num1(( TIME - Rho )) - 1 ) * 287 ) ) ) #fi) #fi) #fi) ) + ( #if ( Rate ==K 0 ) #then ( 33558 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) #else ( #if ( ( 0 < ( ( ( (#rpow( #Ray , ( Base + Duty ) , ( TIME - Rho ) , #Ray )) * Rate ) / #Ray ) - Rate ) ) ==K false ) #then ( 33594 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) #else ( #if ( ( 0 < ( Art_i * ( ( ( (#rpow( #Ray , ( Base + Duty ) , ( TIME - Rho ) , #Ray )) * Rate ) / #Ray ) - Rate ) ) ) ==K false ) #then ( 33644 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) #else ( ( ( ( #if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai + ( Art_i * ( ( ( (#rpow( #Ray , ( Base + Duty ) , ( TIME - Rho ) , #Ray )) * Rate ) / #Ray ) - Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) + ( #if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt + ( Art_i * ( ( ( (#rpow( #Ray , ( Base + Duty ) , ( TIME - Rho ) , #Ray )) * Rate ) / #Ray ) - Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + 33672 ) #fi) #fi) #fi) )
+  (#if ( Rate ==K 0 ) #then ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 40024 ) ) #else ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( ( 0 <=Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ==K true ) andBool ( ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 40060 ) ) ) ) ) ) ) ) #fi)
+
+fail_gas
+
+  300000000 + ((#if ( (Base + Duty) ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
 
 if
 
@@ -2288,6 +2736,7 @@ calls
 
     Jug.adduu
     Jug.rpow
+    Vat.fold
 ```
 
 ## `rpow`
@@ -2874,7 +3323,7 @@ for all
     Dsr  : uint256
     Pie  : uint256
     Vow  : address
-    Vat  : address VatLike
+    Vat  : address Vat
     May  : uint256
     Dai  : uint256
     Sin  : uint256
@@ -2907,6 +3356,10 @@ iff
 gas
 
     ( ( 5068 + ( ( ( ( ( #if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) + ( #if ( ( Sin ==K 0 ) andBool (notBool ( ( Sin + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Vice ==K 0 ) andBool (notBool ( ( Vice + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + 26564 ) ) + ( ( ( ( 819 + ( #if ( Dsr ==K 0 ) #then ( #if ( ( TIME - Rho ) ==K 0 ) #then 82 #else 92 #fi) #else ( #if ( ( ( TIME - Rho ) modInt 2 ) ==K 0 ) #then ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 150 #else ( 437 + ( ( ( num0(( TIME - Rho )) - 1 ) * 172 ) + ( num1(( TIME - Rho )) * 287 ) ) ) #fi) #else ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 160 #else ( 447 + ( ( num0(( TIME - Rho )) * 172 ) + ( ( num1(( TIME - Rho )) - 1 ) * 287 ) ) ) #fi) #fi) #fi) ) + ( #if ( Chi ==K 0 ) #then 5946 #else 5998 #fi) ) + ( 5711 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) ) + ( #if ( ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ==K 0 ) #then 951 #else 1003 #fi) ) )
+
+fail_gas
+
+  300000000 + ((#if ( Dsr ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
 
 if
 
@@ -2948,7 +3401,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
-    Vat     : address VatLike
+    Vat     : address Vat
     Can     : uint256
     Dai_u   : uint256
     Dai_p   : uint256
@@ -2999,7 +3452,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
-    Vat     : address VatLike
+    Vat     : address Vat
     Dai_u   : uint256
     Dai_p   : uint256
 
@@ -3484,7 +3937,7 @@ interface heal(uint256 rad)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     Ash  : uint256
     Sin  : uint256
     Joy  : uint256
@@ -3534,7 +3987,7 @@ interface kiss(uint256 rad)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     Ash  : uint256
     Joy  : uint256
     Awe  : uint256
@@ -3653,7 +4106,7 @@ interface flop()
 for all
 
     Flopper  : address Flopper
-    Vat      : address VatLike
+    Vat      : address Vat
     MayFlop  : uint256
     Sin      : uint256
     Ash      : uint256
@@ -3739,7 +4192,7 @@ interface flap()
 for all
 
     Flapper  : address Flapper
-    Vat      : address VatLike
+    Vat      : address Vat
     FlapVat  : address
     Sin      : uint256
     Ash      : uint256
@@ -3830,7 +4283,7 @@ interface cage()
 
 for all
 
-    Vat      : address VatLike
+    Vat      : address Vat
     Flapper  : address Flapper
     Flopper  : address Flopper
     FlapVat  : address
@@ -3850,12 +4303,12 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
-    vat |-> Vat
+    vat     |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> Live => 0
-    Sin  |-> Sin  => 0
-    Ash  |-> Ash  => 0
+    live    |-> Live => 0
+    Sin     |-> Sin  => 0
+    Ash     |-> Ash  => 0
 
 storage Vat
 
@@ -3917,7 +4370,7 @@ interface cage()
 
 for all
 
-    Vat     : address VatLike
+    Vat     : address Vat
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -3937,12 +4390,12 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
-    vat |-> Vat
+    vat     |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> Live => 0
-    Sin  |-> Sin => 0
-    Ash  |-> Ash => 0
+    live    |-> Live => 0
+    Sin     |-> Sin  => 0
+    Ash     |-> Ash  => 0
 
 storage Vat
 
@@ -4003,7 +4456,7 @@ interface cage()
 
 for all
 
-    Vat     : address VatLike
+    Vat     : address Vat
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -4023,12 +4476,12 @@ for all
 storage
 
     wards[CALLER_ID] |-> Can
-    vat |-> Vat
+    vat     |-> Vat
     flopper |-> Flopper
     flapper |-> Flapper
-    live |-> Live => 0
-    Sin  |-> Sin => 0
-    Ash  |-> Ash => 0
+    live    |-> Live => 0
+    Sin     |-> Sin  => 0
+    Ash     |-> Ash  => 0
 
 storage Vat
 
@@ -4329,7 +4782,7 @@ interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     May  : uint256
     Flip : address
     Can  : uint256
@@ -4388,7 +4841,7 @@ interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Vat  : address VatLike
+    Vat  : address Vat
     May  : uint256
     Flip : address
     Hope : uint256
@@ -4452,8 +4905,8 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address VatLike
-    Vow     : address VowLike
+    Vat     : address Vat
+    Vow     : address Vow
     Flipper : address Flipper
     Live    : uint256
     Art_i   : uint256
@@ -4463,13 +4916,17 @@ for all
     Dust_i  : uint256
     Ink_iu  : uint256
     Art_iu  : uint256
+    CanFlux : uint256
     Gem_iv  : uint256
+    Gem_if  : uint256
     Sin_w   : uint256
     Vice    : uint256
     Sin     : uint256
     Sin_era : uint256
     Chop    : uint256
     Lump    : uint256
+    FlipVat : address
+    FlipIlk : bytes32
     Kicks   : uint256
     Ttl     : uint48
     Tau     : uint48
@@ -4501,9 +4958,11 @@ storage Vat
     wards[ACCT_ID]     |-> CatMayVat
     urns[ilk][urn].ink |-> Ink_iu => 0
     urns[ilk][urn].art |-> Art_iu => 0
-    gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Ink_iu
+    gem[ilk][ACCT_ID]  |-> Gem_iv
+    gem[ilk][Flipper]  |-> Gem_if => Gem_if + Ink_iu
     sin[Vow]           |-> Sin_w  => Sin_w  + (Rate_i * Art_iu)
     vice               |-> Vice   => Vice   + (Rate_i * Art_iu)
+    can[ACCT_ID][Flipper] |-> CanFlux
 
 storage Vow
 
@@ -4513,6 +4972,8 @@ storage Vow
 
 storage Flipper
 
+    vat                         |-> FlipVat
+    ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
@@ -4531,31 +4992,43 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    Art_iu <= posMinSInt256
-    Ink_iu <= posMinSInt256
+    Art_iu <= pow255
+    Ink_iu <= pow255
     Ink_iu =/= 0
+    CanFlux == 1
 
 iff in range int256
-
+    0 - Rate_i * Art_iu
     Rate_i
-    Rate_i * Art_iu
 
 iff in range uint256
 
     Art_i  - Art_iu
+    Gem_if + Ink_iu
     Gem_iv + Ink_iu
     Sin_w   + Rate_i * Art_iu
     Vice    + Rate_i * Art_iu
     Sin_era + Rate_i * Art_iu
     Sin     + Rate_i * Art_iu
-    Chop * (Rate_i * Art_iu)
+    Chop *   (Rate_i * Art_iu)
     Lump * Art_iu
     Ink_iu * Art_iu
+    Kicks + 1
+
+iff in range uint48
+
+    TIME + Tau
 
 if
 
-    Ink_iu < Lump
-
+    Ink_iu <= Lump
+    Ink_iu > 0
+    Vat == FlipVat
+    ilk == FlipIlk
+    #rangeUInt(48, TIME)
+    ACCT_ID =/= Flipper
+    Vat =/= Flipper
+    Rate_i =/= 0
 
 returns 1 + Kicks
 
@@ -4576,8 +5049,8 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address VatLike
-    Vow     : address VowLike
+    Vat     : address Vat
+    Vow     : address Vow
     Flipper : address Flipper
     Live    : uint256
     Art_i   : uint256
@@ -4587,13 +5060,17 @@ for all
     Dust_i  : uint256
     Ink_iu  : uint256
     Art_iu  : uint256
+    CanFlux : uint256
     Gem_iv  : uint256
+    Gem_if  : uint256
     Sin_w   : uint256
     Vice    : uint256
     Sin     : uint256
     Sin_era : uint256
     Chop    : uint256
     Lump    : uint256
+    FlipVat : address
+    FlipIlk : bytes32
     Kicks   : uint256
     Ttl     : uint48
     Tau     : uint48
@@ -4626,9 +5103,11 @@ storage Vat
     wards[ACCT_ID]     |-> CatMayVat
     urns[ilk][urn].ink |-> Ink_iu => Ink_iu - Lump
     urns[ilk][urn].art |-> Art_iu => Art_iu - ((Lump * Art_iu) / Ink_iu)
-    gem[ilk][Flipper]  |-> Gem_iv => Gem_iv + Lump
+    gem[ilk][ACCT_ID]  |-> Gem_iv => Gem_iv
+    gem[ilk][Flipper]  |-> Gem_if => Gem_if + Lump
     sin[Vow]           |-> Sin_w  => Sin_w  + Rate_i * ((Lump * Art_iu) / Ink_iu)
     vice               |-> Vice   => Vice   + Rate_i * ((Lump * Art_iu) / Ink_iu)
+    can[ACCT_ID][Flipper] |-> CanFlux
 
 storage Vow
 
@@ -4638,6 +5117,8 @@ storage Vow
 
 storage Flipper
 
+    vat                         |-> FlipVat
+    ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
@@ -4656,14 +5137,13 @@ iff
     CatMayVow == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
-    (Lump * Art_iu) / Ink_iu <= posMinSInt256
-    Lump <= posMinSInt256
+    Lump <= pow255
     Ink_iu =/= 0
+    CanFlux == 1
 
 iff in range int256
-
+    0 - Rate_i * ((Lump * Art_iu) / Ink_iu)
     Rate_i
-    Rate_i * ((Lump * Art_iu) / Ink_iu)
 
 iff in range uint256
 
@@ -4673,16 +5153,28 @@ iff in range uint256
     Art_i - ((Lump * Art_iu) / Ink_iu)
     Ink_iu - Lump
     Art_iu - ((Lump * Art_iu) / Ink_iu)
-    Gem_iv + Lump
+    Gem_if + Ink_iu
+    Gem_iv + Ink_iu
     Sin_w   + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Vice    + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Sin_era + Rate_i * ((Lump * Art_iu) / Ink_iu)
     Sin     + Rate_i * ((Lump * Art_iu) / Ink_iu)
-    Chop * (Rate_i * ((Lump * Art_iu) / Ink_iu))
+    Chop  *  (Rate_i * ((Lump * Art_iu) / Ink_iu))
+    Kicks + 1
+
+iff in range uint48
+
+    TIME + Tau
 
 if
 
-    Ink_iu >= Lump
+    Ink_iu > Lump
+    Vat == FlipVat
+    Vat =/= Flipper
+    ilk == FlipIlk
+    #rangeUInt(48, TIME)
+    ACCT_ID =/= Flipper
+    Rate_i =/= 0
 
 returns 1 + Kicks
 
@@ -5065,7 +5557,7 @@ interface kick(address usr, address gal, uint256 tab, uint256 lot, uint256 bid)
 
 for all
 
-    Vat      : address VatLike
+    Vat      : address Vat
     Ilk      : uint256
     Kicks    : uint256
     Ttl      : uint48
@@ -5165,7 +5657,7 @@ behaviour tend of Flipper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Beg : uint256
   Bid : uint256
   Lot : uint256
@@ -5230,7 +5722,7 @@ behaviour dent of Flipper
 interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Ilk : bytes32
   Ttl : uint48
   Tau : uint48
@@ -5303,7 +5795,7 @@ behaviour deal of Flipper
 interface deal(uint256 id)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Ilk : bytes32
   Bid : uint256
   Lot : uint256
@@ -5353,7 +5845,7 @@ behaviour yank of Flipper
 interface yank(uint256 id)
 
 for all
-  Vat : address VatLike
+  Vat : address Vat
   Ttl : uint48
   Tau : uint48
   Ilk : bytes32
@@ -5428,7 +5920,7 @@ interface vat()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
 
 storage
 
@@ -5493,7 +5985,7 @@ interface join(address usr, uint256 wad)
 
 for all
 
-    Vat         : address VatLike
+    Vat         : address Vat
     Ilk         : bytes32
     DSToken     : address DSToken
     May         : uint256
@@ -5555,7 +6047,7 @@ interface exit(address usr, uint256 wad)
 
 for all
 
-    Vat         : address VatLike
+    Vat         : address Vat
     Ilk         : bytes32
     DSToken     : address DSToken
     May         : uint256
@@ -5588,7 +6080,7 @@ iff
     VCallDepth < 1024
     Stopped == 0
     May == 1
-    wad <= posMinSInt256
+    wad <= pow255
 
 iff in range uint256
 
@@ -5621,7 +6113,7 @@ interface vat()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
 
 storage
 
@@ -5683,7 +6175,7 @@ interface join(address usr, uint256 wad)
 
 for all
 
-    Vat     : address VatLike
+    Vat     : address Vat
     Dai     : address Dai
     Supply  : uint256
     Dai_c   : uint256
@@ -5743,7 +6235,7 @@ interface exit(address usr, uint256 wad)
 
 for all
 
-    Vat    : address VatLike
+    Vat    : address Vat
     Dai    : address Dai
     May    : uint256
     Can    : uint256
@@ -6175,7 +6667,7 @@ interface kick(uint256 lot, uint256 bid)
 
 for all
 
-    Vat      : address VatLike
+    Vat      : address Vat
     Kicks    : uint256
     Ttl      : uint48
     Tau      : uint48
@@ -6316,7 +6808,7 @@ interface deal(uint256 id)
 
 for all
   DSToken : address DSToken
-  Vat     : address VatLike
+  Vat     : address Vat
   Live    : uint256
   Bid     : uint256
   Lot     : uint256
@@ -6376,7 +6868,7 @@ behaviour cage of Flapper
 interface cage(uint256 rad)
 
 for all
-  Vat   : address VatLike
+  Vat   : address Vat
   Ward  : uint256
   Live  : uint256
   Dai_a : uint256
@@ -6878,7 +7370,7 @@ interface dent(uint id, uint lot, uint bid)
 
 for all
   Live : uint256
-  Vat  : address VatLike
+  Vat  : address Vat
   Beg  : uint256
   Ttl  : uint48
   Tau  : uint48
@@ -7007,7 +7499,7 @@ interface yank(uint256 id)
 
 for all
   Live   : uint256
-  Vat    : address VatLike
+  Vat    : address Vat
   Bid    : uint256
   Lot    : uint256
   Guy    : address
@@ -7617,12 +8109,13 @@ interface cage()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
     Cat : address Cat
-    Vow : address VowLike
+    Vow : address Vow
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
+    VowVat  : address
 
     Live : uint256
     When : uint256
@@ -7641,28 +8134,32 @@ for all
     VowMayFlop : uint256
 
     Dai_f : uint256
-    Awe   : uint256
-    Joy   : uint256
+    Sin_v : uint256
+    Dai_v : uint256
+    Debt  : uint256
+    Vice  : uint256
     Sin   : uint256
     Ash   : uint256
 
 storage
 
+    wards[CALLER_ID] |-> CallerMay
     live |-> Live => 0
     when |-> When => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
+    vat  |-> Vat
+    cat  |-> Cat
+    vow  |-> Vow
 
 storage Vat
 
-    can[Flapper][Flapper] |-> _
-    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
+    live           |-> VatLive => 0
     dai[Flapper]   |-> Dai_f => 0
-    sin[Vow]       |-> Awe   => 0
-    dai[Vow]       |-> Joy   => (Joy + Dai_f) - Awe
+    dai[Vow]       |-> Dai_v => (Dai_v + Dai_f) - Sin_v
+    sin[Vow]       |-> Sin_v => 0
+    debt           |-> Debt  => Debt - Sin_v
+    vice           |-> Vice  => Vice - Sin_v
+    can[Flapper][Flapper] |-> _
 
 storage Cat
 
@@ -7671,12 +8168,13 @@ storage Cat
 
 storage Vow
 
-    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
+    vat     |-> VowVat
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> Sin => 0
-    Ash |-> Ash => 0
+    live    |-> VowLive => 0
+    Sin     |-> Sin     => 0
+    Ash     |-> Ash     => 0
 
 storage Flapper
 
@@ -7701,15 +8199,28 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
 
+iff in range uint256
+
+    Dai_v + Dai_f
+    Debt - Sin_v
+    Vice - Sin_v
+
 if
-    Joy + Dai_f > Awe
+    Dai_v + Dai_f > Sin_v
+    Flapper =/= Vow
+    Flapper =/= Vat
+    Flopper =/= Vow
+    Flopper =/= Vat
+    Flopper =/= Flapper
     FlapVat == Vat
+    VowVat  == Vat
+    VowVat  =/= Vow
+    FlapVat =/= Vow
 
 calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage-surplus
+    Vat.cage
+    Cat.cage
+    Vow.cage-surplus
 ```
 
 ```act
@@ -7718,12 +8229,13 @@ interface cage()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
     Cat : address Cat
-    Vow : address VowLike
+    Vow : address Vow
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
+    VowVat  : address
 
     Live : uint256
     When : uint256
@@ -7742,27 +8254,32 @@ for all
     VowMayFlop : uint256
 
     Dai_f : uint256
-    Awe   : uint256
-    Joy   : uint256
+    Sin_v : uint256
+    Dai_v : uint256
+    Debt  : uint256
+    Vice  : uint256
     Sin   : uint256
     Ash   : uint256
 
 storage
 
+    wards[CALLER_ID] |-> CallerMay
     live |-> Live => 0
     when |-> When => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
+    vat  |-> Vat
+    cat  |-> Cat
+    vow  |-> Vow
 
 storage Vat
 
-    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
-    dai[Flap] |-> Dai_f => 0
-    sin[Vow]  |-> Awe   => (Awe - Joy) - Dai_f
-    dai[Vow]  |-> Joy   => 0
+    live           |-> VatLive => 0
+    dai[Flapper]   |-> Dai_f => 0
+    dai[Vow]       |-> Dai_v => 0
+    sin[Vow]       |-> Sin_v => (Sin_v - Dai_v) - Dai_f
+    debt           |-> Debt => Debt - (Dai_v + Dai_f)
+    vice           |-> Vice => Vice - (Dai_v + Dai_f)
+    can[Flapper][Flapper] |-> _
 
 storage Cat
 
@@ -7771,12 +8288,13 @@ storage Cat
 
 storage Vow
 
-    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
+    vat     |-> VowVat
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> Sin => 0
-    Ash |-> Ash => 0
+    live    |-> VowLive => 0
+    Sin     |-> Sin     => 0
+    Ash     |-> Ash     => 0
 
 storage Flapper
 
@@ -7801,15 +8319,28 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
 
+iff in range uint256
+
+    Dai_v + Dai_f
+    Debt - (Dai_v + Dai_f)
+    Vice - (Dai_v + Dai_f)
+
 if
-    Joy + Dai_f < Awe
+    Dai_v + Dai_f < Sin_v
+    Flapper =/= Vow
+    Flapper =/= Vat
+    Flopper =/= Vow
+    Flopper =/= Vat
+    Flopper =/= Flapper
     FlapVat == Vat
+    VowVat  == Vat
+    VowVat  =/= Vow
+    FlapVat =/= Vow
 
 calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage-deficit
+    Vat.cage
+    Cat.cage
+    Vow.cage-deficit
 ```
 
 ```act
@@ -7818,12 +8349,13 @@ interface cage()
 
 for all
 
-    Vat : address VatLike
+    Vat : address Vat
     Cat : address Cat
-    Vow : address VowLike
+    Vow : address Vow
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
+    VowVat  : address
 
     Live : uint256
     When : uint256
@@ -7842,28 +8374,32 @@ for all
     VowMayFlop : uint256
 
     Dai_f : uint256
-    Awe   : uint256
-    Joy   : uint256
+    Sin_v : uint256
+    Dai_v : uint256
+    Debt  : uint256
+    Vice  : uint256
     Sin   : uint256
     Ash   : uint256
 
 storage
 
+    wards[CALLER_ID] |-> CallerMay
     live |-> Live => 0
     when |-> When => TIME
-    vat |-> Vat
-    cat |-> Cat
-    vow |-> Vow
-    wards[CALLER_ID] |-> CallerMay
+    vat  |-> Vat
+    cat  |-> Cat
+    vow  |-> Vow
 
 storage Vat
 
-    can[Flapper][Flapper] |-> _
-    live |-> VatLive => 0
     wards[ACCT_ID] |-> EndMayVat
+    live           |-> VatLive => 0
     dai[Flapper]   |-> Dai_f => 0
-    sin[Vow]       |-> Awe   => 0
-    dai[Vow]       |-> Joy   => 0
+    dai[Vow]       |-> Dai_v => 0
+    sin[Vow]       |-> Sin_v => 0
+    debt           |-> Debt => Debt - (Dai_v + Dai_f)
+    vice           |-> Vice => Vice - Sin_v
+    can[Flapper][Flapper] |-> _
 
 storage Cat
 
@@ -7872,12 +8408,13 @@ storage Cat
 
 storage Vow
 
-    live |-> VowLive => 0
     wards[ACCT_ID] |-> EndMayVow
+    vat     |-> VowVat
     flapper |-> Flapper
     flopper |-> Flopper
-    Sin |-> Sin => 0
-    Ash |-> Ash => 0
+    live    |-> VowLive => 0
+    Sin     |-> Sin     => 0
+    Ash     |-> Ash     => 0
 
 storage Flapper
 
@@ -7902,15 +8439,28 @@ iff
     VowMayFlap == 1
     VowMayFlop == 1
 
+iff in range uint256
+
+    Dai_v + Dai_f
+    Debt - (Dai_v + Dai_f)
+    Vice - Sin_v
+
 if
-    Joy + Dai_f == Awe
-    FlapVat ==  Vat
+    Dai_v + Dai_f == Sin_v
+    Flapper =/= Vow
+    Flapper =/= Vat
+    Flopper =/= Vow
+    Flopper =/= Vat
+    Flopper =/= Flapper
+    FlapVat == Vat
+    VowVat  == Vat
+    VowVat  =/= Vow
+    FlapVat =/= Vow
 
 calls
-
-  Vat.cage
-  Cat.cage
-  Vow.cage-balance
+    Vat.cage
+    Cat.cage
+    Vow.cage-balance
 ```
 
 ```act
@@ -7926,7 +8476,7 @@ for all
   Line_i  : uint256
   Dust_i  : uint256
   Mat_i   : uint256
-  Vat     : address VatLike
+  Vat     : address Vat
   Spotter : address Spotter
   DSValue : address DSValue
   Price   : uint256
@@ -7978,7 +8528,7 @@ behaviour skip of End
 interface skip(bytes32 ilk, uint256 id)
 
 for all
-  Vat        : address VatLike
+  Vat        : address Vat
   Cat        : address Cat
   Vow        : address
   Tag        : uint256
@@ -7987,6 +8537,8 @@ for all
   Lump       : uint256
   Chop       : uint256
   EndMayYank : uint256
+  FlipVat    : address
+  FlipIlk    : bytes32
   Bid        : uint256
   Lot        : uint256
   Guy        : address
@@ -8027,6 +8579,8 @@ storage Cat
 
 storage Flipper
   wards[ACCT_ID]       |-> EndMayYank
+  vat                  |-> FlipVat
+  ilk                  |-> FlipIlk
   bids[id].bid         |-> Bid => 0
   bids[id].lot         |-> Lot => 0
   bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
@@ -8036,25 +8590,26 @@ storage Flipper
 
 storage Vat
   wards[ACCT_ID] |-> EndMayVat
-  ilks[ilk].Art  |-> Art_i
+  ilks[ilk].Art  |-> Art_i => Art_i + Tab / Rate_i
   ilks[ilk].rate |-> Rate_i
   ilks[ilk].spot |-> Spot_i
   ilks[ilk].line |-> Line_i
   ilks[ilk].dust |-> Dust_i
 
   can[ACCT_ID][Flipper] |-> FlipCan => 1
+  can[Flipper][Flipper] |-> _ => _
 
   dai[ACCT_ID] |-> Dai_e
   dai[Guy] |-> Dai_g => Dai_g + Bid
   dai[Vow] |-> Joy   => (Joy  + Tab)
   debt     |-> Debt  => (Debt + Tab) + Bid
-  sin[Vow] |-> Awe   => (Awe  + Bid)
-  vice     |-> Vice  => (Vice + Bid)
+  sin[Vow] |-> Awe   => ((Awe + Tab) + Bid) - Rate_i * (Tab / Rate_i)
+  vice     |-> Vice  => ((Vice + Tab) + Bid) - Rate_i * (Tab / Rate_i)
 
   gem[ilk][ACCT_ID]  |-> Gem_a
   gem[ilk][Flipper]  |-> Gem_f  => Gem_f  - Lot
-  urns[ilk][Urn].ink |-> Ink_iu => Ink_iu + Lot
-  urns[ilk][Urn].art |-> Art_iu => Art_iu + (Tab / Rate_i)
+  urns[ilk][Usr].ink |-> Ink_iu => Ink_iu + Lot
+  urns[ilk][Usr].art |-> Art_iu => Art_iu + (Tab / Rate_i)
 
 iff
   VCallValue == 0
@@ -8064,8 +8619,6 @@ iff
   EndMayYank == 1
   Guy =/= 0
   Bid < Tab
-  Lot <= posMinSInt256
-  Tab / Rate_i <= posMinSInt256
 
 iff in range uint256
   Joy + Tab
@@ -8075,7 +8628,6 @@ iff in range uint256
   Gem_f - Lot
   Gem_a + Lot
   Dai_e + Bid
-  Dai_e - Bid
   Dai_g + Bid
   Art    + (Tab / Rate_i)
   Ink_iu + Lot
@@ -8083,15 +8635,21 @@ iff in range uint256
   Art_i  + (Tab / Rate_i)
 
 iff in range int256
+  Lot
   Rate_i
   Rate_i * (Tab / Rate_i)
 
 if
+  Rate_i =/= 0
+  Tab / Rate_i =/= 0
   Flipper =/= ACCT_ID
   Flipper =/= Guy
+  Flipper =/= Vat
   Guy =/= Vow
   Guy =/= ACCT_ID
   Vow =/= ACCT_ID
+  Vat == FlipVat
+  ilk == FlipIlk
 
 calls
   End.adduu
@@ -8109,7 +8667,7 @@ behaviour skim of End
 interface skim(bytes32 ilk, address urn)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Vow    : address
   Tag    : uint256
   Gap    : uint256
@@ -8139,8 +8697,8 @@ storage Vat
   ilks[ilk].line     |-> Line_i
   ilks[ilk].dust     |-> Dust_i
 
-  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
-  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  gem[ilk][ACCT_ID]  |-> Gem_a  => Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+  urns[ilk][urn].ink |-> Ink_iu => Ink_iu - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
   urns[ilk][urn].art |-> Art_iu => 0
   sin[Vow]           |-> Awe  => Awe  + (Rate_i * Art_iu)
   vice               |-> Vice => Vice + (Rate_i * Art_iu)
@@ -8148,24 +8706,23 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
-  Tag =/= 0
-  ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= posMinSInt256
-  Art_iu <= posMinSInt256
   Ward == 1
+  Tag =/= 0
 
 iff in range int256
   Rate_i
-  Rate_i * Art_iu
+  0 - Rate_i * Art_iu
 
 iff in range uint256
-  Art_i - Art_iu
   ((Rate_i * Art_iu) / #Ray) * Tag
-  Gem_a  + ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  Art_i - Art_iu
+  Gem_a  + ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
   Awe  + (Rate_i * Art_iu)
   Vice + (Rate_i * Art_iu)
 
 if
-  Ink_iu > ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
+  Rate_i =/= 0
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
 
 calls
   End.adduu
@@ -8182,7 +8739,7 @@ behaviour bail of End
 interface skim(bytes32 ilk, address urn)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Vow    : address
   Tag    : uint256
   Gap    : uint256
@@ -8221,26 +8778,24 @@ storage Vat
 iff
   VCallValue == 0
   VCallDepth < 1024
-  Tag =/= 0
-  Ink_iu <= posMinSInt256
-  Art_iu <= posMinSInt256
   Ward == 1
+  Tag =/= 0
+  Ink_iu <= pow255
 
 iff in range int256
-
   Rate_i
-  Rate_i * Art_iu
+  0 - Rate_i * Art_iu
 
 iff in range uint256
   Gap + (((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) - Ink_iu)
-  Art_i - Art_iu
   ((Rate_i * Art_iu) / #Ray) * Tag
+  Art_i - Art_iu
   Gem_a + Ink_iu
   Awe  + (Rate_i * Art_iu)
   Vice + (Rate_i * Art_iu)
 
 if
-
+  Rate_i =/= 0
   Ink_iu <= ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray)
 
 calls
@@ -8258,7 +8813,7 @@ behaviour thaw of End
 interface thaw()
 
 for all
-  Vat  : address VatLike
+  Vat  : address Vat
   Vow  : address
   Live : uint256
   Debt : uint256
@@ -8298,7 +8853,7 @@ behaviour free of End
 interface free(bytes32 ilk)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Vow    : address
   Ward   : uint256
   Live   : uint256
@@ -8331,7 +8886,7 @@ iff
   Live == 0
   Ward == 1
   Art_iu == 0
-  Ink_iu <= posMinSInt256
+  Ink_iu <= pow255
 
 iff in range uint256
   Gem_iu + Ink_iu
@@ -8350,7 +8905,7 @@ behaviour flow of End
 interface flow(bytes32 ilk)
 
 for all
-  Vat    : address VatLike
+  Vat    : address Vat
   Debt   : uint256
   Fix    : uint256
   Gap    : uint256
@@ -8404,7 +8959,7 @@ behaviour pack of End
 interface pack(uint256 wad)
 
 for all
-  Vat  : address VatLike
+  Vat  : address Vat
   Vow  : address
   Debt : uint256
   Bag  : uint256
@@ -8450,7 +9005,7 @@ behaviour cash of End
 interface cash(bytes32 ilk, uint wad)
 
 for all
-  Vat   : address VatLike
+  Vat   : address Vat
   Fix   : uint256
   Bag   : uint256
   Out   : uint256
@@ -8636,13 +9191,12 @@ iff in range uint256
   Gem_d + wad
 
 iff
-  (Allowance == maxUInt256) or (wad <= Allowance)
+  (Allowance == maxUInt256 or src == CALLER_ID) or (wad <= Allowance)
   VCallValue == 0
   Stopped == 0
 
 if
   src =/= dst
-  src =/= CALLER_ID
 
 returns 1
 ```

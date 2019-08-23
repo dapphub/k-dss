@@ -14,87 +14,124 @@
   },
   "implementations": {
     "Vat": {
-      "solc_output": "./dss/out/vat.sol.json"
-    },
-    "Dai": {
-      "solc_output": "./dss/out/dai.sol.json"
-    },
-    "Jug": {
-      "solc_output": "./dss/out/jug.sol.json"
-    },
-    "Pot": {
-      "solc_output": "./dss/out/pot.sol.json"
+      "src": "src/vat.sol"
     },
     "Vow": {
-      "solc_output": "./dss/out/vow.sol.json"
+      "src": "src/vow.sol"
+    },
+    "Dai": {
+      "src": "src/dai.sol"
+    },
+    "Jug": {
+      "src": "src/jug.sol"
+    },
+    "Pot": {
+      "src": "src/pot.sol"
     },
     "Cat": {
-      "solc_output": "./dss/out/cat.sol.json"
+      "src": "src/cat.sol"
     },
     "GemJoin": {
-      "solc_output": "./dss/out/join.sol.json"
+      "src": "src/join.sol"
     },
     "DaiJoin": {
-      "solc_output": "./dss/out/join.sol.json"
-    },
-    "VatLike": {
-      "name" : "Vat",
-      "solc_output": "./dss/out/vat.sol.json"
-    },
-    "VowLike": {
-      "name" : "Vow",
-      "solc_output": "./dss/out/vow.sol.json"
+      "src": "src/join.sol"
     },
     "Flipper": {
-      "solc_output": "./dss/out/flip.sol.json"
+      "src": "src/flip.sol"
     },
     "Flopper": {
-      "solc_output": "./dss/out/flop.sol.json"
+      "src": "src/flop.sol"
     },
     "Flapper": {
-      "solc_output": "./dss/out/flap.sol.json"
+      "src": "src/flap.sol"
     },
     "DSToken": {
-      "solc_output": "./dss/out/test/vat.t.sol.json"
+      "src": "lib/ds-token/src/token.sol"
     },
     "End": {
-      "solc_output": "./dss/out/end.sol.json"
+      "src": "src/end.sol"
     },
     "DSValue": {
-      "solc_output": "./dss/out/test/end.t.sol.json"
+      "src": "lib/ds-value/src/value.sol"
     },
     "Spotter": {
-      "solc_output": "./dss/out/spot.sol.json"
+      "src": "src/spot.sol"
     }
   },
   "split_fail":[
   ],
   "timeouts": {
-    "Vat_grab_pass_rough": "4h",
-    "Vat_grab_fail_rough": "4h",
-    "Vat_frob-diff_pass_rough": "4h",
-    "Vat_frob-diff_fail_rough": "4h",
-    "Vat_fork-diff_pass_rough": "4h",
-    "Vat_fork-diff_fail_rough": "4h",
-    "Vat_fork-same_pass_rough": "4h",
-    "Vat_fork-same_fail_rough": "4h",
-    "End_free_pass_rough": "3.5h",
-    "End_skim_pass_rough": "3h",
-    "End_skim_fail_rough": "4h",
-    "End_bail_pass_rough": "3h",
-    "End_bail_fail_rough": "4h",
-    "End_skip_pass_rough": "4h",
-    "End_skip_fail_rough": "4h",
-    "Flipper_dent_fail_rough": "6h",
-    "Flopper_dent_fail_rough": "4h",
-    "Flipper_tend_fail_rough": "8h",
-    "Flapper_tend_fail_rough": "12h",
-    "Flapper_deal_fail_rough": "8h",
-    "Pot_drip_fail_rough": "5m",
-    "Jug_drip_fail_rough": "5m",
-    "Vow_cage-surplus_fail_rough": "8h",
-    "Vow_cage-deficit_fail_rough": "8h",
-    "Vow_cage-balance_fail_rough": "8h"
+    "Vat_grab_pass_rough": "16h",
+    "Vat_grab_fail_rough": "16h",
+    "Vat_frob-diff-nonzero_pass_rough": "16h",
+    "Vat_frob-diff-nonzero_fail_rough": "2d",
+    "Vat_frob-diff-zero-dink_pass_rough": "16h",
+    "Vat_frob-diff-zero-dink_fail_rough": "2d",
+    "Vat_frob-diff-zero-dink_pass": "36h",
+    "Vat_frob-diff-zero-dart_pass_rough": "16h",
+    "Vat_frob-diff-zero-dart_fail_rough": "2d",
+    "Vat_frob-diff-zero_pass_rough": "16h",
+    "Vat_frob-diff-zero_fail_rough": "2d",
+    "Vat_frob-same-nonzero_pass_rough": "16h",
+    "Vat_frob-same-nonzero_fail_rough": "2d",
+    "Vat_frob-same-zero-dink_pass_rough": "16h",
+    "Vat_frob-same-zero-dink_fail_rough": "2d",
+    "Vat_frob-same-zero-dink_pass": "2d",
+    "Vat_frob-same-zero-dart_pass_rough": "16h",
+    "Vat_frob-same-zero-dart_fail_rough": "2d",
+    "Vat_frob-same-zero_pass_rough": "16h",
+    "Vat_frob-same-zero_fail_rough": "2d",
+    "Vat_fork-diff_pass_rough": "16h",
+    "Vat_fork-diff_fail_rough": "16h",
+    "Vat_fork-same_pass_rough": "16h",
+    "Vat_fork-same_fail_rough": "2d",
+    "Cat_bite-full_pass_rough": "3d",
+    "Cat_bite-full_pass": "3d",
+    "Cat_bite-full_fail_rough": "3d",
+    "Cat_bite-lump_pass_rough": "3d",
+    "Cat_bite-lump_pass": "46h",
+    "Cat_bite-lump_fail_rough": "3d",
+    "End_free_pass_rough": "16h",
+    "End_skim_pass_rough": "16h",
+    "End_skim_fail_rough": "24h",
+    "End_bail_pass_rough": "16h",
+    "End_bail_fail_rough": "24h",
+    "End_skip_pass_rough": "42h",
+    "End_skip_pass": "42h",
+    "End_skip_fail_rough": "36h",
+    "Flipper_dent_fail_rough": "16h",
+    "Flopper_dent_fail_rough": "16h",
+    "Flipper_tend_fail_rough": "16h",
+    "Flapper_tend_fail_rough": "2d",
+    "Flapper_deal_fail_rough": "16h",
+    "Pot_drip_fail_rough": "16h",
+    "Jug_drip_fail_rough": "16h",
+    "Vow_cage-surplus_fail_rough": "16h",
+    "Vow_cage-deficit_fail_rough": "16h",
+    "Vow_cage-balance_fail_rough": "16h",
+    "End_cage-surplus_fail_rough": "35h",
+    "End_cage-deficit_fail_rough": "35h",
+    "End_cage-balance_fail_rough": "35h"
+  },
+  "memory" : {
+    "Vat_frob-diff-nonzero_fail_rough": "25G",
+    "Vat_frob-diff-zero-dink_fail_rough": "20G",
+    "Vat_frob-diff-zero-dart_fail_rough": "20G",
+    "Vat_frob-diff-zero_fail_rough": "20G",
+    "Vat_frob-same-nonzero_fail_rough": "25G",
+    "Vat_frob-same-zero_fail_rough": "25G",
+    "Flapper_tend_fail_rough": "20G",
+    "Cat_bite-full_pass_rough": "22G",
+    "Cat_bite-full_pass": "22G",
+    "Cat_bite-full_fail_rough": "30G",
+    "Cat_bite-lump_pass_rough": "22G",
+    "Cat_bite-lump_pass": "22G",
+    "Cat_bite-lump_fail_rough": "35G",
+    "End_skip_pass_rough": "20G",
+    "End_skip_fail_rough": "20G",
+    "End_skim_fail_rough": "20G",
+    "End_bail_fail_rough": "20G"
   },
   "dapp_root": "./dss",
   "host": "127.0.0.1:8080"
