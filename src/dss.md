@@ -3449,6 +3449,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
+    Rho     : uint256
     Vat     : address Vat
     Can     : uint256
     Dai_u   : uint256
@@ -3459,6 +3460,7 @@ storage
     pie[CALLER_ID] |-> Pie_u   => Pie_u + wad
     Pie            |-> Pie_tot => Pie_tot + wad
     chi            |-> Chi
+    rho            |-> Rho
     vat            |-> Vat
 
 storage Vat
@@ -3472,6 +3474,7 @@ iff
     VCallValue == 0
     VCallDepth < 1024
     Can == 1
+    Rho == TIME
 
 iff in range uint256
 
