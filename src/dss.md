@@ -8476,6 +8476,7 @@ for all
   Line_i  : uint256
   Dust_i  : uint256
   Mat_i   : uint256
+  Par     : uint256
   Vat     : address Vat
   Spotter : address Spotter
   DSValue : address DSValue
@@ -8488,11 +8489,12 @@ storage
   vat      |-> Vat
   spot     |-> Spotter
   Art[ilk] |-> Art_i
-  tag[ilk] |-> Tag_i => (#Wad * #Ray) / Price
+  tag[ilk] |-> Tag_i => (#Wad * Par) / Price
 
 storage Spotter
   ilks[ilk].pip |-> DSValue
   ilks[ilk].mat |-> Mat_i
+  ilks[ilk].par |-> Par
 
 storage Vat
   ilks[ilk].Art  |-> Art_i
@@ -8514,7 +8516,7 @@ iff
   Price =/= 0
 
 iff in range uint256
-  #Wad * #Ray
+  #Wad * Par
 
 calls
   End.rdiv
