@@ -7416,6 +7416,36 @@ calls
 ```
 
 ```act
+behaviour tick of Flopper
+interface tick(uint256 id)
+
+for all
+  Ttl  : uint48
+  Tau  : uint48
+  Guy  : address
+  Tic  : uint48
+  End  : uint48
+
+storage
+  ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
+
+iff
+  VCallValue == 0
+  Tic == 0
+  End < TIME
+
+iff in range uint48
+  TIME + Tau
+
+if
+  #rangeUInt(48, TIME)
+
+calls
+  Flopper.addu48u48
+```
+
+```act
 behaviour dent of Flopper
 interface dent(uint id, uint lot, uint bid)
 
