@@ -3099,6 +3099,27 @@ iff
 returns Rho
 ```
 
+#### system liveness flag
+
+```act
+behaviour live of Pot
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
 
 #### adding and removing owners
@@ -3211,11 +3232,13 @@ storage
 
     wards[CALLER_ID] |-> May
     dsr              |-> Dsr => (#if what == #string2Word("dsr") #then data #else Dsr #fi)
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 ```
 
@@ -3234,6 +3257,31 @@ storage
 
     wards[CALLER_ID] |-> May
     vow              |-> Vow => (#if what == #string2Word("vow") #then addr #else Vow #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+```
+
+#### freezing `dsr` upon global settlement
+
+```act
+behaviour cage of Pot
+interface cage()
+
+for all
+
+    May  : uint256
+    Dsr  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    dsr              |-> Dsr => #Ray
+    live             |-> Live => 0
 
 iff
 
@@ -7905,6 +7953,7 @@ for all
     Vat  : address
     Cat  : address
     Vow  : address
+    Pot  : address
     Spot : address
 
 storage
@@ -7913,6 +7962,7 @@ storage
     vat  |-> Vat  => (#if what == #string2Word("vat")  #then data #else Vat #fi)
     cat  |-> Cat  => (#if what == #string2Word("cat")  #then data #else Cat #fi)
     vow  |-> Vow  => (#if what == #string2Word("vow")  #then data #else Vow #fi)
+    pot  |-> Pot  => (#if what == #string2Word("pot")  #then data #else Pot #fi)
     spot |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
 
 iff
@@ -8112,6 +8162,7 @@ for all
     Vat : address Vat
     Cat : address Cat
     Vow : address Vow
+    Pot : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8123,6 +8174,7 @@ for all
     VatLive  : uint256
     CatLive  : uint256
     VowLive  : uint256
+    PotLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
 
@@ -8130,6 +8182,7 @@ for all
     EndMayVat : uint256
     EndMayCat : uint256
     EndMayVow : uint256
+    EndMayPot : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
 
@@ -8140,6 +8193,7 @@ for all
     Vice  : uint256
     Sin   : uint256
     Ash   : uint256
+    Dsr   : uint256
 
 storage
 
@@ -8175,6 +8229,12 @@ storage Vow
     live    |-> VowLive => 0
     Sin     |-> Sin     => 0
     Ash     |-> Ash     => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
 
 storage Flapper
 

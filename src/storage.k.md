@@ -645,71 +645,77 @@ syntax Int ::= "#End.vow" [function]
 // act:
 rule #End.vow => 3
 
+syntax Int ::= "#End.pot" [function]
+// ---------------------------------
+// doc: `Pot` that this `End` points to
+// act:
+rule #End.spot => 4
+
 syntax Int ::= "#End.spot" [function]
 // ---------------------------------
 // doc: `Spot` that this `End` points to
 // act:
-rule #End.spot => 4
+rule #End.spot => 5
 
 syntax Int ::= "#End.live" [function]
 // ----------------------------------
 // doc: system liveness
 // act:
-rule #End.live => 5
+rule #End.live => 6
 
 syntax Int ::= "#End.when" [function]
 // ----------------------------------
 // doc: time of cage
 // act:
-rule #End.when => 6
+rule #End.when => 7
 
 syntax Int ::= "#End.wait" [function]
 // ----------------------------------
 // doc: processing period
 // act:
-rule #End.wait => 7
+rule #End.wait => 8
 
 syntax Int ::= "#End.debt" [function]
 // ----------------------------------
 // doc: total outstanding debt following processing
 // act:
-rule #End.debt => 8
+rule #End.debt => 9
 
 syntax Int ::= "#End.tag" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the cage price of ilk `$0`
 // act:
-rule #End.tag[Ilk] => #hashedLocation("Solidity", 9, Ilk)
+rule #End.tag[Ilk] => #hashedLocation("Solidity", 10, Ilk)
 
 syntax Int ::= "#End.gap" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the collateral shortfall of ilk `$0`
 // act:
-rule #End.gap[Ilk] => #hashedLocation("Solidity", 10, Ilk)
+rule #End.gap[Ilk] => #hashedLocation("Solidity", 11, Ilk)
 
 syntax Int ::= "#End.Art" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the total debt of ilk `$0`
 // act:
-rule #End.Art[Ilk] => #hashedLocation("Solidity", 11, Ilk)
+rule #End.Art[Ilk] => #hashedLocation("Solidity", 12, Ilk)
 
 syntax Int ::= "#End.fix" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the final cash price of ilk `$0`
 // act:
-rule #End.fix[Ilk] => #hashedLocation("Solidity", 12, Ilk)
+rule #End.fix[Ilk] => #hashedLocation("Solidity", 13, Ilk)
 
 syntax Int ::= "#End.bag" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the packed dai of user `$0`
 // act:
-rule #End.bag[Usr] => #hashedLocation("Solidity", 13, Usr)
+rule #End.bag[Usr] => #hashedLocation("Solidity", 14, Usr)
 
 syntax Int ::= "#End.out" "[" Int "][" Int "]" [function]
 // ---------------------------------------------
 // doc: cashed collateral of ilk `$0` assigned to `$1`
 // act:
-rule #End.out[Ilk][Usr] => #hashedLocation("Solidity", 14, Ilk Usr)
+rule #End.out[Ilk][Usr] => #hashedLocation("Solidity", 15, Ilk Usr)
 ```
 
 ### Pot
@@ -762,6 +768,12 @@ syntax Int ::= "#Pot.rho" [function]
 // doc:
 // act:
 rule #Pot.rho => 7
+
+syntax Int ::= "#Pot.live" [function]
+// ----------------------------------
+// doc:
+// act:
+rule #Pot.rho => 8
 ```
 ### DSToken
 
