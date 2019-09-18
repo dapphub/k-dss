@@ -3099,6 +3099,27 @@ iff
 returns Rho
 ```
 
+#### system liveness flag
+
+```act
+behaviour live of Pot
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
 
 #### adding and removing owners
@@ -3211,11 +3232,13 @@ storage
 
     wards[CALLER_ID] |-> May
     dsr              |-> Dsr => (#if what == #string2Word("dsr") #then data #else Dsr #fi)
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 ```
 
@@ -3234,6 +3257,31 @@ storage
 
     wards[CALLER_ID] |-> May
     vow              |-> Vow => (#if what == #string2Word("vow") #then addr #else Vow #fi)
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+```
+
+#### freezing `dsr` upon global settlement
+
+```act
+behaviour cage of Pot
+interface cage()
+
+for all
+
+    May  : uint256
+    Dsr  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    dsr              |-> Dsr => #Ray
+    live             |-> Live => 0
 
 iff
 
@@ -3401,6 +3449,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
+    Rho     : uint256
     Vat     : address Vat
     Can     : uint256
     Dai_u   : uint256
@@ -3411,6 +3460,7 @@ storage
     pie[CALLER_ID] |-> Pie_u   => Pie_u + wad
     Pie            |-> Pie_tot => Pie_tot + wad
     chi            |-> Chi
+    rho            |-> Rho
     vat            |-> Vat
 
 storage Vat
@@ -3424,6 +3474,7 @@ iff
     VCallValue == 0
     VCallDepth < 1024
     Can == 1
+    Rho == TIME
 
 iff in range uint256
 
@@ -7361,7 +7412,37 @@ if
 returns 1 + Kicks
 
 calls
-  Flapper.addu48u48
+  Flopper.addu48u48
+```
+
+```act
+behaviour tick of Flopper
+interface tick(uint256 id)
+
+for all
+  Ttl  : uint48
+  Tau  : uint48
+  Guy  : address
+  Tic  : uint48
+  End  : uint48
+
+storage
+  ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
+
+iff
+  VCallValue == 0
+  Tic == 0
+  End < TIME
+
+iff in range uint48
+  TIME + Tau
+
+if
+  #rangeUInt(48, TIME)
+
+calls
+  Flopper.addu48u48
 ```
 
 ```act
@@ -7905,6 +7986,7 @@ for all
     Vat  : address
     Cat  : address
     Vow  : address
+    Pot  : address
     Spot : address
 
 storage
@@ -7913,6 +7995,7 @@ storage
     vat  |-> Vat  => (#if what == #string2Word("vat")  #then data #else Vat #fi)
     cat  |-> Cat  => (#if what == #string2Word("cat")  #then data #else Cat #fi)
     vow  |-> Vow  => (#if what == #string2Word("vow")  #then data #else Vow #fi)
+    pot  |-> Pot  => (#if what == #string2Word("pot")  #then data #else Pot #fi)
     spot |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
 
 iff
@@ -8112,6 +8195,7 @@ for all
     Vat : address Vat
     Cat : address Cat
     Vow : address Vow
+    Pot : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8123,6 +8207,7 @@ for all
     VatLive  : uint256
     CatLive  : uint256
     VowLive  : uint256
+    PotLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
 
@@ -8130,6 +8215,7 @@ for all
     EndMayVat : uint256
     EndMayCat : uint256
     EndMayVow : uint256
+    EndMayPot : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
 
@@ -8140,6 +8226,7 @@ for all
     Vice  : uint256
     Sin   : uint256
     Ash   : uint256
+    Dsr   : uint256
 
 storage
 
@@ -8175,6 +8262,12 @@ storage Vow
     live    |-> VowLive => 0
     Sin     |-> Sin     => 0
     Ash     |-> Ash     => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
 
 storage Flapper
 
@@ -8476,6 +8569,7 @@ for all
   Line_i  : uint256
   Dust_i  : uint256
   Mat_i   : uint256
+  Par     : uint256
   Vat     : address Vat
   Spotter : address Spotter
   DSValue : address DSValue
@@ -8488,11 +8582,12 @@ storage
   vat      |-> Vat
   spot     |-> Spotter
   Art[ilk] |-> Art_i
-  tag[ilk] |-> Tag_i => (#Wad * #Ray) / Price
+  tag[ilk] |-> Tag_i => (#Wad * Par) / Price
 
 storage Spotter
   ilks[ilk].pip |-> DSValue
   ilks[ilk].mat |-> Mat_i
+  ilks[ilk].par |-> Par
 
 storage Vat
   ilks[ilk].Art  |-> Art_i
@@ -8514,7 +8609,7 @@ iff
   Price =/= 0
 
 iff in range uint256
-  #Wad * #Ray
+  #Wad * Par
 
 calls
   End.rdiv
