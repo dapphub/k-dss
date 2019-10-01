@@ -773,7 +773,7 @@ syntax Int ::= "#Pot.live" [function]
 // ----------------------------------
 // doc:
 // act:
-rule #Pot.rho => 8
+rule #Pot.live => 8
 ```
 ### DSToken
 
