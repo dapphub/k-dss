@@ -649,7 +649,7 @@ syntax Int ::= "#End.pot" [function]
 // ---------------------------------
 // doc: `Pot` that this `End` points to
 // act:
-rule #End.spot => 4
+rule #End.pot => 4
 
 syntax Int ::= "#End.spot" [function]
 // ---------------------------------
