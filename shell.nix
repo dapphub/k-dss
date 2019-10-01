@@ -2,6 +2,7 @@ with import <nixpkgs> {};
 stdenv.mkDerivation {
   name = "k-dss";
   buildInputs = [
+    bc
     flex
     getopt
     utillinux
