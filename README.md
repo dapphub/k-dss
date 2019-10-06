@@ -17,6 +17,7 @@ The behavior of the contracts is specified in a literate format at [dss.md](src/
 An html version of the specification, together with links to in-browser symbolic execution previews, is available at [dapp.ci/k-dss](https://dapp.ci/k-dss)
 
 # Installation
+WOW HELLO
 ## dependencies
 * klab. Installation instructions can be found at [klab](https://github.com/dapphub/klab).
 
