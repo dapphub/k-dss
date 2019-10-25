@@ -507,24 +507,30 @@ syntax Int ::= "#Flopper.beg" [function]
 // act:
 rule #Flopper.beg => 4
 
+syntax Int ::= "#Flopper.pad" [function]
+// -----------------------------------------
+// doc: fractional increase on tick
+// act:
+rule #Flopper.pad => 5
+
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
 // doc:
 // act:
-rule #Flopper.ttl_tau => 5
+rule #Flopper.ttl_tau => 6
 
 syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------
 // doc: auction counter
 // act:
-rule #Flopper.kicks => 6
+rule #Flopper.kicks => 7
 
 syntax Int ::= "#Flopper.live" [function]
 // ---------------------------------------
 // doc: liveness flag
 // act:
-rule #Flopper.live => 7
+rule #Flopper.live => 8
 ```
 
 ### Flap

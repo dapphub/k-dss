@@ -5532,6 +5532,7 @@ iff
 
     May == 1
     VCallValue == 0
+    (what == #string2Word("beg")) or (what == #string2Word("ttl")) or (what == #string2Word("tau"))
 
 if
 
@@ -6640,6 +6641,7 @@ iff
 
     May == 1
     VCallValue == 0
+    (what == #string2Word("beg")) or (what == #string2Word("ttl")) or (what == #string2Word("tau"))
 
 if
 
@@ -7090,6 +7092,25 @@ iff
 returns Beg
 ```
 
+```act
+behaviour pad of Flopper
+interface pad()
+
+for all
+
+    Pad : uint256
+
+storage
+
+    pad |-> Pad
+
+iff
+
+    VCallValue == 0
+
+returns Pad
+```
+
 #### auction time-to-live
 
 ```act
@@ -7320,6 +7341,7 @@ for all
 
     May : uint256
     Beg : uint256
+    Pad : uint256
     Ttl : uint48
     Tau : uint48
 
@@ -7327,12 +7349,14 @@ storage
 
     wards[CALLER_ID] |-> May
     beg |-> Beg => (#if what == #string2Word("beg") #then data #else Beg #fi)
+    pad |-> Pad => (#if what == #string2Word("pad") #then data #else Pad #fi)
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau) => (#if what == #string2Word("ttl") #then #WordPackUInt48UInt48(data, Tau) #else (#if what == #string2Word("tau") #then #WordPackUInt48UInt48(Ttl, data) #else #WordPackUInt48UInt48(Ttl, Tau) #fi) #fi)
 
 iff
 
     May == 1
     VCallValue == 0
+    (what == #string2Word("beg")) or (what == #string2Word("pad")) or (what == #string2Word("ttl")) or (what == #string2Word("tau"))
 
 if
 
