@@ -7938,13 +7938,14 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    wait |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    wait |-> Wait => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("wait")
 ```
 
 ```act
@@ -7974,6 +7975,7 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    (what == #string2Word("vat")) or (what == #string2Word("cat")) or (what == #string2Word("vow")) or (what == #string2Word("pot")) or (what == #string2Word("spot"))
 ```
 
 ### Time of cage
