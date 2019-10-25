@@ -4817,47 +4817,14 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    vow              |-> Vow => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
-```
-
-#### setting liquidation auction
-
-```act
-behaviour file-flip of Cat
-interface file(bytes32 ilk, bytes32 what, address data)
-
-for all
-
-    Vat  : address Vat
-    May  : uint256
-    Flip : address
-    Can  : uint256
-
-storage
-
-    vat              |-> Vat
-    wards[CALLER_ID] |-> May
-    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
-
-storage Vat
-
-    can[ACCT_ID][data] |-> Can => (#if what == #string2Word("flip") #then 1 #else Can #fi)
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    May == 1
-    VCallValue == 0
-    what =/= #string2Word("flip") or VCallDepth < 1024
-
-calls
-  Vat.hope
+    what == #string2Word("vow")
 ```
 
 #### setting liquidation data
@@ -4883,11 +4850,12 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("chop") or what == #string2Word("lump")
 ```
 
 #### setting liquidator address
 
-```
+```act
 behaviour file-flip of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
@@ -4896,23 +4864,25 @@ for all
     Vat  : address Vat
     May  : uint256
     Flip : address
-    Hope : uint256
+    Can : uint256
 
 storage
 
     vat |-> Vat
     wards[CALLER_ID] |-> May
-    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+    ilks[ilk].flip   |-> Flip => data
 
 storage Vat
 
-    can[ACCT_ID][data] |-> Hope => (#if what == #string2Word("flip") #then 1 #else Hope #fi)
+    can[ACCT_ID][data] |-> Can => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("flip")
+    VCallDepth < 1024
 
 calls
 
