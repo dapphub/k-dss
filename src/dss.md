@@ -2594,18 +2594,22 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 for all
 
-    May : uint256
+    May  : uint256
     Duty : uint256
+    Rho  : uint48
 
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[ilk].duty   |-> Duty => (#if what == #string2Word("duty") #then data #else Duty #fi)
+    ilks[ilk].duty   |-> Duty => data
+    ilks[ilk].rho    |-> Rho
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    what == #string2Word("duty")
+    TIME == Rho
     VCallValue == 0
 ```
 
@@ -2623,12 +2627,13 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    base             |-> Base => (#if what == #string2Word("base") #then data #else Base #fi)
+    base             |-> Base => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    what == #string2Word("base")
     VCallValue == 0
 ```
 
@@ -2646,13 +2651,14 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    vow              |-> Vow => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("vow")
 ```
 
 #### updating the rates
