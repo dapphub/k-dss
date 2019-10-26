@@ -3234,18 +3234,22 @@ for all
 
     May : uint256
     Dsr : uint256
+    Rho : uint48
 
 storage
 
     wards[CALLER_ID] |-> May
-    dsr              |-> Dsr => (#if what == #string2Word("dsr") #then data #else Dsr #fi)
+    dsr              |-> Dsr => data
     live             |-> Live
+    rho              |-> Rho
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     Live == 1
+    what == #string2Word("dsr")
+    Rho == TIME
     VCallValue == 0
 ```
 
@@ -3263,12 +3267,13 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    vow              |-> Vow => (#if what == #string2Word("vow") #then addr #else Vow #fi)
+    vow              |-> Vow => addr
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    what == #string2Word("vow")
     VCallValue == 0
 ```
 
