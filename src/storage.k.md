@@ -272,29 +272,35 @@ syntax Int ::= "#Vow.wait" [function]
 // act: the sin maturation time is `.`
 rule #Vow.wait => 7
 
+syntax Int ::= "#Vow.dump" [function]
+// ----------------------------------
+// doc: flop initial lot size
+// act: the flop initial lot size is `.`
+rule #Vow.dump => 8
+
 syntax Int ::= "#Vow.sump" [function]
 // ----------------------------------
 // doc: debt auction lot size
 // act: the debt auction lot size is `.`
-rule #Vow.sump => 8
+rule #Vow.sump => 9
 
 syntax Int ::= "#Vow.bump" [function]
 // ----------------------------------
 // doc: surplus auction lot size
 // act: the surplus auction lot size is `.`
-rule #Vow.bump => 9
+rule #Vow.bump => 10
 
 syntax Int ::= "#Vow.hump" [function]
 // ---------------------------------
 // doc: surplus dai cushion
 // act: the surplus dai cushion is `.`
-rule #Vow.hump => 10
+rule #Vow.hump => 11
 
 syntax Int ::= "#Vow.live" [function]
 // ---------------------------------
 // doc: liveness flag
 // act: the system is active/inactive `.`
-rule #Vow.live => 11
+rule #Vow.live => 12
 
 ```
 

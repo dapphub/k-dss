@@ -3976,6 +3976,7 @@ for all
 
     May  : uint256
     Wait : uint256
+    Dump : uint256
     Sump : uint256
     Bump : uint256
     Hump : uint256
@@ -3984,6 +3985,7 @@ storage
 
     wards[CALLER_ID] |-> May
     wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    dump             |-> Dump => (#if what == #string2Word("dump") #then data #else Dump #fi)
     sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
     hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
@@ -3992,6 +3994,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    (what == #string2Word("wait")) or (what == #string2Word("dump")) or (what == #string2Word("sump")) or (what == #string2Word("bump")) or (what == #string2Word("hump"))
     VCallValue == 0
 ```
 
