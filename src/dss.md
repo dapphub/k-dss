@@ -555,22 +555,24 @@ iff
 
 ```act
 behaviour file of Vat
-interface file(bytes32 what, uint256 data)
+interface file(bytes32 what, uint data)
 
 for all
 
     May  : uint256
-    Line : uint256
+    // misspelling intentional due to klab bug
+    Lime : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    Line             |-> Line => (#if what == #string2Word("Line") #then data #else Line #fi)
+    Line             |-> Lime => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    what == #string2Word("Line")
     VCallValue == 0
 ```
 
@@ -598,6 +600,7 @@ iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    (what == #string2Word("spot")) or (what == #string2Word("line")) or (what == #string2Word("dust"))
     VCallValue == 0
 ```
 
