@@ -4181,6 +4181,7 @@ for all
     Ash      : uint256
     Awe      : uint256
     Joy      : uint256
+    Dump     : uint256
     Sump     : uint256
     Kicks    : uint256
     FlopLive : uint256
@@ -4198,6 +4199,7 @@ storage
     vat     |-> Vat
     Sin     |-> Sin
     Ash     |-> Ash => Ash + Sump
+    dump    |-> Dump
     sump    |-> Sump
 
 storage Flopper
@@ -4207,7 +4209,7 @@ storage Flopper
     kicks                       |-> Kicks => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     bids[1 + Kicks].bid         |-> Bid => Sump
-    bids[1 + Kicks].lot         |-> Lot => maxUInt256
+    bids[1 + Kicks].lot         |-> Lot => Dump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
 
 storage Vat
@@ -7432,20 +7434,25 @@ behaviour tick of Flopper
 interface tick(uint256 id)
 
 for all
-  Ttl  : uint48
-  Tau  : uint48
-  Guy  : address
-  Tic  : uint48
-  End  : uint48
+  Pad   : uint256
+  Ttl   : uint48
+  Tau   : uint48
+  Lot   : uint256
+  Guy   : address
+  Tic   : uint48
+  End   : uint48
 
 storage
-  ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
+  pad                  |-> Pad
+  ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].lot         |-> Lot => (Pad * Lot) / #Wad
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
 
 iff
   VCallValue == 0
   Tic == 0
   End < TIME
+  Pad * Lot <= maxUInt256
 
 iff in range uint48
   TIME + Tau
