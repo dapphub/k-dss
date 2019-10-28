@@ -6889,7 +6889,7 @@ iff
   VCallDepth < 1024
   Live == 1
   Stopped == 0
-  (Tic < TIME and Tic =/= 0) or (End < TIME)
+  (Tic =/= 0) and ((Tic < TIME) or (End < TIME))
 
 if
   ACCT_ID == Owner
@@ -7559,8 +7559,7 @@ storage DSToken
 
 iff
   Live == 1
-  Tic < TIME or End < TIME
-  Tic =/= 0  or End < TIME
+  (Tic =/= 0) and ((Tic < TIME) or (End < TIME))
   Stopped == 0
   VCallValue == 0
   VCallDepth < 1024
