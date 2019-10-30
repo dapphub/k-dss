@@ -5744,8 +5744,8 @@ iff
   bid <= Dai_c
   Dai_u + Bid <= maxUInt256
   Dai_g + (bid - Bid) <= maxUInt256
-  bid * #Ray <= maxUInt256
-  ((bid < Tab) and (bid * #Ray >= Beg * Bid)) or ((bid == Tab) and (Beg * Bid <= maxUInt256))
+  bid * #Wad <= maxUInt256
+  ((bid < Tab) and (bid * #Wad >= Beg * Bid)) or ((bid == Tab) and (Beg * Bid <= maxUInt256))
 
 if
   CALLER_ID =/= ACCT_ID
@@ -5817,8 +5817,8 @@ iff
   Gem_a >= (Lot - lot)
   bid <= Dai_c
   Dai_g + bid <= maxUInt256
-  Lot * #Ray >= lot * Beg
-  Lot * #Ray <= maxUInt256
+  Lot * #Wad >= lot * Beg
+  Lot * #Wad <= maxUInt256
 
 if
   #rangeUInt(48, TIME)
@@ -6828,8 +6828,8 @@ iff
     TIME + Ttl <= maxUInt48
     lot == Lot
     bid > Bid
-    bid * #Ray <= maxUInt256
-    bid * #Ray >= Beg * Bid
+    bid * #Wad <= maxUInt256
+    bid * #Wad >= Beg * Bid
 
 iff in range uint256
     Gem_u - bid
@@ -7507,7 +7507,8 @@ iff
   End > TIME
   bid == Bid
   lot <  Lot
-  (Beg * lot) / #Ray <= Lot
+  Lot * #Wad <= maxUInt256
+  Beg * lot <= Lot * #Wad
   CanMove == 1
   VCallValue == 0
   VCallDepth < 1024
