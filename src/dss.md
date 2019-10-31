@@ -5954,6 +5954,27 @@ The `GemJoin` adapter allows standard ERC20 tokens to be deposited for use with 
 
 ### Accessors
 
+#### `wards` mapping
+
+```act
+behaviour wards of GemJoin
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
 #### `vat` address
 
 ```act
@@ -6017,7 +6038,140 @@ iff
 returns Gem
 ```
 
+```act
+behaviour dec of GemJoin
+interface dec()
+
+for all
+
+    Dec : uint256
+
+storage
+
+    dec |-> Dec
+
+iff
+
+    VCallValue == 0
+
+returns Dec
+```
+
+```act
+behaviour live of GemJoin
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
+
+#### granting authorization
+
+```act
+behaviour rely-diff of GemJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour rely-same of GemJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+#### revoking authorization
+
+```act
+behaviour deny-diff of GemJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour deny-same of GemJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
 
 #### depositing into the system
 
@@ -6030,6 +6184,7 @@ for all
     Vat         : address Vat
     Ilk         : bytes32
     DSToken     : address DSToken
+    Live        : uint256
     May         : uint256
     Vat_bal     : uint256
     Bal_usr     : uint256
@@ -6040,9 +6195,10 @@ for all
 
 storage
 
-    vat |-> Vat
-    ilk |-> Ilk
-    gem |-> DSToken
+    vat  |-> Vat
+    ilk  |-> Ilk
+    gem  |-> DSToken
+    live |-> Live
 
 storage Vat
 
@@ -6060,6 +6216,7 @@ iff
 
     VCallDepth < 1024
     VCallValue == 0
+    Live == 1
     wad <= Allowed
     Stopped == 0
     May == 1
@@ -6137,6 +6294,27 @@ if
 calls
   Vat.slip
   DSToken.transfer
+```
+
+#### disable joining
+
+```act
+behaviour cage of GemJoin
+interface cage()
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live             |-> _ => 0
+
+iff
+
+    VCallValue == 0
+    May == 1
 ```
 
 # DaiJoin

@@ -353,23 +353,41 @@ rule #Cat.vow => 4
 ### GemJoin
 
 ```k
+syntax Int ::= "#GemJoin.wards" "[" Int "]"  [function]
+// ---------------------------------
+// doc: whether `$0` is an owner of `GemJoin`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #GemJoin.wards[A] => #hashedLocation("Solidity", 0, A)
+
 syntax Int ::= "#GemJoin.vat" [function]
 // -------------------------------------
 // doc: `Vat` that this adapter points to
 // act:
-rule #GemJoin.vat => 0
+rule #GemJoin.vat => 1
 
 syntax Int ::= "#GemJoin.ilk" [function]
 // -------------------------------------
 // doc: collateral type of this adapter
 // act:
-rule #GemJoin.ilk => 1
+rule #GemJoin.ilk => 2
 
 syntax Int ::= "#GemJoin.gem" [function]
 // -------------------------------------
 // doc: underlying token of this adapter
 // act:
-rule #GemJoin.gem => 2
+rule #GemJoin.gem => 3
+
+syntax Int ::= "#GemJoin.dec" [function]
+// -------------------------------------
+// doc: decimals of the underlying token
+// act:
+rule #GemJoin.dec => 4
+
+syntax Int ::= "#GemJoin.live" [function]
+// -------------------------------------
+// doc: whether collateral can still be joined
+// act:
+rule #GemJoin.live => 5
 ```
 
 ### DaiJoin
