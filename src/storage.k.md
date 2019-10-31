@@ -393,17 +393,29 @@ rule #GemJoin.live => 5
 ### DaiJoin
 
 ```k
+syntax Int ::= "#DaiJoin.wards" "[" Int "]"  [function]
+// ---------------------------------
+// doc: whether `$0` is an owner of `DaiJoin`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #DaiJoin.wards[A] => #hashedLocation("Solidity", 0, A)
+
 syntax Int ::= "#DaiJoin.vat" [function]
 // -------------------------------------
 // doc: `Vat` that this adapter points to
 // act:
-rule #DaiJoin.vat => 0
+rule #DaiJoin.vat => 1
 
 syntax Int ::= "#DaiJoin.dai" [function]
 // -------------------------------------
 // doc: underlying dai token of this adapter
 // act:
-rule #DaiJoin.dai => 1
+rule #DaiJoin.dai => 2
+
+syntax Int ::= "#DaiJoin.live" [function]
+// -------------------------------------
+// doc: whether dai can still be withdrawn
+// act:
+rule #DaiJoin.live => 3
 ```
 
 ### Flip

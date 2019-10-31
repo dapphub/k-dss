@@ -6078,7 +6078,7 @@ returns Live
 
 ### Mutators
 
-#### granting authorization
+#### granting authorisation
 
 ```act
 behaviour rely-diff of GemJoin
@@ -6126,7 +6126,7 @@ if
     usr == CALLER_ID
 ```
 
-#### revoking authorization
+#### revoking authorisation
 
 ```act
 behaviour deny-diff of GemJoin
@@ -6325,6 +6325,27 @@ The `DaiJoin` adapter allows users to withdraw their dai from the system into a 
 
 ### Accessors
 
+#### `wards` mapping
+
+```act
+behaviour wards of DaiJoin
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
 #### `vat` address
 
 ```act
@@ -6346,7 +6367,7 @@ iff
 returns Vat
 ```
 
-#### dai address
+#### `dai` address
 
 ```act
 behaviour dai of DaiJoin
@@ -6367,7 +6388,122 @@ iff
 returns Dai
 ```
 
+#### `live` flag
+
+```act
+behaviour live of DaiJoin
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
+
+#### granting authorisation
+
+```act
+behaviour rely-diff of DaiJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour rely-same of DaiJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr == CALLER_ID
+```
+
+#### revoking authorisation
+
+```act
+behaviour deny-diff of DaiJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour deny-same of DaiJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr == CALLER_ID
+```
 
 #### depositing into the system
 
@@ -6457,6 +6593,7 @@ for all
 
     Vat    : address Vat
     Dai    : address Dai
+    Live   : uint256
     May    : uint256
     Can    : uint256
     Dai_c  : uint256
@@ -6466,8 +6603,9 @@ for all
 
 storage
 
-    vat |-> Vat
-    dai |-> Dai
+    vat  |-> Vat
+    dai  |-> Dai
+    live |-> Live
 
 storage Vat
 
@@ -6486,6 +6624,7 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     Can == 1
+    Live == 1
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
@@ -6507,6 +6646,27 @@ calls
     DaiJoin.muluu
     Vat.move-diff
     Dai.mint
+```
+
+#### disabling exit
+
+```act
+behaviour cage of DaiJoin
+interface cage()
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live             |-> _ => 0 
+
+iff
+
+    May == 1
+    VCallValue == 0
 ```
 
 # Flapper
