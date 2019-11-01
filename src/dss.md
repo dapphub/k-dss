@@ -411,17 +411,20 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     wards[usr]       |-> _ => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -435,16 +438,19 @@ interface rely(address usr)
 
 for all
 
-    May : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -457,17 +463,20 @@ interface deny(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     wards[usr]       |-> _ => 0
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -481,16 +490,19 @@ interface deny(address usr)
 
 for all
 
-    May : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May => 0
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -562,16 +574,19 @@ for all
     May  : uint256
     // misspelling intentional due to klab bug
     Lime : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     Line             |-> Lime => data
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     what == #string2Word("Line")
     VCallValue == 0
 ```
@@ -588,6 +603,7 @@ for all
     Spot : uint256
     Line : uint256
     Dust : uint256
+    Live : uint256
 
 storage
 
@@ -595,11 +611,13 @@ storage
     ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
     ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else Line #fi)
     ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else Dust #fi)
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     (what == #string2Word("spot")) or (what == #string2Word("line")) or (what == #string2Word("dust"))
     VCallValue == 0
 ```
@@ -3879,17 +3897,20 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     wards[usr]       |-> _ => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -3903,16 +3924,19 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -7992,7 +8016,7 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -8038,7 +8062,7 @@ interface deny(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -8323,16 +8347,19 @@ for all
 
     May  : uint256
     Wait : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wait |-> Wait => data
+    wait             |-> Wait => data
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
     what == #string2Word("wait")
 ```
@@ -8349,6 +8376,7 @@ for all
     Vow  : address
     Pot  : address
     Spot : address
+    Live : uint256
 
 storage
 
@@ -8358,11 +8386,13 @@ storage
     vow  |-> Vow  => (#if what == #string2Word("vow")  #then data #else Vow #fi)
     pot  |-> Pot  => (#if what == #string2Word("pot")  #then data #else Pot #fi)
     spot |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
+    live |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
     (what == #string2Word("vat")) or (what == #string2Word("cat")) or (what == #string2Word("vow")) or (what == #string2Word("pot")) or (what == #string2Word("spot"))
 ```
@@ -8554,10 +8584,11 @@ interface cage()
 
 for all
 
-    Vat : address Vat
-    Cat : address Cat
-    Vow : address Vow
-    Pot : address Pot
+    Vat     : address Vat
+    Cat     : address Cat
+    Vow     : address Vow
+    Spotter : address Spotter
+    Pot     : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8573,11 +8604,12 @@ for all
     FlapLive : uint256
     FlopLive : uint256
 
-    CallerMay : uint256
-    EndMayVat : uint256
-    EndMayCat : uint256
-    EndMayVow : uint256
-    EndMayPot : uint256
+    CallerMay  : uint256
+    EndMayVat  : uint256
+    EndMayCat  : uint256
+    EndMayVow  : uint256
+    EndMaySpot : uint256
+    EndMayPot  : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
 
@@ -8625,12 +8657,6 @@ storage Vow
     Sin     |-> Sin     => 0
     Ash     |-> Ash     => 0
 
-storage Pot
-
-    wards[ACCT_ID] |-> EndMayPot
-    dsr  |-> Dsr => #Ray
-    live |-> PotLive => 0
-
 storage Flapper
 
     wards[Vow] |-> VowMayFlap
@@ -8642,17 +8668,31 @@ storage Flopper
     wards[Vow] |-> VowMayFlop
     live |-> FlopLive => 0
 
+storage Spotter
+
+    wards[ACCT_ID] |-> EndMaySpot
+    live           |-> _ => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
+
 iff
 
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
+    VowLive == 0
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
+    EndMaySpot == 1
+    EndMayPot == 1
 
 iff in range uint256
 
@@ -8676,6 +8716,8 @@ calls
     Vat.cage
     Cat.cage
     Vow.cage-surplus
+    Spotter.cage
+    Pot.cage
 ```
 
 ```act
@@ -8684,9 +8726,11 @@ interface cage()
 
 for all
 
-    Vat : address Vat
-    Cat : address Cat
-    Vow : address Vow
+    Vat     : address Vat
+    Cat     : address Cat
+    Vow     : address Vow
+    Spotter : address Spotter
+    Pot     : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8707,6 +8751,8 @@ for all
     EndMayVow : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
+    EndMaySpot : uint256
+    EndMayPot  : uint256
 
     Dai_f : uint256
     Sin_v : uint256
@@ -8762,17 +8808,31 @@ storage Flopper
     wards[Vow] |-> VowMayFlop
     live |-> FlopLive => 0
 
+storage Spotter
+
+    wards[ACCT_ID] |-> EndMaySpot
+    live           |-> _ => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
+
 iff
 
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
+    VowLive == 0
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
+    EndMaySpot == 1
+    EndMayPot == 1
 
 iff in range uint256
 
@@ -8796,6 +8856,8 @@ calls
     Vat.cage
     Cat.cage
     Vow.cage-deficit
+    Spotter.cage
+    Pot.cage
 ```
 
 ```act
@@ -8804,9 +8866,11 @@ interface cage()
 
 for all
 
-    Vat : address Vat
-    Cat : address Cat
-    Vow : address Vow
+    Vat     : address Vat
+    Cat     : address Cat
+    Vow     : address Vow
+    Spotter : address Spotter
+    Pot     : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8821,12 +8885,14 @@ for all
     FlapLive : uint256
     FlopLive : uint256
 
-    CallerMay : uint256
-    EndMayVat : uint256
-    EndMayCat : uint256
-    EndMayVow : uint256
+    CallerMay  : uint256
+    EndMayVat  : uint256
+    EndMayCat  : uint256
+    EndMayVow  : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
+    EndMaySpot : uint256
+    EndMayPot  : uint256
 
     Dai_f : uint256
     Sin_v : uint256
@@ -8882,17 +8948,31 @@ storage Flopper
     wards[Vow] |-> VowMayFlop
     live |-> FlopLive => 0
 
+storage Spotter
+
+    wards[ACCT_ID] |-> EndMaySpot
+    live           |-> _ => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
+
 iff
 
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
+    VowLive == 0
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
+    EndMaySpot == 1
+    EndMayPot == 1
 
 iff in range uint256
 
@@ -8916,6 +8996,8 @@ calls
     Vat.cage
     Cat.cage
     Vow.cage-balance
+    Spotter.cage
+    Pot.cage
 ```
 
 ```act
@@ -9355,7 +9437,6 @@ calls
   Vat.urns
   Vat.grab
 ```
-
 
 ```act
 behaviour flow of End
@@ -9823,20 +9904,132 @@ returns Value
 
 # Spotter
 
+## Specification of behaviours
+
+### Accessors
+
+#### Auth
+
+```act
+behaviour wards of Spotter
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+#### ilks
+
 ```act
 behaviour ilks of Spotter
 interface ilks(bytes32 ilk)
 
 for all
-  Pip : address
-  Mat : uint256
+
+    Pip : address
+    Mat : uint256
 
 storage
-  ilks[ilk].pip |-> Pip
-  ilks[ilk].mat |-> Mat
+
+    ilks[ilk].pip |-> Pip
+    ilks[ilk].mat |-> Mat
 
 iff
-  VCallValue == 0
+
+    VCallValue == 0
 
 returns Pip : Mat
+```
+
+#### `vat` address
+
+```act
+behaviour vat of Spotter
+interface vat()
+
+for all
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+iff
+
+    VCallValue == 0
+
+returns Vat
+```
+
+#### `par` value
+
+```act
+behaviour par of Spotter
+interface par()
+
+for all
+
+    Par : uint256
+
+storage
+
+    par |-> Par
+
+iff
+
+    VCallValue == 0
+
+returns Par
+```
+
+#### shutdown flag
+
+```act
+behaviour live of Spotter
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
+```act
+behaviour cage of Spotter
+interface cage()
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live |-> _ => 0
+
+iff
+
+    May == 1
+    VCallValue == 0
 ```

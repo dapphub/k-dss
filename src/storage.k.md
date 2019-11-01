@@ -873,4 +873,7 @@ rule #Spotter.vat => 2
 
 syntax Int ::= "#Spotter.par" [function]
 rule #Spotter.par => 3
+
+syntax Int ::= "#Spotter.live" [function]
+rule #Spotter.live => 4
 ```
