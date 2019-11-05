@@ -5626,6 +5626,7 @@ interface kick(address usr, address gal, uint256 tab, uint256 lot, uint256 bid)
 
 for all
 
+    May      : uint256
     Vat      : address Vat
     Ilk      : uint256
     Kicks    : uint256
@@ -5645,6 +5646,7 @@ for all
 
 storage
 
+    wards[CALLER_ID]            |-> May
     vat                         |-> Vat
     ilk                         |-> Ilk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -5664,6 +5666,7 @@ storage Vat
 
 iff
 
+    May == 1
     CanFlux == 1
     VCallDepth < 1024
     VCallValue == 0
