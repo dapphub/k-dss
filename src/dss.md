@@ -4286,26 +4286,27 @@ interface flap()
 
 for all
 
-    Flapper  : address Flapper
-    Vat      : address Vat
-    FlapVat  : address
-    Sin      : uint256
-    Ash      : uint256
-    Awe      : uint256
-    Joy      : uint256
-    Bump     : uint256
-    Hump     : uint256
-    Can      : uint256
-    Dai_a    : uint256
-    FlapLive : uint256
-    Kicks    : uint256
-    Ttl      : uint48
-    Tau      : uint48
-    Bid      : uint256
-    Lot      : uint256
-    Guy      : address
-    Tic      : uint48
-    End      : uint48
+    Flapper    : address Flapper
+    Vat        : address Vat
+    FlapVat    : address
+    Sin        : uint256
+    Ash        : uint256
+    Awe        : uint256
+    Joy        : uint256
+    Bump       : uint256
+    Hump       : uint256
+    Can        : uint256
+    Dai_a      : uint256
+    VowMayFlap : uint256
+    FlapLive   : uint256
+    Kicks      : uint256
+    Ttl        : uint48
+    Tau        : uint48
+    Bid        : uint256
+    Lot        : uint256
+    Guy        : address
+    Tic        : uint48
+    End        : uint48
 
 storage
 
@@ -4318,6 +4319,7 @@ storage
 
 storage Flapper
 
+    wards[ACCT_ID]              |-> VowMayFlap
     vat                         |-> FlapVat
     kicks                       |-> Kicks   => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -4339,6 +4341,7 @@ iff
     VCallDepth < 1023
     Joy >= (Awe + Bump) + Hump
     (Awe - Sin) - Ash == 0
+    VowMayFlap == 1
     FlapLive == 1
     Can == 1
 
