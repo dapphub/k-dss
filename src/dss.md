@@ -6725,8 +6725,6 @@ iff
 returns May
 ```
 
-
-
 #### bid data
 
 ```act
@@ -9034,7 +9032,7 @@ storage
 storage Spotter
   ilks[ilk].pip |-> DSValue
   ilks[ilk].mat |-> Mat_i
-  ilks[ilk].par |-> Par
+  par           |-> Par
 
 storage Vat
   ilks[ilk].Art  |-> Art_i
@@ -10018,6 +10016,174 @@ iff
 returns Live
 ```
 
+### Mutators
+
+#### authorization
+
+```act
+behaviour rely-diff of Spotter
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour rely-same of Spotter
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Spotter
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour deny-same of Spotter
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr == CALLER_ID
+```
+
+#### change governance parameters
+
+```act
+behaviour file-pip of Spotter
+interface file(bytes32 ilk, bytes32 what, address pip_)
+
+for all
+
+    May  : uint256
+    Live : uint256
+    Pip  : address
+
+storage
+
+    wards[CALLER_ID] |-> May
+    ilks[ilk].pip    |-> Pip => pip_
+    live             |-> Live
+
+iff
+
+    May == 1
+    VCallValue == 0
+    Live == 1
+    what == #string2Word("pip")
+```
+
+```act
+behaviour file-par of Spotter
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    par              |-> _ => data
+    live             |-> Live
+
+iff
+
+    May == 1
+    VCallValue == 0
+    Live == 1
+    what == #string2Word("par")
+```
+
+```act
+behaviour file-mat of Spotter
+interface file(bytes32 ilk, bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    ilks[ilk].mat    |-> _ => data
+    live             |-> Live
+
+iff
+
+    May == 1
+    VCallValue == 0
+    Live == 1
+    what == #string2Word("mat")
+```
+
+#### disable governance actions
+
 ```act
 behaviour cage of Spotter
 interface cage()
@@ -10035,4 +10201,99 @@ iff
 
     May == 1
     VCallValue == 0
+```
+
+#### update `spot` value
+
+```act
+behaviour muluu of Spotter
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour rdiv of Spotter
+interface rdiv(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : (x * #Ray) / y : WS
+
+iff
+
+    y =/= 0
+
+iff in range uint256
+
+    x * #Ray
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour poke of Spotter
+interface poke(bytes32 ilk)
+
+for all
+
+    Pip : address DSValue
+    Mat : uint256
+    Vat : address Vat
+    Par : uint256
+
+    Owner : address
+    Has   : bool
+    Price : bytes32
+
+    May  : uint256
+    Spot : uint256
+    Live : uint256
+
+storage
+
+    ilks[ilk].pip |-> Pip
+    ilks[ilk].mat |-> Mat
+    vat           |-> Vat
+    par           |-> Par
+
+storage Pip
+
+    owner_has |-> #WordPackAddrUInt8(Owner, Has)
+    val       |-> Price
+
+storage Vat
+
+    wards[ACCT_ID] |-> May
+    ilks[ilk].spot |-> Spot => #if Has =/= 0 #then ((((Price * 1000000000 * #Ray) / Par) * #Ray) / Mat) #else 0 #fi
+    live           |-> Live
+
+iff
+
+    VCallValue == 0
+    VCallDepth < 1024
+    (Has == 0) or ((Price * 1000000000 * #Ray <= maxUInt256) and (Par =/= 0) and (Mat =/= 0) and (((Price * 1000000000 * #Ray) / Par) * #Ray <= maxUInt256))
+    May == 1
+    Live == 1
+
+calls
+
+  DSValue.peek
+  Spotter.muluu
+  Spotter.rdiv
+  Vat.file-ilk
 ```
