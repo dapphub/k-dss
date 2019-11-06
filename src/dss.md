@@ -7163,6 +7163,38 @@ calls
     Flapper.addu48u48
 ```
 
+```act
+behaviour tick of Flapper
+interface tick(uint256 id)
+
+for all
+
+    Tau     : uint48
+    Ttl     : uint48
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+
+storage
+
+    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
+
+iff
+    End < TIME
+    Tic == 0
+    VCallValue == 0
+
+iff in range uint48
+    TIME + Tau
+
+if
+    #rangeUInt(48, TIME)
+
+calls
+    Flapper.addu48u48
+```
+
 #### Bidding on an auction (tend phase)
 
 ```act
