@@ -4453,6 +4453,7 @@ iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Live == 1
     Can == 1
     MayFlap == 1
     MayFlop == 1
