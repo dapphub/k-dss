@@ -3803,6 +3803,27 @@ iff
 returns Wait
 ```
 
+#### getting the `dump`
+
+```act
+behaviour dump of Vow
+interface dump()
+
+for all
+
+    Dump : uint256
+
+storage
+
+    dump |-> Dump
+
+iff
+
+    VCallValue == 0
+
+returns Dump
+```
+
 #### getting the `sump`
 
 ```act
@@ -8298,6 +8319,26 @@ iff
 returns Vow
 ```
 
+#### `pot` address
+
+```act
+behaviour pot of End
+interface pot()
+
+for all
+
+    Pot : address
+
+storage
+
+    pot |-> Pot
+
+iff
+
+    VCallValue == 0
+
+returns Pot
+```
 
 #### `spot` address
 
