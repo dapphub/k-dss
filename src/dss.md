@@ -8732,7 +8732,7 @@ iff
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
-    VowLive == 0
+    VowLive == 1
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
@@ -8872,7 +8872,7 @@ iff
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
-    VowLive == 0
+    VowLive == 1
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
@@ -9012,7 +9012,7 @@ iff
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
-    VowLive == 0
+    VowLive == 1
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
