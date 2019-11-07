@@ -2765,6 +2765,8 @@ calls
     Jug.adduu
     Jug.rpow
     Vat.fold
+
+returns #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate)
 ```
 
 ## `rpow`
@@ -3469,6 +3471,8 @@ calls
     Pot.subuu
     Pot.muluu
     Vat.suck
+
+returns #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi)
 ```
 
 #### deposits and withdrawals
