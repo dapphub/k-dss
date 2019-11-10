@@ -4047,6 +4047,88 @@ iff
     VCallValue == 0
 ```
 
+```act
+behaviour file-addr-diff of Vow
+interface file(bytes32 what, address data)
+
+for all
+
+    May     : uint256
+    Vat     : address Vat
+    Flapper : address
+    Flopper : address
+    CanOld  : uint256
+    CanNew  : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    vat              |-> Vat
+    flapper          |-> Flapper => (#if (what == #string2Word("flapper")) #then data #else Flapper #fi)
+    flopper          |-> Flopper => (#if (what == #string2Word("flopper")) #then data #else Flopper #fi)
+
+storage Vat
+
+    can[ACCT_ID][Flapper] |-> CanOld => (#if (what == #string2Word("flapper")) #then 0 #else CanOld #fi)
+    can[ACCT_ID][data]    |-> CanNew => (#if (what == #string2Word("flapper")) #then 1 #else CanNew #fi)
+
+iff
+
+    May == 1
+    (what == #string2Word("flapper")) or (what == #string2Word("flopper"))
+    VCallValue == 0
+    (VCallDepth < 1024) or (what =/= #string2Word("flapper"))
+
+if
+
+    data =/= Flapper
+
+calls
+
+    Vat.nope
+    Vat.hope
+```
+
+```act
+behaviour file-addr-same of Vow
+interface file(bytes32 what, address data)
+
+for all
+
+    May     : uint256
+    Vat     : address Vat
+    Flapper : address
+    Flopper : address
+    Can     : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    vat              |-> Vat
+    flapper          |-> Flapper
+    flopper          |-> Flopper => (#if (what == #string2Word("flopper")) #then data #else Flopper #fi)
+
+storage Vat
+
+    can[ACCT_ID][Flapper] |-> Can => (#if (what == #string2Word("flapper")) #then 1 #else Can #fi)
+
+iff
+
+    May == 1
+    (what == #string2Word("flapper")) or (what == #string2Word("flopper"))
+    VCallValue == 0
+    (VCallDepth < 1024) or (what =/= #string2Word("flapper"))
+
+if
+
+    data == Flapper
+
+calls
+
+    Vat.nope
+    Vat.hope
+```
+
 #### cancelling bad debt and surplus
 
 ```act
@@ -4930,25 +5012,25 @@ iff
 #### setting liquidator address
 
 ```act
-behaviour file-flip of Cat
+behaviour file-flip-diff of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Vat  : address Vat
-    May  : uint256
-    Flip : address
-    Can : uint256
+    Vat    : address Vat
+    May    : uint256
+    Flip   : address
 
 storage
 
-    vat |-> Vat
+    vat              |-> Vat
     wards[CALLER_ID] |-> May
     ilks[ilk].flip   |-> Flip => data
 
 storage Vat
 
-    can[ACCT_ID][data] |-> Can => 1
+    can[ACCT_ID][Flip] |-> _ => 0
+    can[ACCT_ID][data] |-> _ => 1
 
 iff
 
@@ -4958,8 +5040,51 @@ iff
     what == #string2Word("flip")
     VCallDepth < 1024
 
+if
+
+    Flip =/= data
+
 calls
 
+  Vat.nope
+  Vat.hope
+```
+
+```act
+behaviour file-flip-same of Cat
+interface file(bytes32 ilk, bytes32 what, address data)
+
+for all
+
+    Vat    : address Vat
+    May    : uint256
+    Flip   : address
+
+storage
+
+    vat              |-> Vat
+    wards[CALLER_ID] |-> May
+    ilks[ilk].flip   |-> Flip => data
+
+storage Vat
+
+    can[ACCT_ID][data] |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+    what == #string2Word("flip")
+    VCallDepth < 1024
+
+if
+
+    Flip == data
+
+calls
+
+  Vat.nope
   Vat.hope
 ```
 
