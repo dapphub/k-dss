@@ -2819,10 +2819,10 @@ gas = 194 + num0(n) * 178 + num1(n) * 293
 behaviour rpow-loop of Jug
 lemma
 
-//  0a3a => 0a7e
+//  1136 => 117a
 pc
 
-    2618 => 2686
+    4406 => 4474
 
 for all
 
