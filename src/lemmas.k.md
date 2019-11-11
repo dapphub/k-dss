@@ -138,6 +138,7 @@ rule #rpow(Z, X, N, Base) => Z
   andBool N /Int 2 ==Int 0
 
 rule #rpow(Z, 0, N, Base) => 0
+  requires N =/=Int 0
 
 rule #rpow(Base, X, N, Base) => X
   requires N ==Int 1
