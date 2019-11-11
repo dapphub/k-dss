@@ -3331,10 +3331,10 @@ iff
 behaviour rpow-loop of Pot
 lemma
 
-//  0e01 => 0e45
+//  13af => 13f3
 pc
 
-    3585 => 3653
+    5039 => 5107
 
 for all
 
