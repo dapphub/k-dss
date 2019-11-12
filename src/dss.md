@@ -3477,8 +3477,6 @@ calls
 returns #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi)
 ```
 
-    ( ( 5068 + ( ( ( ( ( #if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) + ( #if ( ( Sin ==K 0 ) andBool (notBool ( ( Sin + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Vice ==K 0 ) andBool (notBool ( ( Vice + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + 26564 ) ) + ( ( ( ( 819 + ( #if ( Dsr ==K 0 ) #then ( #if ( ( TIME - Rho ) ==K 0 ) #then 82 #else 92 #fi) #else ( #if ( ( ( TIME - Rho ) modInt 2 ) ==K 0 ) #then ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 150 #else ( 437 + ( ( ( num0(( TIME - Rho )) - 1 ) * 172 ) + ( num1(( TIME - Rho )) * 287 ) ) ) #fi) #else ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 160 #else ( 447 + ( ( num0(( TIME - Rho )) * 172 ) + ( ( num1(( TIME - Rho )) - 1 ) * 287 ) ) ) #fi) #fi) #fi) ) + ( #if ( Chi ==K 0 ) #then 5946 #else 5998 #fi) ) + ( 5711 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) ) + ( #if ( ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ==K 0 ) #then 951 #else 1003 #fi) ) )
-
 #### deposits and withdrawals
 
 ```act
