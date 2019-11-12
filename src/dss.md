@@ -2333,7 +2333,8 @@ returns 1
 
 ```act
 behaviour permit of Dai
-interface permit(address holder, address ombudsman, uint256 n, uint256 ttl, bool may, uint8 v, bytes32 r, bytes32 s)
+interface permit(address hodler, address ombudsman, uint256 n, uint256 ttl, bool may, uint8 v, bytes32 r, bytes32 s)
+// "hodler" is intentional due to regex sadness
 
 types
 
@@ -2343,14 +2344,14 @@ types
 
 storage
 
-    nonces[holder]               |-> Nonce => 1 + Nonce
+    nonces[hodler]               |-> Nonce => 1 + Nonce
     DOMAIN_SEPARATOR             |-> Domain_separator
-    allowance[holder][ombudsman] |-> Allowed => (#if may == 0 #then 0 #else maxUInt256 #fi)
+    allowance[hodler][ombudsman] |-> Allowed => (#if may == 0 #then 0 #else maxUInt256 #fi)
 
 iff
 
-    holder =/= 0
-    holder == #symEcrec(keccakIntList(#asWord(#parseHexWord("0x19") : #parseHexWord("0x1") : .WordStack) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) holder ombudsman n ttl may)), v, r, s)
+    hodler =/= 0
+    hodler == #symEcrec(keccakIntList(#asWord(#parseHexWord("0x19") : #parseHexWord("0x01") : .WordStack) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) hodler ombudsman n ttl may)), v, r, s)
     ttl == 0 or TIME <= ttl
     VCallValue == 0
     n == Nonce
