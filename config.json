@@ -83,7 +83,7 @@
     "Vat_frob-same-zero_pass_rough": "16h",
     "Vat_frob-same-zero_fail_rough": "2d",
     "Vat_fork-diff_pass_rough": "16h",
-    "Vat_fork-diff_fail_rough": "24h",
+    "Vat_fork-diff_fail_rough": "2d",
     "Vat_fork-same_pass_rough": "16h",
     "Vat_fork-same_fail_rough": "2d",
     "Cat_bite-full_pass_rough": "3d",
