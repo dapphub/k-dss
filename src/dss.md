@@ -8137,16 +8137,21 @@ behaviour cage of Flopper
 interface cage()
 
 for all
-  Ward : uint256
-  Live : uint256
+
+    Ward : uint256
+    Live : uint256
+    Vow  : address
 
 storage
-  wards[CALLER_ID] |-> Ward
-  live |-> Live => 0
+
+    wards[CALLER_ID] |-> Ward
+    live             |-> Live => 0
+    vow              |-> Vow => CALLER_ID
 
 iff
-  Ward == 1
-  VCallValue == 0
+
+    Ward == 1
+    VCallValue == 0
 ```
 
 ```act
@@ -8154,43 +8159,56 @@ behaviour yank of Flopper
 interface yank(uint256 id)
 
 for all
-  Live   : uint256
-  Vat    : address Vat
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Dai_a  : uint256
-  Dai_g  : uint256
+
+    Live  : uint256
+    Vow   : address
+    Vat   : address Vat
+    Bid   : uint256
+    Lot   : uint256
+    Guy   : address
+    Tic   : uint48
+    End   : uint48
+    May   : uint256
+    Sin_v : uint256
+    Dai_g : uint256
+    Debt  : uint256
+    Vice  : uint256
 
 storage
-  live |-> Live
-  vat  |-> Vat
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+
+    live                 |-> Live
+    vow                  |-> Vow
+    vat                  |-> Vat
+    bids[id].bid         |-> Bid => 0
+    bids[id].lot         |-> Lot => 0
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Vat
-  can[ACCT_ID][ACCT_ID] |-> _
-  dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
-  dai[Guy]     |-> Dai_g => Dai_g + Bid
+
+    wards[ACCT_ID] |-> May
+    sin[Vow]       |-> Sin_v => Sin_v + Bid
+    dai[Guy]       |-> Dai_g => Dai_g + Bid
+    debt           |-> Debt  => Debt  + Bid
+    vice           |-> Vice  => Vice  + Bid
 
 iff
-  Live == 0
-  Guy =/= 0
-  VCallDepth < 1024
-  VCallValue == 0
 
-if
-  ACCT_ID =/= Guy
+    Live == 0
+    Guy =/= 0
+    May == 1
+    VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
-  Dai_a - Bid
-  Dai_g + Bid
+
+    Sin_v + Bid
+    Dai_g + Bid
+    Debt  + Bid
+    Vice  + Bid
 
 calls
-  Vat.move-diff
+
+    Vat.suck
 ```
 
 # End
