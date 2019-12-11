@@ -4506,6 +4506,7 @@ for all
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
 storage
 
@@ -4535,7 +4536,8 @@ storage Flapper
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    live |-> FlopLive => 0
+    live           |-> FlopLive => 0
+    vow            |-> FlowVow  => ACCT_ID
 
 iff
 
@@ -4594,6 +4596,7 @@ for all
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
 storage
 
@@ -4623,7 +4626,8 @@ storage Flapper
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    live |-> FlopLive => 0
+    live           |-> FlopLive => 0
+    vow            |-> FlowVow  => ACCT_ID
 
 iff
 
@@ -4681,6 +4685,7 @@ for all
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
 storage
 
@@ -4710,7 +4715,8 @@ storage Flapper
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    live |-> FlopLive => 0
+    live           |-> FlopLive => 0
+    vow            |-> FlowVow  => ACCT_ID
 
 iff
 
@@ -5128,39 +5134,42 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address Vat
-    Vow     : address Vow
-    Flipper : address Flipper
-    Live    : uint256
-    Art_i   : uint256
-    Rate_i  : uint256
-    Spot_i  : uint256
-    Line_i  : uint256
-    Dust_i  : uint256
-    Ink_iu  : uint256
-    Art_iu  : uint256
-    CanFlux : uint256
-    Gem_iv  : uint256
-    Gem_if  : uint256
-    Sin_w   : uint256
-    Vice    : uint256
-    Sin     : uint256
-    Sin_era : uint256
-    Chop    : uint256
-    Lump    : uint256
-    FlipVat : address
-    FlipIlk : bytes32
-    Kicks   : uint256
-    Ttl     : uint48
-    Tau     : uint48
-    Bid     : uint256
-    Lot     : uint256
-    Guy     : address
-    Tic     : uint48
-    End     : uint48
-    Gal     : address
-    Tab     : uint256
-    Usr     : address
+    Vat        : address Vat
+    Vow        : address Vow
+    Flipper    : address Flipper
+    Live       : uint256
+    Art_i      : uint256
+    Rate_i     : uint256
+    Spot_i     : uint256
+    Line_i     : uint256
+    Dust_i     : uint256
+    CatMayVat  : uint256
+    Ink_iu     : uint256
+    Art_iu     : uint256
+    CanFlux    : uint256
+    Gem_iv     : uint256
+    Gem_if     : uint256
+    Sin_w      : uint256
+    Vice       : uint256
+    CatMayVow  : uint256
+    Sin        : uint256
+    Sin_era    : uint256
+    Chop       : uint256
+    Lump       : uint256
+    CatMayFlip : uint256
+    FlipVat    : address
+    FlipIlk    : bytes32
+    Kicks      : uint256
+    Ttl        : uint48
+    Tau        : uint48
+    Bid        : uint256
+    Lot        : uint256
+    Guy        : address
+    Tic        : uint48
+    End        : uint48
+    Gal        : address
+    Tab        : uint256
+    Usr        : address
 
 storage
 
@@ -5172,6 +5181,7 @@ storage
     ilks[ilk].lump |-> Lump
 
 storage Vat
+
     ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
     ilks[ilk].rate     |-> Rate_i
     ilks[ilk].spot     |-> Spot_i
@@ -5195,6 +5205,7 @@ storage Vow
 
 storage Flipper
 
+    wards[ACCT_ID]              |-> CatMayFlip
     vat                         |-> FlipVat
     ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -5211,8 +5222,10 @@ iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Spot_i > 0
     CatMayVat == 1
     CatMayVow == 1
+    CatMayFlip == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
     Art_iu <= pow255
@@ -5221,6 +5234,7 @@ iff
     CanFlux == 1
 
 iff in range int256
+
     0 - Rate_i * Art_iu
     Rate_i
 
@@ -5272,39 +5286,42 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address Vat
-    Vow     : address Vow
-    Flipper : address Flipper
-    Live    : uint256
-    Art_i   : uint256
-    Rate_i  : uint256
-    Spot_i  : uint256
-    Line_i  : uint256
-    Dust_i  : uint256
-    Ink_iu  : uint256
-    Art_iu  : uint256
-    CanFlux : uint256
-    Gem_iv  : uint256
-    Gem_if  : uint256
-    Sin_w   : uint256
-    Vice    : uint256
-    Sin     : uint256
-    Sin_era : uint256
-    Chop    : uint256
-    Lump    : uint256
-    FlipVat : address
-    FlipIlk : bytes32
-    Kicks   : uint256
-    Ttl     : uint48
-    Tau     : uint48
-    Bid     : uint256
-    Lot     : uint256
-    Guy     : address
-    Tic     : uint48
-    End     : uint48
-    Gal     : address
-    Tab     : uint256
-    Usr     : address
+    Vat        : address Vat
+    Vow        : address Vow
+    Flipper    : address Flipper
+    Live       : uint256
+    Art_i      : uint256
+    Rate_i     : uint256
+    Spot_i     : uint256
+    Line_i     : uint256
+    Dust_i     : uint256
+    CatMayVat  : uint256
+    Ink_iu     : uint256
+    Art_iu     : uint256
+    CanFlux    : uint256
+    Gem_iv     : uint256
+    Gem_if     : uint256
+    Sin_w      : uint256
+    Vice       : uint256
+    CatMayVow  : uint256
+    Sin        : uint256
+    Sin_era    : uint256
+    Chop       : uint256
+    Lump       : uint256
+    CatMayFlip : uint256
+    FlipVat    : address
+    FlipIlk    : bytes32
+    Kicks      : uint256
+    Ttl        : uint48
+    Tau        : uint48
+    Bid        : uint256
+    Lot        : uint256
+    Guy        : address
+    Tic        : uint48
+    End        : uint48
+    Gal        : address
+    Tab        : uint256
+    Usr        : address
 
 storage
 
@@ -5340,6 +5357,7 @@ storage Vow
 
 storage Flipper
 
+    wards[ACCT_ID]              |-> CatMayFlip
     vat                         |-> FlipVat
     ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -5356,8 +5374,10 @@ iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Spot_i > 0
     CatMayVat == 1
     CatMayVow == 1
+    CatMayFlip == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
     Lump <= pow255
@@ -5365,6 +5385,7 @@ iff
     CanFlux == 1
 
 iff in range int256
+
     0 - Rate_i * ((Lump * Art_iu) / Ink_iu)
     Rate_i
 
@@ -7646,6 +7667,27 @@ iff
 returns Gem
 ```
 
+#### Vow address
+
+```act
+behaviour vow of Flopper
+interface vow()
+
+for all
+
+    Vow : address
+
+storage
+
+    vow |-> Vow
+
+iff
+
+    VCallValue == 0
+
+returns Vow
+```
+
 #### minimum bid increment
 
 ```act
@@ -8832,6 +8874,7 @@ for all
     PotLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
     CallerMay  : uint256
     EndMayVat  : uint256
@@ -8895,7 +8938,8 @@ storage Flapper
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> FlopLive => 0
+    live       |-> FlopLive => 0
+    vow        |-> FlopVow  => Vow
 
 storage Spotter
 
@@ -8973,6 +9017,7 @@ for all
     VowLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
     CallerMay : uint256
     EndMayVat : uint256
@@ -9035,7 +9080,8 @@ storage Flapper
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> FlopLive => 0
+    live       |-> FlopLive => 0
+    vow        |-> FlopVow  => Vow
 
 storage Spotter
 
@@ -9113,6 +9159,7 @@ for all
     VowLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
     CallerMay  : uint256
     EndMayVat  : uint256
@@ -9175,7 +9222,8 @@ storage Flapper
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> FlopLive => 0
+    live       |-> FlopLive => 0
+    vow        |-> FlopVow  => Vow
 
 storage Spotter
 
