@@ -4506,7 +4506,7 @@ for all
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
-    FlopVow  : uint256
+    FlopVow  : address
 
 storage
 
@@ -4537,7 +4537,7 @@ storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
     live           |-> FlopLive => 0
-    vow            |-> FlowVow  => ACCT_ID
+    vow            |-> FlopVow  => ACCT_ID
 
 iff
 
@@ -4580,23 +4580,23 @@ interface cage()
 
 for all
 
-    Vat     : address Vat
-    Flapper : address Flapper
-    Flopper : address Flopper
-    FlapVat : address
-    MayFlap : uint256
-    MayFlop : uint256
-    Dai_v   : uint256
-    Sin_v   : uint256
-    Dai_f   : uint256
-    Debt    : uint256
-    Vice    : uint256
+    Vat      : address Vat
+    Flapper  : address Flapper
+    Flopper  : address Flopper
+    FlapVat  : address
+    MayFlap  : uint256
+    MayFlop  : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_f    : uint256
+    Debt     : uint256
+    Vice     : uint256
     Live     : uint256
     Sin      : uint256
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
-    FlopVow  : uint256
+    FlopVow  : address
 
 storage
 
@@ -4627,7 +4627,7 @@ storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
     live           |-> FlopLive => 0
-    vow            |-> FlowVow  => ACCT_ID
+    vow            |-> FlopVow  => ACCT_ID
 
 iff
 
@@ -4669,23 +4669,23 @@ interface cage()
 
 for all
 
-    Vat     : address Vat
-    Flapper : address Flapper
-    Flopper : address Flopper
-    FlapVat : address
-    MayFlap : uint256
-    MayFlop : uint256
-    Dai_v   : uint256
-    Sin_v   : uint256
-    Dai_f   : uint256
-    Debt    : uint256
-    Vice    : uint256
+    Vat      : address Vat
+    Flapper  : address Flapper
+    Flopper  : address Flopper
+    FlapVat  : address
+    MayFlap  : uint256
+    MayFlop  : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_f    : uint256
+    Debt     : uint256
+    Vice     : uint256
     Live     : uint256
     Sin      : uint256
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
-    FlopVow  : uint256
+    FlopVow  : address
 
 storage
 
@@ -4716,7 +4716,7 @@ storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
     live           |-> FlopLive => 0
-    vow            |-> FlowVow  => ACCT_ID
+    vow            |-> FlopVow  => ACCT_ID
 
 iff
 
@@ -9548,6 +9548,302 @@ calls
   Vat.urns
   Vat.ilks
   Vat.grab
+```
+
+```act
+failure skim-A of End
+interface skim(bytes32 ilk, address urn)
+
+iff
+  VCallValue == 0
+```
+
+```act
+failure skim-B of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Tag : uint256
+
+storage
+  tag[ilk] |-> Tag
+
+iff
+  Tag =/= 0
+
+if
+  VCallValue == 0
+```
+
+```act
+failure skim-C of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Tag : uint256
+
+storage
+  tag[ilk] |-> Tag
+
+iff
+  VCallDepth < 1024
+
+if
+  VCallValue == 0
+  Tag =/= 0
+```
+
+```act
+failure skim-D of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff in range uint256
+  Rate_i * Art_iu
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+
+calls
+  Vat.ilks
+  Vat.urns
+```
+
+```act
+failure skim-E of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff in range uint256
+  ((Rate_i * Art_iu) / #Ray) * Tag
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+
+calls
+  Vat.ilks
+  Vat.urns
+```
+
+This one is failing locally, no clue why.
+```act
+failure skim-F of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Gap    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+  gap[ilk] |-> Gap
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff
+  (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+  #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+
+  // This branch condition distinguishes skim and bail specs
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.minuu
+  Vat.ilks
+  Vat.urns
+```
+
+Though the previous one fails locally, this one is passing.
+```act
+failure skim-G of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Gap    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+  gap[ilk] |-> Gap
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff
+  (0 - Art_iu) >= minSInt256
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+  #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+  (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
+
+  // This branch condition distinguishes skim and bail specs
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.minuu
+  Vat.ilks
+  Vat.urns
+```
+
+This one is failing locally as well.
+```act
+failure skim-H of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Gap    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+  gap[ilk] |-> Gap
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff
+  #rangeUInt(256, Art_i - Art_iu)
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+  #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+  (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
+  (0 - Art_iu) >= minSInt256
+
+  // This branch condition distinguishes skim and bail specs
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.minuu
+  Vat.ilks
+  Vat.urns
 ```
 
 ```act
