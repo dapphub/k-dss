@@ -346,7 +346,7 @@ rule maxUInt48 &Int (X *Int pow48) => 0
 ```k
 rule WS ++ .WordStack => WS
 
-rule #sizeWordStack ( #padToWidth ( 32 , #asByteStack ( #unsigned ( W ) ) ) , 0) => 32
+rule #sizeWordStack ( #padToWidth ( 32 , #asByteStack ( #unsigned ( W ) ) ) ) => 32
   requires #rangeSInt(256, W)
 
 // custom ones:
@@ -511,7 +511,7 @@ rule #range(WS [ X := #padToWidth(32, Y) ], Z, 32, WSS) => #range(WS, Z, 32, WSS
   requires Z +Int 32 <Int X
 
 // possibly wrong but i'll keep using it as a hack
-rule #sizeWordStack(#range(WS, Y, Z, WSS), 0) => Z
+rule #sizeWordStack(#range(WS, Y, Z, WSS)) => Z
 
 //assume ecrec returns an address
 rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
