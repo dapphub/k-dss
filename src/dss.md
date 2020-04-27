@@ -9580,9 +9580,11 @@ failure skim-C of End
 interface skim(bytes32 ilk, address urn)
 
 for all
+  Vat : address Vat
   Tag : uint256
 
 storage
+  vat      |-> Vat
   tag[ilk] |-> Tag
 
 iff
