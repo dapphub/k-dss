@@ -5901,7 +5901,7 @@ calls
 ```
 
 ```act
-behaviour tend of Flipper
+behaviour tend-guy-diff of Flipper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -5966,7 +5966,68 @@ calls
 ```
 
 ```act
-behaviour dent of Flipper
+behaviour tend-guy-same of Flipper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+  Vat : address Vat
+  Beg : uint256
+  Bid : uint256
+  Lot : uint256
+  Tab : uint256
+  Gal : address
+  Ttl : uint48
+  Tau : uint48
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Can   : uint256
+  Dai_g : uint256
+  Dai_c : uint256
+
+storage
+  vat          |-> Vat
+  beg          |-> Beg
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid |-> Bid => bid
+  bids[id].lot |-> Lot => lot
+  bids[id].tab |-> Tab
+  bids[id].gal |-> Gal
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+storage Vat
+  can[CALLER_ID][ACCT_ID] |-> Can
+  dai[Gal]       |-> Dai_g => Dai_g + (bid - Bid)
+  dai[CALLER_ID] |-> Dai_c => Dai_c - (bid - Bid)
+
+iff
+  VCallValue == 0
+  VCallDepth < 1024
+  Guy =/= 0
+  Can == 1
+  Tic > TIME or Tic == 0
+  End > TIME
+  TIME + Ttl <= maxUInt48
+  lot == Lot
+  bid >  Bid
+  (bid - Bid) <= Dai_c
+  Dai_g + (bid - Bid) <= maxUInt256
+  bid * #Wad <= maxUInt256
+  ((bid < Tab) and (bid * #Wad >= Beg * Bid)) or ((bid == Tab) and (Beg * Bid <= maxUInt256))
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID == Guy
+  CALLER_ID =/= Gal
+
+calls
+  Flipper.addu48u48
+  Flipper.muluu
+  Vat.move-diff
+```
+
+```act
+behaviour dent-guy-diff of Flipper
 interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -6030,6 +6091,71 @@ if
   #rangeUInt(48, TIME)
   CALLER_ID =/= ACCT_ID
   CALLER_ID =/= Guy
+  ACCT_ID   =/= Usr
+
+calls
+  Flipper.muluu
+  Vat.move-diff
+  Vat.flux-diff
+```
+
+```act
+behaviour dent-guy-same of Flipper
+interface dent(uint256 id, uint256 lot, uint256 bid)
+
+for all
+  Vat : address Vat
+  Ilk : bytes32
+  Ttl : uint48
+  Tau : uint48
+  Beg : uint256
+  Bid : uint256
+  Lot : uint256
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Gal : address
+  Usr : address
+  Tab : uint256
+  Gem_a : uint256
+  Gem_u : uint256
+
+storage
+  vat          |-> Vat
+  ilk          |-> Ilk
+  beg          |-> Beg
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid |-> Bid
+  bids[id].lot |-> Lot => lot
+  bids[id].tab |-> Tab
+  bids[id].usr |-> Usr
+  bids[id].gal |-> Gal
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+storage Vat
+  can[ACCT_ID][ACCT_ID]   |-> _
+  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - lot)
+  gem[Ilk][Usr]     |-> Gem_u => Gem_u + (Lot - lot)
+
+iff
+  VCallValue == 0
+  VCallDepth < 1024
+  Guy =/= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+  TIME + Ttl <= maxUInt48
+  bid == Bid
+  bid == Tab
+  lot <  Lot
+  Gem_u + (Lot - lot) <= maxUInt256
+  Gem_a >= (Lot - lot)
+  Lot * #Wad >= lot * Beg
+  Lot * #Wad <= maxUInt256
+
+if
+  #rangeUInt(48, TIME)
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID == Guy
   ACCT_ID   =/= Usr
 
 calls
@@ -7350,7 +7476,7 @@ calls
 #### Bidding on an auction (tend phase)
 
 ```act
-behaviour tend of Flapper
+behaviour tend-guy-diff of Flapper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -7415,6 +7541,75 @@ if
     CALLER_ID =/= ACCT_ID
     CALLER_ID =/= Guy
     ACCT_ID   =/= Guy
+
+calls
+    Flapper.addu48u48
+    Flapper.muluu
+    DSToken.move
+```
+
+```act
+behaviour tend-guy-same of Flapper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+
+    DSToken : address DSToken
+    Live    : uint256
+    Ttl     : uint48
+    Tau     : uint48
+    Beg     : uint256
+    Bid     : uint256
+    Lot     : uint256
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+    Allowed : uint256
+    Gem_a   : uint256
+    Gem_u   : uint256
+    Owner   : address
+    Stopped : bool
+
+storage
+
+    gem                  |-> DSToken
+    live                 |-> Live
+    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    beg                  |-> Beg
+    bids[id].bid         |-> Bid => bid
+    bids[id].lot         |-> Lot
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+storage DSToken
+
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - bid #fi
+    balances[CALLER_ID] |-> Gem_u => Gem_u - (bid - Bid)
+    balances[ACCT_ID]   |-> Gem_a => Gem_a + (bid - Bid)
+    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff
+    VCallValue == 0
+    VCallDepth < 1024
+    Guy =/= 0
+    Stopped == 0
+    (Allowed == maxUInt256) or (bid <= Allowed)
+    Live == 1
+    Tic > TIME or Tic == 0
+    End > TIME
+    TIME + Ttl <= maxUInt48
+    lot == Lot
+    bid > Bid
+    bid * #Wad <= maxUInt256
+    bid * #Wad >= Beg * Bid
+
+iff in range uint256
+    Gem_u - (bid - Bid)
+    Gem_a + (bid - Bid)
+
+if
+    #rangeUInt(48, TIME)
+    CALLER_ID =/= ACCT_ID
+    CALLER_ID == Guy
 
 calls
     Flapper.addu48u48
@@ -8063,7 +8258,7 @@ calls
 ```
 
 ```act
-behaviour dent of Flopper
+behaviour dent-guy-diff of Flopper
 interface dent(uint id, uint lot, uint bid)
 
 for all
@@ -8120,11 +8315,65 @@ if
   CALLER_ID =/= ACCT_ID
   CALLER_ID =/= Guy
   #rangeUInt(48, TIME)
+  Tic =/= 0
 
 calls
   Flopper.muluu
   Flopper.addu48u48
   Vat.move-diff
+```
+
+```act
+behaviour dent-guy-same of Flopper
+interface dent(uint id, uint lot, uint bid)
+
+for all
+  Live : uint256
+  Vat  : address Vat
+  Beg  : uint256
+  Ttl  : uint48
+  Tau  : uint48
+  Bid  : uint256
+  Lot  : uint256
+  Guy  : address
+  Tic  : uint48
+  End  : uint48
+
+storage
+  live |-> Live
+  vat  |-> Vat
+  beg  |-> Beg
+  ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid         |-> Bid
+  bids[id].lot         |-> Lot => lot
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+iff
+  Live == 1
+  Guy =/= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+  bid == Bid
+  lot <  Lot
+  Lot * #Wad <= maxUInt256
+  Beg * lot <= Lot * #Wad
+  VCallValue == 0
+  VCallDepth < 1024
+
+iff in range uint256
+  Beg * lot
+
+iff in range uint48
+  TIME + Ttl
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID == Guy
+  #rangeUInt(48, TIME)
+
+calls
+  Flopper.muluu
+  Flopper.addu48u48
 ```
 
 ```act
