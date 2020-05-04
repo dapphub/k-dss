@@ -9587,6 +9587,8 @@ storage
   vat      |-> Vat
   tag[ilk] |-> Tag
 
+storage Vat
+
 iff
   VCallDepth < 1024
 
