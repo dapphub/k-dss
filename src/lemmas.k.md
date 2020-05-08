@@ -125,11 +125,10 @@ rule 0 <=Int (N /Int 2) => true
 rule N /Int 2 <Int pow256 => true
   requires N <Int pow256
 
-// TODO - review - do i need it?
-rule chop(X *Int X) => X *Int X
-  requires #rpow(Z, X, N, B) *Int B <Int pow256
-  andBool N >=Int 2
-
+// kmbarry: unbound variables on RHS make this rule of questionable soundness and raise warnings, commenting out for now
+// rule chop(X *Int X) => X *Int X
+//  requires #rpow(Z, X, N, B) *Int B <Int pow256
+//  andBool N >=Int 2
 
 rule #rpow(Z, X, 0, Base) => Z
 
@@ -166,8 +165,9 @@ rule #rpow( X                              , ((X *Int X) +Int Half) /Int Base, N
   andBool  N /Int 2 =/=Int 0
   andBool  Half ==Int Base /Int 2
 
-rule Z *Int X <Int pow256 => true
-  requires #rpow(Z, X, N, Base) <Int pow256
+// kmbarry: unbound variables on RHS make this rule of questionable soundness and raise warnings, commenting out for now
+// rule Z *Int X <Int pow256 => true
+//  requires #rpow(Z, X, N, Base) <Int pow256
 ```
 
 ### hashed storage
