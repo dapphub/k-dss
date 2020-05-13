@@ -8258,42 +8258,42 @@ calls
 ```
 
 ```act
-behaviour dent-guy-diff of Flopper
+behaviour dent-guy-diff-tic-not-0 of Flopper
 interface dent(uint id, uint lot, uint bid)
 
 for all
-  Live : uint256
-  Vat  : address Vat
-  Beg  : uint256
-  Ttl  : uint48
-  Tau  : uint48
-  Bid  : uint256
-  Lot  : uint256
-  Guy  : address
-  Tic  : uint48
-  End  : uint48
-  CanMove : uint256
-  Dai_a   : uint256
-  Dai_g   : uint256
+  Live      : uint256
+  Vat       : address Vat
+  Beg       : uint256
+  Ttl       : uint48
+  Tau       : uint48
+  Bid       : uint256
+  Lot       : uint256
+  Guy       : address
+  Tic       : uint48
+  End       : uint48
+  CanMove   : uint256
+  Dai_a     : uint256
+  Dai_g     : uint256
 
 storage
-  live |-> Live
-  vat  |-> Vat
-  beg  |-> Beg
-  ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
-  bids[id].bid         |-> Bid
-  bids[id].lot         |-> Lot => lot
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+  live                  |-> Live
+  vat                   |-> Vat
+  beg                   |-> Beg
+  ttl_tau               |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid          |-> Bid
+  bids[id].lot          |-> Lot => lot
+  bids[id].guy_tic_end  |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
 
 storage Vat
-  can[CALLER_ID][ACCT_ID] |-> CanMove
-  dai[CALLER_ID] |-> Dai_a => Dai_a - bid
-  dai[Guy]       |-> Dai_g => Dai_g + bid
+  can[CALLER_ID][ACCT_ID]   |-> CanMove
+  dai[CALLER_ID]            |-> Dai_a => Dai_a - bid
+  dai[Guy]                  |-> Dai_g => Dai_g + bid
 
 iff
   Live == 1
   Guy =/= 0
-  Tic > TIME or Tic == 0
+  Tic > TIME
   End > TIME
   bid == Bid
   lot <  Lot
@@ -8321,6 +8321,89 @@ calls
   Flopper.muluu
   Flopper.addu48u48
   Vat.move-diff
+```
+
+```act
+behaviour dent-guy-diff-tic-0 of Flopper
+interface dent(uint id, uint lot, uint bid)
+
+for all
+  Live      : uint256
+  Vat       : address Vat
+  Beg       : uint256
+  Ttl       : uint48
+  Tau       : uint48
+  Bid       : uint256
+  Lot       : uint256
+  Tic       : uint48
+  End       : uint48
+  CanMove   : uint256
+  Dai_a     : uint256
+  Vow       : address Vow
+  Ash       : uint256
+  Joy       : uint256
+  Awe       : uint256
+  Vice      : uint256
+  Debt      : uint256
+
+storage
+  live                      |-> Live
+  vat                       |-> Vat
+  beg                       |-> Beg
+  ttl_tau                   |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid              |-> Bid
+  bids[id].lot              |-> Lot => lot
+  bids[id].guy_tic_end      |-> #WordPackAddrUInt48UInt48(Vow, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+
+storage Vow
+  vat                       |-> Vat
+  Ash                       |-> Ash => #if bid > Ash #then 0 #else Ash - bid #fi
+
+storage Vat
+  can[CALLER_ID][ACCT_ID]   |-> CanMove
+  dai[CALLER_ID]            |-> Dai_a => Dai_a - bid
+  dai[Vow]                  |-> Joy  => #if bid > Ash #then Joy + bid - Ash #else Joy #fi
+  sin[Vow]                  |-> Awe  => #if bid > Ash #then Awe - Ash #else Awe - bid #fi
+  vice                      |-> Vice => #if bid > Ash #then Vice - Ash #else Vice - bid #fi
+  debt                      |-> Debt => #if bid > Ash #then Debt - Ash #else Debt - bid #fi
+
+iff
+  Live == 1
+  Vow =/= 0
+  End > TIME
+  bid == Bid
+  lot <  Lot
+  Lot * #Wad <= maxUInt256
+  Beg * lot <= Lot * #Wad
+  CanMove == 1
+  VCallValue == 0
+  VCallDepth < 1023
+
+iff in range uint256
+  Dai_a - bid
+  Joy + bid
+  Beg * lot
+
+iff in range uint48
+  TIME + Ttl
+
+iff
+  (bid > Ash and Awe - Ash >= 0) or (bid <= Ash and Awe - bid >= 0)
+  (bid > Ash and Vice - Ash >= 0) or (bid <= Ash and Vice - bid >= 0)
+  (bid > Ash and Debt - Ash >= 0) or (bid <= Ash and Debt - bid >= 0)
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= Vow
+  Vat =/= Vow
+  #rangeUInt(48, TIME)
+  Tic == 0
+
+calls
+  Flopper.muluu
+  Flopper.addu48u48
+  Vat.move-diff
+  Vow.kiss
 ```
 
 ```act
