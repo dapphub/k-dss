@@ -7582,7 +7582,7 @@ storage
 
 storage DSToken
 
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - bid #fi
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - (bid - Bid) #fi
     balances[CALLER_ID] |-> Gem_u => Gem_u - (bid - Bid)
     balances[ACCT_ID]   |-> Gem_a => Gem_a + (bid - Bid)
     owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
@@ -7592,7 +7592,7 @@ iff
     VCallDepth < 1024
     Guy =/= 0
     Stopped == 0
-    (Allowed == maxUInt256) or (bid <= Allowed)
+    (Allowed == maxUInt256) or ((bid - Bid) <= Allowed)
     Live == 1
     Tic > TIME or Tic == 0
     End > TIME
