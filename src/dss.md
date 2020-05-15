@@ -8441,7 +8441,6 @@ iff
   Lot * #Wad <= maxUInt256
   Beg * lot <= Lot * #Wad
   VCallValue == 0
-  VCallDepth < 1024
 
 iff in range uint256
   Beg * lot
