@@ -9682,64 +9682,24 @@ calls
   Vat.urns
 ```
 
-This one is failing locally, no clue why.
+// From a naive reading of the code, one would expect the next iff condition to be:
+//     (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
+// But actually, this is implied by a condition we already have:
+//     #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+//
+// proof:
+//   #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+//     => (((Rate_i * Art_iu) / #Ray) * Tag) < 2^256
+//     => ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^256 / #Ray   // <= b/c of truncating nature of integer division
+//     => ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^256 / 10^27  // def of #Ray
+//
+//   Note that (2^256 / 10^27) < 2^255, so:
+//   ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^255
+//     => 0 - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) >= -2^255
+//     => 0 - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) >= minSInt256
+
 ```act
 failure skim-F of End
-interface skim(bytes32 ilk, address urn)
-
-for all
-  Vat    : address Vat
-  Tag    : uint256
-  Gap    : uint256
-  Art_i  : uint256
-  Rate_i : uint256
-  Spot_i : uint256
-  Line_i : uint256
-  Dust_i : uint256
-  Ink_iu : uint256
-  Art_iu : uint256
-
-storage
-  vat      |-> Vat
-  tag[ilk] |-> Tag
-  gap[ilk] |-> Gap
-
-storage Vat
-  ilks[ilk].Art      |-> Art_i
-  ilks[ilk].rate     |-> Rate_i
-  ilks[ilk].spot     |-> Spot_i
-  ilks[ilk].line     |-> Line_i
-  ilks[ilk].dust     |-> Dust_i
-
-  urns[ilk][urn].ink |-> Ink_iu
-  urns[ilk][urn].art |-> Art_iu
-
-iff
-  (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
-
-if
-  VCallValue == 0
-  Tag =/= 0
-  VCallDepth < 1024
-  #rangeUInt(256, Rate_i * Art_iu)
-  #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
-
-  // This branch condition distinguishes skim and bail specs
-  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
-
-
-calls
-  End.adduu
-  End.subuu
-  End.rmul
-  End.minuu
-  Vat.ilks
-  Vat.urns
-```
-
-Though the previous one fails locally, this one is passing.
-```act
-failure skim-G of End
 interface skim(bytes32 ilk, address urn)
 
 for all
@@ -9778,11 +9738,9 @@ if
   VCallDepth < 1024
   #rangeUInt(256, Rate_i * Art_iu)
   #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
-  (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
 
   // This branch condition distinguishes skim and bail specs
   Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
-
 
 calls
   End.adduu
@@ -9795,7 +9753,7 @@ calls
 
 This one is failing locally as well.
 ```act
-failure skim-H of End
+failure skim-G of End
 interface skim(bytes32 ilk, address urn)
 
 for all
