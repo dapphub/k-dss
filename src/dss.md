@@ -8388,9 +8388,7 @@ iff in range uint48
   TIME + Ttl
 
 iff
-  (bid > Ash and Awe - Ash >= 0) or (bid <= Ash and Awe - bid >= 0)
-  (bid > Ash and Vice - Ash >= 0) or (bid <= Ash and Vice - bid >= 0)
-  (bid > Ash and Debt - Ash >= 0) or (bid <= Ash and Debt - bid >= 0)
+  (bid > Ash and Awe - Ash >= 0 and Vice - Ash >= 0 and Debt - Ash >= 0) or (bid <= Ash and Awe - bid >= 0 and Vice - bid >= 0 and Debt - bid >= 0)
 
 if
   CALLER_ID =/= ACCT_ID
