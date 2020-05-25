@@ -223,6 +223,10 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
   requires #rangeUInt(48, X)
   andBool #rangeAddress(A)
 
+rule A |Int (X *Int pow208) => X *Int pow208 +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
 rule Mask26_32 &Int (Y *Int pow48 +Int X) => Y *Int pow48
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -258,6 +262,10 @@ rule Mask12_32 &Int (Y *Int pow208 +Int (X *Int pow160 +Int A)) => Y *Int pow208
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
+rule Mask12_32 &Int ((X *Int pow208) +Int A) => X *Int pow208
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
 rule B |Int (Y *Int pow208 +Int X *Int pow160) => Y *Int pow208 +Int X *Int pow160 +Int B
   requires #rangeAddress(B)
   andBool #rangeUInt(48, X)
@@ -281,6 +289,10 @@ rule Mask6_12 &Int (Y *Int pow208 +Int ( X *Int pow160 +Int A) ) => Y *Int pow20
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
+
+rule Mask6_12 &Int ((X *Int pow208) +Int A) => (X *Int pow208) +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
 
 rule (Y *Int pow208) |Int (X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160 +Int A
   requires #rangeAddress(A)
