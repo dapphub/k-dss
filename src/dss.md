@@ -8306,7 +8306,6 @@ iff
 iff in range uint256
   Dai_a - bid
   Dai_g + bid
-  Beg * lot
 
 iff in range uint48
   TIME + Ttl
@@ -8382,7 +8381,6 @@ iff
 iff in range uint256
   Dai_a - bid
   Joy + bid
-  Beg * lot
 
 iff in range uint48
   TIME + Ttl
@@ -8401,6 +8399,7 @@ calls
   Flopper.muluu
   Flopper.addu48u48
   Vat.move-diff
+  Vow.Ash
   Vow.kiss
 ```
 
@@ -8439,9 +8438,6 @@ iff
   Lot * #Wad <= maxUInt256
   Beg * lot <= Lot * #Wad
   VCallValue == 0
-
-iff in range uint256
-  Beg * lot
 
 iff in range uint48
   TIME + Ttl
