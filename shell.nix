@@ -20,6 +20,7 @@ stdenv.mkDerivation {
     parallel
     wget
     zip
+    zstd
     pkgs-6ec8fe0.z3
   ];
   shellHook = ''
