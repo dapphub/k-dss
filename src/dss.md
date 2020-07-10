@@ -8967,9 +8967,6 @@ iff
 
     Ward == 1
     VCallValue == 0
-
-gas
-    #if ( ( Live ==K 0 ) orBool (notBool ( Junk_1 ==K Live ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vow ==K CALLER_ID ) orBool (notBool ( Junk_2 ==K Vow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Vow ==K CALLER_ID ) orBool (notBool ( Junk_2 ==K Vow ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7951 )
 ```
 
 ```act
