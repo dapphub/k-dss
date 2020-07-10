@@ -758,9 +758,6 @@ calls
 
     Vat.subuu
     Vat.adduu
-
-gas
-    #if ( ( Gem_src ==K ( Gem_src -Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_src ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Gem_dst ==K ( Gem_dst +Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K Gem_dst ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Gem_dst ==K ( Gem_dst +Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K Gem_dst ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9907 )
 ```
 
 ```act
@@ -795,9 +792,6 @@ calls
 
     Vat.subuu
     Vat.adduu
-
-gas
-    #if ( ( Gem_src ==K ( Gem_src -Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_src ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Gem_src -Int ABI_wad ) ==K Gem_src ) orBool (notBool ( Junk_1 ==K ( Gem_src -Int ABI_wad ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( ( Gem_src -Int ABI_wad ) ==K Gem_src ) orBool (notBool ( Junk_1 ==K ( Gem_src -Int ABI_wad ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9907 )
 ```
 
 #### transferring dai balances
