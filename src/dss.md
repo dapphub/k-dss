@@ -29,6 +29,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1236
 ```
 
 #### allowances
@@ -50,6 +53,9 @@ iff
     VCallValue == 0
 
 returns Can
+
+gas
+    1313
 ```
 
 #### collateral type data
@@ -81,6 +87,9 @@ iff
     VCallValue == 0
 
 returns Ilk_Art : Ilk_rate : Ilk_spot : Ilk_line : Ilk_dust
+
+gas
+    4594
 ```
 
 #### `urn` data
@@ -106,6 +115,9 @@ iff
     VCallValue == 0
 
 returns Ink_iu : Art_iu
+
+gas
+    2153
 ```
 
 #### internal unencumbered collateral balances
@@ -129,6 +141,9 @@ iff
     VCallValue == 0
 
 returns Gem
+
+gas
+    1352
 ```
 
 #### internal dai balances
@@ -152,6 +167,9 @@ iff
     VCallValue == 0
 
 returns Rad
+
+gas
+    1236
 ```
 
 #### internal sin balances
@@ -175,6 +193,9 @@ iff
     VCallValue == 0
 
 returns Rad
+
+gas
+    1235
 ```
 
 #### total debt
@@ -196,6 +217,9 @@ iff
     VCallValue == 0
 
 returns Debt
+
+gas
+    1052
 ```
 
 #### total bad debt
@@ -217,6 +241,9 @@ iff
     VCallValue == 0
 
 returns Vice
+
+gas
+    1095
 ```
 
 #### debt ceiling
@@ -238,6 +265,9 @@ iff
     VCallValue == 0
 
 returns Line
+
+gas
+    1116
 ```
 
 #### system liveness flag
@@ -259,6 +289,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1095
 ```
 
 ### Lemmas
@@ -280,6 +313,9 @@ iff in range uint256
 if
 
    #sizeWordStack(WS) <= 1015
+
+gas
+    (#if ( ( 0 <=Int ABI_y ) andBool ( #unsigned(ABI_y) <=Int 0 ) ) #then ( 114 ) #else ( 128 ) #fi)
 ```
 
 ```act
@@ -297,6 +333,9 @@ iff in range uint256
 if
 
     #sizeWordStack(WS) <= 1015
+
+gas
+    (#if ( ( ABI_y <=Int 0 ) andBool ( 0 <=Int ABI_y ) ) #then ( 114 ) #else ( 128 ) #fi)
 ```
 
 ```act
@@ -316,7 +355,11 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    (#if ( ABI_y ==K 0 ) #then ( 96 ) #else ( 132 ) #fi)
 ```
+
 ```act
 behaviour adduu of Vat
 interface add(uint256 x, uint256 y) internal
@@ -333,6 +376,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -351,8 +397,10 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
-```
 
+gas
+    54
+```
 
 ```act
 behaviour muluu of Vat
@@ -370,6 +418,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    (#if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi)
 ```
 
 ### Mutators
@@ -397,6 +448,9 @@ iff
 
     VCallValue == 0
     May == 1
+
+gas
+    (#if ( ( Lives ==K 0 ) orBool (notBool ( Junk_1 ==K Lives ) ) ) #then 0 #else 4200 #fi) +Int 6245
 ```
 
 
@@ -430,6 +484,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7293
 ```
 
 ```act
@@ -455,6 +512,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    7293
 ```
 
 ```act
@@ -482,6 +542,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 7248
 ```
 
 ```act
@@ -508,6 +571,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 7248
 ```
 
 ```act
@@ -521,6 +587,9 @@ storage
 iff
 
     VCallValue == 0
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_1 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_1 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 5624
 ```
 
 ```act
@@ -534,6 +603,9 @@ storage
 iff
 
     VCallValue == 0
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_1 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 5601
 ```
 
 #### initialising an `ilk`
@@ -561,6 +633,9 @@ iff
     // act: `Rate` is `. ? : not` zero
     Rate == 0
     VCallValue == 0
+
+gas
+    #if (notBool ( Junk_1 ==K 0 ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool ( Junk_1 ==K 0 ) ) #then 15000 #else 0 #fi) +Int 7387
 ```
 
 #### setting the debt ceiling
@@ -589,6 +664,9 @@ iff
     Live == 1
     what == #string2Word("Line")
     VCallValue == 0
+
+gas
+    #if ( ( Lime ==K ABI_data ) orBool (notBool ( Junk_1 ==K Lime ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Lime ==K ABI_data ) orBool (notBool ( Junk_1 ==K Lime ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7241
 ```
 
 #### setting `Ilk` data
@@ -653,6 +731,9 @@ iff in range uint256
 calls
 
     Vat.addui
+
+gas
+    #if ( ( 0 <=Int ABI_wad ) andBool ( #unsigned(ABI_wad) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Gem ==K ( Gem +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Gem ==K ( Gem +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7670
 ```
 
 #### moving unencumbered collateral
@@ -692,6 +773,9 @@ calls
 
     Vat.subuu
     Vat.adduu
+
+gas
+    #if ( ( Gem_src ==K ( Gem_src -Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_src ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Gem_dst ==K ( Gem_dst +Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K Gem_dst ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Gem_dst ==K ( Gem_dst +Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K Gem_dst ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9907 )
 ```
 
 ```act
@@ -726,6 +810,9 @@ calls
 
     Vat.subuu
     Vat.adduu
+
+gas
+    #if ( ( Gem_src ==K ( Gem_src -Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_src ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Gem_src -Int ABI_wad ) ==K Gem_src ) orBool (notBool ( Junk_1 ==K ( Gem_src -Int ABI_wad ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( ( Gem_src -Int ABI_wad ) ==K Gem_src ) orBool (notBool ( Junk_1 ==K ( Gem_src -Int ABI_wad ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9907 )
 ```
 
 #### transferring dai balances
@@ -765,6 +852,9 @@ calls
 
   Vat.adduu
   Vat.subuu
+
+gas
+    #if ( ( Dai_src ==K ( Dai_src -Int ABI_rad ) ) orBool (notBool ( Junk_1 ==K Dai_src ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_dst ==K ( Dai_dst +Int ABI_rad ) ) orBool (notBool ( Junk_2 ==K Dai_dst ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Dai_dst ==K ( Dai_dst +Int ABI_rad ) ) orBool (notBool ( Junk_2 ==K Dai_dst ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9543 )
 ```
 
 ```act
@@ -799,6 +889,9 @@ calls
 
     Vat.subuu
     Vat.adduu
+
+gas
+    #if ( ( Dai_src ==K ( Dai_src -Int ABI_rad ) ) orBool (notBool ( Junk_1 ==K Dai_src ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Dai_src -Int ABI_rad ) ==K Dai_src ) orBool (notBool ( Junk_1 ==K ( Dai_src -Int ABI_rad ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( ( Dai_src -Int ABI_rad ) ==K Dai_src ) orBool (notBool ( Junk_1 ==K ( Dai_src -Int ABI_rad ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9543 )
 ```
 
 #### administering a position
@@ -888,6 +981,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( ( Urn_art +Int ABI_dart ) ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_13 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_13 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_13 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Gem_iv ==K ( Gem_iv -Int ABI_dink ) ) orBool (notBool ( Junk_11 ==K Gem_iv ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_11 ==K 0 ) andBool (notBool ( ( Gem_iv ==K ( Gem_iv -Int ABI_dink ) ) orBool (notBool ( Junk_11 ==K Gem_iv ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Dai_w ==K ( Dai_w +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_12 ==K Dai_w ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_12 ==K 0 ) andBool (notBool ( ( Dai_w ==K ( Dai_w +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_12 ==K Dai_w ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_8 ==K Urn_ink ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_8 ==K Urn_ink ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_9 ==K Urn_art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_9 ==K Urn_art ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_10 ==K Ilk_Art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_10 ==K Ilk_Art ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30553 ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -965,6 +1061,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( Urn_art ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Gem_iv ==K ( Gem_iv -Int ABI_dink ) ) orBool (notBool ( Junk_11 ==K Gem_iv ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_11 ==K 0 ) andBool (notBool ( ( Gem_iv ==K ( Gem_iv -Int ABI_dink ) ) orBool (notBool ( Junk_11 ==K Gem_iv ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_8 ==K Urn_ink ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_8 ==K Urn_ink ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30461 ) ) ) )
 ```
 
 ```act
@@ -1046,6 +1145,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( ( Urn_art +Int ABI_dart ) ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_13 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_13 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_13 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_w ==K ( Dai_w +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_12 ==K Dai_w ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_12 ==K 0 ) andBool (notBool ( ( Dai_w ==K ( Dai_w +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_12 ==K Dai_w ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_9 ==K Urn_art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_9 ==K Urn_art ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_10 ==K Ilk_Art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_10 ==K Ilk_Art ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30525 ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -1118,6 +1220,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( Urn_art ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int 30433
 ```
 
 ```act
@@ -1195,6 +1300,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( ( Urn_art +Int ABI_dart ) ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_11 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_11 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_11 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Gem_iu ==K ( Gem_iu -Int ABI_dink ) ) orBool (notBool ( Junk_9 ==K Gem_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Gem_iu ==K ( Gem_iu -Int ABI_dink ) ) orBool (notBool ( Junk_9 ==K Gem_iu ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_10 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_10 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_6 ==K Urn_ink ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_6 ==K Urn_ink ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_7 ==K Urn_art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_7 ==K Urn_art ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_8 ==K Ilk_Art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_8 ==K Ilk_Art ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30553 ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -1268,6 +1376,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( Urn_art ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Gem_iu ==K ( Gem_iu -Int ABI_dink ) ) orBool (notBool ( Junk_9 ==K Gem_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Gem_iu ==K ( Gem_iu -Int ABI_dink ) ) orBool (notBool ( Junk_9 ==K Gem_iu ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_6 ==K Urn_ink ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Urn_ink ==K ( Urn_ink +Int ABI_dink ) ) orBool (notBool ( Junk_6 ==K Urn_ink ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30461 ) ) ) )
 ```
 
 ```act
@@ -1343,6 +1454,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( ( Urn_art +Int ABI_dart ) ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_11 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_11 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_11 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_10 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ( Ilk_rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_10 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_7 ==K Urn_art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Urn_art ==K ( Urn_art +Int ABI_dart ) ) orBool (notBool ( Junk_7 ==K Urn_art ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_8 ==K Ilk_Art ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Ilk_Art ==K ( Ilk_Art +Int ABI_dart ) ) orBool (notBool ( Junk_8 ==K Ilk_Art ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30525 ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -1412,6 +1526,9 @@ calls
     Vat.subui
     Vat.mului
     Vat.muluu
+
+gas
+    #if ( Urn_art ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Ilk_spot ==K 0 ) #then 0 #else 52 #fi) +Int 30433
 ```
 
 #### forking a position
@@ -1474,6 +1591,9 @@ calls
     Vat.addui
     Vat.subui
     Vat.muluu
+
+gas
+    #if ( ( ABI_dink <=Int 0 ) andBool ( 0 <=Int ABI_dink ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Ink_u ==K ( Ink_u -Int ABI_dink ) ) orBool (notBool ( Junk_5 ==K Ink_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Ink_u ==K ( Ink_u -Int ABI_dink ) ) orBool (notBool ( Junk_5 ==K Ink_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ABI_dart <=Int 0 ) andBool ( 0 <=Int ABI_dart ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_u ==K ( Art_u -Int ABI_dart ) ) orBool (notBool ( Junk_6 ==K Art_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Art_u ==K ( Art_u -Int ABI_dart ) ) orBool (notBool ( Junk_6 ==K Art_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ABI_dink ) andBool ( #unsigned(ABI_dink) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Ink_v ==K ( Ink_v +Int ABI_dink ) ) orBool (notBool ( Junk_7 ==K Ink_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Ink_v ==K ( Ink_v +Int ABI_dink ) ) orBool (notBool ( Junk_7 ==K Ink_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ABI_dart ) andBool ( #unsigned(ABI_dart) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_v ==K ( Art_v +Int ABI_dart ) ) orBool (notBool ( Junk_8 ==K Art_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Art_v ==K ( Art_v +Int ABI_dart ) ) orBool (notBool ( Junk_8 ==K Art_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Rate ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Rate ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Spot ==K 0 ) #then 0 #else 52 #fi) +Int 24794 ) ) ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -1523,6 +1643,9 @@ calls
     Vat.addui
     Vat.subui
     Vat.muluu
+
+gas
+    #if ( ( ABI_dink <=Int 0 ) andBool ( 0 <=Int ABI_dink ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Ink_u ==K ( Ink_u -Int ABI_dink ) ) orBool (notBool ( Junk_4 ==K Ink_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Ink_u ==K ( Ink_u -Int ABI_dink ) ) orBool (notBool ( Junk_4 ==K Ink_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ABI_dart <=Int 0 ) andBool ( 0 <=Int ABI_dart ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_u ==K ( Art_u -Int ABI_dart ) ) orBool (notBool ( Junk_5 ==K Art_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Art_u ==K ( Art_u -Int ABI_dart ) ) orBool (notBool ( Junk_5 ==K Art_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ABI_dink ) andBool ( #unsigned(ABI_dink) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( ( Ink_u -Int ABI_dink ) ==K Ink_u ) orBool (notBool ( Junk_4 ==K ( Ink_u -Int ABI_dink ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( ( Ink_u -Int ABI_dink ) ==K Ink_u ) orBool (notBool ( Junk_4 ==K ( Ink_u -Int ABI_dink ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ABI_dart ) andBool ( #unsigned(ABI_dart) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( ( Art_u -Int ABI_dart ) ==K Art_u ) orBool (notBool ( Junk_5 ==K ( Art_u -Int ABI_dart ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( ( Art_u -Int ABI_dart ) ==K Art_u ) orBool (notBool ( Junk_5 ==K ( Art_u -Int ABI_dart ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Rate ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Rate ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Spot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Spot ==K 0 ) #then 0 #else 52 #fi) +Int 24794 ) ) ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 #### confiscating a position
@@ -1580,6 +1703,9 @@ calls
     Vat.mului
     Vat.addui
     Vat.subui
+
+gas
+    #if ( ( 0 <=Int ABI_dink ) andBool ( #unsigned(ABI_dink) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Ink_iu ==K ( Ink_iu +Int ABI_dink ) ) orBool (notBool ( Junk_3 ==K Ink_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Ink_iu ==K ( Ink_iu +Int ABI_dink ) ) orBool (notBool ( Junk_3 ==K Ink_iu ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ABI_dart ) andBool ( #unsigned(ABI_dart) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_iu ==K ( Art_iu +Int ABI_dart ) ) orBool (notBool ( Junk_4 ==K Art_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Art_iu ==K ( Art_iu +Int ABI_dart ) ) orBool (notBool ( Junk_4 ==K Art_iu ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ABI_dart ) andBool ( #unsigned(ABI_dart) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_i ==K ( Art_i +Int ABI_dart ) ) orBool (notBool ( Junk_1 ==K Art_i ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Art_i ==K ( Art_i +Int ABI_dart ) ) orBool (notBool ( Junk_1 ==K Art_i ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ABI_dart ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( ABI_dink <=Int 0 ) andBool ( 0 <=Int ABI_dink ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Gem_iv ==K ( Gem_iv -Int ABI_dink ) ) orBool (notBool ( Junk_5 ==K Gem_iv ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Gem_iv ==K ( Gem_iv -Int ABI_dink ) ) orBool (notBool ( Junk_5 ==K Gem_iv ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( Rate *Int ABI_dart ) <=Int 0 ) andBool ( 0 <=Int ( Rate *Int ABI_dart ) ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Sin_w ==K ( Sin_w -Int ( Rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_6 ==K Sin_w ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Sin_w ==K ( Sin_w -Int ( Rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_6 ==K Sin_w ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( Rate *Int ABI_dart ) <=Int 0 ) andBool ( 0 <=Int ( Rate *Int ABI_dart ) ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int ( Rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_7 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Vice ==K ( Vice -Int ( Rate *Int ABI_dart ) ) ) orBool (notBool ( Junk_7 ==K Vice ) ) ) ) ) #then 15000 #else 0 #fi) +Int 18033 ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 #### annihilating system debt and surplus
@@ -1618,6 +1744,9 @@ iff in range uint256
 calls
 
     Vat.subuu
+
+gas
+    #if ( ( Sin ==K ( Sin -Int ABI_rad ) ) orBool (notBool ( Junk_1 ==K Sin ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai ==K ( Dai -Int ABI_rad ) ) orBool (notBool ( Junk_0 ==K Dai ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int ABI_rad ) ) orBool (notBool ( Junk_3 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Debt ==K ( Debt -Int ABI_rad ) ) orBool (notBool ( Junk_2 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int 11816 ) )
 ```
 #### Creating system debt and surplus
 
@@ -1657,6 +1786,9 @@ iff in range uint256
 calls
 
     Vat.adduu
+
+gas
+    #if ( ( Sin_u ==K ( Sin_u +Int ABI_rad ) ) orBool (notBool ( Junk_1 ==K Sin_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Sin_u ==K ( Sin_u +Int ABI_rad ) ) orBool (notBool ( Junk_1 ==K Sin_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Dai_v ==K ( Dai_v +Int ABI_rad ) ) orBool (notBool ( Junk_2 ==K Dai_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Dai_v ==K ( Dai_v +Int ABI_rad ) ) orBool (notBool ( Junk_2 ==K Dai_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Vice ==K ( Vice +Int ABI_rad ) ) orBool (notBool ( Junk_4 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Vice ==K ( Vice +Int ABI_rad ) ) orBool (notBool ( Junk_4 ==K Vice ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int ABI_rad ) ) orBool (notBool ( Junk_3 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int ABI_rad ) ) orBool (notBool ( Junk_3 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int 12764 ) ) ) ) ) )
 ```
 
 #### applying interest to an `ilk`
@@ -1705,6 +1837,9 @@ calls
 
     Vat.addui
     Vat.mului
+
+gas
+    #if ( ( 0 <=Int ABI_rate ) andBool ( #unsigned(ABI_rate) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Rate_i ==K ( Rate_i +Int ABI_rate ) ) orBool (notBool ( Junk_1 ==K Rate_i ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Rate_i ==K ( Rate_i +Int ABI_rate ) ) orBool (notBool ( Junk_1 ==K Rate_i ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ABI_rate ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( 0 <=Int ( Art_i *Int ABI_rate ) ) andBool ( #unsigned(( Art_i *Int ABI_rate )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ( Art_i *Int ABI_rate ) ) ) orBool (notBool ( Junk_3 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ( Art_i *Int ABI_rate ) ) ) orBool (notBool ( Junk_3 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ( Art_i *Int ABI_rate ) ) andBool ( #unsigned(( Art_i *Int ABI_rate )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int ( Art_i *Int ABI_rate ) ) ) orBool (notBool ( Junk_4 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int ( Art_i *Int ABI_rate ) ) ) orBool (notBool ( Junk_4 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int 12932 ) ) ) ) ) ) ) )
 ```
 
 # Dai
@@ -1732,6 +1867,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1257
 ```
 
 ```act
@@ -1751,6 +1889,9 @@ iff
     VCallValue == 0
 
 returns Allowed
+
+gas
+    1377
 ```
 
 ```act
@@ -1770,6 +1911,9 @@ iff
     VCallValue == 0
 
 returns Balance
+
+gas
+    1302
 ```
 
 ```act
@@ -1789,6 +1933,9 @@ iff
     VCallValue == 0
 
 returns Supply
+
+gas
+    1073
 ```
 
 ```act
@@ -1808,6 +1955,9 @@ iff
     VCallValue == 0
 
 returns Nonce
+
+gas
+    1192
 ```
 
 ```act
@@ -1819,6 +1969,9 @@ iff
     VCallValue == 0
 
 returns 18
+
+gas
+    240
 ```
 
 ```act
@@ -1830,6 +1983,9 @@ iff
     VCallValue == 0
 
 returnsRaw #asByteStackInWidthaux(32, 31, 32, #enc(#string("Dai Stablecoin")))
+
+gas
+    629
 ```
 
 ```act
@@ -1841,6 +1997,9 @@ iff
     VCallValue == 0
 
 returnsRaw #asByteStackInWidthaux(32, 31, 32, #enc(#string("1")))
+
+gas
+    694
 ```
 
 ```act
@@ -1852,6 +2011,9 @@ iff
     VCallValue == 0
 
 returnsRaw #asByteStackInWidthaux(32, 31, 32, #enc(#string("DAI")))
+
+gas
+    672
 ```
 
 ```act
@@ -1863,6 +2025,9 @@ iff
     VCallValue == 0
 
 returns keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)"))
+
+gas
+    323
 ```
 
 ```act
@@ -1882,6 +2047,9 @@ iff
     VCallValue == 0
 
 returns Dom
+
+gas
+    1050
 ```
 
 ### Mutators
@@ -1913,6 +2081,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6487
 ```
 
 ```act
@@ -1935,6 +2106,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6487
 ```
 
 ```act
@@ -1959,6 +2133,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6465
 ```
 
 ```act
@@ -1982,6 +2159,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6465
 ```
 
 ```act
@@ -2000,6 +2180,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -2018,6 +2201,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -2052,6 +2238,9 @@ calls
 
     Dai.adduu
     Dai.subuu
+
+gas
+    #if ( ( SrcBal ==K ( SrcBal -Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K SrcBal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( DstBal ==K ( DstBal +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K DstBal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( DstBal ==K ( DstBal +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K DstBal ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6974 )
 ```
 
 ```act
@@ -2084,6 +2273,9 @@ calls
 
     Dai.adduu
     Dai.subuu
+
+gas
+    #if ( ( SrcBal ==K ( SrcBal -Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K SrcBal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( SrcBal -Int ABI_wad ) ==K SrcBal ) orBool (notBool ( Junk_0 ==K ( SrcBal -Int ABI_wad ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_0 ==K 0 ) andBool (notBool ( ( ( SrcBal -Int ABI_wad ) ==K SrcBal ) orBool (notBool ( Junk_0 ==K ( SrcBal -Int ABI_wad ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6974 )
 ```
 
 ```act
@@ -2183,6 +2375,9 @@ if
 calls
 
     Dai.transferFrom-diff
+
+gas
+    #if ( ( SrcBal ==K ( SrcBal -Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K SrcBal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( DstBal ==K ( DstBal +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K DstBal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( DstBal ==K ( DstBal +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K DstBal ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6923 )
 ```
 
 ```act
@@ -2279,6 +2474,9 @@ iff
 calls
 
     Dai.adduu
+
+gas
+    #if ( ( DstBal ==K ( DstBal +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K DstBal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( DstBal ==K ( DstBal +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K DstBal ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( TotalSupply ==K ( TotalSupply +Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K TotalSupply ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( TotalSupply ==K ( TotalSupply +Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K TotalSupply ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6645 ) )
 ```
 
 ```act
@@ -2329,6 +2527,9 @@ iff
     VCallValue == 0
 
 returns 1
+
+gas
+    #if ( ( Allowed ==K ABI_wad ) orBool (notBool ( Junk_0 ==K Allowed ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_0 ==K 0 ) andBool (notBool ( ( Allowed ==K ABI_wad ) orBool (notBool ( Junk_0 ==K Allowed ) ) ) ) ) #then 15000 #else 0 #fi) +Int 3214
 ```
 
 ```act
@@ -2390,6 +2591,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1235
 ```
 
 #### `ilk` data
@@ -2415,6 +2619,9 @@ iff
     VCallValue == 0
 
 returns Duty : Rho
+
+gas
+    2119
 ```
 
 #### `vat` address
@@ -2436,6 +2643,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1098
 ```
 
 #### `vow` address
@@ -2457,6 +2667,9 @@ iff
     VCallValue == 0
 
 returns Vow
+
+gas
+    1053
 ```
 
 #### global interest rate
@@ -2478,6 +2691,9 @@ iff
     VCallValue == 0
 
 returns Base
+
+gas
+    1116
 ```
 
 
@@ -2507,6 +2723,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6398
 ```
 
 ```act
@@ -2529,6 +2748,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6398
 ```
 
 ```act
@@ -2553,6 +2775,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6420
 ```
 
 ```act
@@ -2576,6 +2801,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6420
 ```
 
 #### initialising an `ilk`
@@ -2605,6 +2833,9 @@ iff
     Duty == 0
     VCallValue == 0
 
+gas
+    #if (notBool ( Junk_1 ==K 0 ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool ( Junk_1 ==K 0 ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Rho ==K TIME ) orBool (notBool ( Junk_2 ==K Rho ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Rho ==K TIME ) orBool (notBool ( Junk_2 ==K Rho ) ) ) ) ) #then 15000 #else 0 #fi) +Int 8092 ) )
+
 ```
 
 #### setting `ilk` data
@@ -2633,6 +2864,9 @@ iff
     what == #string2Word("duty")
     TIME == Rho
     VCallValue == 0
+
+gas
+    #if ( ( Duty ==K ABI_data ) orBool (notBool ( Junk_1 ==K Duty ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Duty ==K ABI_data ) orBool (notBool ( Junk_1 ==K Duty ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7366
 ```
 
 #### setting the base rate
@@ -2657,6 +2891,9 @@ iff
     May == 1
     what == #string2Word("base")
     VCallValue == 0
+
+gas
+    #if ( ( Base ==K ABI_data ) orBool (notBool ( Junk_1 ==K Base ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Base ==K ABI_data ) orBool (notBool ( Junk_1 ==K Base ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6369
 ```
 
 #### setting the `vow`
@@ -2681,6 +2918,9 @@ iff
     May == 1
     VCallValue == 0
     what == #string2Word("vow")
+
+gas
+    #if ( ( Vow ==K ABI_data ) orBool (notBool ( Junk_1 ==K Vow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Vow ==K ABI_data ) orBool (notBool ( Junk_1 ==K Vow ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7293
 ```
 
 #### updating the rates
@@ -2746,14 +2986,14 @@ iff in range int256
     Art_i
     Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
-gas
+// gas
 
-    (#if ( Rate ==K 0 ) #then ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 38784 ) ) #else ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( ( 0 <=Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ==K true ) andBool ( ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 38820 ) ) ) ) ) ) ) ) #fi)
+    // (#if ( Rate ==K 0 ) #then ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 38784 ) ) #else ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( ( 0 <=Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ==K true ) andBool ( ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 38820 ) ) ) ) ) ) ) ) #fi)
 
 
-fail_gas
+// fail_gas
 
-  300000000 + ((#if ( (Base + Duty) ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
+  // 300000000 + ((#if ( (Base + Duty) ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
 
 if
 
@@ -2789,6 +3029,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 This is the coinductive lemma.
@@ -2906,6 +3149,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -2924,7 +3170,11 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
+
 ```act
 behaviour muluu of Pot
 interface mul(uint256 x, uint256 y) internal
@@ -2940,6 +3190,9 @@ iff in range uint256
 if
 
     #sizeWordStack(WS) <= 1000
+
+gas
+    (#if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi)
 ```
 
 ```act
@@ -2958,6 +3211,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    (#if ( ABI_y ==K 0 ) #then ( 127 ) #else ( 179 ) #fi)
 ```
 
 
@@ -2982,6 +3238,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1235
 ```
 
 #### deposit balances
@@ -3003,6 +3262,9 @@ iff
     VCallValue == 0
 
 returns Pie_usr
+
+gas
+    1215
 ```
 
 #### total deposits
@@ -3024,6 +3286,9 @@ iff
     VCallValue == 0
 
 returns Pie_tot
+
+gas
+    1028
 ```
 
 #### savings interest rate
@@ -3045,6 +3310,9 @@ iff
     VCallValue == 0
 
 returns Dsr
+
+gas
+    1072
 ```
 
 #### savings interest rate accumulator
@@ -3066,6 +3334,9 @@ iff
     VCallValue == 0
 
 returns Chi
+
+gas
+    1093
 ```
 
 #### `Vat` address
@@ -3087,6 +3358,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1098
 ```
 
 #### `Vow` address
@@ -3108,6 +3382,9 @@ iff
     VCallValue == 0
 
 returns Vow
+
+gas
+    1142
 ```
 
 #### last `drip` time
@@ -3129,6 +3406,9 @@ iff
     VCallValue == 0
 
 returns Rho
+
+gas
+    1073
 ```
 
 #### system liveness flag
@@ -3150,6 +3430,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1094
 ```
 
 ### Mutators
@@ -3178,6 +3461,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6399
 ```
 
 ```act
@@ -3200,6 +3486,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6399
 ```
 
 ```act
@@ -3224,6 +3513,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 ```act
@@ -3247,6 +3539,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 #### setting the savings rate
@@ -3276,6 +3571,9 @@ iff
     what == #string2Word("dsr")
     Rho == TIME
     VCallValue == 0
+
+gas
+    #if ( ( Dsr ==K ABI_data ) orBool (notBool ( Junk_1 ==K Dsr ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Dsr ==K ABI_data ) orBool (notBool ( Junk_1 ==K Dsr ) ) ) ) ) #then 15000 #else 0 #fi) +Int 8081
 ```
 
 #### setting the `Vow` address
@@ -3300,6 +3598,9 @@ iff
     May == 1
     what == #string2Word("vow")
     VCallValue == 0
+
+gas
+    #if ( ( Vow ==K ABI_addr ) orBool (notBool ( Junk_1 ==K Vow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Vow ==K ABI_addr ) orBool (notBool ( Junk_1 ==K Vow ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7315
 ```
 
 #### freezing `dsr` upon global settlement
@@ -3325,6 +3626,9 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+
+gas
+    #if ( ( Live ==K 0 ) orBool (notBool ( Junk_2 ==K Live ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dsr ==K 1000000000000000000000000000 ) orBool (notBool ( Junk_1 ==K Dsr ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Dsr ==K 1000000000000000000000000000 ) orBool (notBool ( Junk_1 ==K Dsr ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7055 )
 ```
 
 #### `rpow`
@@ -3438,13 +3742,13 @@ iff
     VCallValue == 0
     VCallDepth < 1024
 
-gas
+// gas
 
-    ((#if ( Dsr ==K 0 ) #then ( 82 +Int #if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1) *Int 172) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ((num0((TIME -Int Rho)) *Int 172) +Int (447 +Int ((num1((TIME -Int Rho)) -Int 1) *Int 287))) #fi) #fi) #fi) +Int ((#if ( Chi ==K 0 ) #then 0 #else 52 #fi) +Int ((#if ( ( Rho ==K 0 ) andBool ( notBool ( ( TIME ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi) /Int #Ray) -Int Chi ) ==K 0 ) #then 0 #else 52 #fi) +Int ((#if ( ( Sin ==K 0 ) andBool ( notBool ( ( ( Sin +Int ( Pie *Int ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( Dai ==K 0 ) andBool ( notBool ( ( ( Dai +Int ( Pie *Int ( ( ( #rpow( #Ray, Dsr, ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( Vice ==K 0 ) andBool ( notBool ( ( ( Vice +Int ( Pie *Int ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( Debt ==K 0 ) andBool ( notBool ( ( ( Debt +Int ( Pie *Int ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int 44867))))))))
+    // ((#if ( Dsr ==K 0 ) #then ( 82 +Int #if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1) *Int 172) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ((num0((TIME -Int Rho)) *Int 172) +Int (447 +Int ((num1((TIME -Int Rho)) -Int 1) *Int 287))) #fi) #fi) #fi) +Int ((#if ( Chi ==K 0 ) #then 0 #else 52 #fi) +Int ((#if ( ( Rho ==K 0 ) andBool ( notBool ( ( TIME ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi) /Int #Ray) -Int Chi ) ==K 0 ) #then 0 #else 52 #fi) +Int ((#if ( ( Sin ==K 0 ) andBool ( notBool ( ( ( Sin +Int ( Pie *Int ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( Dai ==K 0 ) andBool ( notBool ( ( ( Dai +Int ( Pie *Int ( ( ( #rpow( #Ray, Dsr, ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( Vice ==K 0 ) andBool ( notBool ( ( ( Vice +Int ( Pie *Int ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int ((#if ( ( Debt ==K 0 ) andBool ( notBool ( ( ( Debt +Int ( Pie *Int ( ( ( #rpow( #Ray , Dsr , ( TIME -Int Rho ) , #Ray ) *Int Chi ) /Int #Ray ) -Int Chi ) ) ) ==K 0 ) ) ) ) #then 15000 #else 0 #fi) +Int 44867))))))))
 
-fail_gas
+// fail_gas
 
-  300000000 + ((#if ( Dsr ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
+  // 300000000 + ((#if ( Dsr ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
 
 if
 
@@ -3531,6 +3835,9 @@ calls
     Pot.adduu
     Pot.muluu
     Vat.move-diff
+
+gas
+    #if ( ( Pie_u ==K ( Pie_u +Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Pie_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_0 ==K 0 ) andBool (notBool ( ( Pie_u ==K ( Pie_u +Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Pie_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Pie_tot ==K ( Pie_tot +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Pie_tot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Pie_tot ==K ( Pie_tot +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Pie_tot ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ABI_wad ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u -Int ( Chi *Int ABI_wad ) ) ) orBool (notBool ( Junk_6 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_p ==K ( Dai_p +Int ( Chi *Int ABI_wad ) ) ) orBool (notBool ( Junk_7 ==K Dai_p ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Dai_p ==K ( Dai_p +Int ( Chi *Int ABI_wad ) ) ) orBool (notBool ( Junk_7 ==K Dai_p ) ) ) ) ) #then 15000 #else 0 #fi) +Int 21863 ) ) ) ) ) )
 ```
 
 ```act
@@ -3580,6 +3887,9 @@ calls
     Pot.subuu
     Pot.muluu
     Vat.move-diff
+
+gas
+    #if ( ( Pie_u ==K ( Pie_u -Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Pie_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Pie_tot ==K ( Pie_tot -Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Pie_tot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ABI_wad ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_p ==K ( Dai_p -Int ( Chi *Int ABI_wad ) ) ) orBool (notBool ( Junk_6 ==K Dai_p ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ( Chi *Int ABI_wad ) ) ) orBool (notBool ( Junk_7 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ( Chi *Int ABI_wad ) ) ) orBool (notBool ( Junk_7 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int 21084 ) ) ) )
 ```
 
 # Vow
@@ -3606,6 +3916,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -3624,6 +3937,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -3637,6 +3953,9 @@ stack
 if
 
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_x <=Int ABI_y ) #then ( 49 ) #else ( 59 ) #fi
 ```
 
 ### Accessors
@@ -3660,6 +3979,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1280
 ```
 
 #### getting the `Vat`
@@ -3681,6 +4003,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1187
 ```
 
 #### getting the `Flapper`
@@ -3702,6 +4027,9 @@ iff
     VCallValue == 0
 
 returns Flapper
+
+gas
+    1098
 ```
 
 #### getting the `Flopper`
@@ -3723,6 +4051,9 @@ iff
     VCallValue == 0
 
 returns Flopper
+
+gas
+    1076
 ```
 
 #### getting a `sin` packet
@@ -3744,6 +4075,9 @@ iff
     VCallValue == 0
 
 returns Sin_era
+
+gas
+    1185
 ```
 
 #### getting the `Sin`
@@ -3765,6 +4099,9 @@ iff
     VCallValue == 0
 
 returns Sin
+
+gas
+    1049
 ```
 
 #### getting the `Ash`
@@ -3786,6 +4123,9 @@ iff
     VCallValue == 0
 
 returns Ash
+
+gas
+    1117
 ```
 
 #### getting the `wait`
@@ -3807,6 +4147,9 @@ iff
     VCallValue == 0
 
 returns Wait
+
+gas
+    1072
 ```
 
 #### getting the `dump`
@@ -3828,6 +4171,9 @@ iff
     VCallValue == 0
 
 returns Dump
+
+gas
+    1115
 ```
 
 #### getting the `sump`
@@ -3849,6 +4195,9 @@ iff
     VCallValue == 0
 
 returns Sump
+
+gas
+    1138
 ```
 
 #### getting the `bump`
@@ -3870,6 +4219,9 @@ iff
     VCallValue == 0
 
 returns Bump
+
+gas
+    1116
 ```
 
 #### getting the `hump`
@@ -3891,6 +4243,9 @@ iff
     VCallValue == 0
 
 returns Hump
+
+gas
+    1051
 ```
 
 #### getting the `live` flag
@@ -3912,6 +4267,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1050
 ```
 
 ### Mutators
@@ -3943,6 +4301,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7288
 ```
 
 ```act
@@ -3968,6 +4329,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    7288
 ```
 
 ```act
@@ -3992,6 +4356,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6443
 ```
 
 ```act
@@ -4015,6 +4382,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6443
 ```
 
 #### setting `Vow` parameters
@@ -4181,6 +4551,9 @@ calls
   Vat.dai
   Vat.sin
   Vat.heal
+
+gas
+    #if ( ( Awe ==K ( Awe -Int ABI_rad ) ) orBool (notBool ( Junk_4 ==K Awe ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Joy ==K ( Joy -Int ABI_rad ) ) orBool (notBool ( Junk_3 ==K Joy ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int ABI_rad ) ) orBool (notBool ( Junk_5 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Debt ==K ( Debt -Int ABI_rad ) ) orBool (notBool ( Junk_6 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int 28153 ) )
 ```
 
 ```act
@@ -4228,6 +4601,9 @@ calls
   Vow.subuu
   Vat.dai
   Vat.heal
+
+gas
+    #if ( ( Ash ==K ( Ash -Int ABI_rad ) ) orBool (notBool ( Junk_1 ==K Ash ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Awe ==K ( Awe -Int ABI_rad ) ) orBool (notBool ( Junk_3 ==K Awe ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Joy ==K ( Joy -Int ABI_rad ) ) orBool (notBool ( Junk_2 ==K Joy ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int ABI_rad ) ) orBool (notBool ( Junk_4 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Debt ==K ( Debt -Int ABI_rad ) ) orBool (notBool ( Junk_5 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int 25107 ) ) )
 ```
 
 #### adding to the `sin` queue
@@ -4262,6 +4638,9 @@ iff in range uint256
 calls
 
   Vow.adduu
+
+gas
+    #if ( ( Sin_era ==K ( Sin_era +Int ABI_tab ) ) orBool (notBool ( Junk_1 ==K Sin_era ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Sin_era ==K ( Sin_era +Int ABI_tab ) ) orBool (notBool ( Junk_1 ==K Sin_era ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Sin ==K ( Sin +Int ABI_tab ) ) orBool (notBool ( Junk_2 ==K Sin ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Sin ==K ( Sin +Int ABI_tab ) ) orBool (notBool ( Junk_2 ==K Sin ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9031 ) )
 ```
 
 #### processing `sin` queue
@@ -4297,6 +4676,9 @@ calls
 
   Vow.adduu
   Vow.subuu
+
+gas
+    #if ( ( Sin ==K ( Sin -Int Sin_t ) ) orBool (notBool ( Junk_1 ==K Sin ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Sin_t ==K 0 ) orBool (notBool ( Junk_2 ==K Sin_t ) ) ) #then 0 #else 4200 #fi) +Int 9011
 ```
 
 #### starting a debt auction
@@ -4385,6 +4767,9 @@ calls
   Vat.sin
   Vat.dai
   Flopper.kick
+
+gas
+    #if ( ( Ash ==K ( Ash +Int Sump ) ) orBool (notBool ( Junk_3 ==K Ash ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Ash ==K ( Ash +Int Sump ) ) orBool (notBool ( Junk_3 ==K Ash ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_8 ==K Kicks ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_8 ==K Kicks ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bid ==K Sump ) orBool (notBool ( Junk_10 ==K Bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Bid ==K Sump ) orBool (notBool ( Junk_10 ==K Bid ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Lot ==K Dump ) orBool (notBool ( Junk_11 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_11 ==K 0 ) andBool (notBool ( ( Lot ==K Dump ) orBool (notBool ( Junk_11 ==K Lot ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_12 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_12 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 34287 ) ) ) ) ) ) ) ) ) )
 ```
 
 #### starting a surplus auction
@@ -4480,6 +4865,9 @@ calls
     Flapper.kick
 
 returns 1 + Kicks
+
+gas
+    #if ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_8 ==K Kicks ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_8 ==K Kicks ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bid ==K 0 ) orBool (notBool ( Junk_10 ==K Bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Lot ==K Bump ) orBool (notBool ( Junk_11 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_11 ==K 0 ) andBool (notBool ( ( Lot ==K Bump ) orBool (notBool ( Junk_11 ==K Lot ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_12 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_12 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) orBool (notBool ( Junk_12 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ACCT_ID ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Joy ==K ( Joy -Int Bump ) ) orBool (notBool ( Junk_16 ==K Joy ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_a ==K ( Dai_a +Int Bump ) ) orBool (notBool ( Junk_17 ==K Dai_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_17 ==K 0 ) andBool (notBool ( ( Dai_a ==K ( Dai_a +Int Bump ) ) orBool (notBool ( Junk_17 ==K Dai_a ) ) ) ) ) #then 15000 #else 0 #fi) +Int 47088 ) ) ) ) ) ) ) ) ) )
 ```
 
 #### system lock down
@@ -4572,6 +4960,9 @@ calls
   Vat.heal
   Flapper.cage
   Flopper.cage
+
+gas
+    #if (notBool ( Junk_4 ==K 1 ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Sin ==K 0 ) orBool (notBool ( Junk_5 ==K Sin ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Ash ==K 0 ) orBool (notBool ( Junk_6 ==K Ash ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( FlapLive ==K 0 ) orBool (notBool ( Junk_16 ==K FlapLive ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_f ==K 0 ) orBool (notBool ( Junk_9 ==K Dai_f ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_v ==K ( Dai_v +Int Dai_f ) ) orBool (notBool ( Junk_10 ==K Dai_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Dai_v ==K ( Dai_v +Int Dai_f ) ) orBool (notBool ( Junk_10 ==K Dai_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( FlopLive ==K 0 ) orBool (notBool ( Junk_18 ==K FlopLive ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( FlopVow ==K ACCT_ID ) orBool (notBool ( Junk_19 ==K FlopVow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_19 ==K 0 ) andBool (notBool ( ( FlopVow ==K ACCT_ID ) orBool (notBool ( Junk_19 ==K FlopVow ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Sin_v ==K 0 ) orBool (notBool ( Junk_11 ==K Sin_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Dai_v +Int Dai_f ) ==K ( Dai_v +Int ( Dai_f -Int Sin_v ) ) ) orBool (notBool ( Junk_10 ==K ( Dai_v +Int Dai_f ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int Sin_v ) ) orBool (notBool ( Junk_13 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Debt ==K ( Debt -Int Sin_v ) ) orBool (notBool ( Junk_12 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int 66155 ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -4661,6 +5052,9 @@ calls
   Vat.heal
   Flapper.cage
   Flopper.cage
+
+gas
+    #if (notBool ( Junk_4 ==K 1 ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Sin ==K 0 ) orBool (notBool ( Junk_5 ==K Sin ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Ash ==K 0 ) orBool (notBool ( Junk_6 ==K Ash ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( FlapLive ==K 0 ) orBool (notBool ( Junk_16 ==K FlapLive ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_f ==K 0 ) orBool (notBool ( Junk_9 ==K Dai_f ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_v ==K ( Dai_v +Int Dai_f ) ) orBool (notBool ( Junk_10 ==K Dai_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Dai_v ==K ( Dai_v +Int Dai_f ) ) orBool (notBool ( Junk_10 ==K Dai_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( FlopLive ==K 0 ) orBool (notBool ( Junk_18 ==K FlopLive ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( FlopVow ==K ACCT_ID ) orBool (notBool ( Junk_19 ==K FlopVow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_19 ==K 0 ) andBool (notBool ( ( FlopVow ==K ACCT_ID ) orBool (notBool ( Junk_19 ==K FlopVow ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Sin_v ==K ( Sin_v -Int ( Dai_v +Int Dai_f ) ) ) orBool (notBool ( Junk_11 ==K Sin_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Dai_v +Int Dai_f ) ==K ( Dai_v +Int ( Dai_f -Int ( Dai_v +Int Dai_f ) ) ) ) orBool (notBool ( Junk_10 ==K ( Dai_v +Int Dai_f ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int ( Dai_v +Int Dai_f ) ) ) orBool (notBool ( Junk_13 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Debt ==K ( Debt -Int ( Dai_v +Int Dai_f ) ) ) orBool (notBool ( Junk_12 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int 66145 ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -4751,6 +5145,9 @@ calls
   Vat.heal
   Flapper.cage
   Flopper.cage
+
+gas
+    #if (notBool ( Junk_4 ==K 1 ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Sin ==K 0 ) orBool (notBool ( Junk_5 ==K Sin ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Ash ==K 0 ) orBool (notBool ( Junk_6 ==K Ash ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( FlapLive ==K 0 ) orBool (notBool ( Junk_16 ==K FlapLive ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_f ==K 0 ) orBool (notBool ( Junk_9 ==K Dai_f ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_v ==K ( Dai_v +Int Dai_f ) ) orBool (notBool ( Junk_10 ==K Dai_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Dai_v ==K ( Dai_v +Int Dai_f ) ) orBool (notBool ( Junk_10 ==K Dai_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( FlopLive ==K 0 ) orBool (notBool ( Junk_18 ==K FlopLive ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( FlopVow ==K ACCT_ID ) orBool (notBool ( Junk_19 ==K FlopVow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_19 ==K 0 ) andBool (notBool ( ( FlopVow ==K ACCT_ID ) orBool (notBool ( Junk_19 ==K FlopVow ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( Dai_v +Int Dai_f ) ==K ( Dai_v +Int ( Dai_f -Int ( Dai_v +Int Dai_f ) ) ) ) orBool (notBool ( Junk_11 ==K ( Dai_v +Int Dai_f ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Dai_v +Int Dai_f ) ==K ( Dai_v +Int ( Dai_f -Int ( Dai_v +Int Dai_f ) ) ) ) orBool (notBool ( Junk_10 ==K ( Dai_v +Int Dai_f ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vice ==K ( Vice -Int ( Dai_v +Int Dai_f ) ) ) orBool (notBool ( Junk_13 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Debt ==K ( Debt -Int ( Dai_v +Int Dai_f ) ) ) orBool (notBool ( Junk_12 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int 66145 ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 # Cat
@@ -4780,6 +5177,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1213
 ```
 
 #### `ilk` data
@@ -4805,6 +5205,9 @@ iff
     VCallValue == 0
 
 returns Flip : Chop : Lump
+
+gas
+    2977
 ```
 
 #### liveness
@@ -4826,6 +5229,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1005
 ```
 
 #### `vat` address
@@ -4847,6 +5253,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1076
 ```
 
 #### `vow` address
@@ -4868,6 +5277,9 @@ iff
     VCallValue == 0
 
 returns Vow
+
+gas
+    1120
 ```
 
 ### Mutators
@@ -4896,6 +5308,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6465
 ```
 
 ```act
@@ -4918,6 +5333,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6465
 ```
 
 ```act
@@ -4942,6 +5360,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 ```act
@@ -4965,6 +5386,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 #### setting contract addresses
@@ -4989,6 +5413,9 @@ iff
     May == 1
     VCallValue == 0
     what == #string2Word("vow")
+
+gas
+    #if ( ( Vow ==K ABI_data ) orBool (notBool ( Junk_1 ==K Vow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Vow ==K ABI_data ) orBool (notBool ( Junk_1 ==K Vow ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7271
 ```
 
 #### setting liquidation data
@@ -5056,6 +5483,9 @@ calls
 
   Vat.nope
   Vat.hope
+
+gas
+    #if ( ( Junk_3 ==K 0 ) orBool (notBool ( Junk_5 ==K Junk_3 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Flip ==K ABI_data ) orBool (notBool ( Junk_2 ==K Flip ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Flip ==K ABI_data ) orBool (notBool ( Junk_2 ==K Flip ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Junk_4 ==K 1 ) orBool (notBool ( Junk_6 ==K Junk_4 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Junk_4 ==K 1 ) orBool (notBool ( Junk_6 ==K Junk_4 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 24400 ) ) )
 ```
 
 ```act
@@ -5094,6 +5524,9 @@ calls
 
   Vat.nope
   Vat.hope
+
+gas
+    #if ( ( Junk_3 ==K 0 ) orBool (notBool ( Junk_4 ==K Junk_3 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if (notBool ( Junk_4 ==K 0 ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool ( Junk_4 ==K 0 ) ) #then 15000 #else 0 #fi) +Int 24400 )
 ```
 
 #### liquidating a position
@@ -5113,6 +5546,9 @@ iff in range uint256
 if
 
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 ```act
@@ -5126,6 +5562,9 @@ stack
 if
 
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_x <=Int ABI_y ) #then ( 49 ) #else ( 59 ) #fi
 ```
 
 ```act
@@ -5448,6 +5887,9 @@ storage
 iff
   Ward == 1
   VCallValue == 0
+
+gas
+    (#if ( ( Live ==K 0 ) orBool (notBool ( Junk_1 ==K Live ) ) ) #then 0 #else 4200 #fi) +Int 6307
 ```
 
 ## Flip: liquidation auction
@@ -5469,6 +5911,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1258
 ```
 
 #### bid data
@@ -5502,6 +5947,9 @@ iff
     VCallValue == 0
 
 returns Bid : Lot : Guy : Tic : End : Usr : Gal : Tab
+
+gas
+    7364
 ```
 
 #### cdp engine
@@ -5523,6 +5971,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1143
 ```
 
 #### collateral type
@@ -5544,6 +5995,9 @@ iff
     VCallValue == 0
 
 returns Ilk
+
+gas
+    1027
 ```
 
 #### minimum bid increment
@@ -5565,6 +6019,9 @@ iff
     VCallValue == 0
 
 returns Beg
+
+gas
+    1050
 ```
 
 #### auction time-to-live
@@ -5587,6 +6044,9 @@ iff
     VCallValue == 0
 
 returns Ttl
+
+gas
+    1120
 ```
 
 #### maximum auction duration
@@ -5609,6 +6069,9 @@ iff
     VCallValue == 0
 
 returns Tau
+
+gas
+    1169
 ```
 
 #### kick counter
@@ -5630,6 +6093,9 @@ iff
     VCallValue == 0
 
 returns Kicks
+
+gas
+    1093
 ```
 
 ### Mutators
@@ -5660,6 +6126,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6399
 ```
 
 ```act
@@ -5682,6 +6151,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6399
 ```
 
 ```act
@@ -5706,6 +6178,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6443
 ```
 
 ```act
@@ -5729,6 +6204,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6443
 ```
 
 #### Auction parameters
@@ -5776,6 +6254,9 @@ iff in range uint48
 if
 
     #sizeWordStack(WS) <= 100
+
+gas
+    66
 ```
 
 ```act
@@ -5794,6 +6275,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 ```act
@@ -5868,6 +6352,9 @@ calls
   Vat.flux-diff
 
 returns 1 + Kicks
+
+gas
+    #if ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_4 ==K Kicks ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_4 ==K Kicks ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bid ==K ABI_bid ) orBool (notBool ( Junk_5 ==K Bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Bid ==K ABI_bid ) orBool (notBool ( Junk_5 ==K Bid ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Lot ==K ABI_lot ) orBool (notBool ( Junk_6 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Lot ==K ABI_lot ) orBool (notBool ( Junk_6 ==K Lot ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_7 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_7 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_7 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_7 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Usr ==K ABI_usr ) orBool (notBool ( Junk_8 ==K Usr ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Usr ==K ABI_usr ) orBool (notBool ( Junk_8 ==K Usr ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Gal ==K ABI_gal ) orBool (notBool ( Junk_9 ==K Gal ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Gal ==K ABI_gal ) orBool (notBool ( Junk_9 ==K Gal ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Tab ==K ABI_tab ) orBool (notBool ( Junk_10 ==K Tab ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Tab ==K ABI_tab ) orBool (notBool ( Junk_10 ==K Tab ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Gem_v ==K ( Gem_v -Int ABI_lot ) ) orBool (notBool ( Junk_12 ==K Gem_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Gem_c ==K ( Gem_c +Int ABI_lot ) ) orBool (notBool ( Junk_13 ==K Gem_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_13 ==K 0 ) andBool (notBool ( ( Gem_c ==K ( Gem_c +Int ABI_lot ) ) orBool (notBool ( Junk_13 ==K Gem_c ) ) ) ) ) #then 15000 #else 0 #fi) +Int 30436 ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -5898,6 +6385,9 @@ if
 
 calls
   Flipper.addu48u48
+
+gas
+    #if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) orBool (notBool ( Junk_1 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) orBool (notBool ( Junk_1 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9439
 ```
 
 ```act
@@ -6305,6 +6795,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1235
 ```
 
 #### `vat` address
@@ -6326,6 +6819,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1054
 ```
 
 #### the associated `ilk`
@@ -6347,6 +6843,9 @@ iff
     VCallValue == 0
 
 returns Ilk
+
+gas
+    1093
 ```
 
 #### gem address
@@ -6368,6 +6867,9 @@ iff
     VCallValue == 0
 
 returns Gem
+
+gas
+    1142
 ```
 
 ```act
@@ -6387,6 +6889,9 @@ iff
     VCallValue == 0
 
 returns Dec
+
+gas
+    1049
 ```
 
 ```act
@@ -6406,6 +6911,8 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas 1005
 ```
 
 ### Mutators
@@ -6434,6 +6941,9 @@ iff
 if
 
     usr =/= CALLER_ID
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6421
 ```
 
 ```act
@@ -6456,6 +6966,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6421
 ```
 
 #### revoking authorisation
@@ -6481,6 +6994,9 @@ iff
 
 if
     usr =/= CALLER_ID
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 ```act
@@ -6503,6 +7019,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 #### depositing into the system
@@ -6626,6 +7145,9 @@ if
 calls
   Vat.slip
   DSToken.transfer
+
+gas
+    #if ( ( ABI_wad <=Int 0 ) andBool ( #unsigned(( 0 -Int ABI_wad )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Wad ==K ( Wad -Int ABI_wad ) ) orBool (notBool ( Junk_4 ==K Wad ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Bal_adapter ==K ( Bal_adapter -Int ABI_wad ) ) orBool (notBool ( Junk_5 ==K Bal_adapter ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Bal_usr ==K ( Bal_usr +Int ABI_wad ) ) orBool (notBool ( Junk_6 ==K Bal_usr ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Bal_usr ==K ( Bal_usr +Int ABI_wad ) ) orBool (notBool ( Junk_6 ==K Bal_usr ) ) ) ) ) #then 15000 #else 0 #fi) +Int 26177 ) ) )
 ```
 
 #### disable joining
@@ -6647,6 +7169,9 @@ iff
 
     VCallValue == 0
     May == 1
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6263
 ```
 
 # DaiJoin
@@ -6676,6 +7201,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1213
 ```
 
 #### `vat` address
@@ -6697,6 +7225,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1054
 ```
 
 #### `dai` address
@@ -6718,6 +7249,9 @@ iff
     VCallValue == 0
 
 returns Dai
+
+gas
+    1141
 ```
 
 #### `live` flag
@@ -6739,6 +7273,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1005
 ```
 
 ### Mutators
@@ -6766,6 +7303,9 @@ iff
 if
 
     usr =/= CALLER_ID
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6421
 ```
 
 ```act
@@ -6788,6 +7328,9 @@ iff
 if
 
     usr == CALLER_ID
+
+gas
+    6421
 ```
 
 #### revoking authorisation
@@ -6813,6 +7356,9 @@ iff
 if
 
     usr =/= CALLER_ID
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 ```act
@@ -6835,6 +7381,9 @@ iff
 if
 
     usr == CALLER_ID
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6398
 ```
 
 #### depositing into the system
@@ -6855,6 +7404,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 ```act
@@ -6913,6 +7465,9 @@ calls
     DaiJoin.muluu
     Vat.move-diff
     Dai.burn
+
+gas
+    #if ( ABI_wad ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_a ==K ( Dai_a -Int ( 1000000000000000000000000000 *Int ABI_wad ) ) ) orBool (notBool ( Junk_3 ==K Dai_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ( 1000000000000000000000000000 *Int ABI_wad ) ) ) orBool (notBool ( Junk_4 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ( 1000000000000000000000000000 *Int ABI_wad ) ) ) orBool (notBool ( Junk_4 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( Allowed ==K 115792089237316195423570985008687907853269984665640564039457584007913129639935 ) #then ( (#if ( ( Dai_c ==K ( Dai_c -Int ABI_wad ) ) orBool (notBool ( Junk_5 ==K Dai_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Supply ==K ( Supply -Int ABI_wad ) ) orBool (notBool ( Junk_6 ==K Supply ) ) ) #then 0 #else 4200 #fi) +Int 7746 ) ) #else ( (#if ( ( Allowed ==K ( Allowed -Int ABI_wad ) ) orBool (notBool ( Junk_7 ==K Allowed ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_c ==K ( Dai_c -Int ABI_wad ) ) orBool (notBool ( Junk_5 ==K Dai_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Supply ==K ( Supply -Int ABI_wad ) ) orBool (notBool ( Junk_6 ==K Supply ) ) ) #then 0 #else 4200 #fi) +Int 10803 ) ) ) #fi) +Int 19138 ) ) )
 ```
 
 #### withdrawing from the system
@@ -6978,6 +7533,9 @@ calls
     DaiJoin.muluu
     Vat.move-diff
     Dai.mint
+
+gas
+    #if ( ABI_wad ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_c ==K ( Dai_c -Int ( 1000000000000000000000000000 *Int ABI_wad ) ) ) orBool (notBool ( Junk_4 ==K Dai_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_a ==K ( Dai_a +Int ( 1000000000000000000000000000 *Int ABI_wad ) ) ) orBool (notBool ( Junk_5 ==K Dai_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Dai_a ==K ( Dai_a +Int ( 1000000000000000000000000000 *Int ABI_wad ) ) ) orBool (notBool ( Junk_5 ==K Dai_a ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ABI_wad ) ) orBool (notBool ( Junk_7 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ABI_wad ) ) orBool (notBool ( Junk_7 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Supply ==K ( Supply +Int ABI_wad ) ) orBool (notBool ( Junk_8 ==K Supply ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Supply ==K ( Supply +Int ABI_wad ) ) orBool (notBool ( Junk_8 ==K Supply ) ) ) ) ) #then 15000 #else 0 #fi) +Int 26649 ) ) ) ) ) )
 ```
 
 #### disabling exit
@@ -6999,6 +7557,9 @@ iff
 
     May == 1
     VCallValue == 0
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6263
 ```
 
 # Flapper
@@ -7028,6 +7589,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1258
 ```
 
 #### bid data
@@ -7055,6 +7619,9 @@ iff
   VCallValue == 0
 
 returns Bid : Lot : Guy : Tic : End
+
+gas
+    4839
 ```
 
 #### CDP Engine
@@ -7076,6 +7643,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1121
 ```
 
 #### MKR Token
@@ -7097,6 +7667,9 @@ iff
     VCallValue == 0
 
 returns Gem
+
+gas
+    1142
 ```
 
 #### minimum bid increment
@@ -7118,6 +7691,9 @@ iff
     VCallValue == 0
 
 returns Beg
+
+gas
+    1116
 ```
 
 #### auction time-to-live
@@ -7140,6 +7716,9 @@ iff
     VCallValue == 0
 
 returns Ttl
+
+gas
+    1098
 ```
 
 #### maximum auction duration
@@ -7162,6 +7741,9 @@ iff
     VCallValue == 0
 
 returns Tau
+
+gas
+    1169
 ```
 
 #### kick counter
@@ -7183,6 +7765,9 @@ iff
     VCallValue == 0
 
 returns Kicks
+
+gas
+    1093
 ```
 
 #### liveness flag
@@ -7204,6 +7789,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1028
 ```
 
 ### Mutators
@@ -7234,6 +7822,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6443
 ```
 
 ```act
@@ -7256,6 +7847,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6443
 ```
 
 ```act
@@ -7280,6 +7874,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6421
 ```
 
 ```act
@@ -7303,6 +7900,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6421
 ```
 
 #### Auction parameters
@@ -7352,6 +7952,9 @@ iff in range uint48
 if
 
     #sizeWordStack(WS) <= 100
+
+gas
+    66
 ```
 
 ```act
@@ -7370,6 +7973,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 ```act
@@ -7439,6 +8045,9 @@ calls
 
     Vat.move-diff
     Flapper.addu48u48
+
+gas
+    #if ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_3 ==K Kicks ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_3 ==K Kicks ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bid ==K ABI_bid ) orBool (notBool ( Junk_4 ==K Bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Bid ==K ABI_bid ) orBool (notBool ( Junk_4 ==K Bid ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Lot ==K ABI_lot ) orBool (notBool ( Junk_5 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Lot ==K ABI_lot ) orBool (notBool ( Junk_5 ==K Lot ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Dai_c ==K ( Dai_c -Int ABI_lot ) ) orBool (notBool ( Junk_10 ==K Dai_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_v ==K ( Dai_v +Int ABI_lot ) ) orBool (notBool ( Junk_9 ==K Dai_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Dai_v ==K ( Dai_v +Int ABI_lot ) ) orBool (notBool ( Junk_9 ==K Dai_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int 24505 ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -7471,6 +8080,9 @@ if
 
 calls
     Flapper.addu48u48
+
+gas
+    #if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) orBool (notBool ( Junk_1 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) orBool (notBool ( Junk_1 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int Guy ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 9439
 ```
 
 #### Bidding on an auction (tend phase)
@@ -7713,6 +8325,9 @@ iff in range uint256
 
 calls
   Vat.move-diff
+
+gas
+    #if ( ( Live ==K 0 ) orBool (notBool ( Junk_2 ==K Live ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_a ==K ( Dai_a -Int ABI_rad ) ) orBool (notBool ( Junk_5 ==K Dai_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_u ==K ( Dai_u +Int ABI_rad ) ) orBool (notBool ( Junk_6 ==K Dai_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Dai_u ==K ( Dai_u +Int ABI_rad ) ) orBool (notBool ( Junk_6 ==K Dai_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int 18364 ) )
 ```
 
 ```act
@@ -7760,6 +8375,9 @@ calls
 
 if
   ACCT_ID =/= Guy
+
+gas
+    #if ( ( Gem_a ==K ( Gem_a -Int Bid ) ) orBool (notBool ( Junk_5 ==K Gem_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Gem_g ==K ( Gem_g +Int Bid ) ) orBool (notBool ( Junk_6 ==K Gem_g ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Gem_g ==K ( Gem_g +Int Bid ) ) orBool (notBool ( Junk_6 ==K Gem_g ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bid ==K 0 ) orBool (notBool ( Junk_2 ==K Bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Lot ==K 0 ) orBool (notBool ( Junk_3 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) orBool (notBool ( Junk_4 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ==K ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) orBool (notBool ( Junk_4 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ==K ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) orBool (notBool ( Junk_4 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ==K 0 ) orBool (notBool ( Junk_4 ==K ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) ) ) #then 0 #else 4200 #fi) +Int 25288 ) ) ) ) ) ) )
 ```
 
 # Flopper
@@ -7789,6 +8407,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1191
 ```
 
 
@@ -7818,6 +8439,9 @@ iff
     VCallValue == 0
 
 returns Bid : Lot : Guy : Tic : End
+
+gas
+    4839
 ```
 
 #### CDP Engine
@@ -7839,6 +8463,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1121
 ```
 
 #### MKR Token
@@ -7860,6 +8487,9 @@ iff
     VCallValue == 0
 
 returns Gem
+
+gas
+    1164
 ```
 
 #### Vow address
@@ -7881,6 +8511,9 @@ iff
     VCallValue == 0
 
 returns Vow
+
+gas
+    1098
 ```
 
 #### minimum bid increment
@@ -7902,6 +8535,9 @@ iff
     VCallValue == 0
 
 returns Beg
+
+gas
+    1028
 ```
 
 ```act
@@ -7921,6 +8557,9 @@ iff
     VCallValue == 0
 
 returns Pad
+
+gas
+    1050
 ```
 
 #### auction time-to-live
@@ -7943,6 +8582,9 @@ iff
     VCallValue == 0
 
 returns Ttl
+
+gas
+    1165
 ```
 
 #### maximum auction duration
@@ -7965,6 +8607,9 @@ iff
     VCallValue == 0
 
 returns Tau
+
+gas
+    1169
 ```
 
 #### kick counter
@@ -7986,6 +8631,9 @@ iff
     VCallValue == 0
 
 returns Kicks
+
+gas
+    1093
 ```
 
 #### liveness flag
@@ -8007,6 +8655,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1072
 ```
 
 ### Mutators
@@ -8037,6 +8688,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6443
 ```
 
 ```act
@@ -8059,6 +8713,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6443
 ```
 
 ```act
@@ -8083,6 +8740,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6465
 ```
 
 ```act
@@ -8106,6 +8766,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6465
 ```
 
 ```act
@@ -8123,6 +8786,9 @@ iff in range uint48
 if
 
     #sizeWordStack(WS) <= 100
+
+gas
+    66
 ```
 
 ```act
@@ -8141,6 +8807,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 #### Auction parameters
@@ -8220,6 +8889,9 @@ returns 1 + Kicks
 
 calls
   Flopper.addu48u48
+
+gas
+    #if ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_2 ==K Kicks ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Kicks ==K ( 1 +Int Kicks ) ) orBool (notBool ( Junk_2 ==K Kicks ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Old_bid ==K ABI_bid ) orBool (notBool ( Junk_4 ==K Old_bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( Old_bid ==K ABI_bid ) orBool (notBool ( Junk_4 ==K Old_bid ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Old_lot ==K ABI_lot ) orBool (notBool ( Junk_5 ==K Old_lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( Old_lot ==K ABI_lot ) orBool (notBool ( Junk_5 ==K Old_lot ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Old_guy ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ==K ( ( ( TIME +Int Tau ) *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ) orBool (notBool ( Junk_6 ==K ( ( Old_end *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Old_tic *Int 1461501637330902918203684832716283019655932542976 ) +Int ABI_gal ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 12987 ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -8320,6 +8992,9 @@ calls
   Flopper.muluu
   Flopper.addu48u48
   Vat.move-diff
+
+gas
+    #if ( ABI_lot ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( Dai_a ==K ( Dai_a -Int Bid ) ) orBool (notBool ( Junk_8 ==K Dai_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Dai_g ==K ( Dai_g +Int Bid ) ) orBool (notBool ( Junk_9 ==K Dai_g ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Dai_g ==K ( Dai_g +Int Bid ) ) orBool (notBool ( Junk_9 ==K Dai_g ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_6 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Lot ==K ABI_lot ) orBool (notBool ( Junk_5 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( ( TIME +Int Ttl ) *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) orBool (notBool ( Junk_6 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int CALLER_ID ) ) ) ) ) #then 0 #else 4200 #fi) +Int 32435 ) ) ) ) )
 ```
 
 ```act
@@ -8519,6 +9194,9 @@ iff
 
     Ward == 1
     VCallValue == 0
+
+gas
+    #if ( ( Live ==K 0 ) orBool (notBool ( Junk_1 ==K Live ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Vow ==K CALLER_ID ) orBool (notBool ( Junk_2 ==K Vow ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Vow ==K CALLER_ID ) orBool (notBool ( Junk_2 ==K Vow ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7951 )
 ```
 
 ```act
@@ -8576,6 +9254,9 @@ iff in range uint256
 calls
 
     Vat.suck
+
+gas
+    #if ( ( Sin_v ==K ( Sin_v +Int Bid ) ) orBool (notBool ( Junk_7 ==K Sin_v ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Sin_v ==K ( Sin_v +Int Bid ) ) orBool (notBool ( Junk_7 ==K Sin_v ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Dai_g ==K ( Dai_g +Int Bid ) ) orBool (notBool ( Junk_8 ==K Dai_g ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_8 ==K 0 ) andBool (notBool ( ( Dai_g ==K ( Dai_g +Int Bid ) ) orBool (notBool ( Junk_8 ==K Dai_g ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Vice ==K ( Vice +Int Bid ) ) orBool (notBool ( Junk_10 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Vice ==K ( Vice +Int Bid ) ) orBool (notBool ( Junk_10 ==K Vice ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Debt ==K ( Debt +Int Bid ) ) orBool (notBool ( Junk_9 ==K Debt ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_9 ==K 0 ) andBool (notBool ( ( Debt ==K ( Debt +Int Bid ) ) orBool (notBool ( Junk_9 ==K Debt ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bid ==K 0 ) orBool (notBool ( Junk_3 ==K Bid ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Lot ==K 0 ) orBool (notBool ( Junk_4 ==K Lot ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) orBool (notBool ( Junk_5 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( ( Tic *Int 1461501637330902918203684832716283019655932542976 ) +Int Guy ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ==K ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) orBool (notBool ( Junk_5 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ==K ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) orBool (notBool ( Junk_5 ==K ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ==K 0 ) orBool (notBool ( Junk_5 ==K ( 115792089237315784047431654708638870748305248246218003188207458632603225030655 &Int ( ( End *Int 411376139330301510538742295639337626245683966408394965837152256 ) +Int ( Tic *Int 1461501637330902918203684832716283019655932542976 ) ) ) ) ) ) #then 0 #else 4200 #fi) +Int 31001 ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 # End
@@ -8608,6 +9289,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 642
 ```
 
 ```act
@@ -8630,6 +9314,9 @@ iff
 
 if
     usr == CALLER_ID
+
+gas
+    6421
 ```
 
 ```act
@@ -8654,6 +9341,9 @@ iff
 if
 
     CALLER_ID =/= usr
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6421
 ```
 
 ```act
@@ -8677,6 +9367,9 @@ iff
 if
 
     CALLER_ID == usr
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6421
 ```
 
 ### Math Lemmas
@@ -8697,6 +9390,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 ```act
@@ -8715,6 +9411,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
+
+gas
+    54
 ```
 
 
@@ -8734,6 +9433,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 ```act
@@ -8747,6 +9449,9 @@ stack
 if
 
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_x <=Int ABI_y ) #then ( 49 ) #else ( 59 ) #fi
 ```
 
 ```act
@@ -8765,6 +9470,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 127 ) #else ( 179 ) #fi
 ```
 
 ```act
@@ -8787,6 +9495,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    179
 ```
 
 
@@ -8809,6 +9520,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1236
 ```
 
 ```act
@@ -8828,6 +9542,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1144
 ```
 
 ```act
@@ -8847,6 +9564,9 @@ iff
     VCallValue == 0
 
 returns Cat
+
+gas
+    1097
 ```
 
 #### `vow` address
@@ -8868,6 +9588,9 @@ iff
     VCallValue == 0
 
 returns Vow
+
+gas
+    1099
 ```
 
 #### `pot` address
@@ -8889,6 +9612,9 @@ iff
     VCallValue == 0
 
 returns Pot
+
+gas
+    1121
 ```
 
 #### `spot` address
@@ -8910,6 +9636,9 @@ iff
     VCallValue == 0
 
 returns Spot
+
+gas
+    1164
 ```
 
 #### liveness
@@ -8931,6 +9660,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1095
 ```
 
 ### Setting `End` parameters
@@ -8958,6 +9690,9 @@ iff
     Live == 1
     VCallValue == 0
     what == #string2Word("wait")
+
+gas
+    #if ( ( Wait ==K ABI_data ) orBool (notBool ( Junk_1 ==K Wait ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Wait ==K ABI_data ) orBool (notBool ( Junk_1 ==K Wait ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7238
 ```
 
 ```act
@@ -9012,6 +9747,9 @@ iff
     VCallValue == 0
 
 returns When
+
+gas
+    1116
 ```
 
 ### Processing period
@@ -9033,6 +9771,9 @@ iff
     VCallValue == 0
 
 returns Wait
+
+gas
+    1095
 ```
 
 ### Total Outstanding Debt
@@ -9054,6 +9795,9 @@ iff
     VCallValue == 0
 
 returns Debt
+
+gas
+    1052
 ```
 
 ### Ilk Data
@@ -9075,6 +9819,9 @@ iff
     VCallValue == 0
 
 returns Ray
+
+gas
+    1251
 ```
 
 ```act
@@ -9094,6 +9841,9 @@ iff
     VCallValue == 0
 
 returns Wad
+
+gas
+    1229
 ```
 
 ```act
@@ -9113,6 +9863,9 @@ iff
     VCallValue == 0
 
 returns Wad
+
+gas
+    1230
 ```
 
 ```act
@@ -9132,6 +9885,9 @@ iff
     VCallValue == 0
 
 returns Ray
+
+gas
+    1231
 ```
 
 ```act
@@ -9151,6 +9907,9 @@ iff
     VCallValue == 0
 
 returns Wad
+
+gas
+    1237
 ```
 
 ```act
@@ -9170,6 +9929,9 @@ iff
     VCallValue == 0
 
 returns Wad
+
+gas
+    1372
 ```
 
 ## Behaviours
@@ -9662,6 +10424,9 @@ calls
   Vat.ilks
   Spotter.ilks
   DSValue.read
+
+gas
+    #if ( ( 0 ==K ( ( Par *Int 1000000000000000000 ) /Int Price ) ) orBool (notBool ( Junk_4 ==K 0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_4 ==K 0 ) andBool (notBool ( ( 0 ==K ( ( Par *Int 1000000000000000000 ) /Int Price ) ) orBool (notBool ( Junk_4 ==K 0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 27431
 ```
 
 ```act
@@ -9873,6 +10638,9 @@ calls
   Vat.urns
   Vat.ilks
   Vat.grab
+
+gas
+    #if ( ( ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) <=Int 0 ) andBool ( #unsigned(( 0 -Int ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Ink_iu ==K ( Ink_iu -Int ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_11 ==K Ink_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Art_iu <=Int 0 ) andBool ( #unsigned(( 0 -Int Art_iu )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_iu ==K 0 ) orBool (notBool ( Junk_12 ==K Art_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Art_iu <=Int 0 ) andBool ( #unsigned(( 0 -Int Art_iu )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_i ==K ( Art_i -Int Art_iu ) ) orBool (notBool ( Junk_5 ==K Art_i ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( 0 -Int Art_iu ) ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( 0 <=Int ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) ) andBool ( ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Gem_a ==K ( Gem_a +Int ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_10 ==K Gem_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Gem_a ==K ( Gem_a +Int ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_10 ==K Gem_a ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ( Rate_i *Int Art_iu ) ) andBool ( ( Rate_i *Int Art_iu ) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Awe ==K ( Awe +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_13 ==K Awe ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_13 ==K 0 ) andBool (notBool ( ( Awe ==K ( Awe +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_13 ==K Awe ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ( Rate_i *Int Art_iu ) ) andBool ( ( Rate_i *Int Art_iu ) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Vice ==K ( Vice +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_14 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_14 ==K 0 ) andBool (notBool ( ( Vice ==K ( Vice +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_14 ==K Vice ) ) ) ) ) #then 15000 #else 0 #fi) +Int 42269 ) ) ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -10007,6 +10775,7 @@ calls
   Vat.urns
 ```
 
+```
 // From a naive reading of the code, one would expect the next iff condition to be:
 //     (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
 // But actually, this is implied by a condition we already have:
@@ -10022,6 +10791,7 @@ calls
 //   ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^255
 //     => 0 - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) >= -2^255
 //     => 0 - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) >= minSInt256
+```
 
 ```act
 failure skim-F of End
@@ -10205,6 +10975,9 @@ calls
   Vat.urns
   Vat.ilks
   Vat.grab
+
+gas
+    #if ( ( Gap ==K ( Gap +Int ( ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) -Int Ink_iu ) ) ) orBool (notBool ( Junk_3 ==K Gap ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Gap ==K ( Gap +Int ( ( ( ( ( Art_iu *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) -Int Ink_iu ) ) ) orBool (notBool ( Junk_3 ==K Gap ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Ink_iu <=Int 0 ) andBool ( #unsigned(( 0 -Int Ink_iu )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Ink_iu ==K 0 ) orBool (notBool ( Junk_11 ==K Ink_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Art_iu <=Int 0 ) andBool ( #unsigned(( 0 -Int Art_iu )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_iu ==K 0 ) orBool (notBool ( Junk_12 ==K Art_iu ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Art_iu <=Int 0 ) andBool ( #unsigned(( 0 -Int Art_iu )) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Art_i ==K ( Art_i -Int Art_iu ) ) orBool (notBool ( Junk_5 ==K Art_i ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( 0 -Int Art_iu ) ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( 0 <=Int Ink_iu ) andBool ( Ink_iu <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Gem_a ==K ( Gem_a +Int Ink_iu ) ) orBool (notBool ( Junk_10 ==K Gem_a ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_10 ==K 0 ) andBool (notBool ( ( Gem_a ==K ( Gem_a +Int Ink_iu ) ) orBool (notBool ( Junk_10 ==K Gem_a ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ( Rate_i *Int Art_iu ) ) andBool ( ( Rate_i *Int Art_iu ) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Awe ==K ( Awe +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_13 ==K Awe ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_13 ==K 0 ) andBool (notBool ( ( Awe ==K ( Awe +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_13 ==K Awe ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( 0 <=Int ( Rate_i *Int Art_iu ) ) andBool ( ( Rate_i *Int Art_iu ) <=Int 0 ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Vice ==K ( Vice +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_14 ==K Vice ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_14 ==K 0 ) andBool (notBool ( ( Vice ==K ( Vice +Int ( Rate_i *Int Art_iu ) ) ) orBool (notBool ( Junk_14 ==K Vice ) ) ) ) ) #then 15000 #else 0 #fi) +Int 42259 ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )
 ```
 
 ```act
@@ -10245,6 +11018,9 @@ calls
   End.adduu
   Vat.dai
   Vat.debt
+
+gas
+    #if ( ( 0 ==K FinalDebt ) orBool (notBool ( Junk_3 ==K 0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( 0 ==K FinalDebt ) orBool (notBool ( Junk_3 ==K 0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 16830
 ```
 
 ```act
@@ -10350,6 +11126,9 @@ calls
   End.rmul
   End.rdiv
   Vat.ilks
+
+gas
+    #if ( Rate_i ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( Tag ==K 0 ) #then 0 #else 52 #fi) +Int ( (#if ( ( 0 ==K ( ( ( ( ( ( ( ( Art *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) -Int Gap ) *Int 1000000000000000000000000000 ) *Int 1000000000000000000000000000 ) /Int Debt ) ) orBool (notBool ( Junk_5 ==K 0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_5 ==K 0 ) andBool (notBool ( ( 0 ==K ( ( ( ( ( ( ( ( Art *Int Rate_i ) /Int 1000000000000000000000000000 ) *Int Tag ) /Int 1000000000000000000000000000 ) -Int Gap ) *Int 1000000000000000000000000000 ) *Int 1000000000000000000000000000 ) /Int Debt ) ) orBool (notBool ( Junk_5 ==K 0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 18603 ) )
 ```
 
 ```act
@@ -10396,6 +11175,9 @@ calls
   End.muluu
   End.adduu
   Vat.move-diff
+
+gas
+    #if ( ( Dai ==K ( Dai -Int ( ABI_wad *Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_5 ==K Dai ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Joy ==K ( Joy +Int ( ABI_wad *Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_6 ==K Joy ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_6 ==K 0 ) andBool (notBool ( ( Joy ==K ( Joy +Int ( ABI_wad *Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_6 ==K Joy ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Bag ==K ( Bag +Int ABI_wad ) ) orBool (notBool ( Junk_3 ==K Bag ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Bag ==K ( Bag +Int ABI_wad ) ) orBool (notBool ( Junk_3 ==K Bag ) ) ) ) ) #then 15000 #else 0 #fi) +Int 20327 ) ) )
 ```
 
 ```act
@@ -10439,6 +11221,9 @@ calls
   End.adduu
   End.rmul
   Vat.flux-diff
+
+gas
+    #if ( ( Gem_e ==K ( Gem_e -Int ( ( ABI_wad *Int Fix ) /Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_6 ==K Gem_e ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Gem_c ==K ( Gem_c +Int ( ( ABI_wad *Int Fix ) /Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_7 ==K Gem_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_7 ==K 0 ) andBool (notBool ( ( Gem_c ==K ( Gem_c +Int ( ( ABI_wad *Int Fix ) /Int 1000000000000000000000000000 ) ) ) orBool (notBool ( Junk_7 ==K Gem_c ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Out ==K ( Out +Int ABI_wad ) ) orBool (notBool ( Junk_3 ==K Out ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_3 ==K 0 ) andBool (notBool ( ( Out ==K ( Out +Int ABI_wad ) ) orBool (notBool ( Junk_3 ==K Out ) ) ) ) ) #then 15000 #else 0 #fi) +Int 22994 ) ) )
 ```
 
 
@@ -10460,6 +11245,9 @@ iff
   VCallValue == 0
 
 returns Supply
+
+gas
+    1125
 ```
 
 ```act
@@ -10476,6 +11264,9 @@ iff
   VCallValue == 0
 
 returns BalanceOf
+
+gas
+    1307
 ```
 
 ```act
@@ -10492,6 +11283,9 @@ iff
   VCallValue == 0
 
 returns Allowance
+
+gas
+    1409
 ```
 
 ```act
@@ -10512,6 +11306,9 @@ iff
   VCallValue == 0
 
 returns 1
+
+gas
+    #if ( ( Allowed ==K ABI_wad ) orBool (notBool ( Junk_0 ==K Allowed ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_0 ==K 0 ) andBool (notBool ( ( Allowed ==K ABI_wad ) orBool (notBool ( Junk_0 ==K Allowed ) ) ) ) ) #then 15000 #else 0 #fi) +Int 4190
 ```
 
 ```act
@@ -10541,6 +11338,9 @@ iff
   VCallValue == 0
 
 returns 1
+
+gas
+    #if ( ( Gem_c ==K ( Gem_c -Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Gem_c ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Gem_u ==K ( Gem_u +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Gem_u ==K ( Gem_u +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_u ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7991 )
 ```
 
 ```act
@@ -10565,6 +11365,9 @@ iff
   VCallValue == 0
 
 returns 1
+
+gas
+    #if ( ( Gem_u ==K ( Gem_u -Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Gem_u ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( ( Gem_u -Int ABI_wad ) ==K Gem_u ) orBool (notBool ( Junk_0 ==K ( Gem_u -Int ABI_wad ) ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_0 ==K 0 ) andBool (notBool ( ( ( Gem_u -Int ABI_wad ) ==K Gem_u ) orBool (notBool ( Junk_0 ==K ( Gem_u -Int ABI_wad ) ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7991 )
 ```
 
 ```act
@@ -10656,6 +11459,9 @@ iff
 if
   Owner == CALLER_ID
   ACCT_ID =/= CALLER_ID
+
+gas
+    #if ( ( Gem_d ==K ( Gem_d +Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Gem_d ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_0 ==K 0 ) andBool (notBool ( ( Gem_d ==K ( Gem_d +Int ABI_wad ) ) orBool (notBool ( Junk_0 ==K Gem_d ) ) ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Supply ==K ( Supply +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Supply ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Supply ==K ( Supply +Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Supply ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7228 ) )
 ```
 
 ```act
@@ -10719,6 +11525,9 @@ if
   CALLER_ID == Owner
   CALLER_ID =/= ACCT_ID
   CALLER_ID == src
+
+gas
+    #if ( ( Gem_s ==K ( Gem_s -Int ABI_wad ) ) orBool (notBool ( Junk_1 ==K Gem_s ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Supply ==K ( Supply -Int ABI_wad ) ) orBool (notBool ( Junk_2 ==K Supply ) ) ) #then 0 #else 4200 #fi) +Int 8248
 ```
 
 # DSValue
@@ -10740,6 +11549,9 @@ iff
   VCallValue == 0
 
 returns Value : Ok
+
+gas
+    2012
 ```
 
 ```act
@@ -10760,6 +11572,9 @@ iff
   Ok == 1
 
 returns Value
+
+gas
+    2043
 ```
 
 # Spotter
@@ -10787,6 +11602,9 @@ iff
     VCallValue == 0
 
 returns May
+
+gas
+    1235
 ```
 
 #### ilks
@@ -10810,6 +11628,9 @@ iff
     VCallValue == 0
 
 returns Pip : Mat
+
+gas
+    2145
 ```
 
 #### `vat` address
@@ -10831,6 +11652,9 @@ iff
     VCallValue == 0
 
 returns Vat
+
+gas
+    1120
 ```
 
 #### `par` value
@@ -10852,6 +11676,9 @@ iff
     VCallValue == 0
 
 returns Par
+
+gas
+    1094
 ```
 
 #### shutdown flag
@@ -10873,6 +11700,9 @@ iff
     VCallValue == 0
 
 returns Live
+
+gas
+    1027
 ```
 
 ### Mutators
@@ -10900,6 +11730,9 @@ iff
 if
 
     usr =/= CALLER_ID
+
+gas
+    #if ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K 1 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 6487
 ```
 
 ```act
@@ -10922,6 +11755,9 @@ iff
 if
 
     usr == CALLER_ID
+
+gas
+    6487
 ```
 
 ```act
@@ -10945,6 +11781,9 @@ iff
 if
 
     usr =/= CALLER_ID
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6420
 ```
 
 ```act
@@ -10967,6 +11806,9 @@ iff
 if
 
     usr == CALLER_ID
+
+gas
+    (#if (notBool ( Junk_0 ==K 1 ) ) #then 0 #else 4200 #fi) +Int 6420
 ```
 
 #### change governance parameters
@@ -10993,6 +11835,9 @@ iff
     VCallValue == 0
     Live == 1
     what == #string2Word("pip")
+
+gas
+    #if ( ( Pip ==K ABI_pip_ ) orBool (notBool ( Junk_1 ==K Pip ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_1 ==K 0 ) andBool (notBool ( ( Pip ==K ABI_pip_ ) orBool (notBool ( Junk_1 ==K Pip ) ) ) ) ) #then 15000 #else 0 #fi) +Int 8251
 ```
 
 ```act
@@ -11016,6 +11861,9 @@ iff
     VCallValue == 0
     Live == 1
     what == #string2Word("par")
+
+gas
+    #if ( ( Junk_0 ==K ABI_data ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K ABI_data ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7214
 ```
 
 ```act
@@ -11039,6 +11887,9 @@ iff
     VCallValue == 0
     Live == 1
     what == #string2Word("mat")
+
+gas
+    #if ( ( Junk_0 ==K ABI_data ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int ( (#if ( ( Junk_2 ==K 0 ) andBool (notBool ( ( Junk_0 ==K ABI_data ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) ) ) #then 15000 #else 0 #fi) +Int 7305
 ```
 
 #### disable governance actions
@@ -11060,6 +11911,9 @@ iff
 
     May == 1
     VCallValue == 0
+
+gas
+    (#if ( ( Junk_0 ==K 0 ) orBool (notBool ( Junk_2 ==K Junk_0 ) ) ) #then 0 #else 4200 #fi) +Int 6196
 ```
 
 #### update `spot` value
@@ -11080,6 +11934,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    #if ( ABI_y ==K 0 ) #then ( 54 ) #else ( 106 ) #fi
 ```
 
 ```act
@@ -11102,6 +11959,9 @@ if
 
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
+
+gas
+    179
 ```
 
 ```act
