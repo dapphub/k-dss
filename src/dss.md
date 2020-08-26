@@ -10166,8 +10166,8 @@ storage Vat
   ilks[ilk].dust |-> Dust_i
 
 storage DSValue
-  1 |-> #WordPackAddrUInt8(Owner, Ok)
-  2 |-> Price
+  #DSValue.owner_has |-> #WordPackAddrUInt8(Owner, Ok)
+  #DSValue.val       |-> Price
 
 iff
   VCallValue == 0
@@ -11267,8 +11267,8 @@ types
   Ok    : bool
 
 storage
-  1 |-> #WordPackAddrUInt8(Owner, Ok)
-  2 |-> Value
+  #DSValue.owner_has |-> #WordPackAddrUInt8(Owner, Ok)
+  #DSValue.val       |-> Value
 
 iff
   VCallValue == 0
@@ -11289,8 +11289,8 @@ types
   Ok    : bool
 
 storage
-  1 |-> #WordPackAddrUInt8(Owner, Ok)
-  2 |-> Value
+  #DSValue.owner_has |-> #WordPackAddrUInt8(Owner, Ok)
+  #DSValue.val       |-> Value
 
 iff
   VCallValue == 0
