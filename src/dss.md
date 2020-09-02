@@ -271,7 +271,7 @@ interface add(uint256 x, int256 y) internal
 
 stack
 
-   #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
+   chop(y) : x : JMPTO : WS => JMPTO : x + y : WS
 
 iff in range uint256
 
@@ -288,7 +288,7 @@ interface sub(uint256 x, int256 y) internal
 
 stack
 
-    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
+    chop(y) : x : JMPTO : WS => JMPTO : x - y : WS
 
 iff in range uint256
 
@@ -305,7 +305,7 @@ interface mul(uint256 x, int256 y) internal
 
 stack
 
-    #unsigned(y) : x : JMPTO : WS => JMPTO : #unsigned(x * y) : WS
+    chop(y) : x : JMPTO : WS => JMPTO : chop(x * y) : WS
 
 iff in range int256
 
