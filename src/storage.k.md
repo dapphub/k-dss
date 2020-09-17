@@ -567,6 +567,12 @@ syntax Int ::= "#Flopper.live" [function]
 // doc: liveness flag
 // act:
 rule #Flopper.live => 8
+
+syntax Int ::= "#Flopper.vow" [function]
+// ---------------------------------------
+// doc: Vow address
+// act:
+rule #Flopper.vow => 9
 ```
 
 ### Flap

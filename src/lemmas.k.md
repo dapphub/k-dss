@@ -125,11 +125,10 @@ rule 0 <=Int (N /Int 2) => true
 rule N /Int 2 <Int pow256 => true
   requires N <Int pow256
 
-// TODO - review - do i need it?
-rule chop(X *Int X) => X *Int X
-  requires #rpow(Z, X, N, B) *Int B <Int pow256
-  andBool N >=Int 2
-
+// kmbarry: unbound variables on RHS make this rule of questionable soundness and raise warnings, commenting out for now
+// rule chop(X *Int X) => X *Int X
+//  requires #rpow(Z, X, N, B) *Int B <Int pow256
+//  andBool N >=Int 2
 
 rule #rpow(Z, X, 0, Base) => Z
 
@@ -138,6 +137,7 @@ rule #rpow(Z, X, N, Base) => Z
   andBool N /Int 2 ==Int 0
 
 rule #rpow(Z, 0, N, Base) => 0
+  requires N =/=Int 0
 
 rule #rpow(Base, X, N, Base) => X
   requires N ==Int 1
@@ -165,8 +165,9 @@ rule #rpow( X                              , ((X *Int X) +Int Half) /Int Base, N
   andBool  N /Int 2 =/=Int 0
   andBool  Half ==Int Base /Int 2
 
-rule Z *Int X <Int pow256 => true
-  requires #rpow(Z, X, N, Base) <Int pow256
+// kmbarry: unbound variables on RHS make this rule of questionable soundness and raise warnings, commenting out for now
+// rule Z *Int X <Int pow256 => true
+//  requires #rpow(Z, X, N, Base) <Int pow256
 ```
 
 ### hashed storage
@@ -222,6 +223,10 @@ rule (X *Int pow208) |Int A => (X *Int pow208 +Int A)
   requires #rangeUInt(48, X)
   andBool #rangeAddress(A)
 
+rule A |Int (X *Int pow208) => X *Int pow208 +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
 rule Mask26_32 &Int (Y *Int pow48 +Int X) => Y *Int pow48
   requires #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
@@ -257,6 +262,10 @@ rule Mask12_32 &Int (Y *Int pow208 +Int (X *Int pow160 +Int A)) => Y *Int pow208
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
 
+rule Mask12_32 &Int ((X *Int pow208) +Int A) => X *Int pow208
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
+
 rule B |Int (Y *Int pow208 +Int X *Int pow160) => Y *Int pow208 +Int X *Int pow160 +Int B
   requires #rangeAddress(B)
   andBool #rangeUInt(48, X)
@@ -280,6 +289,10 @@ rule Mask6_12 &Int (Y *Int pow208 +Int ( X *Int pow160 +Int A) ) => Y *Int pow20
   requires #rangeAddress(A)
   andBool #rangeUInt(48, X)
   andBool #rangeUInt(48, Y)
+
+rule Mask6_12 &Int ((X *Int pow208) +Int A) => (X *Int pow208) +Int A
+  requires #rangeAddress(A)
+  andBool #rangeUInt(48, X)
 
 rule (Y *Int pow208) |Int (X *Int pow160 +Int A) => Y *Int pow208 +Int X *Int pow160 +Int A
   requires #rangeAddress(A)
@@ -345,7 +358,7 @@ rule maxUInt48 &Int (X *Int pow48) => 0
 ```k
 rule WS ++ .WordStack => WS
 
-rule #sizeWordStack ( #padToWidth ( 32 , #asByteStack ( #unsigned ( W ) ) ) , 0) => 32
+rule #sizeWordStack ( #padToWidth ( 32 , #asByteStack ( #unsigned ( W ) ) ) ) => 32
   requires #rangeSInt(256, W)
 
 // custom ones:
@@ -510,7 +523,7 @@ rule #range(WS [ X := #padToWidth(32, Y) ], Z, 32, WSS) => #range(WS, Z, 32, WSS
   requires Z +Int 32 <Int X
 
 // possibly wrong but i'll keep using it as a hack
-rule #sizeWordStack(#range(WS, Y, Z, WSS), 0) => Z
+rule #sizeWordStack(#range(WS, Y, Z, WSS)) => Z
 
 //assume ecrec returns an address
 rule maxUInt160 &Int #symEcrec(MSG, V, R, S) => #symEcrec(MSG, V, R, S)
@@ -635,8 +648,8 @@ rule #signed(chop((A *Int #unsigned((0 -Int B))))) <=Int 0 => #rangeSInt(256, 0 
   andBool #rangeSInt(256, 0 -Int B)
 
 rule chop(A *Int #unsigned(0 -Int B)) <=Int maxSInt256 andBool minSInt256 <=Int chop(A *Int #unsigned(0 -Int B)) => #rangeSInt(256, A *Int (0 -Int B))
-  requires #rangeUInt256(A)
-  andBool #rangeUInt256(A *Int B)
+  requires #rangeUInt(256, A)
+  andBool #rangeUInt(256, A *Int B)
   andBool 0 <Int B
   andBool #rangeSInt(256, 0 -Int B)
 ```

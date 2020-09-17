@@ -1,4 +1,5 @@
 with import <nixpkgs> {};
+
 stdenv.mkDerivation {
   name = "k-dss";
   buildInputs = [
@@ -14,6 +15,7 @@ stdenv.mkDerivation {
     parallel
     wget
     zip
+    zstd
     z3
   ];
   shellHook = ''
