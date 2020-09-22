@@ -97,7 +97,11 @@ specs/%.gas: $(KLAB_OUT_LOCAL)/gas/%.json
 	# kast --directory deps/evm-semantics/.build/defn/java --input json --output pretty --sort Int $(KLAB_OUT_LOCAL)/gas/$*.json > specs/$*.gas
 	python3 write-gas.py $< > $@
 
-gen-gas: $(pass_rough_specs:=.gen-gas)
+.SECONDARY: $(patsubst %, specs/%.gas, $(all_specs))                  \
+            $(patsubst %, $(KLAB_OUT_LOCAL)/gas/%.json, $(all_specs)) \
+            $(patsubst %, $(KLAB_OUT_LOCAL)/gas/%, $(all_specs))
+
+gen-gas: $(patsubst %, specs/%.gas, $(pass_rough_specs))
 
 dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../
