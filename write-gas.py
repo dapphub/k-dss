@@ -15,8 +15,12 @@ def printIt(input):
         return input['originalName']
     if input['node'] == 'KApply':
         argStrs = [ printIt(arg) for arg in input['args'] ]
-        if input['label'] in [ '_+Int_' , '_-Int_' , '_/Int_' , '_*Int_' ]:
+        if input['label'] in [ '_+Int_' , '_-Int_' , '_/Int_' , '_*Int_' , '_==K_' , '_=/=K_' , '_orBool_' , '_andBool_' ]:
             return '(' + argStrs[0] + ' ' + input['label'][1:-1] + ' ' + argStrs[1] + ')'
+        elif input['label'] == 'notBool_':
+            return '(notBool ' + argStrs[0] + ')'
+        elif input['label'] == '#if_#then_#else_#fi_K-EQUAL-SYNTAX':
+            return '#if ' + argStrs[0] + ' #then ' + argStrs[1] + ' #else ' + argStrs[2] + ' #fi'
         else:
             return input['label'] + '(' + ', '.join(argStrs) + ')'
 
