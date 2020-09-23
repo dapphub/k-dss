@@ -16,13 +16,14 @@ ACTS_DIR = $(OUT_DIR)/acts
 DOC_DIR = $(OUT_DIR)/doc
 
 KLAB       = klab
+HASH       = $(KLAB) hash
 PROVE      = $(KLAB) prove
-PROVE_DUMP = $(KLAB) prove --dump
-PROVE_ARGS = --concrete-rules $(shell cat $(KLAB_EVMS_PATH)/tests/specs/mcd/concrete-rules.txt | tr '\n' ',')
 BUILD      = $(KLAB) build-spec
 GET_GAS    = $(KLAB) get-gas
-HASH       = $(KLAB) hash
+WRITE_GAS  = python3 write-gas.py
 KLAB_MAKE  = $(KLAB) make
+PROVE_DUMP = $(KLAB) prove --dump
+PROVE_ARGS = --concrete-rules $(shell cat $(KLAB_EVMS_PATH)/tests/specs/mcd/concrete-rules.txt | tr '\n' ',')
 
 SMT_PRELUDE = $(OUT_DIR)/prelude.smt2
 RULES = $(OUT_DIR)/rules.k
@@ -89,12 +90,11 @@ $(KLAB_OUT_LOCAL)/specs/verification.k: src/verification.k
 
 gen-spec: $(proof_names:=.gen-spec) $(proof_names_exhaustiveness:=.gen-spec)
 
-$(KLAB_OUT_LOCAL)/gas/%.json: $(KLAB_OUT_LOCAL)/gas/%
-	cat $(KLAB_OUT_LOCAL)/gas/$$($(HASH) $*).raw.kast.json | jq '{ "format": "KAST", "version": 1.0, "term": . }' > $(KLAB_OUT_LOCAL)/gas/$*.json
+$(KLAB_OUT_LOCAL)/gas/%.raw: $(KLAB_OUT_LOCAL)/gas/%
+	$(WRITE_GAS) out/gas/$$($(HASH) $*).raw.kast.json > $@
 
-specs/%.gas: $(KLAB_OUT_LOCAL)/gas/%.json
-	# kast --directory deps/evm-semantics/.build/defn/java --input json --output pretty --sort Int $(KLAB_OUT_LOCAL)/gas/$*.json > specs/$*.gas
-	python3 write-gas.py $< > $@
+specs/%.gas: $(KLAB_OUT_LOCAL)/gas/%.raw
+	cp $< $@
 
 .SECONDARY: $(patsubst %, specs/%.gas, $(all_specs))                  \
             $(patsubst %, $(KLAB_OUT_LOCAL)/gas/%.json, $(all_specs)) \
