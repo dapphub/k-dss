@@ -80,15 +80,13 @@ $(KLAB_OUT_LOCAL)/specs/verification.k: src/verification.k
 %.hash:
 	$(HASH) $*
 
-%.gen-spec: mkdirs
-	$(BUILD) $* > $(OUT_DIR)/output/$@ 2>&1
-	$(HASH) $*
-	cp $(SPECS_DIR)/$$($(HASH) $*).k specs/$*.k
+specs/%.k: out/built/%
+	cp out/specs/$$($(HASH) $*).k $@
 
 %.klab-view:
 	$(KLAB) debug $$($(HASH) $*)
 
-gen-spec: $(proof_names:=.gen-spec) $(proof_names_exhaustiveness:=.gen-spec)
+gen-spec: $(patsubst %, specs/%.k, $(all_specs))
 
 $(KLAB_OUT_LOCAL)/gas/%.raw: $(KLAB_OUT_LOCAL)/gas/%
 	$(WRITE_GAS) out/gas/$$($(HASH) $*).raw.kast.json > $@
