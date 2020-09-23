@@ -36,6 +36,9 @@ SPEC_MANIFEST = $(SPECS_DIR)/specs.manifest
 PATH := $(CURDIR)/deps/klab/bin:$(KLAB_EVMS_PATH)/deps/k/k-distribution/target/release/k/bin:$(PATH)
 export PATH
 
+PYTHONPATH := $(KLAB_EVMS_PATH)/deps/k/k-distribution/target/release/k/lib/kframework
+export PYTHONPATH
+
 SPEC_SRCS = src/dss.md $(KLAB_OUT_LOCAL)/specs/verification.k
 
 include.mak: Makefile deps/klab/makefile.timestamp $(SPEC_SRCS)
@@ -54,9 +57,9 @@ dapp:
 
 kevm:
 	git submodule update --init --recursive -- deps/evm-semantics
-	cd deps/evm-semantics/                  \
-	    && make deps RELEASE=true           \
-	    && make build-java RELEASE=true -j4
+	cd deps/evm-semantics/                                                \
+	    && make deps RELEASE=true                                         \
+	    && make build-java RELEASE=true -j4 JAVA_KOMPILE_OPTS=--emit-json
 
 klab: deps/klab/makefile.timestamp
 
