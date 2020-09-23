@@ -6,7 +6,7 @@ import sys
 input_file = sys.argv[1]
 
 with open(input_file) as f:
-    input_json = json.load(f)['term']
+    input_json = json.load(f)
 
 def printIt(input):
     if input['node'] == 'KToken':
