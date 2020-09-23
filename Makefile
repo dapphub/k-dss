@@ -16,7 +16,7 @@ ACTS_DIR = $(OUT_DIR)/acts
 DOC_DIR = $(OUT_DIR)/doc
 
 KLAB       = klab
-HASH       = $(KLAB) hash
+HASH       = klab hash
 PROVE      = $(KLAB) prove
 BUILD      = $(KLAB) build-spec
 GET_GAS    = $(KLAB) get-gas
