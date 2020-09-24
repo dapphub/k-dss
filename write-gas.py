@@ -13,13 +13,16 @@ definition = pyk.readKastTerm('deps/evm-semantics/.build/defn/java/driver-kompil
 with open(input_file) as f:
     input_json = json.load(f)
 
+gas_exp    = input_json['args'][0]
+constraint = input_json['args'][1:]
+
 ite_label = '#if_#then_#else_#fi_K-EQUAL-SYNTAX'
 
 symbolTable = pyk.buildSymbolTable(definition)
 symbolTable['infGas']   = pyk.appliedLabelStr('#gas')
+symbolTable['notBool_'] = pyk.paren(pyk.underbarUnparsing('notBool_'))
 for label in ['+Int', '-Int', '*Int', '/Int', 'andBool', 'orBool']:
     symbolTable['_' + label + '_'] = pyk.paren(pyk.binOpStr(label))
-symbolTable['notBool_'] = pyk.paren(pyk.underbarUnparsing('notBool_'))
 
 def gatherConstInts(input, constants = [], non_constants = []):
     if pyk.isKApply(input) and input['label'] == '_+Int_':
@@ -49,14 +52,11 @@ def simplifyPlusInt(k):
         return buildPlusInt(vs)
     return k
 
-simplified_json = pyk.simplifyBool(input_json)
+simplified_json = pyk.simplifyBool(gas_exp)
 simplified_json = simplifyPlusInt(simplified_json)
 
 rewrites = [ (KApply('_==K_', [KVariable('I1'), KVariable('I2')]),  KApply('_==Int_', [KVariable('I1'), KVariable('I2')]))
            , (KApply('_=/=K_', [KVariable('I1'), KVariable('I2')]), KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]))
-           #, ( KApply('_+Int_', [KApply('_+Int_', [KVariable('I1'), KVariable('I2')]), KVariable('I3')])
-           #  , KApply('_+Int_', [KVariable('I1'), KApply('_+Int_', [KVariable('I2'), KVariable('I3')])])
-           #  )
            , ( KApply(ite_label, [KVariable('C'), KApply('_+Int_', [KVariable('I'), KVariable('I1')]), KApply('_+Int_', [KVariable('I'), KVariable('I2')])])
              , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KVariable('I2')])])
              )
@@ -67,5 +67,9 @@ rewrites = [ (KApply('_==K_', [KVariable('I1'), KVariable('I2')]),  KApply('_==I
 
 for r in rewrites:
     simplified_json = pyk.rewriteAnywhereWith(r, simplified_json)
+
+for c in constraint:
+    rule = (c['args'][0], c['args'][1])
+    simplified_json = pyk.replaceAnywhereWith(rule, simplified_json)
 
 print(pyk.prettyPrintKast(simplified_json, symbolTable))
