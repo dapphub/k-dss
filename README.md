@@ -30,7 +30,8 @@ You may use the `Makefile` to do several things (for a given proof `SPEC`):
 -   `make out/accept/SPEC`: Additionally prove the specification `SPEC` itself.
 -   `make out/gas/SPEC.raw`: Additionally extract a pretty-formatted string with the `<gas>` expression for `SPEC`.
 -   `make prove -jN`: Prove all specifications in `src/dss.md`, running `N` at a time.
--   `make SPEC.klab-view`: Open the proof of `SPEC` in the [KLab debugger](https://github.com/makerdao/klab).
+-   `make out/accept/SPEC.dump`: Prove `SPEC` (after dependencies) and dump data needed for KLab debugger.
+-   `make SPEC.klab-view`: Open the proof of `SPEC` in the [KLab debugger](https://github.com/makerdao/klab), assumes you have already dumped needed debug data.
 
 ### Documentation
 

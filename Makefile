@@ -83,7 +83,8 @@ $(KLAB_OUT_LOCAL)/specs/verification.k: src/verification.k
 %.hash:
 	$(HASH) $*
 
-%.klab-view: out/accept/%.dump
+# %.klab-view: out/accept/%.dump
+%.klab-view:
 	$(KLAB) debug $$($(HASH) $*)
 
 specs/%.k: out/built/%
