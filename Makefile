@@ -3,11 +3,11 @@ SRC_DIR = $(CURDIR)/src
 SRCS = $(addprefix $(SRC_DIR)/, dss.md lemmas.k.md storage.k.md prelude.smt2.md)
 DAPP_SRCS = $(wildcard $(DAPP_DIR)/src/*)
 # if KLAB_OUT isn't defined, default is to use out/
-OUT_DIR_LOCAL   = out
-KLAB_OUT_LOCAL  = $(OUT_DIR_LOCAL)
-OUT_DIR         = $(CURDIR)/$(OUT_DIR_LOCAL)
-KLAB_OUT       ?= $(OUT_DIR)
-KLAB_EVMS_PATH ?= $(CURDIR)/deps/evm-semantics
+OUT_DIR_LOCAL  = out
+KLAB_OUT_LOCAL = $(OUT_DIR_LOCAL)
+OUT_DIR        = $(CURDIR)/$(OUT_DIR_LOCAL)
+KLAB_OUT       = $(OUT_DIR)
+KLAB_EVMS_PATH = $(CURDIR)/deps/evm-semantics
 export KLAB_OUT
 export KLAB_EVMS_PATH
 TMPDIR ?= $(CURDIR)/tmp
