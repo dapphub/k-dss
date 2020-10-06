@@ -68,9 +68,51 @@ def simplifyPlusInt(k):
         return buildPlusInt(vs)
     return k
 
+def replaceSimplifications(k):
+    replacements = [ ( KToken('115792089237316195423570985008687907853269984665640564039457584007913129639936' , 'Int') , KToken('pow256'          , 'Int') )
+                   , ( KToken('57896044618658097711785492504343953926634992332820282019728792003956564819968'  , 'Int') , KToken('pow255'          , 'Int') )
+                   , ( KToken('411376139330301510538742295639337626245683966408394965837152256'                , 'Int') , KToken('pow208'          , 'Int') )
+                   , ( KToken('374144419156711147060143317175368453031918731001856'                            , 'Int') , KToken('pow168'          , 'Int') )
+                   , ( KToken('1461501637330902918203684832716283019655932542976'                              , 'Int') , KToken('pow160'          , 'Int') )
+                   , ( KToken('340282366920938463463374607431768211456'                                        , 'Int') , KToken('pow128'          , 'Int') )
+                   , ( KToken('79228162514264337593543950336'                                                  , 'Int') , KToken('pow96'           , 'Int') )
+                   , ( KToken('281474976710656'                                                                , 'Int') , KToken('pow48'           , 'Int') )
+                   , ( KToken('65536'                                                                          , 'Int') , KToken('pow16'           , 'Int') )
+                   , ( KToken('-170141183460469231731687303715884105728'                                       , 'Int') , KToken('minSInt128'      , 'Int') )
+                   , ( KToken('170141183460469231731687303715884105727'                                        , 'Int') , KToken('maxSInt128'      , 'Int') )
+                   , ( KToken('-1701411834604692317316873037158841057280000000000'                             , 'Int') , KToken('minSFixed128x10' , 'Int') )
+                   , ( KToken('1701411834604692317316873037158841057270000000000'                              , 'Int') , KToken('maxSFixed128x10' , 'Int') )
+                   , ( KToken('-57896044618658097711785492504343953926634992332820282019728792003956564819968' , 'Int') , KToken('minSInt256'      , 'Int') )
+                   , ( KToken('57896044618658097711785492504343953926634992332820282019728792003956564819967'  , 'Int') , KToken('maxSInt256'      , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt8'        , 'Int') )
+                   , ( KToken('255'                                                                            , 'Int') , KToken('maxUInt8'        , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt16'       , 'Int') )
+                   , ( KToken('65535'                                                                          , 'Int') , KToken('maxUInt16'       , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt48'       , 'Int') )
+                   , ( KToken('281474976710655'                                                                , 'Int') , KToken('maxUInt48'       , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt96'       , 'Int') )
+                   , ( KToken('79228162514264337593543950335'                                                  , 'Int') , KToken('maxUInt96'       , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt128'      , 'Int') )
+                   , ( KToken('340282366920938463463374607431768211455'                                        , 'Int') , KToken('maxUInt128'      , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUFixed128x10' , 'Int') )
+                   , ( KToken('3402823669209384634633746074317682114550000000000'                              , 'Int') , KToken('maxUFixed128x10' , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt160'      , 'Int') )
+                   , ( KToken('1461501637330902918203684832716283019655932542975'                              , 'Int') , KToken('maxUInt160'      , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt168'      , 'Int') )
+                   , ( KToken('374144419156711147060143317175368453031918731001855'                            , 'Int') , KToken('maxUInt168'      , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt208'      , 'Int') )
+                   , ( KToken('411376139330301510538742295639337626245683966408394965837152255'                , 'Int') , KToken('maxUInt208'      , 'Int') )
+                   , ( KToken('0'                                                                              , 'Int') , KToken('minUInt256'      , 'Int') )
+                   , ( KToken('115792089237316195423570985008687907853269984665640564039457584007913129639935' , 'Int') , KToken('maxUInt256'      , 'Int') )
+                   ]
+    newK = k
+    for r in replacements:
+        newK = pyk.replaceAnywhereWith(r, newK)
+    return newK
+
 def rewriteSimplifications(k):
-    rewrites = [ (KApply('_==K_', [KVariable('I1'), KVariable('I2')]),  KApply('_==Int_', [KVariable('I1'), KVariable('I2')]))
-               , (KApply('_=/=K_', [KVariable('I1'), KVariable('I2')]), KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]))
+    rewrites = [ ( KApply('_==K_', [KVariable('I1'), KVariable('I2')])  , KApply('_==Int_', [KVariable('I1'), KVariable('I2')])  )
+               , ( KApply('_=/=K_', [KVariable('I1'), KVariable('I2')]) , KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]) )
                , ( KApply(ite_label, [KVariable('COND'), KApply(inf_gas_label, [KVariable('G1')]), KApply(inf_gas_label, [KVariable('G2')])])
                  , KApply(inf_gas_label, [KApply(ite_label, [KVariable('COND'), KVariable('G1'), KVariable('G2')])])
                  )
@@ -84,6 +126,7 @@ def rewriteSimplifications(k):
                  , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KApply('_+Int_', [KVariable('I2'), KVariable('I3')])])])
                  )
                ]
+
     newK = k
     for r in rewrites + rewrites + rewrites:
         newK = pyk.rewriteAnywhereWith(r, newK)
@@ -93,6 +136,7 @@ simplified_json = input_json
 simplified_json = applySubstitutions(simplified_json)
 simplified_json = pyk.simplifyBool(simplified_json)
 simplified_json = simplifyPlusInt(simplified_json)
+simplified_json = replaceSimplifications(simplified_json)
 simplified_json = rewriteSimplifications(simplified_json)
 
 print(pyk.prettyPrintKast(simplified_json, symbolTable))
