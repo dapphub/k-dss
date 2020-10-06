@@ -23,8 +23,22 @@ for label in ['+Int', '-Int', '*Int', '/Int', 'andBool', 'orBool']:
 with open(input_file) as f:
     input_json = json.load(f)
 
-gas_exp    = input_json['args'][0]
-constraint = input_json['args'][1:]
+def applySubstitutions(k):
+    def _applySubstitutions(_k, _substs):
+        if pyk.isKApply(_substs) and _substs['label'] == '#And':
+            return _applySubstitutions(_applySubstitutions(_k, _substs['args'][0]), _substs['args'][1])
+        elif pyk.isKApply(_substs) and _substs['label'] in ['_==Int_', '_==K_']:
+            rule = (_substs['args'][0], _substs['args'][1])
+            if pyk.isKVariable(rule[0]):
+                rule = (rule[1], rule[0])
+            return pyk.replaceAnywhereWith(rule, _k)
+        return _k
+    def _applySubstitutionsToGas(_k):
+        match = pyk.match(KApply('#And', [KApply(inf_gas_label, [KVariable('G')]), KVariable('SUBSTS')]), _k)
+        if match is not None:
+            return KApply(inf_gas_label, [_applySubstitutions(match['G'], match['SUBSTS'])])
+        return _k
+    return pyk.traverseTopDown(k, _applySubstitutionsToGas)
 
 def gatherConstInts(input, constants = [], non_constants = []):
     if pyk.isKApply(input) and input['label'] == '_+Int_':
@@ -54,31 +68,32 @@ def simplifyPlusInt(k):
         return buildPlusInt(vs)
     return k
 
-simplified_json = pyk.simplifyBool(input_json)
+def rewriteSimplifications(k):
+    rewrites = [ (KApply('_==K_', [KVariable('I1'), KVariable('I2')]),  KApply('_==Int_', [KVariable('I1'), KVariable('I2')]))
+               , (KApply('_=/=K_', [KVariable('I1'), KVariable('I2')]), KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]))
+               , ( KApply(ite_label, [KVariable('COND'), KApply(inf_gas_label, [KVariable('G1')]), KApply(inf_gas_label, [KVariable('G2')])])
+                 , KApply(inf_gas_label, [KApply(ite_label, [KVariable('COND'), KVariable('G1'), KVariable('G2')])])
+                 )
+               , ( KApply(ite_label, [KVariable('C'), KApply('_+Int_', [KVariable('I'), KVariable('I1')]), KApply('_+Int_', [KVariable('I'), KVariable('I2')])])
+                 , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KVariable('I2')])])
+                 )
+               , ( KApply(ite_label, [KVariable('C'), KApply('_+Int_', [KVariable('I1'), KVariable('I')]), KApply('_+Int_', [KVariable('I2'), KVariable('I')])])
+                 , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KVariable('I2')])])
+                 )
+               , ( KApply(ite_label, [KVariable('C'), KApply('_+Int_', [KVariable('I'), KVariable('I1')]), KApply('_+Int_', [KVariable('I2'), KApply('_+Int_', [KVariable('I'), KVariable('I3')])])])
+                 , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KApply('_+Int_', [KVariable('I2'), KVariable('I3')])])])
+                 )
+               ]
+    newK = k
+    for r in rewrites + rewrites + rewrites:
+        newK = pyk.rewriteAnywhereWith(r, newK)
+    return newK
+
+simplified_json = input_json
+simplified_json = applySubstitutions(simplified_json)
+simplified_json = pyk.simplifyBool(simplified_json)
 simplified_json = simplifyPlusInt(simplified_json)
-
-rewrites = [ (KApply('_==K_', [KVariable('I1'), KVariable('I2')]),  KApply('_==Int_', [KVariable('I1'), KVariable('I2')]))
-           , (KApply('_=/=K_', [KVariable('I1'), KVariable('I2')]), KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]))
-           , ( KApply(ite_label, [KVariable('COND'), KApply(inf_gas_label, [KVariable('G1')]), KApply(inf_gas_label, [KVariable('G2')])])
-             , KApply(inf_gas_label, [KApply(ite_label, [KVariable('COND'), KVariable('G1'), KVariable('G2')])])
-             )
-           , ( KApply(ite_label, [KVariable('C'), KApply('_+Int_', [KVariable('I'), KVariable('I1')]), KApply('_+Int_', [KVariable('I'), KVariable('I2')])])
-             , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KVariable('I2')])])
-             )
-           , ( KApply(ite_label, [KVariable('C'), KApply('_+Int_', [KVariable('I1'), KVariable('I')]), KApply('_+Int_', [KVariable('I2'), KVariable('I')])])
-             , KApply('_+Int_', [KVariable('I'), KApply(ite_label, [KVariable('C'), KVariable('I1'), KVariable('I2')])])
-             )
-           # To remove side-conditions nested in #ite for now, should be dealt with as substitutions instead.
-           , ( KApply('#And', [KApply(inf_gas_label, [KVariable('G')]), KVariable('SUBST')])
-             , KApply(inf_gas_label, [KVariable('G')])
-             )
-           ]
-
-for r in rewrites:
-    simplified_json = pyk.rewriteAnywhereWith(r, simplified_json)
-
-for c in constraint:
-    rule = (c['args'][0], c['args'][1])
-    simplified_json = pyk.replaceAnywhereWith(rule, simplified_json)
+simplified_json = rewriteSimplifications(simplified_json)
 
 print(pyk.prettyPrintKast(simplified_json, symbolTable))
+sys.stdout.flush()
