@@ -42,14 +42,15 @@ def applySubstitutions(k):
     return pyk.traverseTopDown(k, _findAndApplySubstitutions)
 
 def gatherConstInts(input, constants = [], non_constants = []):
-    if pyk.isKApply(input) and input['label'] == '_+Int_':
-        (c0, v0s) = gatherConstInts(input['args'][0])
-        (c1, v1s) = gatherConstInts(input['args'][1])
-        return (c0 + c1, v0s + v1s)
-    elif pyk.isKToken(input) and input['sort'] == 'Int':
-        return (int(input['token']), [])
-    else:
-        return (0, [input])
+    int_exps = pyk.flattenLabel('_+Int_', input)
+    c  = 0
+    vs = []
+    for i in int_exps:
+        if pyk.isKToken(i) and i['sort'] == 'Int':
+            c += int(i['token'])
+        else:
+            vs.append(i)
+    return (c, vs)
 
 def buildPlusInt(vs):
     if len(vs) == 0:
