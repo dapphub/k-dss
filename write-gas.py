@@ -24,19 +24,20 @@ with open(input_file) as f:
     input_json = json.load(f)
 
 def applySubstitutions(k):
-    def _applySubstitutions(_k, _substs):
-        if pyk.isKApply(_substs) and _substs['label'] == '#And':
-            return _applySubstitutions(_applySubstitutions(_k, _substs['args'][0]), _substs['args'][1])
-        elif pyk.isKApply(_substs) and _substs['label'] in ['_==Int_', '_==K_']:
-            rule = (_substs['args'][0], _substs['args'][1])
-            if pyk.isKVariable(rule[0]):
-                rule = (rule[1], rule[0])
-            return pyk.replaceAnywhereWith(rule, _k)
-        return _k
+    def _applySubstitutions(_k, _constraints):
+        newK = _k
+        for s in _constraints:
+            if pyk.isKApply(s) and s['label'] in ['_==Int_', '_==K_']:
+                rule = (s['args'][0], s['args'][1])
+                if pyk.isKVariable(rule[0]):
+                    rule = (rule[1], rule[0])
+                if pyk.isKVariable(rule[1]):
+                    newK = pyk.replaceAnywhereWith(rule, newK)
+        return newK
     def _findAndApplySubstitutions(_k):
         match = pyk.match(KApply('#And', [KVariable('T'), KVariable('SUBSTS')]), _k)
         if match is not None and match['T']['label'] in [ite_label, inf_gas_label]:
-            return _applySubstitutions(match['T'], match['SUBSTS'])
+            return _applySubstitutions(match['T'], pyk.flattenLabel('#And', match['SUBSTS']))
         return _k
     return pyk.traverseTopDown(k, _findAndApplySubstitutions)
 
