@@ -23,6 +23,19 @@ for label in ['+Int', '-Int', '*Int', '/Int', 'andBool', 'orBool']:
 with open(input_file) as f:
     input_json = json.load(f)
 
+def buildAssoc(base, join, l):
+    if len(l) == 0:
+        return base
+    if len(l) == 1:
+        return l[0]
+    return KApply(join, [l[0], buildAssoc(base, join, l[1:])])
+
+def buildAnd(l):
+    return buildAssoc(pyk.KConstant('#Top'), '#And', l)
+
+def buildPlusInt(l):
+    return buildAssoc(pyk.KToken('0', 'Int'), '_+Int_', l)
+
 def applySubstitutions(k):
     def _applySubstitutions(_k, _constraints):
         newK = _k
@@ -51,14 +64,6 @@ def gatherConstInts(input, constants = [], non_constants = []):
         else:
             vs.append(i)
     return (c, vs)
-
-def buildPlusInt(vs):
-    if len(vs) == 0:
-        return KToken('0', 'Int')
-    elif len(vs) == 1:
-        return vs[0]
-    else:
-        return KApply('_+Int_', [vs[0], buildPlusInt(vs[1:])])
 
 def simplifyPlusInt(k):
     if pyk.isKApply(k):
