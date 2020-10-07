@@ -33,12 +33,12 @@ def applySubstitutions(k):
                 rule = (rule[1], rule[0])
             return pyk.replaceAnywhereWith(rule, _k)
         return _k
-    def _applySubstitutionsToGas(_k):
-        match = pyk.match(KApply('#And', [KApply(inf_gas_label, [KVariable('G')]), KVariable('SUBSTS')]), _k)
-        if match is not None:
-            return KApply(inf_gas_label, [_applySubstitutions(match['G'], match['SUBSTS'])])
+    def _findAndApplySubstitutions(_k):
+        match = pyk.match(KApply('#And', [KVariable('T'), KVariable('SUBSTS')]), _k)
+        if match is not None and match['T']['label'] in [ite_label, inf_gas_label]:
+            return _applySubstitutions(match['T'], match['SUBSTS'])
         return _k
-    return pyk.traverseTopDown(k, _applySubstitutionsToGas)
+    return pyk.traverseTopDown(k, _findAndApplySubstitutions)
 
 def gatherConstInts(input, constants = [], non_constants = []):
     if pyk.isKApply(input) and input['label'] == '_+Int_':
