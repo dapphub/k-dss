@@ -36,6 +36,39 @@ def buildAnd(l):
 def buildPlusInt(l):
     return buildAssoc(pyk.KToken('0', 'Int'), '_+Int_', l)
 
+def findCommonItems(l1, l2):
+    common = []
+    for i in l1:
+        if i in l2:
+            common.append(i)
+    newL1 = []
+    newL2 = []
+    for i in l1:
+        if not i in common:
+            newL1.append(i)
+    for i in l2:
+        if not i in common:
+            newL2.append(i)
+    return (common, newL1, newL2)
+
+def propogateUpConstraints(k):
+    def _propogateUpConstraints(_k):
+        pattern = KApply(ite_label, [KVariable('COND'), KApply('#And', [KApply(inf_gas_label, [KVariable('G1')]), KVariable('C1')]), KApply('#And', [KApply(inf_gas_label, [KVariable('G2')]), KVariable('C2')])])
+        match = pyk.match(pattern, _k)
+        if match is None:
+            return _k
+        (common, b1, b2) = findCommonItems(pyk.flattenLabel('#And', match['C1']), pyk.flattenLabel('#And', match['C2']))
+        if len(common) == 0:
+            return _k
+        g1 = KApply(inf_gas_label, [match['G1']])
+        if len(b1) > 0:
+            g1 = KApply('#And', [g1, buildAnd(b1)])
+        g2 = KApply(inf_gas_label, [match['G2']])
+        if len(b2) > 0:
+            g2 = KApply('#And', [g2, buildAnd(b2)])
+        return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
+    return pyk.traverseBottomUp(k, _propogateUpConstraints)
+
 def applySubstitutions(k):
     def _applySubstitutions(_k, _constraints):
         newK = _k
@@ -130,6 +163,7 @@ def rewriteSimplifications(k):
     return newK
 
 simplified_json = input_json
+simplified_json = propogateUpConstraints(simplified_json)
 simplified_json = applySubstitutions(simplified_json)
 simplified_json = pyk.simplifyBool(simplified_json)
 simplified_json = simplifyPlusInt(simplified_json)
