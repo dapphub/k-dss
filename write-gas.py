@@ -69,15 +69,24 @@ def propogateUpConstraints(k):
         return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
+def containsLabel(k, label):
+    labels = set([])
+    def _collectLabels(_k):
+        if pyk.isKApply(_k):
+            labels.add(_k['label'])
+        return _k
+    pyk.traverseTopDown(k, _collectLabels)
+    return label in labels
+
 def applySubstitutions(k):
     def _applySubstitutions(_k, _constraints):
         newK = _k
         for s in _constraints:
             if pyk.isKApply(s) and s['label'] in ['_==Int_', '_==K_']:
                 rule = (s['args'][0], s['args'][1])
-                if pyk.isKVariable(rule[0]):
+                if pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0]):
                     rule = (rule[1], rule[0])
-                if pyk.isKVariable(rule[1]):
+                if (pyk.isKVariable(rule[1]) or pyk.isKToken(rule[1])) and containsLabel(rule[0], '#lookup'):
                     newK = pyk.replaceAnywhereWith(rule, newK)
         return newK
     def _findAndApplySubstitutions(_k):
