@@ -113,6 +113,13 @@ def applySubstitutions(k):
         newK = _applySubstitution(newK, nc)
     return newK
 
+def extractTerm(k):
+    def _extractTerm(_k):
+        if pyk.isKApply(_k) and _k['label'] == '#And' and pyk.isKApply(_k['args'][0]) and _k['args'][0]['label'] in [inf_gas_label, ite_label]:
+            return _k['args'][0]
+        return _k
+    return pyk.traverseTopDown(k, _extractTerm)
+
 def gatherConstInts(input, constants = [], non_constants = []):
     int_exps = pyk.flattenLabel('_+Int_', input)
     c  = 0
@@ -190,6 +197,7 @@ def rewriteSimplifications(k):
 
 steps = [ ( 'propogateUpConstraints' , propogateUpConstraints  )
         , ( 'applySubstitutions'     , applySubstitutions      )
+        , ( 'extractTerm'            , extractTerm             )
         , ( 'simplifyBool'           , pyk.simplifyBool        )
         , ( 'simplifyPlusInt'        , simplifyPlusInt         )
         , ( 'replaceSimplifications' , replaceSimplifications  )
@@ -201,5 +209,5 @@ simplified_json = input_json
 for (name, s) in steps:
     simplified_json = s(simplified_json)
 
-print(printTerm(simplified_json))
+print(pykPrint(simplified_json))
 sys.stdout.flush()
