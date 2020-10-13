@@ -61,57 +61,82 @@ def findCommonItems(l1, l2):
             newL2.append(i)
     return (common, newL1, newL2)
 
-def propogateUpConstraints(k):
-    def _propogateUpConstraints(_k):
-        pattern = KApply(ite_label, [KVariable('COND'), KApply('#And', [KApply(inf_gas_label, [KVariable('G1')]), KVariable('C1')]), KApply('#And', [KApply(inf_gas_label, [KVariable('G2')]), KVariable('C2')])])
-        match = pyk.match(pattern, _k)
-        if match is None:
-            return _k
-        (common, b1, b2) = findCommonItems(pyk.flattenLabel('#And', match['C1']), pyk.flattenLabel('#And', match['C2']))
-        if len(common) == 0:
-            return _k
-        g1 = KApply(inf_gas_label, [match['G1']])
-        if len(b1) > 0:
-            g1 = KApply('#And', [g1, buildAnd(b1)])
-        g2 = KApply(inf_gas_label, [match['G2']])
-        if len(b2) > 0:
-            g2 = KApply('#And', [g2, buildAnd(b2)])
-        return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
-    return pyk.traverseBottomUp(k, _propogateUpConstraints)
-
-def containsLabel(k, label):
+def collectLabels(k):
     labels = set([])
     def _collectLabels(_k):
         if pyk.isKApply(_k):
             labels.add(_k['label'])
         return _k
     pyk.traverseTopDown(k, _collectLabels)
-    return label in labels
+    return labels
+
+def containsLabel(k, label):
+    return label in collectLabels(k)
+
+def termSize(k):
+    return len(collectLabels(k))
+
+def separateTermAndConstraints(k):
+    allTerms = pyk.flattenLabel('#And', k)
+    return (allTerms[0], allTerms[1:])
+
+def sortConstraints(k):
+    def _sortConstraints(_k):
+        if not (pyk.isKApply(_k) and _k['label'] == '#And'):
+            return _k
+        (term, _constraints) = separateTermAndConstraints(_k)
+        constraints = []
+        for c in _constraints:
+            if pyk.isKApply(c) and c['label'] in ['_==K_', '_==Int_']:
+                rule = (c['args'][0], c['args'][1])
+                if (pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0])) and not pyk.isKToken(rule[1]):
+                    rule = (rule[1], rule[0])
+                constraints.append(KApply(c['label'], [rule[0], rule[1]]))
+        return buildAnd([term] + sorted(constraints, key = termSize))
+    return pyk.traverseTopDown(k, _sortConstraints)
+
+def propogateUpConstraints(k):
+    def _propogateUpConstraints(_k):
+        pattern = KApply(ite_label, [KVariable('COND'), KApply('#And', [KVariable('G1'), KVariable('C1')]), KApply('#And', [KVariable('G2'), KVariable('C2')])])
+        match = pyk.match(pattern, _k)
+        if match is None:
+            return _k
+        (common, b1, b2) = findCommonItems(pyk.flattenLabel('#And', match['C1']), pyk.flattenLabel('#And', match['C2']))
+        if len(common) == 0:
+            return _k
+        g1 = match['G1']
+        if len(b1) > 0:
+            g1 = buildAnd([g1] + b1)
+        g2 = match['G2']
+        if len(b2) > 0:
+            g2 = buildAnd([g2] + b2)
+        return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
+    return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
 def applySubstitutions(k):
     def _applySubstitution(_k, _constraint):
         _newK = _k
         if pyk.isKApply(_constraint) and _constraint['label'] in ['_==Int_', '_==K_']:
             rule = (_constraint['args'][0], _constraint['args'][1])
-            if pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0]):
-                rule = (rule[1], rule[0])
-            if (pyk.isKVariable(rule[1]) or pyk.isKToken(rule[1])) and containsLabel(rule[0], '#lookup'):
+            if pyk.isKVariable(rule[1]) or pyk.isKToken(rule[1]):
                 _newK = pyk.replaceAnywhereWith(rule, _newK)
         return _newK
-
-    allTerms    = pyk.flattenLabel('#And', k)
-    term        = allTerms[0]
-    constraints = allTerms[1:]
-    newConstraints = []
-    for c in constraints:
-        newC = c
+    def _applySubstitutions(_k):
+        if not (pyk.isKApply(_k) and _k['label'] == '#And'):
+            return _k
+        allTerms    = pyk.flattenLabel('#And', _k)
+        term        = allTerms[0]
+        constraints = allTerms[1:]
+        newConstraints = []
+        for c in constraints:
+            newC = c
+            for nc in newConstraints:
+                newC = _applySubstitution(newC, nc)
+            newConstraints.append(newC)
         for nc in newConstraints:
-            newC = _applySubstitution(newC, nc)
-        newConstraints.append(newC)
-    newK = k
-    for nc in newConstraints:
-        newK = _applySubstitution(newK, nc)
-    return newK
+            term = _applySubstitution(term, nc)
+        return buildAnd([term] + newConstraints)
+    return pyk.traverseTopDown(k, _applySubstitutions)
 
 def extractTerm(k):
     def _extractTerm(_k):
@@ -195,7 +220,8 @@ def rewriteSimplifications(k):
         newK = pyk.rewriteAnywhereWith(r, newK)
     return newK
 
-steps = [ ( 'propogateUpConstraints' , propogateUpConstraints  )
+steps = [ ( 'sortConstraints'        , sortConstraints         )
+        , ( 'propogateUpConstraints' , propogateUpConstraints  )
         , ( 'applySubstitutions'     , applySubstitutions      )
         , ( 'extractTerm'            , extractTerm             )
         , ( 'simplifyBool'           , pyk.simplifyBool        )
