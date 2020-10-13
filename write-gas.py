@@ -79,19 +79,6 @@ def propogateUpConstraints(k):
         return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
-def normalizeEqualVariables(k):
-    terms = pyk.flattenLabel('#And', k)
-    def _isVariableEquality(_k):
-        return pyk.isKApply(_k) and _k['label'] in ['_==K_', '_==Int_'] and pyk.isKVariable(_k['args'][0]) and pyk.isKVariable(_k['args'][1])
-    equalities = [ t for t in terms if     _isVariableEquality(_k) ]
-    others     = [ t for t in terms if not _isVariableEquality(_k) ]
-    print()
-    print('equalities: ' + '\n'.join(equalities))
-    print()
-    print('others: ' + '\n'.join(others))
-    sys.stdout.flush()
-    return k
-
 def containsLabel(k, label):
     labels = set([])
     def _collectLabels(_k):
@@ -102,22 +89,29 @@ def containsLabel(k, label):
     return label in labels
 
 def applySubstitutions(k):
-    def _applySubstitutions(_k, _constraints):
-        newK = _k
-        for s in _constraints:
-            if pyk.isKApply(s) and s['label'] in ['_==Int_', '_==K_']:
-                rule = (s['args'][0], s['args'][1])
-                if pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0]):
-                    rule = (rule[1], rule[0])
-                if (pyk.isKVariable(rule[1]) or pyk.isKToken(rule[1])) and containsLabel(rule[0], '#lookup'):
-                    newK = pyk.replaceAnywhereWith(rule, newK)
-        return newK
-    def _findAndApplySubstitutions(_k):
-        match = pyk.match(KApply('#And', [KVariable('TERM'), KVariable('CONSTRAINTS')]), _k)
-        if match is not None and match['TERM']['label'] in [ite_label, inf_gas_label]:
-            return KApply('#And', [_applySubstitutions(match['TERM'], pyk.flattenLabel('#And', match['CONSTRAINTS'])), match['CONSTRAINTS']])
-        return _k
-    return pyk.traverseTopDown(k, _findAndApplySubstitutions)
+    def _applySubstitution(_k, _constraint):
+        _newK = _k
+        if pyk.isKApply(_constraint) and _constraint['label'] in ['_==Int_', '_==K_']:
+            rule = (_constraint['args'][0], _constraint['args'][1])
+            if pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0]):
+                rule = (rule[1], rule[0])
+            if (pyk.isKVariable(rule[1]) or pyk.isKToken(rule[1])) and containsLabel(rule[0], '#lookup'):
+                _newK = pyk.replaceAnywhereWith(rule, _newK)
+        return _newK
+
+    allTerms    = pyk.flattenLabel('#And', k)
+    term        = allTerms[0]
+    constraints = allTerms[1:]
+    newConstraints = []
+    for c in constraints:
+        newC = c
+        for nc in newConstraints:
+            newC = _applySubstitution(newC, nc)
+        newConstraints.append(newC)
+    newK = k
+    for nc in newConstraints:
+        newK = _applySubstitution(newK, nc)
+    return newK
 
 def gatherConstInts(input, constants = [], non_constants = []):
     int_exps = pyk.flattenLabel('_+Int_', input)
@@ -196,7 +190,6 @@ def rewriteSimplifications(k):
 
 steps = [ ( 'propogateUpConstraints' , propogateUpConstraints  )
         , ( 'applySubstitutions'     , applySubstitutions      )
-        , ( 'normalizeEqualVariables', normalizeEqualVariables )
         , ( 'simplifyBool'           , pyk.simplifyBool        )
         , ( 'simplifyPlusInt'        , simplifyPlusInt         )
         , ( 'replaceSimplifications' , replaceSimplifications  )
