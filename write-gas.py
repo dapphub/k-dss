@@ -69,6 +69,19 @@ def propogateUpConstraints(k):
         return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
+def normalizeEqualVariables(k):
+    terms = pyk.flattenLabel('#And', k)
+    def _isVariableEquality(_k):
+        return pyk.isKApply(_k) and _k['label'] in ['_==K_', '_==Int_'] and pyk.isKVariable(_k['args'][0]) and pyk.isKVariable(_k['args'][1])
+    equalities = [ t for t in terms if     _isVariableEquality(_k) ]
+    others     = [ t for t in terms if not _isVariableEquality(_k) ]
+    print()
+    print('equalities: ' + '\n'.join(equalities))
+    print()
+    print('others: ' + '\n'.join(others))
+    sys.stdout.flush()
+    return k
+
 def containsLabel(k, label):
     labels = set([])
     def _collectLabels(_k):
