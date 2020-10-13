@@ -16,6 +16,7 @@ inf_gas_label = 'infGas'
 symbolTable = pyk.buildSymbolTable(definition)
 symbolTable[inf_gas_label] = pyk.appliedLabelStr('#gas')
 symbolTable['notBool_']    = pyk.paren(pyk.underbarUnparsing('notBool_'))
+symbolTable['#And']        = lambda x, y: x + '\n #And ' + y
 symbolTable[ite_label]     = lambda c, b1, b2: '#if ' + c + '\n  #then ' + pyk.indent(b1) + '\n  #else ' + pyk.indent(b2) + '\n#fi'
 for label in ['+Int', '-Int', '*Int', '/Int', 'andBool', 'orBool']:
     symbolTable['_' + label + '_'] = pyk.paren(pyk.binOpStr(label))
