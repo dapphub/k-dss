@@ -20,6 +20,15 @@ symbolTable[ite_label]     = lambda c, b1, b2: '#if ' + c + '\n  #then ' + pyk.i
 for label in ['+Int', '-Int', '*Int', '/Int', 'andBool', 'orBool']:
     symbolTable['_' + label + '_'] = pyk.paren(pyk.binOpStr(label))
 
+def pykPrint(k):
+    return pyk.prettyPrintKast(k, symbolTable)
+
+def printTerm(k):
+    return pykPrint(k['args'][0])
+
+def printConstraint(k):
+    return pykPrint(k['args'][1])
+
 with open(input_file) as f:
     input_json = json.load(f)
 
@@ -103,9 +112,9 @@ def applySubstitutions(k):
                     newK = pyk.replaceAnywhereWith(rule, newK)
         return newK
     def _findAndApplySubstitutions(_k):
-        match = pyk.match(KApply('#And', [KVariable('T'), KVariable('SUBSTS')]), _k)
-        if match is not None and match['T']['label'] in [ite_label, inf_gas_label]:
-            return _applySubstitutions(match['T'], pyk.flattenLabel('#And', match['SUBSTS']))
+        match = pyk.match(KApply('#And', [KVariable('TERM'), KVariable('CONSTRAINTS')]), _k)
+        if match is not None and match['TERM']['label'] in [ite_label, inf_gas_label]:
+            return KApply('#And', [_applySubstitutions(match['TERM'], pyk.flattenLabel('#And', match['CONSTRAINTS'])), match['CONSTRAINTS']])
         return _k
     return pyk.traverseTopDown(k, _findAndApplySubstitutions)
 
@@ -184,13 +193,19 @@ def rewriteSimplifications(k):
         newK = pyk.rewriteAnywhereWith(r, newK)
     return newK
 
-simplified_json = input_json
-simplified_json = propogateUpConstraints(simplified_json)
-simplified_json = applySubstitutions(simplified_json)
-simplified_json = pyk.simplifyBool(simplified_json)
-simplified_json = simplifyPlusInt(simplified_json)
-simplified_json = replaceSimplifications(simplified_json)
-simplified_json = rewriteSimplifications(simplified_json)
+steps = [ ( 'propogateUpConstraints' , propogateUpConstraints  )
+        , ( 'applySubstitutions'     , applySubstitutions      )
+        , ( 'normalizeEqualVariables', normalizeEqualVariables )
+        , ( 'simplifyBool'           , pyk.simplifyBool        )
+        , ( 'simplifyPlusInt'        , simplifyPlusInt         )
+        , ( 'replaceSimplifications' , replaceSimplifications  )
+        , ( 'rewriteSimplifications' , rewriteSimplifications  )
+        ]
 
-print(pyk.prettyPrintKast(simplified_json, symbolTable))
+simplified_json = input_json
+
+for (name, s) in steps:
+    simplified_json = s(simplified_json)
+
+print(printTerm(simplified_json))
 sys.stdout.flush()
