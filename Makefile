@@ -15,15 +15,16 @@ SPECS_DIR = $(OUT_DIR)/specs
 ACTS_DIR = $(OUT_DIR)/acts
 DOC_DIR = $(OUT_DIR)/doc
 
-KLAB       = klab
-HASH       = klab hash
-PROVE      = $(KLAB) prove
-BUILD      = $(KLAB) build-spec
-GET_GAS    = $(KLAB) get-gas
-WRITE_GAS  = python3 write-gas.py
-KLAB_MAKE  = $(KLAB) make
-PROVE_DUMP = $(KLAB) prove --dump
-PROVE_ARGS = --concrete-rules $(shell cat $(KLAB_EVMS_PATH)/tests/specs/mcd/concrete-rules.txt | tr '\n' ',')
+KLAB             = klab
+HASH             = klab hash
+PROVE            = $(KLAB) prove
+BUILD            = $(KLAB) build-spec
+GET_GAS          = $(KLAB) get-gas
+WRITE_GAS        = python3 write-gas.py
+KLAB_MAKE        = $(KLAB) make
+PROVE_DUMP       = $(KLAB) prove --dump
+CHECK_SUB_LEMMAS = ./check-subproofs.sh
+PROVE_ARGS       = --concrete-rules $(shell cat $(KLAB_EVMS_PATH)/tests/specs/mcd/concrete-rules.txt | tr '\n' ',')
 
 SMT_PRELUDE = $(OUT_DIR)/prelude.smt2
 RULES = $(OUT_DIR)/rules.k
