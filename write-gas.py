@@ -16,19 +16,20 @@ inf_gas_label = 'infGas'
 symbolTable = pyk.buildSymbolTable(definition)
 symbolTable[inf_gas_label] = pyk.appliedLabelStr('#gas')
 symbolTable['notBool_']    = pyk.paren(pyk.underbarUnparsing('notBool_'))
-symbolTable['#And']        = lambda x, y: x + '\n #And ' + y
+symbolTable['#And']        = lambda *xs: pyk.indent('\n #And '.join(xs))
+symbolTable['#Or']         = lambda *xs: pyk.indent('\n #Or '.join(xs))
 symbolTable[ite_label]     = lambda c, b1, b2: '#if ' + c + '\n  #then ' + pyk.indent(b1) + '\n  #else ' + pyk.indent(b2) + '\n#fi'
 for label in ['+Int', '-Int', '*Int', '/Int', 'andBool', 'orBool']:
     symbolTable['_' + label + '_'] = pyk.paren(pyk.binOpStr(label))
 
 def pykPrint(k):
-    return pyk.prettyPrintKast(k, symbolTable)
-
-def printTerm(k):
-    return pykPrint(k['args'][0])
-
-def printConstraint(k):
-    return pykPrint(k['args'][1])
+    def _flattenAndOr(_k):
+        if pyk.isKApply(_k) and _k['label'] in ['#And', '#Or']:
+            args = pyk.flattenLabel(_k['label'], _k)
+            return KApply(_k['label'], args)
+        return _k
+    flattenedTerms = pyk.traverseTopDown(k, _flattenAndOr)
+    return pyk.prettyPrintKast(flattenedTerms, symbolTable)
 
 with open(input_file) as f:
     input_json = json.load(f)
@@ -42,6 +43,9 @@ def buildAssoc(base, join, l):
 
 def buildAnd(l):
     return buildAssoc(pyk.KConstant('#Top'), '#And', l)
+
+def buildOr(l):
+    return buildAssoc(pyk.KConstant('#Bottom'), '#Or', l)
 
 def buildPlusInt(l):
     return buildAssoc(pyk.KToken('0', 'Int'), '_+Int_', l)
