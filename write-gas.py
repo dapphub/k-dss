@@ -91,7 +91,7 @@ def sortConstraints(k):
         (term, _constraints) = separateTermAndConstraints(_k)
         constraints = []
         for c in _constraints:
-            if pyk.isKApply(c) and c['label'] in ['_==K_', '_==Int_']:
+            if pyk.isKApply(c) and c['label'] in ['_==Int_', '_=/=Int_']:
                 rule = (c['args'][0], c['args'][1])
                 if (pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0])) and not pyk.isKToken(rule[1]):
                     rule = (rule[1], rule[0])
@@ -119,11 +119,20 @@ def propogateUpConstraints(k):
         return KApply('#And', [KApply('#Or', [g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
+def isNegation(k1, k2):
+    if pyk.isKApply(k1) and pyk.isKApply(k2)                           \
+       and ( (k1['label'] == '_==Int_'  and k2['label'] == '_=/=Int_') \
+          or (k1['label'] == '_=/=Int_' and k2['label'] == '_==Int_')  \
+           ):
+        if k1['args'][0] == k2['args'][0] and k1['args'][1] == k2['args'][1]:
+            return True
+    return False
+
 def orToIte(k):
     def _orToIte(_k):
-        pattern = KApply('#Or', [KApply('#And', [KVariable('T1'), KVariable('C1')]), KApply('#And', [KVariable('T2'), KApply('_==K_', [KVariable('C1'), KToken('false', 'Bool')])])])
+        pattern = KApply('#Or', [KApply('#And', [KVariable('T1'), KVariable('C1')]), KApply('#And', [KVariable('T2'), KVariable('C2')])])
         match = pyk.match(pattern, _k)
-        if match is None:
+        if match is None or not isNegation(match['C1'], match['C2']):
             return _k
         return KApply(ite_label, [match['C1'], match['T1'], match['T2']])
     return pyk.traverseBottomUp(k, _orToIte)
@@ -251,10 +260,10 @@ steps = [
         , ( 'sortConstraints'         , sortConstraints         )
         , ( 'applySubstitutions'      , applySubstitutions      )
         , ( 'propogateUpConstraints'  , propogateUpConstraints  )
+        , ( 'orToIte'                 , orToIte                 )
         , ( 'extractTerm'             , extractTerm             )
         , ( 'applySubstitutions'      , applySubstitutions      )
         , ( 'propogateUpConstraints'  , propogateUpConstraints  )
-        , ( 'orToIte'                 , orToIte                 )
         , ( 'removeGlobalConstraints' , removeGlobalConstraints )
         ]
 
