@@ -97,21 +97,32 @@ def sortConstraints(k):
 
 def propogateUpConstraints(k):
     def _propogateUpConstraints(_k):
-        pattern = KApply(ite_label, [KVariable('COND'), KApply('#And', [KVariable('G1'), KVariable('C1')]), KApply('#And', [KVariable('G2'), KVariable('C2')])])
+        pattern = KApply('#Or', [KApply('#And', [KVariable('G1'), KVariable('C1')]), KApply('#And', [KVariable('G2'), KVariable('C2')])])
         match = pyk.match(pattern, _k)
         if match is None:
             return _k
-        (common, b1, b2) = findCommonItems(pyk.flattenLabel('#And', match['C1']), pyk.flattenLabel('#And', match['C2']))
+        (common1, l1, r1) = findCommonItems(pyk.flattenLabel('#And', match['C1']), pyk.flattenLabel('#And', match['C2']))
+        (common2, r2, l2) = findCommonItems(r1, l1)
+        common = common1 + common2
         if len(common) == 0:
             return _k
         g1 = match['G1']
-        if len(b1) > 0:
-            g1 = buildAnd([g1] + b1)
+        if len(l2) > 0:
+            g1 = buildAnd([g1] + l2)
         g2 = match['G2']
-        if len(b2) > 0:
-            g2 = buildAnd([g2] + b2)
-        return KApply('#And', [KApply(ite_label, [match['COND'], g1, g2]), buildAnd(common)])
+        if len(r2) > 0:
+            g2 = buildAnd([g2] + r2)
+        return KApply('#And', [KApply('#Or', [g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
+
+def orToIte(k):
+    def _orToIte(_k):
+        pattern = KApply('#Or', [KApply('#And', [KVariable('T1'), KVariable('C1')]), KApply('#And', [KVariable('T2'), KApply('_==K_', [KVariable('C1'), KToken('false', 'Bool')])])])
+        match = pyk.match(pattern, _k)
+        if match is None:
+            return _k
+        return KApply(ite_label, [match['C1'], match['T1'], match['T2']])
+    return pyk.traverseBottomUp(k, _orToIte)
 
 def applySubstitutions(k):
     def _applySubstitution(_k, _constraint):
@@ -199,8 +210,11 @@ def replaceSimplifications(k):
     return newK
 
 def rewriteSimplifications(k):
-    rewrites = [ ( KApply('_==K_', [KVariable('I1'), KVariable('I2')])  , KApply('_==Int_', [KVariable('I1'), KVariable('I2')])  )
-               , ( KApply('_=/=K_', [KVariable('I1'), KVariable('I2')]) , KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]) )
+    rewrites = [ ( KApply('_==K_', [KVariable('I1'), KVariable('I2')])           , KApply('_==Int_', [KVariable('I1'), KVariable('I2')])  )
+               , ( KApply('_=/=K_', [KVariable('I1'), KVariable('I2')])          , KApply('_=/=Int_', [KVariable('I1'), KVariable('I2')]) )
+               , ( KApply('_==Int_', [KVariable('I'), KVariable('I')])           , KToken('true', 'Bool')                                 )
+               , ( KApply('_orBool_', [KToken('true', 'Bool'), KVariable('C')])  , KToken('true', 'Bool')                                 )
+               , ( KApply('#And', [KVariable('C'), KToken('true', 'Bool')])      , KVariable('C')                                         )
                , ( KApply(ite_label, [KVariable('COND'), KApply(inf_gas_label, [KVariable('G1')]), KApply(inf_gas_label, [KVariable('G2')])])
                  , KApply(inf_gas_label, [KApply(ite_label, [KVariable('COND'), KVariable('G1'), KVariable('G2')])])
                  )
@@ -220,14 +234,24 @@ def rewriteSimplifications(k):
         newK = pyk.rewriteAnywhereWith(r, newK)
     return newK
 
-steps = [ ( 'sortConstraints'        , sortConstraints         )
-        , ( 'propogateUpConstraints' , propogateUpConstraints  )
-        , ( 'applySubstitutions'     , applySubstitutions      )
-        , ( 'extractTerm'            , extractTerm             )
-        , ( 'simplifyBool'           , pyk.simplifyBool        )
-        , ( 'simplifyPlusInt'        , simplifyPlusInt         )
-        , ( 'replaceSimplifications' , replaceSimplifications  )
-        , ( 'rewriteSimplifications' , rewriteSimplifications  )
+def removeGlobalConstraints(k):
+    if pyk.isKApply(k) and k['label'] == '#And':
+        return k['args'][0]
+    return k
+
+steps = [
+          ( 'simplifyBool'            , pyk.simplifyBool        )
+        , ( 'simplifyPlusInt'         , simplifyPlusInt         )
+        , ( 'replaceSimplifications'  , replaceSimplifications  )
+        , ( 'rewriteSimplifications'  , rewriteSimplifications  )
+        , ( 'sortConstraints'         , sortConstraints         )
+        , ( 'applySubstitutions'      , applySubstitutions      )
+        , ( 'propogateUpConstraints'  , propogateUpConstraints  )
+        , ( 'extractTerm'             , extractTerm             )
+        , ( 'applySubstitutions'      , applySubstitutions      )
+        , ( 'propogateUpConstraints'  , propogateUpConstraints  )
+        , ( 'orToIte'                 , orToIte                 )
+        , ( 'removeGlobalConstraints' , removeGlobalConstraints )
         ]
 
 simplified_json = input_json
