@@ -123,12 +123,17 @@ def propogateUpConstraints(k):
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
 def isNegation(k1, k2):
-    if pyk.isKApply(k1) and pyk.isKApply(k2)                           \
-       and ( (k1['label'] == '_==Int_'  and k2['label'] == '_=/=Int_') \
+    if pyk.isKApply(k1) and pyk.isKApply(k2):
+        if ( (k1['label'] == '_==Int_'  and k2['label'] == '_=/=Int_') \
           or (k1['label'] == '_=/=Int_' and k2['label'] == '_==Int_')  \
            ):
-        if k1['args'][0] == k2['args'][0] and k1['args'][1] == k2['args'][1]:
-            return True
+            if k1['args'][0] == k2['args'][0] and k1['args'][1] == k2['args'][1]:
+                return True
+        if ( (k1['label'] == '_<=Int_' and k2['label'] == '_<Int_')  \
+          or (k1['label'] == '_<Int_'  and k2['label'] == '_<=Int_') \
+           ):
+            if k1['args'][0] == k2['args'][1] and k1['args'][1] == k2['args'][0]:
+                return True
     return False
 
 def orToIte(k):
