@@ -102,6 +102,14 @@ def sortConstraints(k):
         return buildAnd([term] + sorted(eqConstraints, key = termSize) + sorted(otherConstraints, key = termSize))
     return pyk.traverseTopDown(k, _sortConstraints)
 
+def sortOrs(k):
+    def _sortOrs(_k):
+        if not (pyk.isKApply(_k) and _k['label'] == '#Or'):
+            return _k
+        constraints = sorted(pyk.flattenLabel('#Or', _k), key = termSize)
+        return buildOr(constraints)
+    return pyk.traverseTopDown(k, _sortOrs)
+
 def propogateUpConstraints(k):
     def _propogateUpConstraints(_k):
         pattern = KApply('#Or', [KApply('#And', [KVariable('G1'), KVariable('C1')]), KApply('#And', [KVariable('G2'), KVariable('C2')])])
@@ -122,27 +130,13 @@ def propogateUpConstraints(k):
         return KApply('#And', [KApply('#Or', [g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
-def isNegation(k1, k2):
-    if pyk.isKApply(k1) and pyk.isKApply(k2):
-        if ( (k1['label'] == '_==Int_'  and k2['label'] == '_=/=Int_') \
-          or (k1['label'] == '_=/=Int_' and k2['label'] == '_==Int_')  \
-           ):
-            if k1['args'][0] == k2['args'][0] and k1['args'][1] == k2['args'][1]:
-                return True
-        if ( (k1['label'] == '_<=Int_' and k2['label'] == '_<Int_')  \
-          or (k1['label'] == '_<Int_'  and k2['label'] == '_<=Int_') \
-           ):
-            if k1['args'][0] == k2['args'][1] and k1['args'][1] == k2['args'][0]:
-                return True
-    return False
-
 def orToIte(k):
     def _orToIte(_k):
-        pattern = KApply('#Or', [KApply('#And', [KVariable('T1'), KVariable('C1')]), KApply('#And', [KVariable('T2'), KVariable('C2')])])
+        pattern = KApply('#Or', [KApply('#And', [KVariable('T1'), KVariable('C1')]), KVariable('T2')])
         match = pyk.match(pattern, _k)
-        if match is None or not isNegation(match['C1'], match['C2']):
-            return _k
-        return KApply(ite_label, [match['C1'], match['T1'], match['T2']])
+        if match is not None:
+            return KApply(ite_label, [match['C1'], match['T1'], match['T2']])
+        return _k
     return pyk.traverseBottomUp(k, _orToIte)
 
 def applySubstitutions(k):
@@ -268,6 +262,7 @@ steps = [
         , ( 'sortConstraints'         , sortConstraints         )
         , ( 'applySubstitutions'      , applySubstitutions      )
         , ( 'propogateUpConstraints'  , propogateUpConstraints  )
+        , ( 'sortOrs'                 , sortOrs                 )
         , ( 'orToIte'                 , orToIte                 )
         , ( 'extractTerm'             , extractTerm             )
         , ( 'applySubstitutions'      , applySubstitutions      )
