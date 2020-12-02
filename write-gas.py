@@ -89,14 +89,17 @@ def sortConstraints(k):
         if not (pyk.isKApply(_k) and _k['label'] == '#And'):
             return _k
         (term, _constraints) = separateTermAndConstraints(_k)
-        constraints = []
+        eqConstraints    = []
+        otherConstraints = []
         for c in _constraints:
             if pyk.isKApply(c) and c['label'] in ['_==Int_', '_=/=Int_']:
                 rule = (c['args'][0], c['args'][1])
                 if (pyk.isKVariable(rule[0]) or pyk.isKToken(rule[0])) and not pyk.isKToken(rule[1]):
                     rule = (rule[1], rule[0])
-                constraints.append(KApply(c['label'], [rule[0], rule[1]]))
-        return buildAnd([term] + sorted(constraints, key = termSize))
+                eqConstraints.append(KApply(c['label'], [rule[0], rule[1]]))
+            else:
+                otherConstraints.append(c)
+        return buildAnd([term] + sorted(eqConstraints, key = termSize) + sorted(otherConstraints, key = termSize))
     return pyk.traverseTopDown(k, _sortConstraints)
 
 def propogateUpConstraints(k):
