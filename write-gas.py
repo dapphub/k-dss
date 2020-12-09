@@ -268,6 +268,7 @@ steps = [
         , ( 'applySubstitutions'      , applySubstitutions      )
         , ( 'propogateUpConstraints'  , propogateUpConstraints  )
         , ( 'removeGlobalConstraints' , removeGlobalConstraints )
+        , ( 'unsafeMlPredToBool'      , pyk.unsafeMlPredToBool  )
         ]
 
 simplified_json = input_json
