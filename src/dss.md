@@ -4432,10 +4432,10 @@ storage
 
 storage Vat
 
-    dai[ACCT_ID] |-> Joy  => Joy  - rad
     sin[ACCT_ID] |-> Awe  => Awe  - rad
-    vice         |-> Vice => Vice - rad
+    dai[ACCT_ID] |-> Joy  => Joy  - rad
     debt         |-> Debt => Debt - rad
+    vice         |-> Vice => Vice - rad
 
 iff
 
