@@ -7807,8 +7807,8 @@ storage
 storage Vat
 
     can[CALLER_ID][ACCT_ID] |-> CanMove
-    dai[ACCT_ID]   |-> Dai_v => Dai_v + lot
     dai[CALLER_ID] |-> Dai_c => Dai_c - lot
+    dai[ACCT_ID]   |-> Dai_v => Dai_v + lot
 
 iff
 
