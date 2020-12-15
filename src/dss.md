@@ -1667,8 +1667,8 @@ storage
 
     sin[CALLER_ID]   |-> Sin => Sin - rad
     dai[CALLER_ID]   |-> Dai => Dai - rad
-    debt             |-> Debt  => Debt  - rad
     vice             |-> Vice  => Vice  - rad
+    debt             |-> Debt  => Debt  - rad
 
 iff
 
@@ -1705,8 +1705,8 @@ storage
     wards[CALLER_ID] |-> May
     sin[u]           |-> Sin_u => Sin_u + rad
     dai[v]           |-> Dai_v => Dai_v + rad
-    debt             |-> Debt  => Debt  + rad
     vice             |-> Vice  => Vice  + rad
+    debt             |-> Debt  => Debt  + rad
 
 iff
 
@@ -1744,11 +1744,11 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[i].rate     |-> Rate_i => Rate_i + rate
     ilks[i].Art      |-> Art_i
+    live             |-> Live
+    ilks[i].rate     |-> Rate_i => Rate_i + rate
     dai[u]           |-> Dai_u => Dai_u + Art_i * rate
     debt             |-> Debt  => Debt  + Art_i * rate
-    live             |-> Live
 
 iff
 
@@ -4384,8 +4384,8 @@ storage
 
 storage Vat
 
-    dai[ACCT_ID] |-> Joy  => Joy  - rad
     sin[ACCT_ID] |-> Awe  => Awe  - rad
+    dai[ACCT_ID] |-> Joy  => Joy  - rad
     vice         |-> Vice => Vice - rad
     debt         |-> Debt => Debt - rad
 
