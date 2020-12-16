@@ -4265,9 +4265,9 @@ storage
 
     wards[CALLER_ID] |-> May
     wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
-    dump             |-> Dump => (#if what == #string2Word("dump") #then data #else Dump #fi)
-    sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
+    sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
+    dump             |-> Dump => (#if what == #string2Word("dump") #then data #else Dump #fi)
     hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
 
 iff
@@ -4434,8 +4434,8 @@ storage Vat
 
     sin[ACCT_ID] |-> Awe  => Awe  - rad
     dai[ACCT_ID] |-> Joy  => Joy  - rad
-    debt         |-> Debt => Debt - rad
     vice         |-> Vice => Vice - rad
+    debt         |-> Debt => Debt - rad
 
 iff
 
@@ -4568,8 +4568,8 @@ storage Flopper
 
     live                        |-> FlopLive
     wards[ACCT_ID]              |-> MayFlop
-    kicks                       |-> Kicks => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => Sump
     bids[1 + Kicks].lot         |-> Lot => Dump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
@@ -4659,12 +4659,12 @@ storage Flapper
 
     wards[ACCT_ID]              |-> VowMayFlap
     vat                         |-> FlapVat
-    kicks                       |-> Kicks   => 1 + Kicks
+    live                        |-> FlapLive
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
     bids[1 + Kicks].lot         |-> Lot => Bump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
-    live                        |-> FlapLive
 
 storage Vat
 
@@ -4753,8 +4753,8 @@ storage Vat
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => (Dai_v + Dai_f) - Sin_v
     sin[ACCT_ID] |-> Sin_v => 0
-    debt |-> Debt => Debt - Sin_v
     vice |-> Vice => Vice - Sin_v
+    debt |-> Debt => Debt - Sin_v
 
 storage Flapper
 
@@ -4843,8 +4843,8 @@ storage Vat
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => Sin_v - (Dai_v + Dai_f)
-    debt |-> Debt => Debt - (Dai_v + Dai_f)
     vice |-> Vice => Vice - (Dai_v + Dai_f)
+    debt |-> Debt => Debt - (Dai_v + Dai_f)
 
 storage Flapper
 
@@ -4932,8 +4932,8 @@ storage Vat
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => 0
     sin[ACCT_ID] |-> Sin_v => 0
-    debt |-> Debt => Debt - (Dai_v + Dai_f)
     vice |-> Vice => Vice - Sin_v
+    debt |-> Debt => Debt - (Dai_v + Dai_f)
 
 storage Flapper
 
