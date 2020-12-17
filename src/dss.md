@@ -10151,7 +10151,7 @@ storage
   vat      |-> Vat
   spot     |-> Spotter
   Art[ilk] |-> Art_i
-  tag[ilk] |-> Tag_i => (#Wad * Par) / Price
+  tag[ilk] |-> Tag_i => (Par * #Wad) / Price
 
 storage Spotter
   ilks[ilk].pip |-> DSValue
@@ -10178,7 +10178,7 @@ iff
   Price =/= 0
 
 iff in range uint256
-  #Wad * Par
+  Par * #Wad
 
 calls
   End.rdiv
