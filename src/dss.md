@@ -2146,7 +2146,7 @@ types
 storage
 
     balanceOf[CALLER_ID] |-> SrcBal => SrcBal - wad
-    balanceOf[dst]        |-> DstBal => DstBal + wad
+    balanceOf[dst]       |-> DstBal => DstBal + wad
 
 iff in range uint256
 
@@ -7240,9 +7240,9 @@ storage Vat
 
 storage Dai
 
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
     balanceOf[CALLER_ID]          |-> Dai_c   => Dai_c - wad
     totalSupply                   |-> Supply  => Supply - wad
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
