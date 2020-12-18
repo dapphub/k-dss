@@ -8809,8 +8809,8 @@ storage Vow
 storage Vat
   can[CALLER_ID][ACCT_ID]   |-> CanMove
   dai[CALLER_ID]            |-> Dai_a => Dai_a - bid
-  dai[Vow]                  |-> Joy  => #if bid > Ash #then Joy + bid - Ash #else Joy #fi
   sin[Vow]                  |-> Awe  => #if bid > Ash #then Awe - Ash #else Awe - bid #fi
+  dai[Vow]                  |-> Joy  => #if bid > Ash #then Joy + bid - Ash #else Joy #fi
   vice                      |-> Vice => #if bid > Ash #then Vice - Ash #else Vice - bid #fi
   debt                      |-> Debt => #if bid > Ash #then Debt - Ash #else Debt - bid #fi
 
