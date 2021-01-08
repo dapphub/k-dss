@@ -5,38 +5,59 @@ This repo contains the formal specification and verification of [multicollateral
 The behavior of the contracts is specified in a literate format at [dss.md](src/dss.md), which generates a series of reachability claims defining `succeeding` and `reverting` behavior for each function of each contract.
 These reachability claims are then tested against [KEVM](https://github.com/kframework/evm-semantics).
 
-Installation
-------------
+Installation and Running
+------------------------
 
-### Dependencies
+### System Dependencies
 
 Install the system dependencies of [KEVM](https://github.com/kframework/evm-semantics) and of [KLab](https://github.com/makerdao/klab).
 
-### Build
+### Repository Dependencies
 
-Clone and build KEVM and KLab in submodules:
+Setup submodules and build the KEVM and KLab dependencies, as well as buidling the proof graph which describes proof dependencies.
 
 ```sh
-git clone git@github.com:dapphub/k-dss.git
-make dapp
-make deps RELEASE=true
+rm -rf deps out
+git submodule update --init --recursive
+make include.mak
+make deps -j3
 ```
 
-### Usage
+### Running the Proofs
+
+To run all the proofs, you can use the `prove` target in the `Makefile`:
+
+```sh
+make prove -j8
+```
+
+You can optionally override the `KLAB` variable to set timeouts on each proof:
+
+```sh
+make prove -j12 KLAB='timeout 300 klab'
+```
+
+A common strategy is to run with a small timeout first, and then a much larger timeout:
+
+```sh
+make prove -j12 -k KLAB='timeout 300 klab'
+make prove -j8     KLAB='timeout 1200 klab'
+```
+
+Make sure to adjust the parallelism (`-jNNN`) option as appropriate for the running machine.
+
+### Running Individual Proofs
 
 You may use the `Makefile` to do several things (for a given proof `SPEC`):
 
 -   `make out/built/SPEC`: Prove any dependencies of `SPEC` and then construct the specification for `SPEC`.
 -   `make out/accept/SPEC`: Additionally prove the specification `SPEC` itself.
 -   `make out/gas/SPEC.raw`: Additionally extract a pretty-formatted string with the `<gas>` expression for `SPEC`.
--   `make prove -jN`: Prove all specifications in `src/dss.md`, running `N` at a time.
 -   `make out/accept/SPEC.dump`: Prove `SPEC` (after dependencies) and dump data needed for KLab debugger.
 -   `make SPEC.klab-view`: Open the proof of `SPEC` in the [KLab debugger](https://github.com/makerdao/klab), assumes you have already dumped needed debug data.
 
-### Documentation
-
-To build the literate specification in HTML, run `make doc`.
-The output of this process is available at `out/doc`.
+Repository Information
+----------------------
 
 ### ACT Specification Format
 
