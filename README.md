@@ -19,8 +19,10 @@ Setup submodules and build the KEVM and KLab dependencies, as well as buidling t
 ```sh
 rm -rf deps out
 git submodule update --init --recursive
-make include.mak
-make deps -j3
+touch include.mak
+make klab dapp
+make include.mak -B
+make kevm -j3
 ```
 
 ### Running the Proofs
@@ -41,7 +43,7 @@ A common strategy is to run with a small timeout first, and then a much larger t
 
 ```sh
 make prove -j12 -k KLAB='timeout 300 klab'
-make prove -j8     KLAB='timeout 1200 klab'
+make prove -j8     KLAB='timeout 7200 klab'
 ```
 
 Make sure to adjust the parallelism (`-jNNN`) option as appropriate for the running machine.
