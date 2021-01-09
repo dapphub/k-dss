@@ -59,7 +59,7 @@ dapp:
 kevm:
 	git submodule update --init --recursive -- deps/evm-semantics
 	cd deps/evm-semantics/                                                \
-	    && make deps RELEASE=true                                         \
+	    && make deps RELEASE=true SKIP_HASKELL=true SKIP_LLVM=true        \
 	    && make build-java RELEASE=true -j4 JAVA_KOMPILE_OPTS=--emit-json
 
 klab: deps/klab/makefile.timestamp
