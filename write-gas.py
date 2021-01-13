@@ -261,6 +261,7 @@ steps = [
         , ( 'rewriteSimplifications'  , rewriteSimplifications  )
         , ( 'sortConstraints'         , sortConstraints         )
         , ( 'applySubstitutions'      , applySubstitutions      )
+        , ( 'rewriteSimplifications'  , rewriteSimplifications  )
         , ( 'propogateUpConstraints'  , propogateUpConstraints  )
         , ( 'sortOrs'                 , sortOrs                 )
         , ( 'orToIte'                 , orToIte                 )
