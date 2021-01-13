@@ -7,6 +7,15 @@ import pyk
 from pyk import KApply, KVariable, KToken
 
 input_file = sys.argv[1]
+_debug = False
+if len(sys.argv) > 2 and sys.argv[2] == '--debug':
+    _debug = True
+
+def debug(msg):
+    global _debug
+    if _debug:
+        print(msg)
+        sys.stdout.flush()
 
 definition = pyk.readKastTerm('deps/evm-semantics/.build/defn/java/driver-kompiled/compiled.json')
 
@@ -273,9 +282,17 @@ steps = [
         ]
 
 simplified_json = input_json
+debug('')
+debug('original')
+debug(pykPrint(simplified_json))
 
 for (name, s) in steps:
     simplified_json = s(simplified_json)
+    debug('')
+    debug(name)
+    debug(pykPrint(simplified_json))
 
+debug('')
+debug('final')
 print(pykPrint(simplified_json))
 sys.stdout.flush()
