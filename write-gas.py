@@ -141,28 +141,22 @@ def propogateUpConstraints(k):
 
 def propogateUpConstraintsModuloEqualities(k):
     def _propogateUpConstraintsModuloEqualities(_k):
-        pattern = KApply('#Or', [KApply('#And', [KVariable('G1'), KVariable('C1')]), KApply('#And', [KVariable('G2'), KVariable('C2')])])
+        pattern = KApply('#Or', [ KApply('#And', [KVariable('G1'), KApply('#And', [KApply('_==Int_' , [KVariable('V1'), KVariable('V2')]), KVariable('C1')])])
+                                , KApply('#And', [KVariable('G2'), KApply('#And', [KApply('_=/=Int_', [KVariable('V1'), KVariable('V2')]), KVariable('C2')])])
+                                ]
+                        )
         match = pyk.match(pattern, _k)
-        if match is None:
+        if match is None or not (pyk.isKVariable(match['V1']) and pyk.isKVariable(match['V2'])):
             return _k
         cs1 = pyk.flattenLabel('#And', match['C1'])
-        c1 = cs1[0]
-        rest1 = cs1[1:]
         cs2 = pyk.flattenLabel('#And', match['C2'])
-        c2 = cs2[0]
-        rest2 = cs1[1:]
-        if not ( pyk.isKApply(c1) and c1['label'] == '_==Int_' and pyk.isKApply(c1) and c2['label'] == '_=/=Int_' \
-             and c1['args'][0] == c2['args'][0] and c1['args'][1] == c2['args'][1]                                \
-             and pyk.isKVariable(c1['args'][0]) and pyk.isKVariable(c1['args'][1])                                \
-               ):
-            return _k
-        v1 = c1['args'][0]
-        v2 = c1['args'][1]
+        v1 = match['V1']
+        v2 = match['V2']
         subst = { v1['name'] : v2 }
-        newC1 = [ KApply('_==Int_' , [v1, v2]) ] + rest1
+        newC1 = [ KApply('_==Int_' , [v1, v2]) ] + cs1
         newC2 = [ KApply('_=/=Int_', [v1, v2]) ]
         common = []
-        for c in rest2:
+        for c in cs2:
             substituted = pyk.substitute(c, subst)
             if substituted in newC1:
                 newC1.remove(substituted)
