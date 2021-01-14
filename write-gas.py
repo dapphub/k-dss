@@ -153,7 +153,7 @@ def applySubstitutions(k):
         _newK = _k
         if pyk.isKApply(_constraint) and _constraint['label'] in ['_==Int_', '_==K_']:
             rule = (_constraint['args'][0], _constraint['args'][1])
-            if pyk.isKVariable(rule[1]) or pyk.isKToken(rule[1]):
+            if pyk.isKVariable(rule[1]) or (pyk.isKToken(rule[1]) and not pyk.isKVariable(rule[0])):
                 _newK = pyk.replaceAnywhereWith(rule, _newK)
         return _newK
     def _applySubstitutions(_k):
