@@ -139,6 +139,41 @@ def propogateUpConstraints(k):
         return KApply('#And', [KApply('#Or', [g1, g2]), buildAnd(common)])
     return pyk.traverseBottomUp(k, _propogateUpConstraints)
 
+def propogateUpConstraintsModuloEqualities(k):
+    def _propogateUpConstraintsModuloEqualities(_k):
+        pattern = KApply('#Or', [KApply('#And', [KVariable('G1'), KVariable('C1')]), KApply('#And', [KVariable('G2'), KVariable('C2')])])
+        match = pyk.match(pattern, _k)
+        if match is None:
+            return _k
+        cs1 = pyk.flattenLabel('#And', match['C1'])
+        c1 = cs1[0]
+        rest1 = cs1[1:]
+        cs2 = pyk.flattenLabel('#And', match['C2'])
+        c2 = cs2[0]
+        rest2 = cs1[1:]
+        if not ( pyk.isKApply(c1) and c1['label'] == '_==Int_' and pyk.isKApply(c1) and c2['label'] == '_=/=Int_' \
+             and c1['args'][0] == c2['args'][0] and c1['args'][1] == c2['args'][1]                                \
+             and pyk.isKVariable(c1['args'][0]) and pyk.isKVariable(c1['args'][1])                                \
+               ):
+            return _k
+        v1 = c1['args'][0]
+        v2 = c1['args'][1]
+        subst = { v1['name'] : v2 }
+        newC1 = [ KApply('_==Int_' , [v1, v2]) ] + rest1
+        newC2 = [ KApply('_=/=Int_', [v1, v2]) ]
+        common = []
+        for c in rest2:
+            substituted = pyk.substitute(c, subst)
+            if substituted in newC1:
+                newC1.remove(substituted)
+                common.append(c)
+            else:
+                newC2.append(c)
+        g1 = buildAnd([match['G1']] + newC1)
+        g2 = buildAnd([match['G2']] + newC2)
+        return KApply('#And', [KApply('#Or', [g1, g2]), buildAnd(common)])
+    return pyk.traverseBottomUp(k, _propogateUpConstraintsModuloEqualities)
+
 def orToIte(k):
     def _orToIte(_k):
         pattern = KApply('#Or', [KApply('#And', [KVariable('T1'), KVariable('C1')]), KVariable('T2')])
@@ -264,21 +299,22 @@ def removeGlobalConstraints(k):
     return k
 
 steps = [
-          ( 'simplifyBool'            , pyk.simplifyBool        )
-        , ( 'simplifyPlusInt'         , simplifyPlusInt         )
-        , ( 'replaceSimplifications'  , replaceSimplifications  )
-        , ( 'rewriteSimplifications'  , rewriteSimplifications  )
-        , ( 'sortConstraints'         , sortConstraints         )
-        , ( 'applySubstitutions'      , applySubstitutions      )
-        , ( 'rewriteSimplifications'  , rewriteSimplifications  )
-        , ( 'propogateUpConstraints'  , propogateUpConstraints  )
-        , ( 'sortOrs'                 , sortOrs                 )
-        , ( 'orToIte'                 , orToIte                 )
-        , ( 'extractTerm'             , extractTerm             )
-        , ( 'applySubstitutions'      , applySubstitutions      )
-        , ( 'propogateUpConstraints'  , propogateUpConstraints  )
-        , ( 'removeGlobalConstraints' , removeGlobalConstraints )
-        , ( 'unsafeMlPredToBool'      , pyk.unsafeMlPredToBool  )
+          ( 'simplifyBool'                            , pyk.simplifyBool                        )
+        , ( 'simplifyPlusInt'                         , simplifyPlusInt                         )
+        , ( 'replaceSimplifications'                  , replaceSimplifications                  )
+        , ( 'rewriteSimplifications'                  , rewriteSimplifications                  )
+        , ( 'sortConstraints'                         , sortConstraints                         )
+        , ( 'applySubstitutions'                      , applySubstitutions                      )
+        , ( 'rewriteSimplifications'                  , rewriteSimplifications                  )
+        , ( 'propogateUpConstraints'                  , propogateUpConstraints                  )
+        , ( 'propogateUpConstraintsModuloEqualities'  , propogateUpConstraintsModuloEqualities  )
+        , ( 'sortOrs'                                 , sortOrs                                 )
+        , ( 'orToIte'                                 , orToIte                                 )
+        , ( 'extractTerm'                             , extractTerm                             )
+        , ( 'applySubstitutions'                      , applySubstitutions                      )
+        , ( 'propogateUpConstraints'                  , propogateUpConstraints                  )
+        , ( 'removeGlobalConstraints'                 , removeGlobalConstraints                 )
+        , ( 'unsafeMlPredToBool'                      , pyk.unsafeMlPredToBool                  )
         ]
 
 simplified_json = input_json
