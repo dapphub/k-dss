@@ -146,7 +146,15 @@ def propogateUpConstraintsModuloEqualities(k):
                                 ]
                         )
         match = pyk.match(pattern, _k)
-        if match is None or not (pyk.isKVariable(match['V1']) and pyk.isKVariable(match['V2'])):
+        if match is None:
+            pattern = KApply('#Or', [ KApply('#And', [KVariable('G1'), KApply('#And', [KApply('_==Int_' , [KVariable('V1'), KVariable('V2')]), KVariable('C1')])])
+                                    , KApply('#And', [KVariable('G2'), KApply('#And', [KApply('_=/=Int_', [KVariable('V2'), KVariable('V1')]), KVariable('C2')])])
+                                    ]
+                            )
+            match = pyk.match(pattern, _k)
+            if match is None:
+                return _k
+        if not (pyk.isKVariable(match['V1']) and pyk.isKVariable(match['V2'])):
             return _k
         cs1 = pyk.flattenLabel('#And', match['C1'])
         cs2 = pyk.flattenLabel('#And', match['C2'])
