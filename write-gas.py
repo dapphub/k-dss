@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 
 import json
+import resource
 import sys
 import pyk
 
 from pyk import KApply, KVariable, KToken
+
+sys.setrecursionlimit(1500000000)
+resource.setrlimit(resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
 
 input_file = sys.argv[1]
 _debug = False
