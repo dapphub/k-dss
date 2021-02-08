@@ -4,13 +4,13 @@
   "src": {
     "specification": "./src/dss.md",
     "lemmas": "src/verification.k",
-    "rules": [
-    ],
+    "rules": [ ],
     "requires": [
-      {
-        "file": "tests/specs/mcd/verification.k",
-        "module": "VERIFICATION"
-      }
+      "tests/specs/mcd/verification.k"
+    ],
+    "imports": [
+      "LEMMAS-MCD",
+      "DSS-STORAGE"
     ],
     "concrete-rules": [
       "EDSL.#ceil32",
