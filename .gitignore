@@ -1,5 +1,6 @@
 *~
 compare*
+include.mak
 log-*
 out/*
 *.timestamp
