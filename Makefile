@@ -4,10 +4,11 @@ export KLAB_OUT
 KLAB_EVMS_PATH = deps/evm-semantics
 export KLAB_EVMS_PATH
 
-SPEC_SRCS = src/dss.md $(KLAB_OUT)/specs/verification.k
+PATH := $(CURDIR)/deps/klab/bin:$(PATH)
+export PATH
 
-include.mak: Makefile deps/klab/makefile.timestamp $(SPEC_SRCS)
-	$(KLAB_MAKE) > include.mak
+include.mak: Makefile deps/klab/makefile.timestamp
+	klab make > include.mak
 
 include include.mak
 
