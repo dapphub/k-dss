@@ -1,3 +1,9 @@
 [submodule "dss"]
 	path = dss
 	url = https://github.com/makerdao/dss.git
+[submodule "deps/evm-semantics"]
+	path = deps/evm-semantics
+	url = https://github.com/kframework/evm-semantics
+[submodule "deps/klab"]
+	path = deps/klab
+	url = https://github.com/makerdao/klab
