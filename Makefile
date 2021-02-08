@@ -4,7 +4,7 @@ export KLAB_OUT
 KLAB_EVMS_PATH = deps/evm-semantics
 export KLAB_EVMS_PATH
 
-SPEC_SRCS = src/dss.md $(KLAB_OUT_LOCAL)/specs/verification.k
+SPEC_SRCS = src/dss.md $(KLAB_OUT)/specs/verification.k
 
 include.mak: Makefile deps/klab/makefile.timestamp $(SPEC_SRCS)
 	$(KLAB_MAKE) > include.mak
@@ -44,10 +44,10 @@ deps/klab/makefile.timestamp:
 	    && npm install              \
 	    && touch makefile.timestamp
 
-specs/%.k: out/built/%
-	cp out/specs/$$($(HASH) $*).k $@
+specs/%.k: $(KLAB_OUT)/built/%
+	cp $(KLAB_OUT)/specs/$$($(HASH) $*).k $@
 
-specs/%.gas: $(KLAB_OUT_LOCAL)/gas/%.raw
+specs/%.gas: $(KLAB_OUT)/gas/%.raw
 	cp $< $@
 
 gen-spec: $(patsubst %, specs/%.k, $(all_specs))
