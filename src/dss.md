@@ -2924,6 +2924,7 @@ gas
 
 This is the coinductive lemma.
 
+```
 0.    n % 2 == 0
       case: n >= 2
             n even
