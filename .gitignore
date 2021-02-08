@@ -1,4 +1,6 @@
 *~
+compare*
+log-*
+out/*
 *.timestamp
 tmp/
-out/*
