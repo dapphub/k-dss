@@ -1,58 +1,63 @@
+KLAB_OUT = out
+export KLAB_OUT
+
+KLAB_EVMS_PATH = deps/evm-semantics
+export KLAB_EVMS_PATH
+
+PATH := $(CURDIR)/deps/klab/bin:$(PATH)
+export PATH
+
+include.mak: Makefile deps/klab/makefile.timestamp
+	klab make > include.mak
+
+include include.mak
+
 DAPP_DIR = $(CURDIR)/dss
-SRC_DIR = $(CURDIR)/src
-SRCS = $(addprefix $(SRC_DIR)/, dss.md lemmas.k.md storage.k.md prelude.smt2.md)
-DAPP_SRCS = $(wildcard $(DAPP_DIR)/src/*)
-# if KLAB_OUT isn't defined, default is to use out/
-ifdef KLAB_OUT
-OUT_DIR = $(KLAB_OUT)
-else
-OUT_DIR = $(CURDIR)/out
-endif
-TMPDIR ?= $(CURDIR)/tmp
-ifndef KLAB_EVMS_PATH
-$(error $(red)Error$(reset): KLAB_EVMS_PATH must be defined and point to evm-semantics!)
-endif
-SPECS_DIR = $(OUT_DIR)/specs
-ACTS_DIR = $(OUT_DIR)/acts
-DOC_DIR = $(OUT_DIR)/doc
 
-KLAB_FLAGS = KLAB_OUT=$(OUT_DIR)
+.PHONY: all deps dapp kevm klab gen-spec gen-gas clean
 
-SMT_PRELUDE = $(OUT_DIR)/prelude.smt2
-RULES = $(OUT_DIR)/rules.k
+PATH := $(CURDIR)/deps/klab/bin:$(KLAB_EVMS_PATH)/deps/k/k-distribution/target/release/k/bin:$(PATH)
+export PATH
 
-SPEC_MANIFEST = $(SPECS_DIR)/specs.manifest
+PYTHONPATH := $(KLAB_EVMS_PATH)/deps/k/k-distribution/target/release/k/lib/kframework
+export PYTHONPATH
 
-all: dapp spec
+all: deps spec
+
+deps: dapp kevm klab
 
 dapp:
 	dapp --version
-	git submodule update --init --recursive
+	git submodule update --init --recursive -- dss
 	cd $(DAPP_DIR) && dapp --use solc:0.5.12 build && cd ../
+
+kevm:
+	git submodule update --init --recursive -- deps/evm-semantics
+	cd deps/evm-semantics/                                                \
+	    && make deps RELEASE=true SKIP_HASKELL=true SKIP_LLVM=true        \
+	    && make build-java RELEASE=true -j4 JAVA_KOMPILE_OPTS=--emit-json
+
+klab: deps/klab/makefile.timestamp
+
+deps/klab/makefile.timestamp:
+	git submodule update --init --recursive -- deps/klab
+	cd deps/klab/                   \
+	    && npm install              \
+	    && touch makefile.timestamp
+
+specs/%.k: $(KLAB_OUT)/built/%
+	cp $(KLAB_OUT)/specs/$$($(HASH) $*).k $@
+
+specs/%.gas: $(KLAB_OUT)/gas/%.raw
+	cp $< $@
+
+gen-spec: $(patsubst %, specs/%.k, $(all_specs))
+gen-gas:  $(patsubst %, specs/%.gas, $(pass_rough_specs))
 
 dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../
 
-$(SPEC_MANIFEST): $(SRCS) $(DAPP_SRCS)
-	mkdir -p $(SPECS_DIR)
-	$(KLAB_FLAGS) klab build
+clean: dapp-clean out-clean
 
-spec: $(SPEC_MANIFEST)
-
-spec-clean:
-	rm -f $(SPECS_DIR)/* $(ACTS_DIR)/* $(SPEC_MANIFEST)
-
-$(DOC_DIR)/dss.html: $(SRCS)
-	$(info Generating html documentation: $@)
-	mkdir -p $(DOC_DIR)
-	$(KLAB_FLAGS) klab report > $@
-
-doc: $(DOC_DIR)/dss.html
-
-doc-clean:
-	rm -rf $(DOC_DIR)/*
-
-log-clean:
-	rm -rf $(TMPDIR)/klab
-
-clean: dapp-clean spec-clean doc-clean
+out-clean:
+	rm -rf $(KLAB_OUT)

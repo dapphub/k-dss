@@ -1,4 +1,7 @@
 *~
+compare*
+include.mak
+log-*
+out/*
 *.timestamp
 tmp/
-out/*
