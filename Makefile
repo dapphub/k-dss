@@ -4,7 +4,7 @@ export KLAB_OUT
 PATH := $(CURDIR)/deps/klab/bin:$(PATH)
 export PATH
 
-include.mak: Makefile deps/klab/makefile.timestamp
+include.mak: src/dss.md
 	klab make > include.mak
 
 include include.mak
@@ -24,7 +24,7 @@ dapp:
 
 kevm:
 	git submodule update --init --recursive -- deps/evm-semantics
-	cd deps/evm-semantics/                                         \
+	cd deps/evm-semantics/                               \
 	    && make deps RELEASE=true SKIP_HASKELL=true      \
 	    && make build-java build-lemmas RELEASE=true -j4
 
