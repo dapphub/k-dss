@@ -8,22 +8,30 @@ These reachability claims are then tested against [KEVM](https://github.com/kfra
 Installation and Running
 ------------------------
 
-### System Dependencies
+### Setup KLab and KEVM
 
-Install the system dependencies of [KEVM](https://github.com/kframework/evm-semantics) and of [KLab](https://github.com/makerdao/klab).
+*Using external install of KLab/KEVM*:
 
-### Repository Dependencies
+-   Follow the install instructions of [KLab](https://github.com/makerdao/klab), including following the instructions for setting up KEVM included there.
+-   Make sure that the `bin` directory inside the KLab repo is on `PATH` here.
+-   Make sure that `KLAB_EVMS_PATH` is set as instructed if you are building KEVM from source (not needed if installed from package).
 
-Setup submodules and build the KEVM and KLab dependencies, as well as buidling the proof graph which describes proof dependencies.
+*From-source builds in submodule*:
 
-```sh
-rm -rf deps out
-git submodule update --init --recursive
-touch include.mak
-make klab dapp
-make include.mak -B
-make kevm -j3
-```
+If you want to build KEVM and KLab from source, you can:
+
+-   Install the system dependencies of [KEVM](https://github.com/kframework/evm-semantics) and of [KLab](https://github.com/makerdao/klab).
+-   Make sure that `PATH` is setup to include `$(pwd)/deps/klab/bin`.
+-   Make sure that `KLAB_EVMS_PATH` is setup to include `$(pwd)/deps/evm-semanticss`.
+-   Run the following:
+
+    ```sh
+    git submodule update --init --recursive
+    touch include.mak
+    make klab dapp
+    make include.mak -B
+    make kevm -j3
+    ```
 
 ### Running the Proofs
 
