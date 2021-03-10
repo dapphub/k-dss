@@ -1,9 +1,6 @@
 KLAB_OUT = out
 export KLAB_OUT
 
-KLAB_EVMS_PATH = deps/evm-semantics
-export KLAB_EVMS_PATH
-
 PATH := $(CURDIR)/deps/klab/bin:$(PATH)
 export PATH
 
@@ -15,12 +12,6 @@ include include.mak
 DAPP_DIR = $(CURDIR)/dss
 
 .PHONY: all deps dapp kevm klab gen-spec gen-gas clean
-
-PATH := $(CURDIR)/deps/klab/bin:$(KLAB_EVMS_PATH)/deps/k/k-distribution/target/release/k/bin:$(PATH)
-export PATH
-
-PYTHONPATH := $(KLAB_EVMS_PATH)/deps/k/k-distribution/target/release/k/lib/kframework
-export PYTHONPATH
 
 all: deps spec
 
