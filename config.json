@@ -6,7 +6,7 @@
     "lemmas": "src/verification.k",
     "rules": [ ],
     "requires": [
-      "tests/specs/mcd/verification.k"
+      "lemmas/mcd/verification.k"
     ],
     "imports": [
       "LEMMAS-MCD",
