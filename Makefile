@@ -1,7 +1,7 @@
 KLAB_OUT = out
 export KLAB_OUT
 
-PATH := $(CURDIR)/deps/klab/bin:$(PATH)
+PATH := $(CURDIR)/deps/klab/bin:$(CURDIR)/deps/evm-semantics/.build/usr/bin:$(PATH)
 export PATH
 
 include.mak: src/dss.md

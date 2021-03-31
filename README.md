@@ -8,6 +8,26 @@ These reachability claims are then tested against [KEVM](https://github.com/kfra
 Installation and Running
 ------------------------
 
+### Setup Solidity Compiler and Dapp Tools
+
+First you'll need to install the [Nix packager](https://nixos.org/download.html).
+
+```sh
+curl -L https://nixos.org/nix/install | sh
+```
+
+Then you can install the Solidity compiler:
+
+```sh
+nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA solc-static-versions
+```
+
+And finally, install the [DappHub toolkit](https://dapp.tools/).
+
+```sh
+curl https://dapp.tools/install | sh
+```
+
 ### Setup KLab and KEVM
 
 *Using external install of KLab/KEVM*:
@@ -22,7 +42,7 @@ If you want to build KEVM and KLab from source, you can:
 
 -   Install the system dependencies of [KEVM](https://github.com/kframework/evm-semantics) and of [KLab](https://github.com/makerdao/klab).
 -   Make sure that `PATH` is setup to include `$(pwd)/deps/klab/bin`.
--   Make sure that `KLAB_EVMS_PATH` is setup to include `$(pwd)/deps/evm-semanticss`.
+-   Make sure that `KLAB_EVMS_PATH` is setup to include `$(pwd)/deps/evm-semantics`.
 -   Run the following:
 
     ```sh
