@@ -41,11 +41,10 @@ curl https://dapp.tools/install | sh
 If you want to build KEVM and KLab from source, you can:
 
 -   Install the system dependencies of [KEVM](https://github.com/kframework/evm-semantics) and of [KLab](https://github.com/makerdao/klab).
--   Make sure that `PATH` is setup to include `$(pwd)/deps/klab/bin`.
--   Make sure that `KLAB_EVMS_PATH` is setup to include `$(pwd)/deps/evm-semantics`.
--   Run the following:
+-   Run the following from the top level of this repository:
 
     ```sh
+    source env.sh
     git submodule update --init --recursive
     touch include.mak
     make klab dapp
