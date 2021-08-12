@@ -38,8 +38,8 @@ distclean: clean
 
 kevm:
 	$(KEVM_MAKE) -j4 deps
-	$(KEVM_MAKE) -j4 build-haskell
-	$(KEVM_MAKE) -j4 install       DESTDIR=$(CURDIR)/$(BUILD_DIR)
+	$(KEVM_MAKE) -j4 build-java
+	$(KEVM_MAKE) -j4 install    DESTDIR=$(CURDIR)/$(BUILD_DIR)
 
 include.mak: src/dss.md
 	klab make > include.mak
@@ -55,9 +55,7 @@ all: deps spec
 deps: dapp kevm klab
 
 dapp:
-	dapp --version
-	git submodule update --init --recursive -- dss
-	cd $(DAPP_DIR) && dapp --use solc:0.5.12 build && cd ../
+	cd $(DAPP_DIR) && make build
 
 klab: deps/klab/makefile.timestamp
 
@@ -79,7 +77,7 @@ gen-gas:  $(patsubst %, specs/%.gas, $(pass_rough_specs))
 dapp-clean:
 	cd $(DAPP_DIR) && dapp clean && cd ../
 
-clean: dapp-clean out-clean
+clean: dapp-clean out-clean kevm-clean
 
 out-clean:
 	rm -rf $(KLAB_OUT)

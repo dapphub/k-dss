@@ -13,8 +13,6 @@
       "DSS-STORAGE"
     ],
     "concrete-rules": [
-      "EDSL.#ceil32",
-      "EDSL.keccakIntList",
       "EVM.allBut64th.pos",
       "EVM.Cextra",
       "EVM.Cmem",
@@ -30,8 +28,10 @@
       "EVM-TYPES.#asByteStackAux.recursive",
       "EVM-TYPES.#asWord.recursive",
       "EVM-TYPES.ByteArray.range",
+      "EVM-TYPES.bytesRange",
       "EVM-TYPES.mapWriteBytes.recursive",
       "EVM-TYPES.#padToWidth",
+      "EVM-TYPES.padToWidthNonEmpty",
       "EVM-TYPES.powmod.nonzero",
       "EVM-TYPES.powmod.zero",
       "EVM-TYPES.#range",
@@ -39,6 +39,7 @@
       "EVM-TYPES.signextend.invalid",
       "EVM-TYPES.signextend.negative",
       "EVM-TYPES.signextend.positive",
+      "EVM-TYPES.upDivInt",
       "SERIALIZATION.keccak",
       "SERIALIZATION.#newAddr",
       "SERIALIZATION.#newAddrCreate2"
