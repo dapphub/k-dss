@@ -272,29 +272,35 @@ syntax Int ::= "#Vow.wait" [function]
 // act: the sin maturation time is `.`
 rule #Vow.wait => 7
 
+syntax Int ::= "#Vow.dump" [function]
+// ----------------------------------
+// doc: flop initial lot size
+// act: the flop initial lot size is `.`
+rule #Vow.dump => 8
+
 syntax Int ::= "#Vow.sump" [function]
 // ----------------------------------
 // doc: debt auction lot size
 // act: the debt auction lot size is `.`
-rule #Vow.sump => 8
+rule #Vow.sump => 9
 
 syntax Int ::= "#Vow.bump" [function]
 // ----------------------------------
 // doc: surplus auction lot size
 // act: the surplus auction lot size is `.`
-rule #Vow.bump => 9
+rule #Vow.bump => 10
 
 syntax Int ::= "#Vow.hump" [function]
 // ---------------------------------
 // doc: surplus dai cushion
 // act: the surplus dai cushion is `.`
-rule #Vow.hump => 10
+rule #Vow.hump => 11
 
 syntax Int ::= "#Vow.live" [function]
 // ---------------------------------
 // doc: liveness flag
 // act: the system is active/inactive `.`
-rule #Vow.live => 11
+rule #Vow.live => 12
 
 ```
 
@@ -347,39 +353,69 @@ rule #Cat.vow => 4
 ### GemJoin
 
 ```k
+syntax Int ::= "#GemJoin.wards" "[" Int "]"  [function]
+// ---------------------------------
+// doc: whether `$0` is an owner of `GemJoin`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #GemJoin.wards[A] => #hashedLocation("Solidity", 0, A)
+
 syntax Int ::= "#GemJoin.vat" [function]
 // -------------------------------------
 // doc: `Vat` that this adapter points to
 // act:
-rule #GemJoin.vat => 0
+rule #GemJoin.vat => 1
 
 syntax Int ::= "#GemJoin.ilk" [function]
 // -------------------------------------
 // doc: collateral type of this adapter
 // act:
-rule #GemJoin.ilk => 1
+rule #GemJoin.ilk => 2
 
 syntax Int ::= "#GemJoin.gem" [function]
 // -------------------------------------
 // doc: underlying token of this adapter
 // act:
-rule #GemJoin.gem => 2
+rule #GemJoin.gem => 3
+
+syntax Int ::= "#GemJoin.dec" [function]
+// -------------------------------------
+// doc: decimals of the underlying token
+// act:
+rule #GemJoin.dec => 4
+
+syntax Int ::= "#GemJoin.live" [function]
+// -------------------------------------
+// doc: whether collateral can still be joined
+// act:
+rule #GemJoin.live => 5
 ```
 
 ### DaiJoin
 
 ```k
+syntax Int ::= "#DaiJoin.wards" "[" Int "]"  [function]
+// ---------------------------------
+// doc: whether `$0` is an owner of `DaiJoin`
+// act: address `$0` is `. == 1 ? authorised : unauthorised`
+rule #DaiJoin.wards[A] => #hashedLocation("Solidity", 0, A)
+
 syntax Int ::= "#DaiJoin.vat" [function]
 // -------------------------------------
 // doc: `Vat` that this adapter points to
 // act:
-rule #DaiJoin.vat => 0
+rule #DaiJoin.vat => 1
 
 syntax Int ::= "#DaiJoin.dai" [function]
 // -------------------------------------
 // doc: underlying dai token of this adapter
 // act:
-rule #DaiJoin.dai => 1
+rule #DaiJoin.dai => 2
+
+syntax Int ::= "#DaiJoin.live" [function]
+// -------------------------------------
+// doc: whether dai can still be withdrawn
+// act:
+rule #DaiJoin.live => 3
 ```
 
 ### Flip
@@ -507,24 +543,36 @@ syntax Int ::= "#Flopper.beg" [function]
 // act:
 rule #Flopper.beg => 4
 
+syntax Int ::= "#Flopper.pad" [function]
+// -----------------------------------------
+// doc: fractional increase on tick
+// act:
+rule #Flopper.pad => 5
+
 // packed, use #WordPackUInt48UInt48 to unpack this
 syntax Int ::= "#Flopper.ttl_tau" [function]
 // -----------------------------------------
 // doc:
 // act:
-rule #Flopper.ttl_tau => 5
+rule #Flopper.ttl_tau => 6
 
 syntax Int ::= "#Flopper.kicks" [function]
 // ---------------------------------------
 // doc: auction counter
 // act:
-rule #Flopper.kicks => 6
+rule #Flopper.kicks => 7
 
 syntax Int ::= "#Flopper.live" [function]
 // ---------------------------------------
 // doc: liveness flag
 // act:
-rule #Flopper.live => 7
+rule #Flopper.live => 8
+
+syntax Int ::= "#Flopper.vow" [function]
+// ---------------------------------------
+// doc: Vow address
+// act:
+rule #Flopper.vow => 9
 ```
 
 ### Flap
@@ -645,71 +693,77 @@ syntax Int ::= "#End.vow" [function]
 // act:
 rule #End.vow => 3
 
+syntax Int ::= "#End.pot" [function]
+// ---------------------------------
+// doc: `Pot` that this `End` points to
+// act:
+rule #End.pot => 4
+
 syntax Int ::= "#End.spot" [function]
 // ---------------------------------
 // doc: `Spot` that this `End` points to
 // act:
-rule #End.spot => 4
+rule #End.spot => 5
 
 syntax Int ::= "#End.live" [function]
 // ----------------------------------
 // doc: system liveness
 // act:
-rule #End.live => 5
+rule #End.live => 6
 
 syntax Int ::= "#End.when" [function]
 // ----------------------------------
 // doc: time of cage
 // act:
-rule #End.when => 6
+rule #End.when => 7
 
 syntax Int ::= "#End.wait" [function]
 // ----------------------------------
 // doc: processing period
 // act:
-rule #End.wait => 7
+rule #End.wait => 8
 
 syntax Int ::= "#End.debt" [function]
 // ----------------------------------
 // doc: total outstanding debt following processing
 // act:
-rule #End.debt => 8
+rule #End.debt => 9
 
 syntax Int ::= "#End.tag" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the cage price of ilk `$0`
 // act:
-rule #End.tag[Ilk] => #hashedLocation("Solidity", 9, Ilk)
+rule #End.tag[Ilk] => #hashedLocation("Solidity", 10, Ilk)
 
 syntax Int ::= "#End.gap" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the collateral shortfall of ilk `$0`
 // act:
-rule #End.gap[Ilk] => #hashedLocation("Solidity", 10, Ilk)
+rule #End.gap[Ilk] => #hashedLocation("Solidity", 11, Ilk)
 
 syntax Int ::= "#End.Art" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the total debt of ilk `$0`
 // act:
-rule #End.Art[Ilk] => #hashedLocation("Solidity", 11, Ilk)
+rule #End.Art[Ilk] => #hashedLocation("Solidity", 12, Ilk)
 
 syntax Int ::= "#End.fix" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the final cash price of ilk `$0`
 // act:
-rule #End.fix[Ilk] => #hashedLocation("Solidity", 12, Ilk)
+rule #End.fix[Ilk] => #hashedLocation("Solidity", 13, Ilk)
 
 syntax Int ::= "#End.bag" "[" Int "]" [function]
 // -----------------------------------------------
 // doc: the packed dai of user `$0`
 // act:
-rule #End.bag[Usr] => #hashedLocation("Solidity", 13, Usr)
+rule #End.bag[Usr] => #hashedLocation("Solidity", 14, Usr)
 
 syntax Int ::= "#End.out" "[" Int "][" Int "]" [function]
 // ---------------------------------------------
 // doc: cashed collateral of ilk `$0` assigned to `$1`
 // act:
-rule #End.out[Ilk][Usr] => #hashedLocation("Solidity", 14, Ilk Usr)
+rule #End.out[Ilk][Usr] => #hashedLocation("Solidity", 15, Ilk Usr)
 ```
 
 ### Pot
@@ -762,6 +816,12 @@ syntax Int ::= "#Pot.rho" [function]
 // doc:
 // act:
 rule #Pot.rho => 7
+
+syntax Int ::= "#Pot.live" [function]
+// ----------------------------------
+// doc:
+// act:
+rule #Pot.live => 8
 ```
 ### DSToken
 
@@ -819,4 +879,7 @@ rule #Spotter.vat => 2
 
 syntax Int ::= "#Spotter.par" [function]
 rule #Spotter.par => 3
+
+syntax Int ::= "#Spotter.live" [function]
+rule #Spotter.live => 4
 ```

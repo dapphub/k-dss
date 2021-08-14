@@ -271,7 +271,7 @@ interface add(uint256 x, int256 y) internal
 
 stack
 
-   #unsigned(y) : x : JMPTO : WS => JMPTO : x + y : WS
+   chop(y) : x : JMPTO : WS => JMPTO : x + y : WS
 
 iff in range uint256
 
@@ -288,7 +288,7 @@ interface sub(uint256 x, int256 y) internal
 
 stack
 
-    #unsigned(y) : x : JMPTO : WS => JMPTO : x - y : WS
+    chop(y) : x : JMPTO : WS => JMPTO : x - y : WS
 
 iff in range uint256
 
@@ -305,7 +305,7 @@ interface mul(uint256 x, int256 y) internal
 
 stack
 
-    #unsigned(y) : x : JMPTO : WS => JMPTO : #unsigned(x * y) : WS
+    chop(y) : x : JMPTO : WS => JMPTO : chop(x * y) : WS
 
 iff in range int256
 
@@ -317,6 +317,7 @@ if
     // TODO: strengthen
     #sizeWordStack(WS) <= 1000
 ```
+
 ```act
 behaviour adduu of Vat
 interface add(uint256 x, uint256 y) internal
@@ -352,7 +353,6 @@ if
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
 ```
-
 
 ```act
 behaviour muluu of Vat
@@ -411,17 +411,20 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     wards[usr]       |-> _ => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -435,16 +438,19 @@ interface rely(address usr)
 
 for all
 
-    May : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -457,17 +463,20 @@ interface deny(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     wards[usr]       |-> _ => 0
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -481,16 +490,19 @@ interface deny(address usr)
 
 for all
 
-    May : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May => 0
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -555,22 +567,27 @@ iff
 
 ```act
 behaviour file of Vat
-interface file(bytes32 what, uint256 data)
+interface file(bytes32 what, uint data)
 
 for all
 
     May  : uint256
-    Line : uint256
+    // misspelling intentional due to klab bug
+    Lime : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    Line             |-> Line => (#if what == #string2Word("Line") #then data #else Line #fi)
+    Line             |-> Lime => data
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
+    what == #string2Word("Line")
     VCallValue == 0
 ```
 
@@ -586,6 +603,7 @@ for all
     Spot : uint256
     Line : uint256
     Dust : uint256
+    Live : uint256
 
 storage
 
@@ -593,11 +611,14 @@ storage
     ilks[ilk].spot   |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
     ilks[ilk].line   |-> Line => (#if what == #string2Word("line") #then data #else Line #fi)
     ilks[ilk].dust   |-> Dust => (#if what == #string2Word("dust") #then data #else Dust #fi)
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
+    (what == #string2Word("spot")) or (what == #string2Word("line")) or (what == #string2Word("dust"))
     VCallValue == 0
 ```
 
@@ -816,12 +837,12 @@ storage
     can[u][CALLER_ID] |-> Can_u
     can[v][CALLER_ID] |-> Can_v
     can[w][CALLER_ID] |-> Can_w
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
+    dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
     urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
     urns[i][u].art    |-> Urn_art  => Urn_art + dart
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
-    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
-    dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
-    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
     live              |-> Live
 
 iff in range uint256
@@ -901,12 +922,12 @@ storage
     can[u][CALLER_ID] |-> Can_u
     can[v][CALLER_ID] |-> Can_v
     can[w][CALLER_ID] |-> Can_w
+    debt              |-> Debt     => Debt
+    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
+    dai[w]            |-> Dai_w    => Dai_w
     urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
     urns[i][u].art    |-> Urn_art  => Urn_art
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art
-    gem[i][v]         |-> Gem_iv   => Gem_iv  - dink
-    dai[w]            |-> Dai_w    => Dai_w
-    debt              |-> Debt     => Debt
     live              |-> Live
 
 iff in range uint256
@@ -978,12 +999,12 @@ storage
     can[u][CALLER_ID] |-> Can_u
     can[v][CALLER_ID] |-> Can_v
     can[w][CALLER_ID] |-> Can_w
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
+    gem[i][v]         |-> Gem_iv   => Gem_iv
+    dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
     urns[i][u].ink    |-> Urn_ink  => Urn_ink
     urns[i][u].art    |-> Urn_art  => Urn_art + dart
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
-    gem[i][v]         |-> Gem_iv   => Gem_iv
-    dai[w]            |-> Dai_w    => Dai_w + (Ilk_rate * dart)
-    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
     live              |-> Live
 
 iff in range uint256
@@ -1059,12 +1080,12 @@ storage
     can[u][CALLER_ID] |-> Can_u
     can[v][CALLER_ID] |-> Can_v
     can[w][CALLER_ID] |-> Can_w
+    debt              |-> Debt     => Debt
+    gem[i][v]         |-> Gem_iv   => Gem_iv
+    dai[w]            |-> Dai_w    => Dai_w
     urns[i][u].ink    |-> Urn_ink  => Urn_ink
     urns[i][u].art    |-> Urn_art  => Urn_art
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art
-    gem[i][v]         |-> Gem_iv   => Gem_iv
-    dai[w]            |-> Dai_w    => Dai_w
-    debt              |-> Debt     => Debt
     live              |-> Live
 
 iff in range uint256
@@ -1127,12 +1148,12 @@ storage
     ilks[i].dust      |-> Ilk_dust
     Line              |-> Line
     can[u][CALLER_ID] |-> Can_u
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
+    gem[i][u]         |-> Gem_iu   => Gem_iu  - dink
+    dai[u]            |-> Dai_u    => Dai_u + (Ilk_rate * dart)
     urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
     urns[i][u].art    |-> Urn_art  => Urn_art + dart
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
-    gem[i][u]         |-> Gem_iu   => Gem_iu  - dink
-    dai[u]            |-> Dai_u    => Dai_u + (Ilk_rate * dart)
-    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
     live              |-> Live
 
 iff in range uint256
@@ -1204,12 +1225,12 @@ storage
     ilks[i].dust      |-> Ilk_dust
     Line              |-> Line
     can[u][CALLER_ID] |-> Can_u
+    debt              |-> Debt     => Debt
+    gem[i][u]         |-> Gem_iu   => Gem_iu  - dink
+    dai[u]            |-> Dai_u    => Dai_u
     urns[i][u].ink    |-> Urn_ink  => Urn_ink + dink
     urns[i][u].art    |-> Urn_art  => Urn_art
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art
-    gem[i][u]         |-> Gem_iu   => Gem_iu  - dink
-    dai[u]            |-> Dai_u    => Dai_u
-    debt              |-> Debt     => Debt
     live              |-> Live
 
 iff in range uint256
@@ -1277,12 +1298,12 @@ storage
     ilks[i].dust      |-> Ilk_dust
     Line              |-> Line
     can[u][CALLER_ID] |-> Can_u
+    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
+    gem[i][u]         |-> Gem_iu   => Gem_iu
+    dai[u]            |-> Dai_u    => Dai_u + (Ilk_rate * dart)
     urns[i][u].ink    |-> Urn_ink  => Urn_ink
     urns[i][u].art    |-> Urn_art  => Urn_art + dart
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art + dart
-    gem[i][u]         |-> Gem_iu   => Gem_iu
-    dai[u]            |-> Dai_u    => Dai_u + (Ilk_rate * dart)
-    debt              |-> Debt     => Debt  + (Ilk_rate * dart)
     live              |-> Live
 
 iff in range uint256
@@ -1352,12 +1373,12 @@ storage
     ilks[i].dust      |-> Ilk_dust
     Line              |-> Line
     can[u][CALLER_ID] |-> Can_u
+    debt              |-> Debt     => Debt
+    gem[i][u]         |-> Gem_iu   => Gem_iu
+    dai[u]            |-> Dai_u    => Dai_u
     urns[i][u].ink    |-> Urn_ink  => Urn_ink
     urns[i][u].art    |-> Urn_art  => Urn_art
     ilks[i].Art       |-> Ilk_Art  => Ilk_Art
-    gem[i][u]         |-> Gem_iu   => Gem_iu
-    dai[u]            |-> Dai_u    => Dai_u
-    debt              |-> Debt     => Debt
     live              |-> Live
 
 iff in range uint256
@@ -1578,10 +1599,10 @@ for all
 
 storage
 
-    dai[CALLER_ID]   |-> Dai => Dai - rad
     sin[CALLER_ID]   |-> Sin => Sin - rad
-    debt             |-> Debt  => Debt  - rad
+    dai[CALLER_ID]   |-> Dai => Dai - rad
     vice             |-> Vice  => Vice  - rad
+    debt             |-> Debt  => Debt  - rad
 
 iff
 
@@ -1618,8 +1639,8 @@ storage
     wards[CALLER_ID] |-> May
     sin[u]           |-> Sin_u => Sin_u + rad
     dai[v]           |-> Dai_v => Dai_v + rad
-    debt             |-> Debt  => Debt  + rad
     vice             |-> Vice  => Vice  + rad
+    debt             |-> Debt  => Debt  + rad
 
 iff
 
@@ -1657,11 +1678,11 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[i].rate     |-> Rate_i => Rate_i + rate
     ilks[i].Art      |-> Art_i
+    live             |-> Live
+    ilks[i].rate     |-> Rate_i => Rate_i + rate
     dai[u]           |-> Dai_u => Dai_u + Art_i * rate
     debt             |-> Debt  => Debt  + Art_i * rate
-    live             |-> Live
 
 iff
 
@@ -2011,7 +2032,7 @@ types
 storage
 
     balanceOf[CALLER_ID] |-> SrcBal => SrcBal - wad
-    balanceOf[dst]        |-> DstBal => DstBal + wad
+    balanceOf[dst]       |-> DstBal => DstBal + wad
 
 iff in range uint256
 
@@ -2313,11 +2334,12 @@ returns 1
 ```act
 behaviour permit of Dai
 interface permit(address hodler, address ombudsman, uint256 n, uint256 ttl, bool may, uint8 v, bytes32 r, bytes32 s)
+// "hodler" is intentional due to regex sadness
 
 types
 
-    Nonce   : uint256
-    Allowed : uint256
+    Nonce            : uint256
+    Allowed          : uint256
     Domain_separator : bytes32
 
 storage
@@ -2328,7 +2350,8 @@ storage
 
 iff
 
-    hodler == #symEcrec(keccakIntList(#asWord(#parseHexWord("0x19") : #parseHexWord("0x1") : .WordStack) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) hodler ombudsman n ttl may)), v, r, s)
+    hodler =/= 0
+    hodler == #symEcrec(keccakIntList(#asWord(#parseHexWord("0x19") : #parseHexWord("0x01") : .WordStack) Domain_separator keccakIntList(keccak(#parseByteStackRaw("Permit(address holder,address spender,uint256 nonce,uint256 expiry,bool allowed)")) hodler ombudsman n ttl may)), v, r, s)
     ttl == 0 or TIME <= ttl
     VCallValue == 0
     n == Nonce
@@ -2581,7 +2604,6 @@ iff
     // act: `Duty` is `. ? : not` zero
     Duty == 0
     VCallValue == 0
-
 ```
 
 #### setting `ilk` data
@@ -2593,18 +2615,22 @@ interface file(bytes32 ilk, bytes32 what, uint256 data)
 
 for all
 
-    May : uint256
+    May  : uint256
     Duty : uint256
+    Rho  : uint48
 
 storage
 
     wards[CALLER_ID] |-> May
-    ilks[ilk].duty   |-> Duty => (#if what == #string2Word("duty") #then data #else Duty #fi)
+    ilks[ilk].duty   |-> Duty => data
+    ilks[ilk].rho    |-> Rho
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    what == #string2Word("duty")
+    TIME == Rho
     VCallValue == 0
 ```
 
@@ -2622,12 +2648,13 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    base             |-> Base => (#if what == #string2Word("base") #then data #else Base #fi)
+    base             |-> Base => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    what == #string2Word("base")
     VCallValue == 0
 ```
 
@@ -2645,13 +2672,14 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    vow              |-> Vow => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("vow")
 ```
 
 #### updating the rates
@@ -2717,14 +2745,6 @@ iff in range int256
     Art_i
     Art_i * (#rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate) - Rate)
 
-gas
-
-  (#if ( Rate ==K 0 ) #then ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 40024 ) ) #else ( (#if ( ( Base +Int Duty ) ==K 0 ) #then ( 82 +Int (#if ( ( TIME -Int Rho ) ==K 0 ) #then 0 #else 10 #fi) ) #else (#if ( ( ( TIME -Int Rho ) modInt 2 ) ==K 0 ) #then (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 150 #else ( ( ( num0(( TIME -Int Rho )) -Int 1 ) *Int 172 ) +Int ( 437 +Int ( num1(( TIME -Int Rho )) *Int 287 ) ) ) #fi) #else (#if ( ( ( TIME -Int Rho ) /Int 2 ) ==K 0 ) #then 160 #else ( ( num0(( TIME -Int Rho )) *Int 172 ) +Int ( 447 +Int ( ( num1(( TIME -Int Rho )) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi) +Int ( (#if ( ( ( 0 <=Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ==K true ) andBool ( ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ==K 0 ) #then 0 #else 36 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( ( 0 <=Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K true ) andBool ( ( ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) <=Int 0 ) ==K true ) ) #then 0 #else 14 #fi) +Int ( (#if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt +Int ( Art_i *Int ( ( ( (#rpow( #Ray , ( Base +Int Duty ) , ( TIME -Int Rho ) , #Ray )) *Int Rate ) /Int #Ray ) -Int Rate ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int ( (#if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) +Int 40060 ) ) ) ) ) ) ) ) #fi)
-
-fail_gas
-
-  300000000 + ((#if ( (Base + Duty) ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
-
 if
 
     num0(TIME - Rho) >= 0
@@ -2737,6 +2757,8 @@ calls
     Jug.adduu
     Jug.rpow
     Vat.fold
+
+returns #rmul(#rpow(#Ray, Base + Duty, TIME - Rho, #Ray), Rate)
 ```
 
 ## `rpow`
@@ -2760,6 +2782,7 @@ if
 ```
 
 This is the coinductive lemma.
+
 ```
 0.    n % 2 == 0
       case: n >= 2
@@ -2781,18 +2804,16 @@ This is the coinductive lemma.
 
 num0 n := "number of 0 in n"
 num1 n := "number of 1 in n"
-
-gas = 194 + num0(n) * 178 + num1(n) * 293
 ```
 
 ```act
 behaviour rpow-loop of Jug
 lemma
 
-//  0a3a => 0a7e
+//  1136 => 117a
 pc
 
-    2618 => 2686
+    4406 => 4474
 
 for all
 
@@ -2805,10 +2826,6 @@ for all
 stack
 
     _ : _ : Half : _ : Z : Base : N : X : WS => Half : _ : #rpow(Z, X, N, Base) : Base : 0 : _ : WS
-
-gas
-
-    194 + ((num0(N) * 172) + (num1(N) * 287))
 
 if
 
@@ -2830,10 +2847,6 @@ interface rpow(uint256 x, uint256 n, uint256 b) internal
 stack
 
     b : n : x : JMPTO : WS => JMPTO : #rpow(b, x, n, b) : WS
-
-gas
-
-    (#if ( ABI_x ==K 0 ) #then (#if ( ABI_n ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( ABI_n modInt 2 ) ==K 0 ) #then (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(ABI_n) -Int 1 ) *Int 172 ) +Int ( num1(ABI_n) *Int 287 ) ) ) #fi) #else (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(ABI_n) *Int 172 ) +Int ( ( num1(ABI_n) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi)
 
 if
 
@@ -2893,6 +2906,7 @@ if
     // TODO: strengthen
     #sizeWordStack(WS) <= 100
 ```
+
 ```act
 behaviour muluu of Pot
 interface mul(uint256 x, uint256 y) internal
@@ -3099,6 +3113,27 @@ iff
 returns Rho
 ```
 
+#### system liveness flag
+
+```act
+behaviour live of Pot
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
 
 #### adding and removing owners
@@ -3206,16 +3241,22 @@ for all
 
     May : uint256
     Dsr : uint256
+    Rho : uint48
 
 storage
 
     wards[CALLER_ID] |-> May
-    dsr              |-> Dsr => (#if what == #string2Word("dsr") #then data #else Dsr #fi)
+    dsr              |-> Dsr => data
+    live             |-> Live
+    rho              |-> Rho
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
+    what == #string2Word("dsr")
+    Rho == TIME
     VCallValue == 0
 ```
 
@@ -3233,7 +3274,33 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    vow              |-> Vow => (#if what == #string2Word("vow") #then addr #else Vow #fi)
+    vow              |-> Vow => addr
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    what == #string2Word("vow")
+    VCallValue == 0
+```
+
+#### freezing `dsr` upon global settlement
+
+```act
+behaviour cage of Pot
+interface cage()
+
+for all
+
+    May  : uint256
+    Dsr  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    dsr              |-> Dsr => #Ray
+    live             |-> Live => 0
 
 iff
 
@@ -3248,10 +3315,10 @@ iff
 behaviour rpow-loop of Pot
 lemma
 
-//  0e01 => 0e45
+//  13af => 13f3
 pc
 
-    3585 => 3653
+    5039 => 5107
 
 for all
 
@@ -3264,10 +3331,6 @@ for all
 stack
 
     _ : _ : Half : _ : Z : Base : N : X : WS => Half : _ : #rpow(Z, X, N, Base) : Base : 0 : _ : WS
-
-gas
-
-    194 + ((num0(N) * 172) + (num1(N) * 287))
 
 if
 
@@ -3289,10 +3352,6 @@ interface rpow(uint256 x, uint256 n, uint256 b) internal
 stack
 
     b : n : x : JMPTO : WS => JMPTO : #rpow(b, x, n, b) : WS
-
-gas
-
-    (#if ( ABI_x ==K 0 ) #then (#if ( ABI_n ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( ABI_n modInt 2 ) ==K 0 ) #then (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(ABI_n) -Int 1 ) *Int 172 ) +Int ( num1(ABI_n) *Int 287 ) ) ) #fi) #else (#if ( ( ABI_n /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(ABI_n) *Int 172 ) +Int ( ( num1(ABI_n) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi)
 
 
 if
@@ -3353,14 +3412,6 @@ iff
     VCallValue == 0
     VCallDepth < 1024
 
-gas
-
-    ( ( 5068 + ( ( ( ( ( #if ( ( Dai ==K 0 ) andBool (notBool ( ( Dai + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) + ( #if ( ( Sin ==K 0 ) andBool (notBool ( ( Sin + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Vice ==K 0 ) andBool (notBool ( ( Vice + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + ( #if ( ( Debt ==K 0 ) andBool (notBool ( ( Debt + ( Pie * ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ) ) ==K 0 ) ) ) #then 15000 #else 0 #fi) ) + 26564 ) ) + ( ( ( ( 819 + ( #if ( Dsr ==K 0 ) #then ( #if ( ( TIME - Rho ) ==K 0 ) #then 82 #else 92 #fi) #else ( #if ( ( ( TIME - Rho ) modInt 2 ) ==K 0 ) #then ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 150 #else ( 437 + ( ( ( num0(( TIME - Rho )) - 1 ) * 172 ) + ( num1(( TIME - Rho )) * 287 ) ) ) #fi) #else ( #if ( ( ( TIME - Rho ) / 2 ) ==K 0 ) #then 160 #else ( 447 + ( ( num0(( TIME - Rho )) * 172 ) + ( ( num1(( TIME - Rho )) - 1 ) * 287 ) ) ) #fi) #fi) #fi) ) + ( #if ( Chi ==K 0 ) #then 5946 #else 5998 #fi) ) + ( 5711 + ( #if ( ( Rho ==K 0 ) andBool (notBool ( TIME ==K 0 ) ) ) #then 15000 #else 0 #fi) ) ) + ( #if ( ( ( ( (#rpow( #Ray , Dsr , ( TIME - Rho ) , #Ray )) * Chi ) / #Ray ) - Chi ) ==K 0 ) #then 951 #else 1003 #fi) ) )
-
-fail_gas
-
-  300000000 + ((#if ( Dsr ==K 0 ) #then (#if ( (TIME - Rho) ==K 0 ) #then 82 #else 92 #fi) #else (#if ( ( (TIME - Rho) modInt 2 ) ==K 0 ) #then (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 150 #else ( 437 +Int ( ( ( num0(TIME - Rho) -Int 1 ) *Int 172 ) +Int ( num1(TIME - Rho) *Int 287 ) ) ) #fi) #else (#if ( ( (TIME - Rho) /Int 2 ) ==K 0 ) #then 160 #else ( 447 +Int ( ( num0(TIME - Rho) *Int 172 ) +Int ( ( num1(TIME - Rho) -Int 1 ) *Int 287 ) ) ) #fi) #fi) #fi))
-
 if
 
     num0(TIME - Rho) >= 0
@@ -3388,6 +3439,8 @@ calls
     Pot.subuu
     Pot.muluu
     Vat.suck
+
+returns #rmul(#rpow(#Ray, Dsr, TIME - Rho, #Ray), Chi)
 ```
 
 #### deposits and withdrawals
@@ -3401,6 +3454,7 @@ for all
     Pie_u   : uint256
     Pie_tot : uint256
     Chi     : uint256
+    Rho     : uint256
     Vat     : address Vat
     Can     : uint256
     Dai_u   : uint256
@@ -3411,6 +3465,7 @@ storage
     pie[CALLER_ID] |-> Pie_u   => Pie_u + wad
     Pie            |-> Pie_tot => Pie_tot + wad
     chi            |-> Chi
+    rho            |-> Rho
     vat            |-> Vat
 
 storage Vat
@@ -3424,6 +3479,7 @@ iff
     VCallValue == 0
     VCallDepth < 1024
     Can == 1
+    Rho == TIME
 
 iff in range uint256
 
@@ -3719,6 +3775,27 @@ iff
 returns Wait
 ```
 
+#### getting the `dump`
+
+```act
+behaviour dump of Vow
+interface dump()
+
+for all
+
+    Dump : uint256
+
+storage
+
+    dump |-> Dump
+
+iff
+
+    VCallValue == 0
+
+returns Dump
+```
+
 #### getting the `sump`
 
 ```act
@@ -3813,17 +3890,20 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
     wards[usr]       |-> _ => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -3837,16 +3917,19 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May  : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May => 1
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
 
 if
@@ -3910,6 +3993,7 @@ for all
 
     May  : uint256
     Wait : uint256
+    Dump : uint256
     Sump : uint256
     Bump : uint256
     Hump : uint256
@@ -3918,15 +4002,99 @@ storage
 
     wards[CALLER_ID] |-> May
     wait             |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
-    sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
     bump             |-> Bump => (#if what == #string2Word("bump") #then data #else Bump #fi)
+    sump             |-> Sump => (#if what == #string2Word("sump") #then data #else Sump #fi)
+    dump             |-> Dump => (#if what == #string2Word("dump") #then data #else Dump #fi)
     hump             |-> Hump => (#if what == #string2Word("hump") #then data #else Hump #fi)
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    (what == #string2Word("wait")) or (what == #string2Word("dump")) or (what == #string2Word("sump")) or (what == #string2Word("bump")) or (what == #string2Word("hump"))
     VCallValue == 0
+```
+
+```act
+behaviour file-addr-diff of Vow
+interface file(bytes32 what, address data)
+
+for all
+
+    May     : uint256
+    Vat     : address Vat
+    Flapper : address
+    Flopper : address
+    CanOld  : uint256
+    CanNew  : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    vat              |-> Vat
+    flapper          |-> Flapper => (#if (what == #string2Word("flapper")) #then data #else Flapper #fi)
+    flopper          |-> Flopper => (#if (what == #string2Word("flopper")) #then data #else Flopper #fi)
+
+storage Vat
+
+    can[ACCT_ID][Flapper] |-> CanOld => (#if (what == #string2Word("flapper")) #then 0 #else CanOld #fi)
+    can[ACCT_ID][data]    |-> CanNew => (#if (what == #string2Word("flapper")) #then 1 #else CanNew #fi)
+
+iff
+
+    May == 1
+    (what == #string2Word("flapper")) or (what == #string2Word("flopper"))
+    VCallValue == 0
+    (VCallDepth < 1024) or (what =/= #string2Word("flapper"))
+
+if
+
+    data =/= Flapper
+
+calls
+
+    Vat.nope
+    Vat.hope
+```
+
+```act
+behaviour file-addr-same of Vow
+interface file(bytes32 what, address data)
+
+for all
+
+    May     : uint256
+    Vat     : address Vat
+    Flapper : address
+    Flopper : address
+    Can     : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    vat              |-> Vat
+    flapper          |-> Flapper
+    flopper          |-> Flopper => (#if (what == #string2Word("flopper")) #then data #else Flopper #fi)
+
+storage Vat
+
+    can[ACCT_ID][Flapper] |-> Can => (#if (what == #string2Word("flapper")) #then 1 #else Can #fi)
+
+iff
+
+    May == 1
+    (what == #string2Word("flapper")) or (what == #string2Word("flopper"))
+    VCallValue == 0
+    (VCallDepth < 1024) or (what =/= #string2Word("flapper"))
+
+if
+
+    data == Flapper
+
+calls
+
+    Vat.nope
+    Vat.hope
 ```
 
 #### cancelling bad debt and surplus
@@ -3953,8 +4121,8 @@ storage
 
 storage Vat
 
-    dai[ACCT_ID] |-> Joy  => Joy  - rad
     sin[ACCT_ID] |-> Awe  => Awe  - rad
+    dai[ACCT_ID] |-> Joy  => Joy  - rad
     vice         |-> Vice => Vice - rad
     debt         |-> Debt => Debt - rad
 
@@ -4001,8 +4169,8 @@ storage
 
 storage Vat
 
-    dai[ACCT_ID] |-> Joy  => Joy  - rad
     sin[ACCT_ID] |-> Awe  => Awe  - rad
+    dai[ACCT_ID] |-> Joy  => Joy  - rad
     vice         |-> Vice => Vice - rad
     debt         |-> Debt => Debt - rad
 
@@ -4112,6 +4280,7 @@ for all
     Ash      : uint256
     Awe      : uint256
     Joy      : uint256
+    Dump     : uint256
     Sump     : uint256
     Kicks    : uint256
     FlopLive : uint256
@@ -4129,16 +4298,17 @@ storage
     vat     |-> Vat
     Sin     |-> Sin
     Ash     |-> Ash => Ash + Sump
+    dump    |-> Dump
     sump    |-> Sump
 
 storage Flopper
 
     live                        |-> FlopLive
     wards[ACCT_ID]              |-> MayFlop
-    kicks                       |-> Kicks => 1 + Kicks
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => Sump
-    bids[1 + Kicks].lot         |-> Lot => maxUInt256
+    bids[1 + Kicks].lot         |-> Lot => Dump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
 
 storage Vat
@@ -4191,26 +4361,27 @@ interface flap()
 
 for all
 
-    Flapper  : address Flapper
-    Vat      : address Vat
-    FlapVat  : address
-    Sin      : uint256
-    Ash      : uint256
-    Awe      : uint256
-    Joy      : uint256
-    Bump     : uint256
-    Hump     : uint256
-    Can      : uint256
-    Dai_a    : uint256
-    FlapLive : uint256
-    Kicks    : uint256
-    Ttl      : uint48
-    Tau      : uint48
-    Bid      : uint256
-    Lot      : uint256
-    Guy      : address
-    Tic      : uint48
-    End      : uint48
+    Flapper    : address Flapper
+    Vat        : address Vat
+    FlapVat    : address
+    Sin        : uint256
+    Ash        : uint256
+    Awe        : uint256
+    Joy        : uint256
+    Bump       : uint256
+    Hump       : uint256
+    Can        : uint256
+    Dai_a      : uint256
+    VowMayFlap : uint256
+    FlapLive   : uint256
+    Kicks      : uint256
+    Ttl        : uint48
+    Tau        : uint48
+    Bid        : uint256
+    Lot        : uint256
+    Guy        : address
+    Tic        : uint48
+    End        : uint48
 
 storage
 
@@ -4223,13 +4394,14 @@ storage
 
 storage Flapper
 
+    wards[ACCT_ID]              |-> VowMayFlap
     vat                         |-> FlapVat
-    kicks                       |-> Kicks   => 1 + Kicks
+    live                        |-> FlapLive
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
+    kicks                       |-> Kicks   => 1 + Kicks
     bids[1 + Kicks].bid         |-> Bid => 0
     bids[1 + Kicks].lot         |-> Lot => Bump
     bids[1 + Kicks].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(ACCT_ID, Tic, TIME + Tau)
-    live                        |-> FlapLive
 
 storage Vat
 
@@ -4244,6 +4416,7 @@ iff
     VCallDepth < 1023
     Joy >= (Awe + Bump) + Hump
     (Awe - Sin) - Ash == 0
+    VowMayFlap == 1
     FlapLive == 1
     Can == 1
 
@@ -4299,6 +4472,7 @@ for all
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : address
 
 storage
 
@@ -4316,8 +4490,8 @@ storage Vat
     dai[Flapper] |-> Dai_f => 0
     dai[ACCT_ID] |-> Dai_v => (Dai_v + Dai_f) - Sin_v
     sin[ACCT_ID] |-> Sin_v => 0
-    debt |-> Debt => Debt - Sin_v
     vice |-> Vice => Vice - Sin_v
+    debt |-> Debt => Debt - Sin_v
 
 storage Flapper
 
@@ -4328,12 +4502,14 @@ storage Flapper
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    live |-> FlopLive => 0
+    live           |-> FlopLive => 0
+    vow            |-> FlopVow  => ACCT_ID
 
 iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Live == 1
     Can == 1
     MayFlap == 1
     MayFlop == 1
@@ -4370,22 +4546,23 @@ interface cage()
 
 for all
 
-    Vat     : address Vat
-    Flapper : address Flapper
-    Flopper : address Flopper
-    FlapVat : address
-    MayFlap : uint256
-    MayFlop : uint256
-    Dai_v   : uint256
-    Sin_v   : uint256
-    Dai_f   : uint256
-    Debt    : uint256
-    Vice    : uint256
+    Vat      : address Vat
+    Flapper  : address Flapper
+    Flopper  : address Flopper
+    FlapVat  : address
+    MayFlap  : uint256
+    MayFlop  : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_f    : uint256
+    Debt     : uint256
+    Vice     : uint256
     Live     : uint256
     Sin      : uint256
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : address
 
 storage
 
@@ -4415,12 +4592,14 @@ storage Flapper
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    live |-> FlopLive => 0
+    live           |-> FlopLive => 0
+    vow            |-> FlopVow  => ACCT_ID
 
 iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Live == 1
     Can == 1
     MayFlap == 1
     MayFlop == 1
@@ -4456,22 +4635,23 @@ interface cage()
 
 for all
 
-    Vat     : address Vat
-    Flapper : address Flapper
-    Flopper : address Flopper
-    FlapVat : address
-    MayFlap : uint256
-    MayFlop : uint256
-    Dai_v   : uint256
-    Sin_v   : uint256
-    Dai_f   : uint256
-    Debt    : uint256
-    Vice    : uint256
+    Vat      : address Vat
+    Flapper  : address Flapper
+    Flopper  : address Flopper
+    FlapVat  : address
+    MayFlap  : uint256
+    MayFlop  : uint256
+    Dai_v    : uint256
+    Sin_v    : uint256
+    Dai_f    : uint256
+    Debt     : uint256
+    Vice     : uint256
     Live     : uint256
     Sin      : uint256
     Ash      : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : address
 
 storage
 
@@ -4501,12 +4681,14 @@ storage Flapper
 storage Flopper
 
     wards[ACCT_ID] |-> MayFlop
-    live |-> FlopLive => 0
+    live           |-> FlopLive => 0
+    vow            |-> FlopVow  => ACCT_ID
 
 iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Live == 1
     Can == 1
     MayFlap == 1
     MayFlop == 1
@@ -4765,47 +4947,14 @@ for all
 storage
 
     wards[CALLER_ID] |-> May
-    vow              |-> Vow => (#if what == #string2Word("vow") #then data #else Vow #fi)
+    vow              |-> Vow => data
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
-```
-
-#### setting liquidation auction
-
-```act
-behaviour file-flip of Cat
-interface file(bytes32 ilk, bytes32 what, address data)
-
-for all
-
-    Vat  : address Vat
-    May  : uint256
-    Flip : address
-    Can  : uint256
-
-storage
-
-    vat              |-> Vat
-    wards[CALLER_ID] |-> May
-    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
-
-storage Vat
-
-    can[ACCT_ID][data] |-> Can => (#if what == #string2Word("flip") #then 1 #else Can #fi)
-
-iff
-
-    // act: caller is `. ? : not` authorised
-    May == 1
-    VCallValue == 0
-    what =/= #string2Word("flip") or VCallDepth < 1024
-
-calls
-  Vat.hope
+    what == #string2Word("vow")
 ```
 
 #### setting liquidation data
@@ -4831,39 +4980,85 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("chop") or what == #string2Word("lump")
 ```
 
 #### setting liquidator address
 
-```
-behaviour file-flip of Cat
+```act
+behaviour file-flip-diff of Cat
 interface file(bytes32 ilk, bytes32 what, address data)
 
 for all
 
-    Vat  : address Vat
-    May  : uint256
-    Flip : address
-    Hope : uint256
+    Vat    : address Vat
+    May    : uint256
+    Flip   : address
 
 storage
 
-    vat |-> Vat
+    vat              |-> Vat
     wards[CALLER_ID] |-> May
-    ilks[ilk].flip   |-> Flip => (#if what == #string2Word("flip") #then data #else Flip #fi)
+    ilks[ilk].flip   |-> Flip => data
 
 storage Vat
 
-    can[ACCT_ID][data] |-> Hope => (#if what == #string2Word("flip") #then 1 #else Hope #fi)
+    can[ACCT_ID][Flip] |-> _ => 0
+    can[ACCT_ID][data] |-> _ => 1
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
     VCallValue == 0
+    what == #string2Word("flip")
+    VCallDepth < 1024
+
+if
+
+    Flip =/= data
 
 calls
 
+  Vat.nope
+  Vat.hope
+```
+
+```act
+behaviour file-flip-same of Cat
+interface file(bytes32 ilk, bytes32 what, address data)
+
+for all
+
+    Vat    : address Vat
+    May    : uint256
+    Flip   : address
+
+storage
+
+    vat              |-> Vat
+    wards[CALLER_ID] |-> May
+    ilks[ilk].flip   |-> Flip => data
+
+storage Vat
+
+    can[ACCT_ID][data] |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+    what == #string2Word("flip")
+    VCallDepth < 1024
+
+if
+
+    Flip == data
+
+calls
+
+  Vat.nope
   Vat.hope
 ```
 
@@ -4905,39 +5100,42 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address Vat
-    Vow     : address Vow
-    Flipper : address Flipper
-    Live    : uint256
-    Art_i   : uint256
-    Rate_i  : uint256
-    Spot_i  : uint256
-    Line_i  : uint256
-    Dust_i  : uint256
-    Ink_iu  : uint256
-    Art_iu  : uint256
-    CanFlux : uint256
-    Gem_iv  : uint256
-    Gem_if  : uint256
-    Sin_w   : uint256
-    Vice    : uint256
-    Sin     : uint256
-    Sin_era : uint256
-    Chop    : uint256
-    Lump    : uint256
-    FlipVat : address
-    FlipIlk : bytes32
-    Kicks   : uint256
-    Ttl     : uint48
-    Tau     : uint48
-    Bid     : uint256
-    Lot     : uint256
-    Guy     : address
-    Tic     : uint48
-    End     : uint48
-    Gal     : address
-    Tab     : uint256
-    Usr     : address
+    Vat        : address Vat
+    Vow        : address Vow
+    Flipper    : address Flipper
+    Live       : uint256
+    Art_i      : uint256
+    Rate_i     : uint256
+    Spot_i     : uint256
+    Line_i     : uint256
+    Dust_i     : uint256
+    CatMayVat  : uint256
+    Ink_iu     : uint256
+    Art_iu     : uint256
+    CanFlux    : uint256
+    Gem_iv     : uint256
+    Gem_if     : uint256
+    Sin_w      : uint256
+    Vice       : uint256
+    CatMayVow  : uint256
+    Sin        : uint256
+    Sin_era    : uint256
+    Chop       : uint256
+    Lump       : uint256
+    CatMayFlip : uint256
+    FlipVat    : address
+    FlipIlk    : bytes32
+    Kicks      : uint256
+    Ttl        : uint48
+    Tau        : uint48
+    Bid        : uint256
+    Lot        : uint256
+    Guy        : address
+    Tic        : uint48
+    End        : uint48
+    Gal        : address
+    Tab        : uint256
+    Usr        : address
 
 storage
 
@@ -4949,6 +5147,7 @@ storage
     ilks[ilk].lump |-> Lump
 
 storage Vat
+
     ilks[ilk].Art      |-> Art_i => Art_i - Art_iu
     ilks[ilk].rate     |-> Rate_i
     ilks[ilk].spot     |-> Spot_i
@@ -4972,6 +5171,7 @@ storage Vow
 
 storage Flipper
 
+    wards[ACCT_ID]              |-> CatMayFlip
     vat                         |-> FlipVat
     ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -4988,8 +5188,10 @@ iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Spot_i > 0
     CatMayVat == 1
     CatMayVow == 1
+    CatMayFlip == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
     Art_iu <= pow255
@@ -4998,6 +5200,7 @@ iff
     CanFlux == 1
 
 iff in range int256
+
     0 - Rate_i * Art_iu
     Rate_i
 
@@ -5049,39 +5252,42 @@ interface bite(bytes32 ilk, address urn)
 
 for all
 
-    Vat     : address Vat
-    Vow     : address Vow
-    Flipper : address Flipper
-    Live    : uint256
-    Art_i   : uint256
-    Rate_i  : uint256
-    Spot_i  : uint256
-    Line_i  : uint256
-    Dust_i  : uint256
-    Ink_iu  : uint256
-    Art_iu  : uint256
-    CanFlux : uint256
-    Gem_iv  : uint256
-    Gem_if  : uint256
-    Sin_w   : uint256
-    Vice    : uint256
-    Sin     : uint256
-    Sin_era : uint256
-    Chop    : uint256
-    Lump    : uint256
-    FlipVat : address
-    FlipIlk : bytes32
-    Kicks   : uint256
-    Ttl     : uint48
-    Tau     : uint48
-    Bid     : uint256
-    Lot     : uint256
-    Guy     : address
-    Tic     : uint48
-    End     : uint48
-    Gal     : address
-    Tab     : uint256
-    Usr     : address
+    Vat        : address Vat
+    Vow        : address Vow
+    Flipper    : address Flipper
+    Live       : uint256
+    Art_i      : uint256
+    Rate_i     : uint256
+    Spot_i     : uint256
+    Line_i     : uint256
+    Dust_i     : uint256
+    CatMayVat  : uint256
+    Ink_iu     : uint256
+    Art_iu     : uint256
+    CanFlux    : uint256
+    Gem_iv     : uint256
+    Gem_if     : uint256
+    Sin_w      : uint256
+    Vice       : uint256
+    CatMayVow  : uint256
+    Sin        : uint256
+    Sin_era    : uint256
+    Chop       : uint256
+    Lump       : uint256
+    CatMayFlip : uint256
+    FlipVat    : address
+    FlipIlk    : bytes32
+    Kicks      : uint256
+    Ttl        : uint48
+    Tau        : uint48
+    Bid        : uint256
+    Lot        : uint256
+    Guy        : address
+    Tic        : uint48
+    End        : uint48
+    Gal        : address
+    Tab        : uint256
+    Usr        : address
 
 storage
 
@@ -5117,6 +5323,7 @@ storage Vow
 
 storage Flipper
 
+    wards[ACCT_ID]              |-> CatMayFlip
     vat                         |-> FlipVat
     ilk                         |-> FlipIlk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -5133,8 +5340,10 @@ iff
 
     VCallValue == 0
     VCallDepth < 1023
+    Spot_i > 0
     CatMayVat == 1
     CatMayVow == 1
+    CatMayFlip == 1
     Live == 1
     Ink_iu * Spot_i < Art_iu * Rate_i
     Lump <= pow255
@@ -5142,6 +5351,7 @@ iff
     CanFlux == 1
 
 iff in range int256
+
     0 - Rate_i * ((Lump * Art_iu) / Ink_iu)
     Rate_i
 
@@ -5510,6 +5720,7 @@ iff
 
     May == 1
     VCallValue == 0
+    (what == #string2Word("beg")) or (what == #string2Word("ttl")) or (what == #string2Word("tau"))
 
 if
 
@@ -5557,6 +5768,7 @@ interface kick(address usr, address gal, uint256 tab, uint256 lot, uint256 bid)
 
 for all
 
+    May      : uint256
     Vat      : address Vat
     Ilk      : uint256
     Kicks    : uint256
@@ -5576,6 +5788,7 @@ for all
 
 storage
 
+    wards[CALLER_ID]            |-> May
     vat                         |-> Vat
     ilk                         |-> Ilk
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
@@ -5595,6 +5808,7 @@ storage Vat
 
 iff
 
+    May == 1
     CanFlux == 1
     VCallDepth < 1024
     VCallValue == 0
@@ -5653,7 +5867,7 @@ calls
 ```
 
 ```act
-behaviour tend of Flipper
+behaviour tend-guy-diff of Flipper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -5702,8 +5916,8 @@ iff
   bid <= Dai_c
   Dai_u + Bid <= maxUInt256
   Dai_g + (bid - Bid) <= maxUInt256
-  bid * #Ray <= maxUInt256
-  ((bid < Tab) and (bid * #Ray >= Beg * Bid)) or ((bid == Tab) and (Beg * Bid <= maxUInt256))
+  bid * #Wad <= maxUInt256
+  ((bid < Tab) and (bid * #Wad >= Beg * Bid)) or ((bid == Tab) and (Beg * Bid <= maxUInt256))
 
 if
   CALLER_ID =/= ACCT_ID
@@ -5718,7 +5932,68 @@ calls
 ```
 
 ```act
-behaviour dent of Flipper
+behaviour tend-guy-same of Flipper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+  Vat : address Vat
+  Beg : uint256
+  Bid : uint256
+  Lot : uint256
+  Tab : uint256
+  Gal : address
+  Ttl : uint48
+  Tau : uint48
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Can   : uint256
+  Dai_g : uint256
+  Dai_c : uint256
+
+storage
+  vat          |-> Vat
+  beg          |-> Beg
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid |-> Bid => bid
+  bids[id].lot |-> Lot => lot
+  bids[id].tab |-> Tab
+  bids[id].gal |-> Gal
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+storage Vat
+  can[CALLER_ID][ACCT_ID] |-> Can
+  dai[CALLER_ID] |-> Dai_c => Dai_c - (bid - Bid)
+  dai[Gal]       |-> Dai_g => Dai_g + (bid - Bid)
+
+iff
+  VCallValue == 0
+  VCallDepth < 1024
+  Guy =/= 0
+  Can == 1
+  Tic > TIME or Tic == 0
+  End > TIME
+  TIME + Ttl <= maxUInt48
+  lot == Lot
+  bid >  Bid
+  (bid - Bid) <= Dai_c
+  Dai_g + (bid - Bid) <= maxUInt256
+  bid * #Wad <= maxUInt256
+  ((bid < Tab) and (bid * #Wad >= Beg * Bid)) or ((bid == Tab) and (Beg * Bid <= maxUInt256))
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID == Guy
+  CALLER_ID =/= Gal
+
+calls
+  Flipper.addu48u48
+  Flipper.muluu
+  Vat.move-diff
+```
+
+```act
+behaviour dent-guy-diff of Flipper
 interface dent(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -5775,13 +6050,78 @@ iff
   Gem_a >= (Lot - lot)
   bid <= Dai_c
   Dai_g + bid <= maxUInt256
-  Lot * #Ray >= lot * Beg
-  Lot * #Ray <= maxUInt256
+  Lot * #Wad >= lot * Beg
+  Lot * #Wad <= maxUInt256
 
 if
   #rangeUInt(48, TIME)
   CALLER_ID =/= ACCT_ID
   CALLER_ID =/= Guy
+  ACCT_ID   =/= Usr
+
+calls
+  Flipper.muluu
+  Vat.move-diff
+  Vat.flux-diff
+```
+
+```act
+behaviour dent-guy-same of Flipper
+interface dent(uint256 id, uint256 lot, uint256 bid)
+
+for all
+  Vat : address Vat
+  Ilk : bytes32
+  Ttl : uint48
+  Tau : uint48
+  Beg : uint256
+  Bid : uint256
+  Lot : uint256
+  Guy : address
+  Tic : uint48
+  End : uint48
+  Gal : address
+  Usr : address
+  Tab : uint256
+  Gem_a : uint256
+  Gem_u : uint256
+
+storage
+  vat          |-> Vat
+  ilk          |-> Ilk
+  beg          |-> Beg
+  ttl_tau      |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid |-> Bid
+  bids[id].lot |-> Lot => lot
+  bids[id].tab |-> Tab
+  bids[id].usr |-> Usr
+  bids[id].gal |-> Gal
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+storage Vat
+  can[ACCT_ID][ACCT_ID]   |-> _
+  gem[Ilk][ACCT_ID] |-> Gem_a => Gem_a - (Lot - lot)
+  gem[Ilk][Usr]     |-> Gem_u => Gem_u + (Lot - lot)
+
+iff
+  VCallValue == 0
+  VCallDepth < 1024
+  Guy =/= 0
+  Tic > TIME or Tic == 0
+  End > TIME
+  TIME + Ttl <= maxUInt48
+  bid == Bid
+  bid == Tab
+  lot <  Lot
+  Gem_u + (Lot - lot) <= maxUInt256
+  Gem_a >= (Lot - lot)
+  Lot * #Wad >= lot * Beg
+  Lot * #Wad <= maxUInt256
+
+if
+  #rangeUInt(48, TIME)
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID == Guy
   ACCT_ID   =/= Usr
 
 calls
@@ -5912,6 +6252,27 @@ The `GemJoin` adapter allows standard ERC20 tokens to be deposited for use with 
 
 ### Accessors
 
+#### `wards` mapping
+
+```act
+behaviour wards of GemJoin
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
 #### `vat` address
 
 ```act
@@ -5975,7 +6336,140 @@ iff
 returns Gem
 ```
 
+```act
+behaviour dec of GemJoin
+interface dec()
+
+for all
+
+    Dec : uint256
+
+storage
+
+    dec |-> Dec
+
+iff
+
+    VCallValue == 0
+
+returns Dec
+```
+
+```act
+behaviour live of GemJoin
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
+
+#### granting authorisation
+
+```act
+behaviour rely-diff of GemJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour rely-same of GemJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May => 1
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
+
+#### revoking authorisation
+
+```act
+behaviour deny-diff of GemJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour deny-same of GemJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May => 0
+
+iff
+
+    // act: caller is `. ? : not` authorised
+    May == 1
+    VCallValue == 0
+
+if
+    usr == CALLER_ID
+```
 
 #### depositing into the system
 
@@ -5988,6 +6482,7 @@ for all
     Vat         : address Vat
     Ilk         : bytes32
     DSToken     : address DSToken
+    Live        : uint256
     May         : uint256
     Vat_bal     : uint256
     Bal_usr     : uint256
@@ -5998,9 +6493,10 @@ for all
 
 storage
 
-    vat |-> Vat
-    ilk |-> Ilk
-    gem |-> DSToken
+    vat  |-> Vat
+    ilk  |-> Ilk
+    gem  |-> DSToken
+    live |-> Live
 
 storage Vat
 
@@ -6018,6 +6514,7 @@ iff
 
     VCallDepth < 1024
     VCallValue == 0
+    Live == 1
     wad <= Allowed
     Stopped == 0
     May == 1
@@ -6097,6 +6594,27 @@ calls
   DSToken.transfer
 ```
 
+#### disable joining
+
+```act
+behaviour cage of GemJoin
+interface cage()
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live             |-> _ => 0
+
+iff
+
+    VCallValue == 0
+    May == 1
+```
+
 # DaiJoin
 
 The `DaiJoin` adapter allows users to withdraw their dai from the system into a standard ERC20 token.
@@ -6104,6 +6622,27 @@ The `DaiJoin` adapter allows users to withdraw their dai from the system into a 
 ## Specification of behaviours
 
 ### Accessors
+
+#### `wards` mapping
+
+```act
+behaviour wards of DaiJoin
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
 
 #### `vat` address
 
@@ -6126,7 +6665,7 @@ iff
 returns Vat
 ```
 
-#### dai address
+#### `dai` address
 
 ```act
 behaviour dai of DaiJoin
@@ -6147,7 +6686,122 @@ iff
 returns Dai
 ```
 
+#### `live` flag
+
+```act
+behaviour live of DaiJoin
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
 ### Mutators
+
+#### granting authorisation
+
+```act
+behaviour rely-diff of DaiJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour rely-same of DaiJoin
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr == CALLER_ID
+```
+
+#### revoking authorisation
+
+```act
+behaviour deny-diff of DaiJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour deny-same of DaiJoin
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    VCallValue == 0
+    May == 1
+
+if
+
+    usr == CALLER_ID
+```
 
 #### depositing into the system
 
@@ -6197,9 +6851,9 @@ storage Vat
 
 storage Dai
 
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
     balanceOf[CALLER_ID]          |-> Dai_c   => Dai_c - wad
     totalSupply                   |-> Supply  => Supply - wad
-    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if Allowed == maxUInt256 #then Allowed #else Allowed - wad #fi
 
 iff
 
@@ -6237,6 +6891,7 @@ for all
 
     Vat    : address Vat
     Dai    : address Dai
+    Live   : uint256
     May    : uint256
     Can    : uint256
     Dai_c  : uint256
@@ -6246,8 +6901,9 @@ for all
 
 storage
 
-    vat |-> Vat
-    dai |-> Dai
+    vat  |-> Vat
+    dai  |-> Dai
+    live |-> Live
 
 storage Vat
 
@@ -6266,6 +6922,7 @@ iff
     // act: caller is `. ? : not` authorised
     May == 1
     Can == 1
+    Live == 1
     // act: call stack is not too big
     VCallDepth < 1024
     VCallValue == 0
@@ -6287,6 +6944,27 @@ calls
     DaiJoin.muluu
     Vat.move-diff
     Dai.mint
+```
+
+#### disabling exit
+
+```act
+behaviour cage of DaiJoin
+interface cage()
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live             |-> _ => 0 
+
+iff
+
+    May == 1
+    VCallValue == 0
 ```
 
 # Flapper
@@ -6317,8 +6995,6 @@ iff
 
 returns May
 ```
-
-
 
 #### bid data
 
@@ -6618,6 +7294,7 @@ iff
 
     May == 1
     VCallValue == 0
+    (what == #string2Word("beg")) or (what == #string2Word("ttl")) or (what == #string2Word("tau"))
 
 if
 
@@ -6667,6 +7344,7 @@ interface kick(uint256 lot, uint256 bid)
 
 for all
 
+    May      : uint256
     Vat      : address Vat
     Kicks    : uint256
     Ttl      : uint48
@@ -6683,6 +7361,7 @@ for all
 
 storage
 
+    wards[CALLER_ID]            |-> May
     vat                         |-> Vat
     ttl_tau                     |-> #WordPackUInt48UInt48(Ttl, Tau)
     kicks                       |-> Kicks => 1 + Kicks
@@ -6694,11 +7373,12 @@ storage
 storage Vat
 
     can[CALLER_ID][ACCT_ID] |-> CanMove
-    dai[ACCT_ID]   |-> Dai_v => Dai_v + lot
     dai[CALLER_ID] |-> Dai_c => Dai_c - lot
+    dai[ACCT_ID]   |-> Dai_v => Dai_v + lot
 
 iff
 
+    May == 1
     Live == 1
     CanMove == 1
     VCallValue == 0
@@ -6727,10 +7407,42 @@ calls
     Flapper.addu48u48
 ```
 
+```act
+behaviour tick of Flapper
+interface tick(uint256 id)
+
+for all
+
+    Tau     : uint48
+    Ttl     : uint48
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+
+storage
+
+    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
+
+iff
+    End < TIME
+    Tic == 0
+    VCallValue == 0
+
+iff in range uint48
+    TIME + Tau
+
+if
+    #rangeUInt(48, TIME)
+
+calls
+    Flapper.addu48u48
+```
+
 #### Bidding on an auction (tend phase)
 
 ```act
-behaviour tend of Flapper
+behaviour tend-guy-diff of Flapper
 interface tend(uint256 id, uint256 lot, uint256 bid)
 
 for all
@@ -6782,8 +7494,8 @@ iff
     TIME + Ttl <= maxUInt48
     lot == Lot
     bid > Bid
-    bid * #Ray <= maxUInt256
-    bid * #Ray >= Beg * Bid
+    bid * #Wad <= maxUInt256
+    bid * #Wad >= Beg * Bid
 
 iff in range uint256
     Gem_u - bid
@@ -6795,6 +7507,75 @@ if
     CALLER_ID =/= ACCT_ID
     CALLER_ID =/= Guy
     ACCT_ID   =/= Guy
+
+calls
+    Flapper.addu48u48
+    Flapper.muluu
+    DSToken.move
+```
+
+```act
+behaviour tend-guy-same of Flapper
+interface tend(uint256 id, uint256 lot, uint256 bid)
+
+for all
+
+    DSToken : address DSToken
+    Live    : uint256
+    Ttl     : uint48
+    Tau     : uint48
+    Beg     : uint256
+    Bid     : uint256
+    Lot     : uint256
+    Guy     : address
+    Tic     : uint48
+    End     : uint48
+    Allowed : uint256
+    Gem_a   : uint256
+    Gem_u   : uint256
+    Owner   : address
+    Stopped : bool
+
+storage
+
+    gem                  |-> DSToken
+    live                 |-> Live
+    ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+    beg                  |-> Beg
+    bids[id].bid         |-> Bid => bid
+    bids[id].lot         |-> Lot
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
+
+storage DSToken
+
+    allowance[CALLER_ID][ACCT_ID] |-> Allowed => #if (Allowed == maxUInt256) #then Allowed #else Allowed - (bid - Bid) #fi
+    balances[CALLER_ID] |-> Gem_u => Gem_u - (bid - Bid)
+    balances[ACCT_ID]   |-> Gem_a => Gem_a + (bid - Bid)
+    owner_stopped       |-> #WordPackAddrUInt8(Owner, Stopped)
+
+iff
+    VCallValue == 0
+    VCallDepth < 1024
+    Guy =/= 0
+    Stopped == 0
+    (Allowed == maxUInt256) or ((bid - Bid) <= Allowed)
+    Live == 1
+    Tic > TIME or Tic == 0
+    End > TIME
+    TIME + Ttl <= maxUInt48
+    lot == Lot
+    bid > Bid
+    bid * #Wad <= maxUInt256
+    bid * #Wad >= Beg * Bid
+
+iff in range uint256
+    Gem_u - (bid - Bid)
+    Gem_a + (bid - Bid)
+
+if
+    #rangeUInt(48, TIME)
+    CALLER_ID =/= ACCT_ID
+    CALLER_ID == Guy
 
 calls
     Flapper.addu48u48
@@ -6846,7 +7627,7 @@ iff
   VCallDepth < 1024
   Live == 1
   Stopped == 0
-  (Tic < TIME and Tic =/= 0) or (End < TIME)
+  (Tic =/= 0) and ((Tic < TIME) or (End < TIME))
 
 if
   ACCT_ID == Owner
@@ -7047,6 +7828,27 @@ iff
 returns Gem
 ```
 
+#### Vow address
+
+```act
+behaviour vow of Flopper
+interface vow()
+
+for all
+
+    Vow : address
+
+storage
+
+    vow |-> Vow
+
+iff
+
+    VCallValue == 0
+
+returns Vow
+```
+
 #### minimum bid increment
 
 ```act
@@ -7066,6 +7868,25 @@ iff
     VCallValue == 0
 
 returns Beg
+```
+
+```act
+behaviour pad of Flopper
+interface pad()
+
+for all
+
+    Pad : uint256
+
+storage
+
+    pad |-> Pad
+
+iff
+
+    VCallValue == 0
+
+returns Pad
 ```
 
 #### auction time-to-live
@@ -7298,6 +8119,7 @@ for all
 
     May : uint256
     Beg : uint256
+    Pad : uint256
     Ttl : uint48
     Tau : uint48
 
@@ -7305,12 +8127,14 @@ storage
 
     wards[CALLER_ID] |-> May
     beg |-> Beg => (#if what == #string2Word("beg") #then data #else Beg #fi)
+    pad |-> Pad => (#if what == #string2Word("pad") #then data #else Pad #fi)
     ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau) => (#if what == #string2Word("ttl") #then #WordPackUInt48UInt48(data, Tau) #else (#if what == #string2Word("tau") #then #WordPackUInt48UInt48(Ttl, data) #else #WordPackUInt48UInt48(Ttl, Tau) #fi) #fi)
 
 iff
 
     May == 1
     VCallValue == 0
+    (what == #string2Word("beg")) or (what == #string2Word("pad")) or (what == #string2Word("ttl")) or (what == #string2Word("tau"))
 
 if
 
@@ -7361,11 +8185,192 @@ if
 returns 1 + Kicks
 
 calls
-  Flapper.addu48u48
+  Flopper.addu48u48
 ```
 
 ```act
-behaviour dent of Flopper
+behaviour tick of Flopper
+interface tick(uint256 id)
+
+for all
+  Pad   : uint256
+  Ttl   : uint48
+  Tau   : uint48
+  Lot   : uint256
+  Guy   : address
+  Tic   : uint48
+  End   : uint48
+
+storage
+  pad                  |-> Pad
+  ttl_tau              |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].lot         |-> Lot => (Pad * Lot) / #Wad
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, Tic, TIME + Tau)
+
+iff
+  VCallValue == 0
+  Tic == 0
+  End < TIME
+  Pad * Lot <= maxUInt256
+
+iff in range uint48
+  TIME + Tau
+
+if
+  #rangeUInt(48, TIME)
+
+calls
+  Flopper.addu48u48
+```
+
+```act
+behaviour dent-guy-diff-tic-not-0 of Flopper
+interface dent(uint id, uint lot, uint bid)
+
+for all
+  Live      : uint256
+  Vat       : address Vat
+  Beg       : uint256
+  Ttl       : uint48
+  Tau       : uint48
+  Bid       : uint256
+  Lot       : uint256
+  Guy       : address
+  Tic       : uint48
+  End       : uint48
+  CanMove   : uint256
+  Dai_a     : uint256
+  Dai_g     : uint256
+
+storage
+  live                  |-> Live
+  vat                   |-> Vat
+  beg                   |-> Beg
+  ttl_tau               |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid          |-> Bid
+  bids[id].lot          |-> Lot => lot
+  bids[id].guy_tic_end  |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+
+storage Vat
+  can[CALLER_ID][ACCT_ID]   |-> CanMove
+  dai[CALLER_ID]            |-> Dai_a => Dai_a - bid
+  dai[Guy]                  |-> Dai_g => Dai_g + bid
+
+iff
+  Live == 1
+  Guy =/= 0
+  Tic > TIME
+  End > TIME
+  bid == Bid
+  lot <  Lot
+  Lot * #Wad <= maxUInt256
+  Beg * lot <= Lot * #Wad
+  CanMove == 1
+  VCallValue == 0
+  VCallDepth < 1024
+
+iff in range uint256
+  Dai_a - bid
+  Dai_g + bid
+
+iff in range uint48
+  TIME + Ttl
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= Guy
+  #rangeUInt(48, TIME)
+  Tic =/= 0
+
+calls
+  Flopper.muluu
+  Flopper.addu48u48
+  Vat.move-diff
+```
+
+```act
+behaviour dent-guy-diff-tic-0 of Flopper
+interface dent(uint id, uint lot, uint bid)
+
+for all
+  Live      : uint256
+  Vat       : address Vat
+  Beg       : uint256
+  Ttl       : uint48
+  Tau       : uint48
+  Bid       : uint256
+  Lot       : uint256
+  Tic       : uint48
+  End       : uint48
+  CanMove   : uint256
+  Dai_a     : uint256
+  Vow       : address Vow
+  Ash       : uint256
+  Joy       : uint256
+  Awe       : uint256
+  Vice      : uint256
+  Debt      : uint256
+
+storage
+  live                      |-> Live
+  vat                       |-> Vat
+  beg                       |-> Beg
+  ttl_tau                   |-> #WordPackUInt48UInt48(Ttl, Tau)
+  bids[id].bid              |-> Bid
+  bids[id].lot              |-> Lot => lot
+  bids[id].guy_tic_end      |-> #WordPackAddrUInt48UInt48(Vow, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
+
+storage Vow
+  vat                       |-> Vat
+  Ash                       |-> Ash => #if bid > Ash #then 0 #else Ash - bid #fi
+
+storage Vat
+  can[CALLER_ID][ACCT_ID]   |-> CanMove
+  dai[CALLER_ID]            |-> Dai_a => Dai_a - bid
+  sin[Vow]                  |-> Awe  => #if bid > Ash #then Awe - Ash #else Awe - bid #fi
+  dai[Vow]                  |-> Joy  => #if bid > Ash #then Joy + bid - Ash #else Joy #fi
+  vice                      |-> Vice => #if bid > Ash #then Vice - Ash #else Vice - bid #fi
+  debt                      |-> Debt => #if bid > Ash #then Debt - Ash #else Debt - bid #fi
+
+iff
+  Live == 1
+  Vow =/= 0
+  End > TIME
+  bid == Bid
+  lot <  Lot
+  Lot * #Wad <= maxUInt256
+  Beg * lot <= Lot * #Wad
+  CanMove == 1
+  VCallValue == 0
+  VCallDepth < 1023
+
+iff in range uint256
+  Dai_a - bid
+  Joy + bid
+
+iff in range uint48
+  TIME + Ttl
+
+iff
+  (bid > Ash and Awe - Ash >= 0 and Vice - Ash >= 0 and Debt - Ash >= 0) or (bid <= Ash and Awe - bid >= 0 and Vice - bid >= 0 and Debt - bid >= 0)
+
+if
+  CALLER_ID =/= ACCT_ID
+  CALLER_ID =/= Vow
+  Vat =/= Vow
+  #rangeUInt(48, TIME)
+  Tic == 0
+
+calls
+  Flopper.muluu
+  Flopper.addu48u48
+  Vat.move-diff
+  Vow.Ash
+  Vow.kiss
+```
+
+```act
+behaviour dent-guy-same of Flopper
 interface dent(uint id, uint lot, uint bid)
 
 for all
@@ -7379,9 +8384,6 @@ for all
   Guy  : address
   Tic  : uint48
   End  : uint48
-  CanMove : uint256
-  Dai_a   : uint256
-  Dai_g   : uint256
 
 storage
   live |-> Live
@@ -7390,12 +8392,7 @@ storage
   ttl_tau |-> #WordPackUInt48UInt48(Ttl, Tau)
   bids[id].bid         |-> Bid
   bids[id].lot         |-> Lot => lot
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(CALLER_ID, TIME + Ttl, End)
-
-storage Vat
-  can[CALLER_ID][ACCT_ID] |-> CanMove
-  dai[CALLER_ID] |-> Dai_a => Dai_a - bid
-  dai[Guy]       |-> Dai_g => Dai_g + bid
+  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => #WordPackAddrUInt48UInt48(Guy, TIME + Ttl, End)
 
 iff
   Live == 1
@@ -7404,28 +8401,21 @@ iff
   End > TIME
   bid == Bid
   lot <  Lot
-  (Beg * lot) / #Ray <= Lot
-  CanMove == 1
+  Lot * #Wad <= maxUInt256
+  Beg * lot <= Lot * #Wad
   VCallValue == 0
-  VCallDepth < 1024
-
-iff in range uint256
-  Dai_a - bid
-  Dai_g + bid
-  Beg * lot
 
 iff in range uint48
   TIME + Ttl
 
 if
   CALLER_ID =/= ACCT_ID
-  CALLER_ID =/= Guy
+  CALLER_ID == Guy
   #rangeUInt(48, TIME)
 
 calls
   Flopper.muluu
   Flopper.addu48u48
-  Vat.move-diff
 ```
 
 ```act
@@ -7459,8 +8449,7 @@ storage DSToken
 
 iff
   Live == 1
-  Tic < TIME or End < TIME
-  Tic =/= 0  or End < TIME
+  (Tic =/= 0) and ((Tic < TIME) or (End < TIME))
   Stopped == 0
   VCallValue == 0
   VCallDepth < 1024
@@ -7481,16 +8470,21 @@ behaviour cage of Flopper
 interface cage()
 
 for all
-  Ward : uint256
-  Live : uint256
+
+    Ward : uint256
+    Live : uint256
+    Vow  : address
 
 storage
-  wards[CALLER_ID] |-> Ward
-  live |-> Live => 0
+
+    wards[CALLER_ID] |-> Ward
+    live             |-> Live => 0
+    vow              |-> Vow => CALLER_ID
 
 iff
-  Ward == 1
-  VCallValue == 0
+
+    Ward == 1
+    VCallValue == 0
 ```
 
 ```act
@@ -7498,43 +8492,56 @@ behaviour yank of Flopper
 interface yank(uint256 id)
 
 for all
-  Live   : uint256
-  Vat    : address Vat
-  Bid    : uint256
-  Lot    : uint256
-  Guy    : address
-  Tic    : uint48
-  End    : uint48
-  Dai_a  : uint256
-  Dai_g  : uint256
+
+    Live  : uint256
+    Vow   : address
+    Vat   : address Vat
+    Bid   : uint256
+    Lot   : uint256
+    Guy   : address
+    Tic   : uint48
+    End   : uint48
+    May   : uint256
+    Sin_v : uint256
+    Dai_g : uint256
+    Debt  : uint256
+    Vice  : uint256
 
 storage
-  live |-> Live
-  vat  |-> Vat
-  bids[id].bid |-> Bid => 0
-  bids[id].lot |-> Lot => 0
-  bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
+
+    live                 |-> Live
+    vow                  |-> Vow
+    vat                  |-> Vat
+    bids[id].bid         |-> Bid => 0
+    bids[id].lot         |-> Lot => 0
+    bids[id].guy_tic_end |-> #WordPackAddrUInt48UInt48(Guy, Tic, End) => 0
 
 storage Vat
-  can[ACCT_ID][ACCT_ID] |-> _
-  dai[ACCT_ID] |-> Dai_a => Dai_a - Bid
-  dai[Guy]     |-> Dai_g => Dai_g + Bid
+
+    wards[ACCT_ID] |-> May
+    sin[Vow]       |-> Sin_v => Sin_v + Bid
+    dai[Guy]       |-> Dai_g => Dai_g + Bid
+    debt           |-> Debt  => Debt  + Bid
+    vice           |-> Vice  => Vice  + Bid
 
 iff
-  Live == 0
-  Guy =/= 0
-  VCallDepth < 1024
-  VCallValue == 0
 
-if
-  ACCT_ID =/= Guy
+    Live == 0
+    Guy =/= 0
+    May == 1
+    VCallDepth < 1024
+    VCallValue == 0
 
 iff in range uint256
-  Dai_a - Bid
-  Dai_g + Bid
+
+    Sin_v + Bid
+    Dai_g + Bid
+    Debt  + Bid
+    Vice  + Bid
 
 calls
-  Vat.move-diff
+
+    Vat.suck
 ```
 
 # End
@@ -7551,7 +8558,7 @@ interface rely(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -7597,7 +8604,7 @@ interface deny(address usr)
 
 for all
 
-    May   : uint256
+    May : uint256
 
 storage
 
@@ -7829,6 +8836,26 @@ iff
 returns Vow
 ```
 
+#### `pot` address
+
+```act
+behaviour pot of End
+interface pot()
+
+for all
+
+    Pot : address
+
+storage
+
+    pot |-> Pot
+
+iff
+
+    VCallValue == 0
+
+returns Pot
+```
 
 #### `spot` address
 
@@ -7882,17 +8909,21 @@ for all
 
     May  : uint256
     Wait : uint256
+    Live : uint256
 
 storage
 
     wards[CALLER_ID] |-> May
-    wait |-> Wait => (#if what == #string2Word("wait") #then data #else Wait #fi)
+    wait             |-> Wait => data
+    live             |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
+    what == #string2Word("wait")
 ```
 
 ```act
@@ -7905,7 +8936,9 @@ for all
     Vat  : address
     Cat  : address
     Vow  : address
+    Pot  : address
     Spot : address
+    Live : uint256
 
 storage
 
@@ -7913,13 +8946,17 @@ storage
     vat  |-> Vat  => (#if what == #string2Word("vat")  #then data #else Vat #fi)
     cat  |-> Cat  => (#if what == #string2Word("cat")  #then data #else Cat #fi)
     vow  |-> Vow  => (#if what == #string2Word("vow")  #then data #else Vow #fi)
+    pot  |-> Pot  => (#if what == #string2Word("pot")  #then data #else Pot #fi)
     spot |-> Spot => (#if what == #string2Word("spot") #then data #else Spot #fi)
+    live |-> Live
 
 iff
 
     // act: caller is `. ? : not` authorised
     May == 1
+    Live == 1
     VCallValue == 0
+    (what == #string2Word("vat")) or (what == #string2Word("cat")) or (what == #string2Word("vow")) or (what == #string2Word("pot")) or (what == #string2Word("spot"))
 ```
 
 ### Time of cage
@@ -8109,9 +9146,11 @@ interface cage()
 
 for all
 
-    Vat : address Vat
-    Cat : address Cat
-    Vow : address Vow
+    Vat     : address Vat
+    Cat     : address Cat
+    Vow     : address Vow
+    Spotter : address Spotter
+    Pot     : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8123,13 +9162,17 @@ for all
     VatLive  : uint256
     CatLive  : uint256
     VowLive  : uint256
+    PotLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
-    CallerMay : uint256
-    EndMayVat : uint256
-    EndMayCat : uint256
-    EndMayVow : uint256
+    CallerMay  : uint256
+    EndMayVat  : uint256
+    EndMayCat  : uint256
+    EndMayVow  : uint256
+    EndMaySpot : uint256
+    EndMayPot  : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
 
@@ -8140,6 +9183,7 @@ for all
     Vice  : uint256
     Sin   : uint256
     Ash   : uint256
+    Dsr   : uint256
 
 storage
 
@@ -8185,19 +9229,34 @@ storage Flapper
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> FlopLive => 0
+    live       |-> FlopLive => 0
+    vow        |-> FlopVow  => Vow
+
+storage Spotter
+
+    wards[ACCT_ID] |-> EndMaySpot
+    live           |-> _ => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
 
 iff
 
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
+    VowLive == 1
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
+    EndMaySpot == 1
+    EndMayPot == 1
 
 iff in range uint256
 
@@ -8216,11 +9275,14 @@ if
     VowVat  == Vat
     VowVat  =/= Vow
     FlapVat =/= Vow
+    Spotter =/= VowVat
 
 calls
     Vat.cage
     Cat.cage
     Vow.cage-surplus
+    Spotter.cage
+    Pot.cage
 ```
 
 ```act
@@ -8229,9 +9291,11 @@ interface cage()
 
 for all
 
-    Vat : address Vat
-    Cat : address Cat
-    Vow : address Vow
+    Vat     : address Vat
+    Cat     : address Cat
+    Vow     : address Vow
+    Spotter : address Spotter
+    Pot     : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8245,6 +9309,7 @@ for all
     VowLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
     CallerMay : uint256
     EndMayVat : uint256
@@ -8252,6 +9317,8 @@ for all
     EndMayVow : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
+    EndMaySpot : uint256
+    EndMayPot  : uint256
 
     Dai_f : uint256
     Sin_v : uint256
@@ -8305,19 +9372,34 @@ storage Flapper
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> FlopLive => 0
+    live       |-> FlopLive => 0
+    vow        |-> FlopVow  => Vow
+
+storage Spotter
+
+    wards[ACCT_ID] |-> EndMaySpot
+    live           |-> _ => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
 
 iff
 
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
+    VowLive == 1
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
+    EndMaySpot == 1
+    EndMayPot == 1
 
 iff in range uint256
 
@@ -8341,6 +9423,8 @@ calls
     Vat.cage
     Cat.cage
     Vow.cage-deficit
+    Spotter.cage
+    Pot.cage
 ```
 
 ```act
@@ -8349,9 +9433,11 @@ interface cage()
 
 for all
 
-    Vat : address Vat
-    Cat : address Cat
-    Vow : address Vow
+    Vat     : address Vat
+    Cat     : address Cat
+    Vow     : address Vow
+    Spotter : address Spotter
+    Pot     : address Pot
     Flapper : address Flapper
     Flopper : address Flopper
     FlapVat : address
@@ -8365,13 +9451,16 @@ for all
     VowLive  : uint256
     FlapLive : uint256
     FlopLive : uint256
+    FlopVow  : uint256
 
-    CallerMay : uint256
-    EndMayVat : uint256
-    EndMayCat : uint256
-    EndMayVow : uint256
+    CallerMay  : uint256
+    EndMayVat  : uint256
+    EndMayCat  : uint256
+    EndMayVow  : uint256
     VowMayFlap : uint256
     VowMayFlop : uint256
+    EndMaySpot : uint256
+    EndMayPot  : uint256
 
     Dai_f : uint256
     Sin_v : uint256
@@ -8425,19 +9514,34 @@ storage Flapper
 storage Flopper
 
     wards[Vow] |-> VowMayFlop
-    live |-> FlopLive => 0
+    live       |-> FlopLive => 0
+    vow        |-> FlopVow  => Vow
+
+storage Spotter
+
+    wards[ACCT_ID] |-> EndMaySpot
+    live           |-> _ => 0
+
+storage Pot
+
+    wards[ACCT_ID] |-> EndMayPot
+    dsr  |-> Dsr => #Ray
+    live |-> PotLive => 0
 
 iff
 
     VCallValue == 0
     VCallDepth < 1022
     Live == 1
+    VowLive == 1
     CallerMay == 1
     EndMayVat == 1
     EndMayCat == 1
     EndMayVow == 1
     VowMayFlap == 1
     VowMayFlop == 1
+    EndMaySpot == 1
+    EndMayPot == 1
 
 iff in range uint256
 
@@ -8461,6 +9565,8 @@ calls
     Vat.cage
     Cat.cage
     Vow.cage-balance
+    Spotter.cage
+    Pot.cage
 ```
 
 ```act
@@ -8476,6 +9582,7 @@ for all
   Line_i  : uint256
   Dust_i  : uint256
   Mat_i   : uint256
+  Par     : uint256
   Vat     : address Vat
   Spotter : address Spotter
   DSValue : address DSValue
@@ -8488,11 +9595,12 @@ storage
   vat      |-> Vat
   spot     |-> Spotter
   Art[ilk] |-> Art_i
-  tag[ilk] |-> Tag_i => (#Wad * #Ray) / Price
+  tag[ilk] |-> Tag_i => (Par * #Wad) / Price
 
 storage Spotter
   ilks[ilk].pip |-> DSValue
   ilks[ilk].mat |-> Mat_i
+  par           |-> Par
 
 storage Vat
   ilks[ilk].Art  |-> Art_i
@@ -8502,8 +9610,8 @@ storage Vat
   ilks[ilk].dust |-> Dust_i
 
 storage DSValue
-  1 |-> #WordPackAddrUInt8(Owner, Ok)
-  2 |-> Price
+  #DSValue.owner_has |-> #WordPackAddrUInt8(Owner, Ok)
+  #DSValue.val       |-> Price
 
 iff
   VCallValue == 0
@@ -8514,7 +9622,7 @@ iff
   Price =/= 0
 
 iff in range uint256
-  #Wad * #Ray
+  Par * #Wad
 
 calls
   End.rdiv
@@ -8735,6 +9843,266 @@ calls
 ```
 
 ```act
+failure skim-A of End
+interface skim(bytes32 ilk, address urn)
+
+iff
+  VCallValue == 0
+```
+
+```act
+failure skim-B of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Tag : uint256
+
+storage
+  tag[ilk] |-> Tag
+
+iff
+  Tag =/= 0
+
+if
+  VCallValue == 0
+```
+
+```act
+failure skim-C of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat : address Vat
+  Tag : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+
+storage Vat
+
+iff
+  VCallDepth < 1024
+
+if
+  VCallValue == 0
+  Tag =/= 0
+```
+
+```act
+failure skim-D of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff in range uint256
+  Rate_i * Art_iu
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+
+calls
+  Vat.ilks
+  Vat.urns
+```
+
+```act
+failure skim-E of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff in range uint256
+  ((Rate_i * Art_iu) / #Ray) * Tag
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+
+calls
+  Vat.ilks
+  Vat.urns
+```
+
+```
+// From a naive reading of the code, one would expect the next iff condition to be:
+//     (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
+// But actually, this is implied by a condition we already have:
+//     #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+//
+// proof:
+//   #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+//     => (((Rate_i * Art_iu) / #Ray) * Tag) < 2^256
+//     => ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^256 / #Ray   // <= b/c of truncating nature of integer division
+//     => ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^256 / 10^27  // def of #Ray
+//
+//   Note that (2^256 / 10^27) < 2^255, so:
+//   ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) <= 2^255
+//     => 0 - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) >= -2^255
+//     => 0 - ((((Rate_i * Art_iu) / #Ray) * Tag) / #Ray) >= minSInt256
+```
+
+```act
+failure skim-F of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Gap    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+  gap[ilk] |-> Gap
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff
+  (0 - Art_iu) >= minSInt256
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+  #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+
+  // This branch condition distinguishes skim and bail specs
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.minuu
+  Vat.ilks
+  Vat.urns
+```
+
+This one is failing locally as well.
+```act
+failure skim-G of End
+interface skim(bytes32 ilk, address urn)
+
+for all
+  Vat    : address Vat
+  Tag    : uint256
+  Gap    : uint256
+  Art_i  : uint256
+  Rate_i : uint256
+  Spot_i : uint256
+  Line_i : uint256
+  Dust_i : uint256
+  Ink_iu : uint256
+  Art_iu : uint256
+
+storage
+  vat      |-> Vat
+  tag[ilk] |-> Tag
+  gap[ilk] |-> Gap
+
+storage Vat
+  ilks[ilk].Art      |-> Art_i
+  ilks[ilk].rate     |-> Rate_i
+  ilks[ilk].spot     |-> Spot_i
+  ilks[ilk].line     |-> Line_i
+  ilks[ilk].dust     |-> Dust_i
+
+  urns[ilk][urn].ink |-> Ink_iu
+  urns[ilk][urn].art |-> Art_iu
+
+iff
+  #rangeUInt(256, Art_i - Art_iu)
+
+if
+  VCallValue == 0
+  Tag =/= 0
+  VCallDepth < 1024
+  #rangeUInt(256, Rate_i * Art_iu)
+  #rangeUInt(256, (((Rate_i * Art_iu) / #Ray) * Tag))
+  (0 - ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)) >= minSInt256
+  (0 - Art_iu) >= minSInt256
+
+  // This branch condition distinguishes skim and bail specs
+  Ink_iu > ((((Art_iu * Rate_i) / #Ray) * Tag) / #Ray)
+
+
+calls
+  End.adduu
+  End.subuu
+  End.rmul
+  End.minuu
+  Vat.ilks
+  Vat.urns
+```
+
+```act
 behaviour bail of End
 interface skim(bytes32 ilk, address urn)
 
@@ -8898,7 +10266,6 @@ calls
   Vat.urns
   Vat.grab
 ```
-
 
 ```act
 behaviour flow of End
@@ -9335,8 +10702,8 @@ types
   Ok    : bool
 
 storage
-  1 |-> #WordPackAddrUInt8(Owner, Ok)
-  2 |-> Value
+  #DSValue.owner_has |-> #WordPackAddrUInt8(Owner, Ok)
+  #DSValue.val       |-> Value
 
 iff
   VCallValue == 0
@@ -9354,8 +10721,8 @@ types
   Ok    : bool
 
 storage
-  1 |-> #WordPackAddrUInt8(Owner, Ok)
-  2 |-> Value
+  #DSValue.owner_has |-> #WordPackAddrUInt8(Owner, Ok)
+  #DSValue.val       |-> Value
 
 iff
   VCallValue == 0
@@ -9366,20 +10733,395 @@ returns Value
 
 # Spotter
 
+## Specification of behaviours
+
+### Accessors
+
+#### Auth
+
+```act
+behaviour wards of Spotter
+interface wards(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[usr] |-> May
+
+iff
+
+    VCallValue == 0
+
+returns May
+```
+
+#### ilks
+
 ```act
 behaviour ilks of Spotter
 interface ilks(bytes32 ilk)
 
 for all
-  Pip : address
-  Mat : uint256
+
+    Pip : address
+    Mat : uint256
 
 storage
-  ilks[ilk].pip |-> Pip
-  ilks[ilk].mat |-> Mat
+
+    ilks[ilk].pip |-> Pip
+    ilks[ilk].mat |-> Mat
 
 iff
-  VCallValue == 0
+
+    VCallValue == 0
 
 returns Pip : Mat
+```
+
+#### `vat` address
+
+```act
+behaviour vat of Spotter
+interface vat()
+
+for all
+
+    Vat : address
+
+storage
+
+    vat |-> Vat
+
+iff
+
+    VCallValue == 0
+
+returns Vat
+```
+
+#### `par` value
+
+```act
+behaviour par of Spotter
+interface par()
+
+for all
+
+    Par : uint256
+
+storage
+
+    par |-> Par
+
+iff
+
+    VCallValue == 0
+
+returns Par
+```
+
+#### shutdown flag
+
+```act
+behaviour live of Spotter
+interface live()
+
+for all
+
+    Live : uint256
+
+storage
+
+    live |-> Live
+
+iff
+
+    VCallValue == 0
+
+returns Live
+```
+
+### Mutators
+
+#### authorization
+
+```act
+behaviour rely-diff of Spotter
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 1
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour rely-same of Spotter
+interface rely(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 1
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr == CALLER_ID
+```
+
+```act
+behaviour deny-diff of Spotter
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    wards[usr]       |-> _ => 0
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr =/= CALLER_ID
+```
+
+```act
+behaviour deny-same of Spotter
+interface deny(address usr)
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May => 0
+
+iff
+
+    May == 1
+    VCallValue == 0
+
+if
+
+    usr == CALLER_ID
+```
+
+#### change governance parameters
+
+```act
+behaviour file-pip of Spotter
+interface file(bytes32 ilk, bytes32 what, address pip_)
+
+for all
+
+    May  : uint256
+    Live : uint256
+    Pip  : address
+
+storage
+
+    wards[CALLER_ID] |-> May
+    ilks[ilk].pip    |-> Pip => pip_
+    live             |-> Live
+
+iff
+
+    May == 1
+    VCallValue == 0
+    Live == 1
+    what == #string2Word("pip")
+```
+
+```act
+behaviour file-par of Spotter
+interface file(bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    par              |-> _ => data
+    live             |-> Live
+
+iff
+
+    May == 1
+    VCallValue == 0
+    Live == 1
+    what == #string2Word("par")
+```
+
+```act
+behaviour file-mat of Spotter
+interface file(bytes32 ilk, bytes32 what, uint256 data)
+
+for all
+
+    May  : uint256
+    Live : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    ilks[ilk].mat    |-> _ => data
+    live             |-> Live
+
+iff
+
+    May == 1
+    VCallValue == 0
+    Live == 1
+    what == #string2Word("mat")
+```
+
+#### disable governance actions
+
+```act
+behaviour cage of Spotter
+interface cage()
+
+for all
+
+    May : uint256
+
+storage
+
+    wards[CALLER_ID] |-> May
+    live |-> _ => 0
+
+iff
+
+    May == 1
+    VCallValue == 0
+```
+
+#### update `spot` value
+
+```act
+behaviour muluu of Spotter
+interface mul(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : x * y : WS
+
+iff in range uint256
+
+    x * y
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour rdiv of Spotter
+interface rdiv(uint256 x, uint256 y) internal
+
+stack
+
+    y : x : JMPTO : WS => JMPTO : (x * #Ray) / y : WS
+
+iff
+
+    y =/= 0
+
+iff in range uint256
+
+    x * #Ray
+
+if
+
+    // TODO: strengthen
+    #sizeWordStack(WS) <= 1000
+```
+
+```act
+behaviour poke of Spotter
+interface poke(bytes32 ilk)
+
+for all
+
+    Pip : address DSValue
+    Mat : uint256
+    Vat : address Vat
+    Par : uint256
+
+    Owner : address
+    Has   : bool
+    Price : bytes32
+
+    May  : uint256
+    Spot : uint256
+    Live : uint256
+
+storage
+
+    ilks[ilk].pip |-> Pip
+    ilks[ilk].mat |-> Mat
+    vat           |-> Vat
+    par           |-> Par
+
+storage Pip
+
+    owner_has |-> #WordPackAddrUInt8(Owner, Has)
+    val       |-> Price
+
+storage Vat
+
+    wards[ACCT_ID] |-> May
+    ilks[ilk].spot |-> Spot => #if Has =/= 0 #then ((((Price * 1000000000 * #Ray) / Par) * #Ray) / Mat) #else 0 #fi
+    live           |-> Live
+
+iff
+
+    VCallValue == 0
+    VCallDepth < 1024
+    (Has == 0) or ((Price * 1000000000 * #Ray <= maxUInt256) and (Par =/= 0) and (Mat =/= 0) and (((Price * 1000000000 * #Ray) / Par) * #Ray <= maxUInt256))
+    May == 1
+    Live == 1
+
+calls
+
+  DSValue.peek
+  Spotter.muluu
+  Spotter.rdiv
+  Vat.file-ilk
 ```

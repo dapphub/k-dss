@@ -1,7 +1,9 @@
 with import <nixpkgs> {};
+
 stdenv.mkDerivation {
   name = "k-dss";
   buildInputs = [
+    bc
     flex
     getopt
     utillinux
@@ -13,6 +15,7 @@ stdenv.mkDerivation {
     parallel
     wget
     zip
+    zstd
     z3
   ];
   shellHook = ''
