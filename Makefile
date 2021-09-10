@@ -8,22 +8,21 @@ INSTALL_PREFIX  := /usr
 INSTALL_BIN     ?= $(INSTALL_PREFIX)/bin
 INSTALL_LIB     ?= $(INSTALL_PREFIX)/lib/kdss
 INSTALL_INCLUDE ?= $(INSTALL_LIB)/include
-
-KDSS_BIN     := $(BUILD_DIR)$(INSTALL_BIN)
-KDSS_LIB     := $(BUILD_DIR)$(INSTALL_LIB)
-KDSS_INCLUDE := $(KDSS_LIB)/include
-KDSS_K_BIN   := $(KDSS_LIB)/kframework/bin
-KDSS         := kdss
-KDSS_PROVE   := $(KDSS) prove
-
-KDSS_VERSION     ?= 1.0.1
-KDSS_RELEASE_TAG ?= v$(KDSS_VERSION)-$(shell git rev-parse --short HEAD)
+KDSS_BIN        := $(BUILD_DIR)$(INSTALL_BIN)
 
 KEVM_SUBMODULE      := $(DEPS_DIR)/evm-semantics
 KEVM_INSTALL_PREFIX := $(INSTALL_LIB)/kevm
 KEVM_BIN            := $(KEVM_INSTALL_PREFIX)/bin
 KEVM_MAKE           := $(MAKE) --directory $(KEVM_SUBMODULE) INSTALL_PREFIX=$(KEVM_INSTALL_PREFIX)
 KEVM                := kevm
+
+PYTHONPATH := $(CURDIR)/$(BUILD_DIR)/$(INSTALL_LIB)/kevm/lib/kevm/kframework/lib/kframework:$(INSTALL_LIB)/kevm/lib/kevm/kframework/lib/kframework
+export PYTHONPATH
+
+KLAB_EVMS_PATH ?= $(CURDIR)/$(KEVM_SUBMODULE)
+export KLAB_EVMS_PATH
+
+K_BACKEND := java
 
 PATH := $(CURDIR)/$(KDSS_BIN):$(CURDIR)/$(BUILD_DIR)$(KEVM_BIN):$(PATH)
 PATH := $(CURDIR)/deps/klab/bin:$(PATH)
@@ -38,8 +37,8 @@ distclean: clean
 
 kevm:
 	$(KEVM_MAKE) -j4 deps
-	$(KEVM_MAKE) -j4 build-java
-	$(KEVM_MAKE) -j4 install    DESTDIR=$(CURDIR)/$(BUILD_DIR)
+	$(KEVM_MAKE) -j4 build-$(K_BACKEND)
+	$(KEVM_MAKE) -j4 install            DESTDIR=$(CURDIR)/$(BUILD_DIR)
 
 include.mak: src/dss.md
 	klab make > include.mak
